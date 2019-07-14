@@ -37,14 +37,14 @@ namespace Pathfinding {
 		 */
 		public static readonly System.Type[] DefaultGraphTypes = new System.Type[] {
 #if !ASTAR_NO_GRID_GRAPH
-			typeof(GridGraph),
+			//typeof(GridGraph),
 #endif
 #if !ASTAR_NO_POINT_GRAPH
-			typeof(PointGraph),
+			//typeof(PointGraph),
 #endif
-			typeof(NavMeshGraph),
+			//typeof(NavMeshGraph),
 			typeof(RecastGraph),
-			typeof(LayerGridGraph)
+			//typeof(LayerGridGraph)
 		};
 #endif
 

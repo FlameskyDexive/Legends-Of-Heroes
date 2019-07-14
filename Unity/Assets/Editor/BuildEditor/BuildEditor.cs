@@ -20,6 +20,7 @@ namespace ETEditor
 		IOS,
 		PC,
 		MacOS,
+        WSAPlayer,
 	}
 	
 	public enum BuildType
