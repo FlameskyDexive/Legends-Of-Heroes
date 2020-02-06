@@ -16,8 +16,6 @@
 			url += "WebGL/";
 #elif UNITY_STANDALONE_OSX
 			url += "MacOS/";
-#elif UNITY_WSA_10_0
-			url += "WSAPlayer/";
 #else
 			url += "PC/";
 #endif

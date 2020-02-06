@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace ETModel
 {
@@ -24,6 +21,9 @@ namespace ETModel
 
 		private readonly Dictionary<int, Action<IResponse>> requestCallback = new Dictionary<int, Action<IResponse>>();
 		private readonly byte[] opcodeBytes = new byte[2];
+
+		public long LastRecvTime { get; private set; }
+		public long LastSendTime { get; private set; }
 
 		public NetworkComponent Network
 		{
@@ -47,6 +47,10 @@ namespace ETModel
 
 		public void Awake(AChannel aChannel)
 		{
+			long timeNow = TimeHelper.Now();
+			this.LastRecvTime = timeNow;
+			this.LastSendTime = timeNow;
+			
 			this.channel = aChannel;
 			this.requestCallback.Clear();
 			long id = this.Id;
@@ -70,26 +74,21 @@ namespace ETModel
 			
 			foreach (Action<IResponse> action in this.requestCallback.Values.ToArray())
 			{
-				action.Invoke(new ResponseMessage { Error = this.Error });
+				action.Invoke(new ErrorResponse { Error = this.Error });
 			}
 
-			//int error = this.channel.Error;
-			//if (this.channel.Error != 0)
-			//{
-			//	Log.Trace($"session dispose: {this.Id} ErrorCode: {error}, please see ErrorCode.cs!");
-			//}
+			int error = this.channel.Error;
+			if (this.channel.Error != 0)
+			{
+				Log.Info($"session dispose: {this.Id} ErrorCode: {error}, please see ErrorCode.cs!");
+			}
 			
 			this.channel.Dispose();
 			
 			this.requestCallback.Clear();
 		}
 
-		public void Start()
-		{
-			this.channel.Start();
-		}
-
-		public IPEndPoint RemoteAddress
+		public string RemoteAddress
 		{
 			get
 			{
@@ -141,10 +140,9 @@ namespace ETModel
 			object message;
 			try
 			{
-				OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
-				object instance = opcodeTypeComponent.GetInstance(opcode);
+				object instance = OpcodeTypeComponent.Instance.GetInstance(opcode);
 				message = this.Network.MessagePacker.DeserializeFrom(instance, memoryStream);
-				
+
 				if (OpcodeHelper.IsNeedDebugLogMessage(opcode))
 				{
 					Log.Msg(message);
@@ -159,42 +157,50 @@ namespace ETModel
 				return;
 			}
 
+			RunMessage(opcode, message);
+		}
+
+		private void RunMessage(ushort opcode, object message)
+		{
+			this.LastRecvTime = TimeHelper.Now();
+            
 			if (!(message is IResponse response))
 			{
 				this.Network.MessageDispatcher.Dispatch(this, opcode, message);
 				return;
 			}
 			
+#if SERVER
+			if (message is IActorResponse)
+			{
+				this.Network.MessageDispatcher.Dispatch(this, opcode, message);
+				return;
+			}
+#endif
+            
 			Action<IResponse> action;
 			if (!this.requestCallback.TryGetValue(response.RpcId, out action))
 			{
 				throw new Exception($"not found rpc, response message: {StringHelper.MessageToStr(response)}");
 			}
 			this.requestCallback.Remove(response.RpcId);
-
+            
 			action(response);
 		}
-
-		public ETTask<IResponse> Call(IRequest request)
+		
+		public ETTask<IResponse> CallWithoutException(IRequest request)
 		{
 			int rpcId = ++RpcId;
 			var tcs = new ETTaskCompletionSource<IResponse>();
-
 			this.requestCallback[rpcId] = (response) =>
 			{
-				try
+				if (response is ErrorResponse)
 				{
-					if (ErrorCode.IsRpcNeedThrowException(response.Error))
-					{
-						throw new RpcException(response.Error, response.Message);
-					}
-
-					tcs.SetResult(response);
+					tcs.SetException(new Exception($"Rpc error: {MongoHelper.ToJson(response)}"));
+					return;
 				}
-				catch (Exception e)
-				{
-					tcs.SetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
-				}
+				
+				tcs.SetResult(response);
 			};
 
 			request.RpcId = rpcId;
@@ -202,29 +208,26 @@ namespace ETModel
 			return tcs.Task;
 		}
 
-		public ETTask<IResponse> Call(IRequest request, CancellationToken cancellationToken)
+		public ETTask<IResponse> Call(IRequest request)
 		{
 			int rpcId = ++RpcId;
 			var tcs = new ETTaskCompletionSource<IResponse>();
-
 			this.requestCallback[rpcId] = (response) =>
 			{
-				try
+				if (response is ErrorResponse)
 				{
-					if (ErrorCode.IsRpcNeedThrowException(response.Error))
-					{
-						throw new RpcException(response.Error, response.Message);
-					}
+					tcs.SetException(new Exception($"Rpc error: {MongoHelper.ToJson(response)}"));
+					return;
+				}
+				
+				if (ErrorCode.IsRpcNeedThrowException(response.Error))
+				{
+					tcs.SetException(new Exception($"Rpc error: {MongoHelper.ToJson(response)}"));
+					return;
+				}
 
-					tcs.SetResult(response);
-				}
-				catch (Exception e)
-				{
-					tcs.SetException(new Exception($"Rpc Error: {request.GetType().FullName}", e));
-				}
+				tcs.SetResult(response);
 			};
-
-			cancellationToken.Register(() => this.requestCallback.Remove(rpcId));
 
 			request.RpcId = rpcId;
 			this.Send(request);
@@ -237,14 +240,12 @@ namespace ETModel
 			{
 				throw new Exception("session已经被Dispose了");
 			}
-
 			this.Send(message);
 		}
 
 		public void Send(IMessage message)
 		{
-			OpcodeTypeComponent opcodeTypeComponent = this.Network.Entity.GetComponent<OpcodeTypeComponent>();
-			ushort opcode = opcodeTypeComponent.GetOpcode(message.GetType());
+			ushort opcode = OpcodeTypeComponent.Instance.GetOpcode(message.GetType());
 			
 			Send(opcode, message);
 		}
@@ -255,18 +256,12 @@ namespace ETModel
 			{
 				throw new Exception("session已经被Dispose了");
 			}
+
+			this.LastSendTime = TimeHelper.Now();
 			
 			if (OpcodeHelper.IsNeedDebugLogMessage(opcode) )
 			{
-#if !SERVER
-				if (OpcodeHelper.IsClientHotfixMessage(opcode))
-				{
-				}
-				else
-#endif
-				{
-					Log.Msg(message);
-				}
+				Log.Msg(message);
 			}
 
 			MemoryStream stream = this.Stream;
@@ -278,17 +273,7 @@ namespace ETModel
 			
 			opcodeBytes.WriteTo(0, opcode);
 			Array.Copy(opcodeBytes, 0, stream.GetBuffer(), 0, opcodeBytes.Length);
-
-#if SERVER
-			// 如果是allserver，内部消息不走网络，直接转给session,方便调试时看到整体堆栈
-			if (this.Network.AppType == AppType.AllServer)
-			{
-				Session session = this.Network.Entity.GetComponent<NetInnerComponent>().Get(this.RemoteAddress);
-				session.Run(stream);
-				return;
-			}
-#endif
-
+			
 			this.Send(stream);
 		}
 

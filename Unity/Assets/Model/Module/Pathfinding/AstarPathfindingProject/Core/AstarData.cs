@@ -42,9 +42,9 @@ namespace Pathfinding {
 #if !ASTAR_NO_POINT_GRAPH
 			//typeof(PointGraph),
 #endif
-			//typeof(NavMeshGraph),
+			/*typeof(NavMeshGraph),
 			typeof(RecastGraph),
-			//typeof(LayerGridGraph)
+			typeof(LayerGridGraph)*/
 		};
 #endif
 

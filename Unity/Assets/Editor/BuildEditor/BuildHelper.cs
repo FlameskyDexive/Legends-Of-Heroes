@@ -37,9 +37,6 @@ namespace ETEditor
 				case PlatformType.MacOS:
 					buildTarget = BuildTarget.StandaloneOSX;
 					break;
-				case PlatformType.WSAPlayer:
-					buildTarget = BuildTarget.WSAPlayer;
-					break;
 			}
 
 			string fold = string.Format(BuildFolder, type);
