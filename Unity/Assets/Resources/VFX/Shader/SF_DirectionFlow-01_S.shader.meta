@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: fc7366a36d388e04baf5376f1428a040
+timeCreated: 1502347803
+licenseType: Pro
+ShaderImporter:
+  defaultTextures:
+  - _MainTex: {instanceID: 0}
+  - _FlowMap: {instanceID: 0}
+  - _FlowMask: {instanceID: 0}
+  userData: 
+  assetBundleName: assets/resources/vfx/shader/sf_directionflow-01_s.shader
+  assetBundleVariant: 

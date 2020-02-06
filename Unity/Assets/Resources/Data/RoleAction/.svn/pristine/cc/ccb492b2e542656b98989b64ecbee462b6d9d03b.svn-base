@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<role id="209" name="[org]鱼人">
+  <animatorGroup>
+    <basicDefinition>
+      <mainDefin actorID="0" actorName="鱼人" _AIID="0" gA="3000" defaultStaID="1000" deadthStaID="1900" ActionLevel="1" hitToTurnType="" scale_x="100" scale_y="100" scale_z="100" impactResistance_x="0" impactResistance_y="0" impactResistance_z="0" attenuation="1000" _HUDHight="207" hitEffectId="0" straightModify="100" victoryStatusId="0" failStatusId="0" RunStatusId="1010" JumpStatusId="1020" RebirthStatusId="0" dizzyStatusId="0" modelId="601090" weaponType="0" effect_offset_1="5" effect_offset_2="81" effect_offset_3="185" effect_scale="90" materialId="1" />
+      <mainFrame radius="25" height="110" x="0" y="55" z="0" />
+      <injuredSite bornID="1" siteID="0" brokenEffectId="0" index="0" shape="1" radius="50" length="0" width="0" height="0" x="0" y="100" z="0" />
+      <injuredSite bornID="2" siteID="0" brokenEffectId="0" index="1" shape="1" radius="50" length="0" width="0" height="0" x="0" y="50" z="0" />
+      <standAttribute>
+        <attackType HitBack="2100" HitFly="2200" Flight="2300" FlightAttack="2400" HitDown="2400" HitDownAttack="2400" Capture="2100" Die="1900" />
+        <brokenType destructionSite00ID="0" destructionSite01ID="0" destructionSite02ID="0" destructionSite03ID="0" />
+      </standAttribute>
+      <groundAttribute>
+        <attackType HitBack="2400" HitFly="2400" Flight="2300" FlightAttack="2400" HitDown="2400" HitDownAttack="2400" Capture="2100" Die="1900" />
+        <brokenType destructionSite00ID="0" destructionSite01ID="0" destructionSite02ID="0" destructionSite03ID="0" />
+      </groundAttribute>
+      <skyAttribute>
+        <attackType HitBack="2400" HitFly="2400" Flight="2400" FlightAttack="2400" HitDown="2400" HitDownAttack="2400" Capture="2100" Die="1900" />
+        <brokenType destructionSite00ID="0" destructionSite01ID="0" destructionSite02ID="0" destructionSite03ID="0" />
+      </skyAttribute>
+    </basicDefinition>
+    <status id="900" name="准备返回出生点" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="war_idle" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="1333" poseTime="0" originalTime="1333" isPlaybackModel="0" statusAtrribute="408" level="20" hitToTurnType="0" animatorStatus="2" heightStatus="0">
+      <event index="0" isEffect="0" type="35" percent="100" buff_id="90010" buff_layer="1" />
+      <event index="1" isEffect="0" type="31" percent="100" dialogText="????" time="3000" />
+    </status>
+    <status id="901" name="已返回成功" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="war_jump" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="900" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="924" level="20" hitToTurnType="1" animatorStatus="2" heightStatus="0">
+      <event index="0" isEffect="0" type="35" percent="0" buff_id="90010" buff_layer="-99" />
+    </status>
+    <status id="1000" name="站立" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="war_idle" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="1333" poseTime="0" originalTime="1333" isPlaybackModel="0" statusAtrribute="900" level="0" hitToTurnType="1" animatorStatus="0" heightStatus="0">
+      <break name="移动" isEffect="0" targetStatus="1010" skillId="0" abstractSkillId="0" delay="0" isCanReplace="1" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="0" />
+      </break>
+      <break name="跳跃" isEffect="0" targetStatus="1500" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="1" />
+      </break>
+      <break name="下落" isEffect="0" targetStatus="1021" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16" isNeedSatisfyAll="0" probability="0" />
+      <break name="普攻1" isEffect="0" targetStatus="3000" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="2" />
+      </break>
+      <break name="skill2" isEffect="0" targetStatus="3100" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="3" />
+      </break>
+      <break name="skill3" isEffect="0" targetStatus="3200" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="4" />
+      </break>
+    </status>
+    <status id="1002" name="警戒" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="war_jump" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="900" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="900" level="0" hitToTurnType="1" animatorStatus="2" heightStatus="0">
+      <event index="0" isEffect="0" type="15" percent="0" radius="3000" angle="45" angleSpeed="180" maxRadius="3000" state="0" />
+      <event index="1" isEffect="0" type="2" percent="0" effectId="310055" rotation="0,0,0" offset="0,250,0" effectFollowPointPath="" effectScale="100,100,100" effectPlaySpeed="20" liftTime="3000" effectType="0" isFollow="0" isFollowIgnoreY="0" isFollowPointPathRotate="0" isEndNotKeepFollow="0" effectEndPlaySpeed="0" isUseVFXDataTime="0" isOnTheFloor="0" />
+      <break name="移动" isEffect="0" targetStatus="1010" skillId="0" abstractSkillId="0" delay="0" isCanReplace="1" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="0" />
+      </break>
+      <break name="跳跃" isEffect="0" targetStatus="1500" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="1" />
+      </break>
+      <break name="下落" isEffect="0" targetStatus="1021" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16" isNeedSatisfyAll="0" probability="0" />
+      <break name="普攻1" isEffect="0" targetStatus="3000" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="2" />
+      </break>
+      <break name="skill2" isEffect="0" targetStatus="3100" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="3" />
+      </break>
+      <break name="skill3" isEffect="0" targetStatus="3200" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="4" />
+      </break>
+    </status>
+    <status id="1010" name="移动" defaultLinkStatus="1010" moveSpeed="300" turnSpeed="600" defaultSkillId="0" animationClip="war_running" StartAnimationPlayTime="6" EndAnimationPlayTime="100" tweenTime="100" animationTime="752" poseTime="0" originalTime="800" isPlaybackModel="0" statusAtrribute="903" level="0" hitToTurnType="1" animatorStatus="1" heightStatus="0">
+      <break name="站立" isEffect="0" targetStatus="1000" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="256" isNeedSatisfyAll="0" probability="0" />
+      <break name="小跳跃" isEffect="0" targetStatus="1020" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <envCondition type="0" attribute="6" moreOrLess="2" attributeId="0" attributeValue="1" condition="0" whether="0" />
+      </break>
+      <break name="下落" isEffect="0" targetStatus="1021" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16" isNeedSatisfyAll="0" probability="0" />
+      <break name="AI跳跃" isEffect="0" targetStatus="1500" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="2048" isNeedSatisfyAll="1" probability="0">
+        <envCondition type="0" attribute="6" moreOrLess="2" attributeId="0" attributeValue="2" condition="0" whether="0" />
+      </break>
+      <break name="跳跃" isEffect="0" targetStatus="1500" skillId="0" abstractSkillId="0" delay="0" isCanReplace="1" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="1" />
+      </break>
+      <break name="普攻1" isEffect="0" targetStatus="3000" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="2" />
+      </break>
+      <break name="skill2" isEffect="0" targetStatus="3100" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="3" />
+      </break>
+      <break name="skill3" isEffect="0" targetStatus="3200" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="3" />
+      </break>
+    </status>
+    <status id="1020" name="移动-小跳跃" defaultLinkStatus="1000" moveSpeed="300" turnSpeed="400" defaultSkillId="0" animationClip="war_running" StartAnimationPlayTime="17" EndAnimationPlayTime="100" tweenTime="0" animationTime="566" poseTime="0" originalTime="800" isPlaybackModel="0" statusAtrribute="899" level="0" hitToTurnType="0" animatorStatus="1" heightStatus="0">
+      <event index="0" isEffect="0" type="13" percent="0" decay_x="0" decay_y="850" decay_z="0" />
+      <event index="1" isEffect="0" type="13" percent="15" decay_x="0" decay_y="0" decay_z="300" />
+      <break name="站立" isEffect="0" targetStatus="1000" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="256" isNeedSatisfyAll="0" probability="0" />
+      <break name="普攻1" isEffect="0" targetStatus="3000" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="2" />
+      </break>
+      <break name="技能1" isEffect="0" targetStatus="4000" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="3" />
+      </break>
+      <break name="技能2" isEffect="0" targetStatus="4100" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="4" />
+      </break>
+      <break name="技能3" isEffect="0" targetStatus="4200" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="5" />
+      </break>
+    </status>
+    <status id="1030" name="移动" defaultLinkStatus="1000" moveSpeed="400" turnSpeed="180" defaultSkillId="0" animationClip="war_running" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="566" poseTime="0" originalTime="800" isPlaybackModel="0" statusAtrribute="386" level="0" hitToTurnType="0" animatorStatus="2" heightStatus="0">
+      <break name="站立" isEffect="-1" targetStatus="1000" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="256" isNeedSatisfyAll="0" probability="0" />
+      <break name="普攻1" isEffect="-1" targetStatus="1001" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="2" />
+      </break>
+      <break name="小跳跃" isEffect="-1" targetStatus="1020" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <envCondition type="0" attribute="6" moreOrLess="2" attributeId="0" attributeValue="1" condition="0" whether="0" />
+      </break>
+      <break name="下落" isEffect="-1" targetStatus="1021" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16" isNeedSatisfyAll="0" probability="0" />
+      <break name="" isEffect="-1" targetStatus="1500" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="2048" isNeedSatisfyAll="1" probability="0">
+        <envCondition type="0" attribute="6" moreOrLess="2" attributeId="0" attributeValue="2" condition="0" whether="0" />
+      </break>
+      <break name="" isEffect="-1" targetStatus="1000" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="128" isNeedSatisfyAll="0" probability="0" />
+      <break name="skill2" isEffect="0" targetStatus="3100" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="3" />
+      </break>
+    </status>
+    <status id="1500" name="跳跃" defaultLinkStatus="1501" moveSpeed="400" turnSpeed="800" defaultSkillId="0" animationClip="war_jump" StartAnimationPlayTime="0" EndAnimationPlayTime="50" tweenTime="0" animationTime="450" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="387" level="0" hitToTurnType="1" animatorStatus="1" heightStatus="2">
+      <event index="0" isEffect="0" type="13" percent="0" decay_x="0" decay_y="1200" decay_z="0" />
+      <break name="下落" isEffect="0" targetStatus="1501" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16" isNeedSatisfyAll="0" probability="0" />
+      <break name="着地" isEffect="0" targetStatus="1502" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="20" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="1" isNeedSatisfyAll="0" probability="0" />
+    </status>
+    <status id="1501" name="跳跃 - 下落" defaultLinkStatus="1501" moveSpeed="400" turnSpeed="800" defaultSkillId="0" animationClip="war_jump" StartAnimationPlayTime="50" EndAnimationPlayTime="55" tweenTime="500" animationTime="500" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="387" level="0" hitToTurnType="1" animatorStatus="1" heightStatus="2">
+      <break name="着地" isEffect="0" targetStatus="1502" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="1" isNeedSatisfyAll="0" probability="0" />
+    </status>
+    <status id="1502" name="跳跃 - 着地" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="war_jump" StartAnimationPlayTime="68" EndAnimationPlayTime="100" tweenTime="0" animationTime="288" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="384" level="0" hitToTurnType="1" animatorStatus="1" heightStatus="0">
+      <break name="普攻1" isEffect="0" targetStatus="1001" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="2" />
+      </break>
+      <break name="移动" isEffect="0" targetStatus="1010" skillId="0" abstractSkillId="0" delay="0" isCanReplace="1" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="1" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="0" />
+      </break>
+      <break name="跳跃" isEffect="0" targetStatus="1020" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16385" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="1" />
+      </break>
+    </status>
+    <status id="1900" name="死亡上升" defaultLinkStatus="1902" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_3" StartAnimationPlayTime="0" EndAnimationPlayTime="42" tweenTime="0" animationTime="518" poseTime="0" originalTime="1233" isPlaybackModel="0" statusAtrribute="0" level="20" hitToTurnType="1" animatorStatus="3" heightStatus="2" />
+    <status id="1901" name="死亡" defaultLinkStatus="1903" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_3" StartAnimationPlayTime="71" EndAnimationPlayTime="100" tweenTime="0" animationTime="357" poseTime="0" originalTime="1233" isPlaybackModel="0" statusAtrribute="0" level="20" hitToTurnType="1" animatorStatus="3" heightStatus="2" />
+    <status id="1902" name="下降中" defaultLinkStatus="1902" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_3" StartAnimationPlayTime="50" EndAnimationPlayTime="60" tweenTime="0" animationTime="500" poseTime="0" originalTime="1233" isPlaybackModel="0" statusAtrribute="0" level="20" hitToTurnType="1" animatorStatus="3" heightStatus="2">
+      <break name="死亡消失" isEffect="0" targetStatus="1901" skillId="0" abstractSkillId="0" delay="0" isCanReplace="1" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="1" isNeedSatisfyAll="0" probability="0" />
+    </status>
+    <status id="1903" name="死亡消失" defaultLinkStatus="1903" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_3" StartAnimationPlayTime="100" EndAnimationPlayTime="100" tweenTime="0" animationTime="3000" poseTime="0" originalTime="1233" isPlaybackModel="0" statusAtrribute="24" level="20" hitToTurnType="1" animatorStatus="3" heightStatus="1">
+      <event index="0" isEffect="0" type="33" percent="50" PropertyName="_DissProgress" iStartValue="0" iEndValue="101" iLength="1500" />
+      <event index="1" isEffect="0" type="21" percent="100" DelayTime="0" />
+    </status>
+    <status id="2000" name="爬起来" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="standing" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="1500" poseTime="0" originalTime="1066" isPlaybackModel="0" statusAtrribute="384" level="0" hitToTurnType="0" animatorStatus="3" heightStatus="0" />
+    <status id="2100" name="小击退" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_1" StartAnimationPlayTime="13" EndAnimationPlayTime="100" tweenTime="0" animationTime="1000" poseTime="0" originalTime="933" isPlaybackModel="0" statusAtrribute="384" level="0" hitToTurnType="1" animatorStatus="3" heightStatus="0" />
+    <status id="2200" name="大击退" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_1" StartAnimationPlayTime="12" EndAnimationPlayTime="92" tweenTime="0" animationTime="1200" poseTime="0" originalTime="933" isPlaybackModel="0" statusAtrribute="384" level="0" hitToTurnType="1" animatorStatus="3" heightStatus="0">
+      <break name="普攻1" isEffect="-1" targetStatus="1001" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="2" />
+      </break>
+      <break name="移动" isEffect="-1" targetStatus="1010" skillId="0" abstractSkillId="0" delay="0" isCanReplace="1" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="1" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="0" />
+      </break>
+      <break name="跳跃" isEffect="-1" targetStatus="1020" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16385" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="1" />
+      </break>
+      <break name="下落" isEffect="-1" targetStatus="1021" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16" isNeedSatisfyAll="0" probability="0" />
+    </status>
+    <status id="2300" name="击飞" defaultLinkStatus="2301" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_3" StartAnimationPlayTime="0" EndAnimationPlayTime="22" tweenTime="0" animationTime="589" poseTime="0" originalTime="1233" isPlaybackModel="0" statusAtrribute="384" level="0" hitToTurnType="1" animatorStatus="3" heightStatus="2">
+      <break name="" isEffect="0" targetStatus="2301" skillId="900001" abstractSkillId="0" delay="100" isCanReplace="1" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="100" />
+    </status>
+    <status id="2301" name="击飞-下降" defaultLinkStatus="2301" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_3" StartAnimationPlayTime="22" EndAnimationPlayTime="50" tweenTime="500" animationTime="500" poseTime="0" originalTime="1233" isPlaybackModel="0" statusAtrribute="32" level="3" hitToTurnType="1" animatorStatus="3" heightStatus="2">
+      <event index="0" isEffect="-1" type="1" percent="0" attackTypes="1" shakeType="0" hitToTurnTargetType="0" moveToTargetTime="0" captureOffect_x="0" captureOffect_y="0" captureOffect_z="0" captureOffect_radius="0" ragdoll_impact_x="0" ragdoll_impact_y="0" ragdoll_impact_z="0" impact_x="0" impact_y="0" impact_z="0" impactTime="0" decay_x="0" decay_y="0" decay_z="-500" hitRigidityTime="70" hitRigidityPercent="0" beHitRigidityPercent="0" beHitRigidityTime="100" shakeTime="0" shakeRate="0" shakeExtent="0" isMix="0" isBroadcast="0" isUseBackAttack="0" isUseWeaponType="0" typeId="1" emitterId="1" isUseRagdoll="0" soundVolume="0" soundId="0" hitBlockEffect="0" />
+      <break name="着地" isEffect="0" targetStatus="2302" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="20" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="1" isNeedSatisfyAll="0" probability="0" />
+    </status>
+    <status id="2302" name="击飞-着地" defaultLinkStatus="2000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_3" StartAnimationPlayTime="56" EndAnimationPlayTime="100" tweenTime="0" animationTime="850" poseTime="0" originalTime="1233" isPlaybackModel="0" statusAtrribute="128" level="0" hitToTurnType="1" animatorStatus="3" heightStatus="1">
+      <event index="0" isEffect="0" type="13" percent="0" decay_x="0" decay_y="300" decay_z="0" />
+      <break name="普攻1" isEffect="-1" targetStatus="1001" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="2" />
+      </break>
+      <break name="移动" isEffect="-1" targetStatus="1010" skillId="0" abstractSkillId="0" delay="0" isCanReplace="1" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="1" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="0" />
+      </break>
+      <break name="跳跃" isEffect="-1" targetStatus="1020" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16385" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="1" />
+      </break>
+      <break name="下落" isEffect="-1" targetStatus="1021" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16" isNeedSatisfyAll="0" probability="0" />
+    </status>
+    <status id="2400" name="浮空追击" defaultLinkStatus="2301" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="hit_3" StartAnimationPlayTime="0" EndAnimationPlayTime="22" tweenTime="0" animationTime="425" poseTime="0" originalTime="1233" isPlaybackModel="0" statusAtrribute="416" level="0" hitToTurnType="1" animatorStatus="3" heightStatus="2">
+      <event index="0" isEffect="-1" type="1" percent="5" attackTypes="3" shakeType="0" hitToTurnTargetType="0" moveToTargetTime="0" captureOffect_x="0" captureOffect_y="0" captureOffect_z="0" captureOffect_radius="0" ragdoll_impact_x="0" ragdoll_impact_y="0" ragdoll_impact_z="0" impact_x="0" impact_y="0" impact_z="0" impactTime="0" decay_x="0" decay_y="600" decay_z="-1000" hitRigidityTime="70" hitRigidityPercent="0" beHitRigidityPercent="0" beHitRigidityTime="100" shakeTime="0" shakeRate="0" shakeExtent="0" isMix="0" isBroadcast="0" isUseBackAttack="0" isUseWeaponType="0" typeId="1" emitterId="1" isUseRagdoll="0" soundVolume="0" soundId="0" hitBlockEffect="0" />
+      <break name="普攻1" isEffect="-1" targetStatus="1001" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="0">
+        <keyCondition type="0" code="2" />
+      </break>
+      <break name="移动" isEffect="-1" targetStatus="1010" skillId="0" abstractSkillId="0" delay="0" isCanReplace="1" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="1" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="0" />
+      </break>
+      <break name="跳跃" isEffect="-1" targetStatus="1020" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16385" isNeedSatisfyAll="1" probability="0">
+        <keyCondition type="0" code="1" />
+      </break>
+      <break name="下落" isEffect="-1" targetStatus="1021" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="16" isNeedSatisfyAll="0" probability="0" />
+      <break name="撞墙" isEffect="0" targetStatus="2305" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="0" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="1" probability="0">
+        <envCondition type="0" attribute="6" moreOrLess="0" attributeId="0" attributeValue="2" condition="0" whether="0" />
+      </break>
+      <break name="着地" isEffect="0" targetStatus="2302" skillId="0" abstractSkillId="0" delay="0" isCanReplace="0" timeQuantumStart="20" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="1" isNeedSatisfyAll="0" probability="0" />
+    </status>
+    <status id="3000" name="普攻 - 1" defaultLinkStatus="3001" moveSpeed="0" turnSpeed="180" defaultSkillId="0" animationClip="war_attack1" StartAnimationPlayTime="0" EndAnimationPlayTime="50" tweenTime="0" animationTime="600" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="898" level="4" hitToTurnType="1" animatorStatus="2" heightStatus="0">
+      <event index="0" isEffect="0" type="15" percent="0" radius="700" angle="45" angleSpeed="9000" maxRadius="700" state="1" />
+      <event index="1" isEffect="0" type="13" percent="0" decay_x="0" decay_y="700" decay_z="1500" />
+      <event index="2" isEffect="0" type="16" percent="70" IsResetSpeedY="0" IsResetSpeedXZ="1" />
+      <event index="3" isEffect="0" type="1" percent="70" attackTypes="2" shakeType="0" hitToTurnTargetType="2" moveToTargetTime="0" captureOffect_x="0" captureOffect_y="0" captureOffect_z="0" captureOffect_radius="0" ragdoll_impact_x="0" ragdoll_impact_y="0" ragdoll_impact_z="0" impact_x="0" impact_y="0" impact_z="0" impactTime="0" decay_x="0" decay_y="600" decay_z="-1000" hitRigidityTime="70" hitRigidityPercent="0" beHitRigidityPercent="0" beHitRigidityTime="100" shakeTime="0" shakeRate="0" shakeExtent="0" isMix="0" isBroadcast="0" isUseBackAttack="0" isUseWeaponType="0" typeId="3" emitterId="3000" isUseRagdoll="0" soundVolume="0" soundId="0" hitBlockEffect="0" />
+    </status>
+    <status id="3001" name="普攻 - 1" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="war_attack1" StartAnimationPlayTime="50" EndAnimationPlayTime="100" tweenTime="0" animationTime="1500" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="896" level="0" hitToTurnType="1" animatorStatus="2" heightStatus="0" />
+    <status id="3100" name="skill-2" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="war_attack2" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="2000" poseTime="0" originalTime="1733" isPlaybackModel="0" statusAtrribute="896" level="0" hitToTurnType="1" animatorStatus="2" heightStatus="0">
+      <event index="0" isEffect="-1" type="15" percent="0" radius="0" angle="45" angleSpeed="9000" maxRadius="500" state="0" />
+      <event index="1" isEffect="-1" type="5" percent="13" isFollowSpeedDir="1" horSpeed="" />
+      <event index="2" isEffect="-1" type="5" percent="30" isFollowSpeedDir="0" horSpeed="" />
+      <event index="3" isEffect="0" type="1" percent="31" attackTypes="0" shakeType="0" hitToTurnTargetType="0" moveToTargetTime="0" captureOffect_x="0" captureOffect_y="0" captureOffect_z="0" captureOffect_radius="0" ragdoll_impact_x="0" ragdoll_impact_y="0" ragdoll_impact_z="0" impact_x="0" impact_y="0" impact_z="0" impactTime="0" decay_x="0" decay_y="0" decay_z="0" hitRigidityTime="0" hitRigidityPercent="0" beHitRigidityPercent="0" beHitRigidityTime="0" shakeTime="0" shakeRate="0" shakeExtent="0" isMix="0" isBroadcast="0" isUseBackAttack="0" isUseWeaponType="0" typeId="1" emitterId="101" isUseRagdoll="0" soundVolume="0" soundId="0" hitBlockEffect="0" />
+    </status>
+    <status id="3200" name="skill-3" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="war_attack3" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="1400" poseTime="0" originalTime="0" isPlaybackModel="0" statusAtrribute="896" level="0" hitToTurnType="1" animatorStatus="2" heightStatus="0">
+      <event index="0" isEffect="-1" type="15" percent="0" radius="0" angle="45" angleSpeed="9000" maxRadius="500" state="0" />
+      <event index="1" isEffect="-1" type="5" percent="13" isFollowSpeedDir="1" horSpeed="" />
+      <event index="2" isEffect="-1" type="5" percent="30" isFollowSpeedDir="0" horSpeed="" />
+      <event index="3" isEffect="0" type="1" percent="31" attackTypes="0" shakeType="0" hitToTurnTargetType="0" moveToTargetTime="0" captureOffect_x="0" captureOffect_y="0" captureOffect_z="0" captureOffect_radius="0" ragdoll_impact_x="0" ragdoll_impact_y="0" ragdoll_impact_z="0" impact_x="0" impact_y="0" impact_z="0" impactTime="0" decay_x="0" decay_y="0" decay_z="0" hitRigidityTime="0" hitRigidityPercent="0" beHitRigidityPercent="0" beHitRigidityTime="0" shakeTime="0" shakeRate="0" shakeExtent="0" isMix="0" isBroadcast="0" isUseBackAttack="0" isUseWeaponType="0" typeId="1" emitterId="101" isUseRagdoll="0" soundVolume="0" soundId="0" hitBlockEffect="0" />
+    </status>
+    <status id="3300" name="普攻 - 1" defaultLinkStatus="1000" moveSpeed="0" turnSpeed="0" defaultSkillId="0" animationClip="war_attack1" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="900" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="896" level="0" hitToTurnType="1" animatorStatus="2" heightStatus="0">
+      <event index="0" isEffect="0" type="15" percent="0" radius="300" angle="45" angleSpeed="90" maxRadius="300" state="0" />
+      <event index="1" isEffect="0" type="1" percent="31" attackTypes="0" shakeType="0" hitToTurnTargetType="0" moveToTargetTime="0" captureOffect_x="0" captureOffect_y="0" captureOffect_z="0" captureOffect_radius="0" ragdoll_impact_x="0" ragdoll_impact_y="0" ragdoll_impact_z="0" impact_x="0" impact_y="0" impact_z="0" impactTime="0" decay_x="0" decay_y="0" decay_z="0" hitRigidityTime="0" hitRigidityPercent="0" beHitRigidityPercent="0" beHitRigidityTime="0" shakeTime="0" shakeRate="0" shakeExtent="0" isMix="0" isBroadcast="0" isUseBackAttack="0" isUseWeaponType="0" typeId="3" emitterId="3000" isUseRagdoll="0" soundVolume="0" soundId="0" hitBlockEffect="0" />
+    </status>
+    <status id="4000" name="jump back" defaultLinkStatus="4000" moveSpeed="400" turnSpeed="800" defaultSkillId="0" animationClip="war_jump" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="600" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="387" level="0" hitToTurnType="1" animatorStatus="2" heightStatus="2">
+      <event index="0" isEffect="0" type="13" percent="25" decay_x="0" decay_y="700" decay_z="-700" />
+      <event index="1" isEffect="0" type="15" percent="25" radius="1000" angle="45" angleSpeed="180" maxRadius="1000" state="0" />
+      <event index="2" isEffect="0" type="8" percent="60" verAcceleration="5000" />
+      <break name="" isEffect="0" targetStatus="1000" skillId="0" abstractSkillId="0" delay="100" isCanReplace="0" timeQuantumStart="99" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="50" />
+    </status>
+    <status id="4001" name="jump-left" defaultLinkStatus="4001" moveSpeed="400" turnSpeed="800" defaultSkillId="0" animationClip="war_jump" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="600" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="387" level="0" hitToTurnType="1" animatorStatus="2" heightStatus="2">
+      <event index="0" isEffect="0" type="13" percent="25" decay_x="700" decay_y="700" decay_z="0" />
+      <event index="1" isEffect="0" type="15" percent="25" radius="1000" angle="45" angleSpeed="180" maxRadius="1000" state="0" />
+      <event index="2" isEffect="0" type="8" percent="60" verAcceleration="5000" />
+      <break name="" isEffect="0" targetStatus="1000" skillId="0" abstractSkillId="0" delay="100" isCanReplace="0" timeQuantumStart="99" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="50" />
+    </status>
+    <status id="4002" name="jump-right" defaultLinkStatus="4002" moveSpeed="400" turnSpeed="800" defaultSkillId="0" animationClip="war_jump" StartAnimationPlayTime="0" EndAnimationPlayTime="100" tweenTime="0" animationTime="600" poseTime="0" originalTime="900" isPlaybackModel="0" statusAtrribute="387" level="0" hitToTurnType="1" animatorStatus="2" heightStatus="2">
+      <event index="0" isEffect="0" type="13" percent="25" decay_x="-700" decay_y="700" decay_z="-700" />
+      <event index="1" isEffect="0" type="15" percent="25" radius="1000" angle="45" angleSpeed="180" maxRadius="1000" state="0" />
+      <event index="2" isEffect="0" type="8" percent="60" verAcceleration="5000" />
+      <break name="" isEffect="0" targetStatus="1000" skillId="0" abstractSkillId="0" delay="100" isCanReplace="0" timeQuantumStart="99" timeQuantumEnd="100" isCheckCD="0" isUseEnergy="0" isTriggerScript="0" passiveConditionStatus="0" isNeedSatisfyAll="0" probability="50" />
+    </status>
+  </animatorGroup>
+</role>

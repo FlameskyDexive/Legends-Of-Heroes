@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+guid: db432e0d26c612e4c820e6ae766317f7
+timeCreated: 1505445497
+licenseType: Pro
+ShaderImporter:
+  defaultTextures:
+  - _MainTex: {instanceID: 0}
+  - _Mask: {instanceID: 0}
+  userData: 
+  assetBundleName: assets/resources/vfx/shader/sf_line-01_s.shader
+  assetBundleVariant: 
