@@ -1,8 +1,9 @@
+using ETModel;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BuffComponent : MonoBehaviour
+public class PathfindingComponent : Entity
 {
     // Start is called before the first frame update
     void Start()

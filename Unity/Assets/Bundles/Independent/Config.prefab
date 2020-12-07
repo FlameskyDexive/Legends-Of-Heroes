@@ -48,3 +48,7 @@ MonoBehaviour:
     gameObject: {fileID: 4900000, guid: 0f3540faabf2b7e4c83e81cb7ba6a096, type: 3}
   - key: UnitConfig
     gameObject: {fileID: 4900000, guid: c245c7dda13b3ad43b2278925e922899, type: 3}
+  - key: Buff
+    gameObject: {fileID: 4900000, guid: 8d2703c5ba89a3a47a3f5b6f5147688d, type: 3}
+  - key: Skill
+    gameObject: {fileID: 4900000, guid: aab63cf04319a114c887fb6bf6463927, type: 3}

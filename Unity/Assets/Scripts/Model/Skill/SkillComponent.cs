@@ -1,8 +1,9 @@
+using ETModel;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AIComponent : MonoBehaviour
+public class SkillComponent : Entity
 {
     // Start is called before the first frame update
     void Start()
