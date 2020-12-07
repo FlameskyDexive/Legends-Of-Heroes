@@ -5,6 +5,7 @@ namespace ETModel
 {
 	public static class ConfigHelper
 	{
+		public static GameObject configBundle;
 		public static string GetText(string key)
 		{
 			try
@@ -25,6 +26,32 @@ namespace ETModel
 			{
 				GameObject config = (GameObject)ResourcesHelper.Load("KV");
 				string configStr = config.Get<TextAsset>("GlobalProto").text;
+				return configStr;
+			}
+			catch (Exception e)
+			{
+				throw new Exception($"load global config file fail", e);
+			}
+		}
+
+
+		public static void LoadConfigBundle()
+		{
+			ResourcesComponent resourcesComponent = Game.Scene.GetComponent<ResourcesComponent>();
+			resourcesComponent.LoadBundle($"Config.unity3d");
+			configBundle = (GameObject)resourcesComponent.GetAsset($"Config.unity3d", $"Config");
+			GameObject go = UnityEngine.Object.Instantiate(configBundle);
+		}
+
+		public static string GetCsvText(string csvName)
+		{
+			try
+			{
+				csvName = csvName.Replace(".csv", "");
+				//Log.Debug($"---csv--{csvName}--");
+				//GameObject config = (GameObject)Resources.Load("KV");
+				string configStr = configBundle.Get<TextAsset>(csvName).text;
+				//Log.Debug($"--{csvName}--{configStr}");
 				return configStr;
 			}
 			catch (Exception e)
