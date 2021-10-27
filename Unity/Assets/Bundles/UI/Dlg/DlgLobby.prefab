@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 1849914409833605493}
   - component: {fileID: 8971115085986911235}
   m_Layer: 5
-  m_Name: Sprite_BackGround
+  m_Name: EGBackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -18,6 +18,7 @@ namespace ET
 	{
 		public override void Destroy(DlgLobbyViewComponent self)
 		{
+			self.m_EGBackGround = null;
 			self.m_esreuseui?.Dispose();
 			self.m_esreuseui = null;
 			self.m_EButton_EnterMapImage = null;

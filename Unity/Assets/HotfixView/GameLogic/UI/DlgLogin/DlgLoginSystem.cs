@@ -12,12 +12,17 @@ namespace ET
 		public static void RegisterUIEvent(this DlgLogin self)
 		{
 			self.View.EButton_LoginBtn.AddListener(self.OnLoginClickHandler);
+			
+			//注册循环列表事件
 			self.View.ELoopScrollList_Test.AddItemRefreshListener(self.OnRefreshItemHandler);
 		}
 
 		public static void ShowWindow(this DlgLogin self, Entity contextData = null)
 		{
+			//调用公共UI
 			self.View.ESReuseUI.TestFunction("请选择服务器");
+			
+			//使用循环列表
 			int count = 100;
 			self.AddUIScrollItems(ref self.ItemsDictionary,count);
 			self.View.ELoopScrollList_Test.SetVisible(true,count);
