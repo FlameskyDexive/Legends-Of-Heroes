@@ -6,7 +6,8 @@ namespace ET
 	{
 		protected override async ETTask Run(EventType.AppStartInitFinish args)
 		{
-			await UIComponent.Instance.ShowWindowAsync(WindowID.WindowID_Login);
+			await ETTask.CompletedTask;
+			 UIComponent.Instance.ShowWindow(WindowID.WindowID_Login);
 			//await UIHelper.Create(args.ZoneScene, UIType.UILogin);
 		}
 	}

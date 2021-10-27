@@ -18,11 +18,10 @@ namespace ET
 	{
 		public override void Destroy(DlgLobbyViewComponent self)
 		{
-			self.m_EButton_EnterMapImage = null;
-			self.m_EButton_EnterMap = null;
-			self.m_ELoopScrollList_Test = null;
 			self.m_esreuseui?.Dispose();
 			self.m_esreuseui = null;
+			self.m_EButton_EnterMapImage = null;
+			self.m_EButton_EnterMap = null;
 			self.uiTransform = null;
 		}
 	}

@@ -7,7 +7,7 @@ namespace ET
 
 		public DlgLobbyViewComponent View { get => this.Parent.GetComponent<DlgLobbyViewComponent>();}
 
-		public Dictionary<int, Scroll_Item_test> ItemsDictionary;
+	
 
 	}
 }

@@ -18,6 +18,55 @@ namespace ET
 			return this;
 		}
 
+		public UnityEngine.UI.Button EButton_Select
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if (this.isCacheNode)
+     			{
+     				if( this.m_EButton_Select == null )
+     				{
+		    			this.m_EButton_Select = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"EButton_Select");
+     				}
+     				return this.m_EButton_Select;
+     			}
+     			else
+     			{
+		    		return UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"EButton_Select");
+     			}
+     		}
+     	}
+
+		public UnityEngine.UI.Image EButton_SelectImage
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if (this.isCacheNode)
+     			{
+     			    if( this.m_EButton_SelectImage == null )
+     			   {
+		    		this.m_EButton_SelectImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"EButton_Select");
+     			   }
+     			   return this.m_EButton_SelectImage;
+     			}
+     			else
+     			{
+		    		return UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"EButton_Select");
+     			}
+     	    }
+
+     	}
+
 		public UnityEngine.UI.Text ELabel_Content
      	{
      		get
@@ -44,11 +93,15 @@ namespace ET
 
 		public override void Dispose()
 		{
+			this.m_EButton_SelectImage = null;
+			this.m_EButton_Select = null;
 			this.m_ELabel_Content = null;
 			this.uiTransform = null;
 			base.Dispose();
 		}
 
+		public UnityEngine.UI.Image m_EButton_SelectImage = null;
+		public UnityEngine.UI.Button m_EButton_Select = null;
 		public UnityEngine.UI.Text m_ELabel_Content = null;
 	}
 }
