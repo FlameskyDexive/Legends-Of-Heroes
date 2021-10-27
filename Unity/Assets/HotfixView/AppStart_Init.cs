@@ -14,6 +14,7 @@ namespace ET
             await ConfigComponent.Instance.LoadAsync();
             ResourcesComponent.Instance.UnloadBundle("config.unity3d");
             
+            Game.Scene.AddComponent<EasyObjectPoolComponent>();
             Game.Scene.AddComponent<OpcodeTypeComponent>();
             Game.Scene.AddComponent<MessageDispatcherComponent>();
             

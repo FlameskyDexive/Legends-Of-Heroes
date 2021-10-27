@@ -12,7 +12,9 @@
 				await sceneChangeComponent.ChangeSceneAsync("Map");
 			}
             args.ZoneScene.AddComponent<OperaComponent>();
-            await UIHelper.Remove(args.ZoneScene, UIType.UILobby);
+            
+            UIComponent.Instance?.HideWindow(WindowID.WindowID_Lobby);
+           /// await UIHelper.Remove(args.ZoneScene, UIType.UILobby);
 		}
 	}
 }
