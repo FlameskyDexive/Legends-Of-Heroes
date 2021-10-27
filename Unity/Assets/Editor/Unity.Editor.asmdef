@@ -1,0 +1,23 @@
+{
+    "name": "Unity.Editor",
+    "rootNamespace": "ET",
+    "references": [
+        "Unity.Model",
+        "Unity.ThirdParty",
+        "Unity.ModelView",
+        "Unity.Hotfix",
+        "Unity.HotfixView",
+        "Unity.Mono"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

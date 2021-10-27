@@ -1,0 +1,146 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <RootNamespace>ET</RootNamespace>
+    <LangVersion>8</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE2_0;NOT_UNITY;SERVER</DefineConstants>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE2_0;SERVER;NOT_UNITY</DefineConstants>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+
+    <Compile Include="..\..\Unity\Assets\Editor\Helper\MongoHelper.cs">
+      <Link>Base\MongoHelper.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Model\Core\**\*.cs"> 
+      <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Mono\Core\**\*.cs">
+      <Link>Core\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+    
+
+    <Compile Include="..\..\Unity\Assets\Model\Demo\Move\MoveComponent.cs">
+      <Link>Demo\Move\MoveComponent.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Model\Module\Config\**\*.cs">
+      <Link>Module\Config\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Model\Module\AI\**\*.cs">
+      <Link>Module\AI\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Model\Module\CoroutineLock\**\*.cs">
+      <Link>Module\CoroutineLock\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+    
+    <Compile Remove="Libs\**" />
+    
+    <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\ActorResponse.cs">
+      <Link>Module\ActorLocation\ActorResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\ActorLocation\IActorLocationMessage.cs">
+      <Link>Module\ActorLocation\IActorLocationMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Actor\IActorMessage.cs">
+      <Link>Module\Actor\IActorMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageDispatcherComponent.cs">
+      <Link>Module\Message\MessageDispatcherComponent.cs</Link>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\AMHandler.cs" Link="Module\Message\AMHandler.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\ErrorCode.cs" Link="Module\Message\ErrorCode.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMessage.cs" Link="Module\Message\IMessage.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMessageDispatcher.cs" Link="Module\Message\IMessageDispatcher.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\IMHandler.cs" Link="Module\Message\IMHandler.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageAttribute.cs" Link="Module\Message\MessageAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageHandlerAttribute.cs" Link="Module\Message\MessageHandlerAttribute.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\OpcodeHelper.cs" Link="Module\Message\OpcodeHelper.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\OpcodeTypeComponent.cs" Link="Module\Message\OpcodeTypeComponent.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\RpcException.cs" Link="Module\Message\RpcException.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\Session.cs" Link="Module\Message\Session.cs" />
+    <Compile Include="..\..\Unity\Assets\Model\Module\NetworkTCP\PacketParser.cs">
+      <Link>Module\NetworkTCP\PacketParser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\NetworkTCP\TChannel.cs">
+      <Link>Module\NetworkTCP\TChannel.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\NetworkTCP\TService.cs">
+      <Link>Module\NetworkTCP\TService.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\INumericWatcher.cs">
+      <Link>Module\Numeric\INumericWatcher.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericComponent.cs">
+      <Link>Module\Numeric\NumericComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericType.cs">
+      <Link>Module\Numeric\NumericType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherAttribute.cs">
+      <Link>Module\Numeric\NumericWatcherAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Numeric\NumericWatcherComponent.cs">
+      <Link>Module\Numeric\NumericWatcherComponent.cs</Link>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessageSerializeHelper.cs"> 
+      <Link>Module\Message\MessageSerializeHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessagePool.cs">
+      <Link>Module\Message\MessagePool.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\MessagePackHelper.cs">
+      <Link>Module\Message\MessagePackHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\NetKcpComponent.cs">
+      <Link>Module\Message\NetKcpComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\NetThreadComponent.cs">
+      <Link>Module\Message\NetThreadComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\ResponseTypeAttribute.cs">
+      <Link>Module\Message\ResponseTypeAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\SessionAcceptTimeoutComponent.cs">
+      <Link>Module\Message\SessionAcceptTimeoutComponent.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Unity\Assets\Model\Module\Message\SessionIdleCheckerComponent.cs">
+      <Link>Module\Message\SessionIdleCheckerComponent.cs</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Model\Module\Network\**\*.cs">
+      <Link>Module\Network\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Driver" Version="2.13.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\ThirdParty\protobuf-net\protobuf-net.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\ShareLib\ShareLib.csproj" />
+    <ProjectReference Include="..\..\ThirdParty\UnityEngine\UnityEngine.csproj" />
+  </ItemGroup>
+</Project>
