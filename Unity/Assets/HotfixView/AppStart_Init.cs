@@ -19,6 +19,7 @@ namespace ET
             Game.Scene.AddComponent<MessageDispatcherComponent>();
             
             Game.Scene.AddComponent<NetThreadComponent>();
+            Game.Scene.AddComponent<SessionStreamDispatcher>();
 
             Game.Scene.AddComponent<ZoneSceneManagerComponent>();
             
