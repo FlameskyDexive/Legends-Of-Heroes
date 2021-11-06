@@ -6,7 +6,7 @@ namespace ET
 {
     public static class EasyObjectPoolComponentSystem
     {
-        public static void InitPool(this EasyObjectPoolComponent self,  string poolName, int size, PoolGameObjectResType poolGameObjectResType, PoolInflationType type = PoolInflationType.DOUBLE)
+        public static void InitPool(this EasyObjectPoolComponent self,  string poolName, int size, PoolInflationType type = PoolInflationType.DOUBLE)
         {
             if (self.poolDict.ContainsKey(poolName))
             {
@@ -16,7 +16,7 @@ namespace ET
             {
                 try
                 {
-                    GameObject pb = self.GetGameObjectByResType(poolName, poolGameObjectResType);
+                    GameObject pb = self.GetGameObjectByResType(poolName);
                     if (pb == null)
                     {
                         Debug.LogError("[ResourceManager] Invalide prefab name for pooling :" + poolName);
@@ -92,13 +92,13 @@ namespace ET
         /// </summary>
         /// <OtherParam name="poolName"></OtherParam>
         /// <returns></returns>
-        public static GameObject GetObjectFromPool(this EasyObjectPoolComponent self, string poolName,  PoolGameObjectResType poolGameObjectResType,  bool autoActive = true, int autoCreate = 0)
+        public static GameObject GetObjectFromPool(this EasyObjectPoolComponent self, string poolName,    bool autoActive = true, int autoCreate = 0)
         {
             GameObject result = null;
 
             if (!self.poolDict.ContainsKey(poolName) && autoCreate > 0)
             {
-                self.InitPool(poolName, autoCreate, poolGameObjectResType, PoolInflationType.INCREMENT);
+                self.InitPool(poolName, autoCreate, PoolInflationType.INCREMENT);
             }
 
             if (self.poolDict.ContainsKey(poolName))
@@ -208,15 +208,11 @@ namespace ET
             self.ReturnObjectToPool(t.gameObject);
         }
 
-        public static GameObject GetGameObjectByResType(this EasyObjectPoolComponent self, string poolName, PoolGameObjectResType poolGameObjectResType)
+        public static GameObject GetGameObjectByResType(this EasyObjectPoolComponent self, string poolName)
         {
             GameObject pb = null;
-            if (poolGameObjectResType == PoolGameObjectResType.UI_LoopItem)
-            {
-                Game.Scene.GetComponent<ResourcesComponent>().LoadBundle(poolName.StringToAB());
-                pb = Game.Scene.GetComponent<ResourcesComponent>().GetAsset(poolName.StringToAB(), poolName ) as GameObject;
-            }
-
+            Game.Scene.GetComponent<ResourcesComponent>().LoadBundle(poolName.StringToAB());
+            pb = Game.Scene.GetComponent<ResourcesComponent>().GetAsset(poolName.StringToAB(), poolName ) as GameObject;
             return pb;
         }
         

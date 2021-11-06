@@ -19,10 +19,10 @@ namespace UnityEngine.UI
             {
                 if(!inited)
                 {
-                    Game.Scene.GetComponent<EasyObjectPoolComponent>().InitPool(prefabName, poolSize,PoolGameObjectResType.UI_LoopItem);
+                    Game.Scene.GetComponent<EasyObjectPoolComponent>().InitPool(prefabName, poolSize);
                     inited = true;
                 }
-                return Game.Scene.GetComponent<EasyObjectPoolComponent>().GetObjectFromPool(prefabName,PoolGameObjectResType.UI_LoopItem);
+                return Game.Scene.GetComponent<EasyObjectPoolComponent>().GetObjectFromPool(prefabName);
             }
             catch (Exception e)
             {
@@ -43,7 +43,6 @@ namespace UnityEngine.UI
                 {
                     Game.Scene.GetComponent<EasyObjectPoolComponent>().ReturnObjectToPool(go.gameObject);
                 }
-                //go.SendMessage("ScrollCellReturn", SendMessageOptions.DontRequireReceiver);
             }
             catch (Exception e)
             {
