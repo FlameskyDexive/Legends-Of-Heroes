@@ -6,6 +6,7 @@ namespace ET
         {
             Scene zoneScene = args.ZoneScene;
             zoneScene.AddComponent<UIComponent>();
+            zoneScene.AddComponent<RedDotComponent>();
             await ETTask.CompletedTask;
         }
     }
