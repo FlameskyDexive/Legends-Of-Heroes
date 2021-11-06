@@ -103,6 +103,12 @@ namespace ET
             RedDotComponent.RemoveRedDotView(target, out monoView);
         }
         
+        /// <summary>
+        /// 隐藏逻辑红点
+        /// </summary>
+        /// <param name="ZoneScene"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
         public static bool HideRedDotNode(Scene ZoneScene, string target)
         {
             RedDotComponent redDotComponent = ZoneScene.GetComponent<RedDotComponent>();
@@ -113,6 +119,12 @@ namespace ET
             return redDotComponent.HideRedDotNode(target);
         }
         
+        /// <summary>
+        /// 显示逻辑红点
+        /// </summary>
+        /// <param name="ZoneScene"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
         public static bool ShowRedDotNode(Scene ZoneScene, string target)
         {
             if (IsLogicAlreadyShow(ZoneScene, target))
@@ -127,6 +139,12 @@ namespace ET
             return redDotComponent.ShowRedDotNode(target);
         }
         
+        /// <summary>
+        /// 逻辑红点是否已经处于显示状态
+        /// </summary>
+        /// <param name="ZoneScene"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
         public static bool IsLogicAlreadyShow(Scene ZoneScene, string target)
         {
             RedDotComponent redDotComponent = ZoneScene.GetComponent<RedDotComponent>();
@@ -145,7 +163,7 @@ namespace ET
         }
         
         /// <summary>
-        /// 
+        /// 刷新红点显示层的文本数量
         /// </summary>
         /// <param name="zoneScene"></param>
         /// <param name="target"></param>
