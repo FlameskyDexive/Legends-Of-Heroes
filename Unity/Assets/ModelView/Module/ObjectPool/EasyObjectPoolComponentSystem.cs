@@ -59,7 +59,7 @@ namespace ET
         }
         
         
-        public static async ETTask InitPoolAsync(this EasyObjectPoolComponent self,  string poolName, int size,PoolGameObjectResType poolGameObjectResType , PoolInflationType type = PoolInflationType.DOUBLE)
+        public static async ETTask InitPoolAsync(this EasyObjectPoolComponent self,  string poolName, int size , PoolInflationType type = PoolInflationType.DOUBLE)
         {
             if (self.poolDict.ContainsKey(poolName))
             {
@@ -69,7 +69,7 @@ namespace ET
             {
                 try
                 {
-                    GameObject pb = await self.GetGameObjectByResTypeAsync(poolName, poolGameObjectResType);
+                    GameObject pb = await self.GetGameObjectByResTypeAsync(poolName);
                     if (pb == null)
                     {
                         Debug.LogError("[ResourceManager] Invalide prefab name for pooling :" + poolName);
@@ -130,14 +130,14 @@ namespace ET
         /// </summary>
         /// <OtherParam name="poolName"></OtherParam>
         /// <returns></returns>
-        public static async ETTask<GameObject> GetObjectFromPoolAsync(this EasyObjectPoolComponent self, string poolName,  PoolGameObjectResType poolGameObjectResType = PoolGameObjectResType.None,  bool autoActive = true, int autoCreate = 0)
+        public static async ETTask<GameObject> GetObjectFromPoolAsync(this EasyObjectPoolComponent self, string poolName,  bool autoActive = true, int autoCreate = 0)
         {
             
             GameObject result = null;
 
             if (!self.poolDict.ContainsKey(poolName) && autoCreate > 0)
             {
-               await  self.InitPoolAsync(poolName, autoCreate, poolGameObjectResType, PoolInflationType.INCREMENT);
+               await  self.InitPoolAsync(poolName, autoCreate, PoolInflationType.INCREMENT);
             }
 
             if (self.poolDict.ContainsKey(poolName))
@@ -216,14 +216,11 @@ namespace ET
             return pb;
         }
         
-        public static async ETTask<GameObject> GetGameObjectByResTypeAsync(this EasyObjectPoolComponent self, string poolName, PoolGameObjectResType poolGameObjectResType)
+        public static async ETTask<GameObject> GetGameObjectByResTypeAsync(this EasyObjectPoolComponent self, string poolName)
         {
             GameObject pb = null;
-            if (poolGameObjectResType == PoolGameObjectResType.UI_LoopItem)
-            {
-                await Game.Scene.GetComponent<ResourcesComponent>().LoadBundleAsync(poolName.StringToAB());
-                pb = Game.Scene.GetComponent<ResourcesComponent>().GetAsset(poolName.StringToAB(), poolName ) as GameObject;
-            }
+            await Game.Scene.GetComponent<ResourcesComponent>().LoadBundleAsync(poolName.StringToAB());
+            pb = Game.Scene.GetComponent<ResourcesComponent>().GetAsset(poolName.StringToAB(), poolName ) as GameObject;
             return pb;
         }        
         
