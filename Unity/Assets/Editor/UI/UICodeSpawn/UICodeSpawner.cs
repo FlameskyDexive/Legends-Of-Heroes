@@ -2,6 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 using ET;
@@ -498,7 +499,8 @@ public partial class UICodeSpawner
 
 		    if ( pair.Key.StartsWith("ES"))
 		    {
-			    strBuilder.AppendFormat("\t\tpublic {0} m_{1} = null;\r\n", pair.Key, pair.Key.ToLower());
+			    string subUIClassType = Regex.Replace(pair.Key, @"\d", "");  
+			    strBuilder.AppendFormat("\t\tpublic {0} m_{1} = null;\r\n", subUIClassType, pair.Key.ToLower());
 			    continue;
 		    }
 
@@ -571,7 +573,10 @@ public partial class UICodeSpawner
 
     static void GetSubUIBaseWindowCode(ref StringBuilder strBuilder,string widget,string strPath)
     {
-	    strBuilder.AppendFormat("		public {0} {1}\r\n", widget, widget );
+	    
+	    string subUIClassType = Regex.Replace(widget, @"\d", "");
+	    
+	    strBuilder.AppendFormat("		public {0} {1}\r\n", subUIClassType, widget );
 	    strBuilder.AppendLine("     	{");
 	    strBuilder.AppendLine("     		get");
 	    strBuilder.AppendLine("     		{");
@@ -602,7 +607,7 @@ public partial class UICodeSpawner
 		    strBuilder.AppendFormat("		    		 this.m_{0} = null;\r\n",widget.ToLower());
 		    strBuilder.AppendLine("     			   }");
 		    strBuilder.AppendFormat("		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,\"{0}\");\r\n",  strPath);
-		    strBuilder.AppendFormat("		    	   this.m_{0} = this.AddChild<{1},Transform>(subTrans);\r\n", widget.ToLower(),widget);
+		    strBuilder.AppendFormat("		    	   this.m_{0} = this.AddChild<{1},Transform>(subTrans);\r\n", widget.ToLower(),subUIClassType);
 		    strBuilder.AppendFormat("     			   return this.m_{0};\n" , widget.ToLower());
 		    strBuilder.AppendLine("     			}");
 		    strBuilder.AppendLine("     	    }\n");
@@ -612,7 +617,7 @@ public partial class UICodeSpawner
 		    strBuilder.AppendFormat("     			if( this.m_{0} == null )\n" , widget.ToLower());
 		    strBuilder.AppendLine("     			{");
 		    strBuilder.AppendFormat("		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,\"{0}\");\r\n",  strPath);
-		    strBuilder.AppendFormat("		    	   this.m_{0} = this.AddChild<{1},Transform>(subTrans);\r\n", widget.ToLower(),widget);
+		    strBuilder.AppendFormat("		    	   this.m_{0} = this.AddChild<{1},Transform>(subTrans);\r\n", widget.ToLower(),subUIClassType);
 		    strBuilder.AppendLine("     			}");
 		    strBuilder.AppendFormat("     			return this.m_{0};\n" , widget.ToLower());
 		    strBuilder.AppendLine("     		}");
