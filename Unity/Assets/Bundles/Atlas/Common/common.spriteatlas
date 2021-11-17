@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: common
+  serializedVersion: 2
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 8
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: aa6e28ff9a5ce174aae3d7bfdc10d7c4, type: 3}
+    bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 8e7d2ce1b0e6ae448b2897043a52521a, type: 3}
+  - {fileID: 21300000, guid: b1397b039744c3b4ba845e861b60feb7, type: 3}
+  - {fileID: 21300000, guid: 16902434347ae51409b509f4ece6deea, type: 3}
+  - {fileID: 21300000, guid: b98f17cb2e91d2a4b8bc9f71f95b043a, type: 3}
+  - {fileID: 21300000, guid: 5357f35c3f0a18449a509124ede1d7a5, type: 3}
+  - {fileID: 21300000, guid: e477c01e5316b8b45a54a1968ed13b0c, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - HealthWater
+  - Axe
+  - Shield
+  - Gold
+  - Sword
+  - Silver
+  m_RenderDataMap: {}
+  m_Tag: common
+  m_IsVariant: 0
+  m_IsPlaceholder: 0

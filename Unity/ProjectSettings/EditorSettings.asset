@@ -11,7 +11,7 @@ EditorSettings:
     type: 3}
   m_PrefabUIEnvironment: {fileID: 102900000, guid: e0d691ac8c1d0454ba07089ea820e18a,
     type: 3}
-  m_SpritePackerMode: 2
+  m_SpritePackerMode: 4
   m_SpritePackerPaddingPower: 1
   m_EtcTextureCompressorBehavior: 0
   m_EtcTextureFastCompressor: 2
@@ -32,6 +32,7 @@ EditorSettings:
   m_UseLegacyProbeSampleCount: 1
   m_SerializeInlineMappingsOnOneLine: 0
   m_DisableCookiesInLightmapper: 1
+  m_UseCloudEnlightenBake: 0
   m_AssetPipelineMode: 1
   m_CacheServerMode: 0
   m_CacheServerEndpoint: 
