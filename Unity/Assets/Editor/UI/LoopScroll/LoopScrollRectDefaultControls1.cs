@@ -79,7 +79,7 @@ namespace UnityEngine.UI
         }
         #endregion
         
-        public static GameObject CreateLoopHorizontalScrollRect(DefaultControls.Resources resources)
+        public static GameObject CreateLoopHorizontalScrollRect(DefaultControls.Resources resources,bool isGridLayout = false)
         {
             GameObject root = CreateUIElementRoot("Loop Horizontal Scroll Rect", new Vector2(200, 200));
             
@@ -107,10 +107,23 @@ namespace UnityEngine.UI
             
             root.AddComponent<RectMask2D>();
 
-            HorizontalLayoutGroup layoutGroup = content.AddComponent<HorizontalLayoutGroup>();
-            layoutGroup.childAlignment = TextAnchor.MiddleLeft;
-            layoutGroup.childForceExpandWidth = false;
-            layoutGroup.childForceExpandHeight = true;
+            if (isGridLayout)
+            {
+                GridLayoutGroup layoutGroup = content.AddComponent<GridLayoutGroup>();
+                layoutGroup.startCorner = GridLayoutGroup.Corner.UpperLeft;
+                layoutGroup.startAxis = GridLayoutGroup.Axis.Vertical;
+                layoutGroup.childAlignment = TextAnchor.UpperLeft;
+                layoutGroup.constraint = GridLayoutGroup.Constraint.FixedRowCount;
+                layoutGroup.constraintCount = 2;
+            }
+            else
+            {
+                HorizontalLayoutGroup layoutGroup = content.AddComponent<HorizontalLayoutGroup>();
+                layoutGroup.childAlignment = TextAnchor.MiddleLeft;
+                layoutGroup.childForceExpandWidth = false;
+                layoutGroup.childForceExpandHeight = true;
+            }
+         
 
             ContentSizeFitter sizeFitter = content.AddComponent<ContentSizeFitter>();
             sizeFitter.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
@@ -119,7 +132,7 @@ namespace UnityEngine.UI
             return root;
         }
 
-        public static GameObject CreateLoopVerticalScrollRect(DefaultControls.Resources resources)
+        public static GameObject CreateLoopVerticalScrollRect(DefaultControls.Resources resources,bool isGridLayout = false)
         {
             GameObject root = CreateUIElementRoot("Loop Vertical Scroll Rect", new Vector2(200, 200));
             
@@ -147,10 +160,24 @@ namespace UnityEngine.UI
 
             root.AddComponent<RectMask2D>();
 
-            VerticalLayoutGroup layoutGroup = content.AddComponent<VerticalLayoutGroup>();
-            layoutGroup.childAlignment = TextAnchor.UpperCenter;
-            layoutGroup.childForceExpandWidth = true;
-            layoutGroup.childForceExpandHeight = false;
+            
+            if (isGridLayout)
+            {
+                GridLayoutGroup layoutGroup = content.AddComponent<GridLayoutGroup>();
+                layoutGroup.startCorner = GridLayoutGroup.Corner.UpperLeft;
+                layoutGroup.startAxis = GridLayoutGroup.Axis.Horizontal;
+                layoutGroup.childAlignment = TextAnchor.UpperLeft;
+                layoutGroup.constraint = GridLayoutGroup.Constraint.FixedColumnCount;
+                layoutGroup.constraintCount = 2;
+            }
+            else
+            {
+                VerticalLayoutGroup layoutGroup = content.AddComponent<VerticalLayoutGroup>();
+                layoutGroup.childAlignment = TextAnchor.UpperCenter;
+                layoutGroup.childForceExpandWidth = true;
+                layoutGroup.childForceExpandHeight = false;
+            }
+          
 
             ContentSizeFitter sizeFitter = content.AddComponent<ContentSizeFitter>();
             sizeFitter.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
@@ -158,5 +185,6 @@ namespace UnityEngine.UI
 
             return root;
         }
+        
     }
 }

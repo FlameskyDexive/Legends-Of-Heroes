@@ -154,6 +154,27 @@ namespace UnityEditor.UI
             go.name = "ELoopScrollList_";
         }
         
+        
+        [MenuItem("GameObject/EUI/Loop Horizontal Grid Scroll Rect", false, -1)]
+        static public void AddLoopHorizontalGridScrollRect(MenuCommand menuCommand)
+        {
+            GameObject go = LoopScrollRectDefaultControls.CreateLoopHorizontalScrollRect(GetStandardResources(),true);
+            PlaceUIElementRoot(go, menuCommand);
+          
+            go.name = "ELoopScrollList_";
+        }
+
+        [MenuItem("GameObject/EUI/Loop Vertical Grid Scroll Rect", false, -1)]
+        static public void AddLoopVerticalGridScrollRect(MenuCommand menuCommand)
+        {
+            GameObject go = LoopScrollRectDefaultControls.CreateLoopVerticalScrollRect(GetStandardResources(),true);
+            PlaceUIElementRoot(go, menuCommand);
+         
+            go.name = "ELoopScrollList_";
+        }
+        
+        
+        
         [MenuItem("GameObject/EUI/EUISprite", false, -1)]
         static public void AddZUISprite(MenuCommand menuCommand)
         {
