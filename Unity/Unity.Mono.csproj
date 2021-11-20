@@ -72,6 +72,7 @@
      <Compile Include="Assets\Mono\MonoBehaviour\GizmosDebug.cs" />
      <Compile Include="Assets\Mono\Core\Async\AsyncETTaskCompletedMethodBuilder.cs" />
      <Compile Include="Assets\Mono\Core\Helper\ZipHelper.cs" />
+     <Compile Include="Assets\Mono\Helper\PathHelper.cs" />
      <Compile Include="Assets\Mono\Core\Async\AsyncETTaskMethodBuilder.cs" />
      <Compile Include="Assets\Mono\Core\Helper\MD5Helper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\ObjectHelper.cs" />
@@ -79,6 +80,8 @@
      <Compile Include="Assets\Mono\Core\Async\ETTaskCompleted.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\ComponentView.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\CanvasConfig.cs" />
+     <Compile Include="Assets\Mono\Helper\StreamHelper.cs" />
+     <Compile Include="Assets\Mono\Helper\LoadHelper.cs" />
      <Compile Include="Assets\Mono\Core\Helper\StringHelper.cs" />
      <Compile Include="Assets\Mono\Core\Async\ETTaskHelper.cs" />
      <Compile Include="Assets\Mono\Define.cs" />
@@ -316,6 +319,15 @@
  </Reference>
  <Reference Include="CommandLine">
  <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/Plugins/CommandLine.dll</HintPath>
+ </Reference>
+ <Reference Include="ILRuntime.Mono.Cecil.Mdb">
+ <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Library/PackageCache/com.ourpalm.ilruntime@1.6.7/Plugins/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
+ </Reference>
+ <Reference Include="ILRuntime.Mono.Cecil">
+ <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Library/PackageCache/com.ourpalm.ilruntime@1.6.7/Plugins/ILRuntime.Mono.Cecil.dll</HintPath>
+ </Reference>
+ <Reference Include="ILRuntime.Mono.Cecil.Pdb">
+ <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Library/PackageCache/com.ourpalm.ilruntime@1.6.7/Plugins/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
