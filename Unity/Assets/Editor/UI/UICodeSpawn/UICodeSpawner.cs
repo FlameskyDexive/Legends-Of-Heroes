@@ -13,31 +13,31 @@ public partial class UICodeSpawner
 	{
 		if (null == go)
 		{
-			Log.Error("UICode Select GameObject is null!");
+			Debug.LogError("UICode Select GameObject is null!");
 			return;
 		}
             
 		string uiName = go.name;
 		if (uiName.StartsWith("Dlg"))
 		{
-			Log.Warning($"开始生成Dlg: {uiName}");
+			Debug.LogWarning($"开始生成Dlg: {uiName}");
 			SpawnDlgCode(go);
 			return;
 		}
 		else if(uiName.StartsWith("ES"))
 		{
-			Log.Warning($"开始生成子UI: {uiName}");
+			Debug.LogWarning($"开始生成子UI: {uiName}");
 			SpawnSubUICode(go);
 			return;
 		}
 		else if (uiName.StartsWith("Item_"))
 		{
-			Log.Warning($"开始生成滚动列表项: {uiName}");
+			Debug.LogWarning($"开始生成滚动列表项: {uiName}");
 			SpawnLoopItemCode(go);
 			return;
 		}
 		
-		Log.Error($"选择的预设物不属于 Dlg, 子UI，滚动列表项，请检查 {uiName}！！！！！！");
+		Debug.LogError($"选择的预设物不属于 Dlg, 子UI，滚动列表项，请检查 {uiName}！！！！！！");
 	}
 	
 	
@@ -75,7 +75,7 @@ public partial class UICodeSpawner
 	    strFilePath = Application.dataPath + "/HotfixView/GameLogic/UI/" + strDlgName + "/" + strDlgName + "System.cs";
         if(System.IO.File.Exists(strFilePath))
         {
-            Log.Error("已存在 " + strDlgName + "System.cs,将不会再次生成。");
+            Debug.LogError("已存在 " + strDlgName + "System.cs,将不会再次生成。");
             return;
         }
 
@@ -133,7 +133,7 @@ public partial class UICodeSpawner
 	    strFilePath = Application.dataPath + "/HotfixView/GameLogic/UI/" + strDlgName + "/Event/" + strDlgName + "EventHandler.cs";
         if(System.IO.File.Exists(strFilePath))
         {
-            Log.Error("已存在 " + strDlgName + ".cs,将不会再次生成。");
+	        Debug.LogError("已存在 " + strDlgName + ".cs,将不会再次生成。");
             return;
         }
 
@@ -218,7 +218,7 @@ public partial class UICodeSpawner
 	    strFilePath = Application.dataPath + "/ModelView/GameLogic/UI/" + strDlgName  + "/" + strDlgName  + ".cs";
         if(System.IO.File.Exists(strFilePath))
         {
-            Log.Error("已存在 " + strDlgName + ".cs,将不会再次生成。");
+	        Debug.LogError("已存在 " + strDlgName + ".cs,将不会再次生成。");
             return;
         }
 

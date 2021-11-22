@@ -215,8 +215,8 @@ namespace ET
         public static GameObject GetGameObjectByResType( string poolName)
         {
             GameObject pb = null;
-           // Game.Scene.GetComponent<ResourcesComponent>().LoadBundle(poolName.StringToAB());
-           // pb = Game.Scene.GetComponent<ResourcesComponent>().GetAsset(poolName.StringToAB(), poolName ) as GameObject;
+            Dictionary<string, UnityEngine.Object>  assetDict = AssetsBundleHelper.LoadBundle(poolName + ".unity3d");
+            pb = assetDict[poolName] as GameObject;
             return pb;
         }
         
