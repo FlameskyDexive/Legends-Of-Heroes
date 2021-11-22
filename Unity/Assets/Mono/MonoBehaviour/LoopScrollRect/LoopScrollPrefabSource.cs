@@ -19,14 +19,14 @@ namespace UnityEngine.UI
             {
                 if(!inited)
                 {
-                    Game.Scene.GetComponent<EasyObjectPoolComponent>().InitPool(prefabName, poolSize);
+                     ObjectPoolHelper.InitPool(prefabName, poolSize);
                     inited = true;
                 }
-                return Game.Scene.GetComponent<EasyObjectPoolComponent>().GetObjectFromPool(prefabName);
+                return ObjectPoolHelper.GetObjectFromPool(prefabName);
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Debug.LogError(e);
                 return null;
             }
         }
@@ -41,14 +41,13 @@ namespace UnityEngine.UI
                 }
                 else
                 {
-                    Game.Scene.GetComponent<EasyObjectPoolComponent>().ReturnObjectToPool(go.gameObject);
+                    ObjectPoolHelper.ReturnObjectToPool(go.gameObject);
                 }
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                Debug.LogError(e);
             }
-            
         }
     }
 }

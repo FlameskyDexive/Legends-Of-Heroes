@@ -1459,7 +1459,7 @@ namespace UnityEngine.UI
         {
             if ( null == this.dataSource || scrollMoveEvent == null )
             {
-                ET.Log.Error("dataSource or scrollMoveEvent is error!");
+                Debug.LogError("dataSource or scrollMoveEvent is error!");
             }
             this.dataSource.scrollMoveEvent = null;
             this.dataSource.scrollMoveEvent = scrollMoveEvent;

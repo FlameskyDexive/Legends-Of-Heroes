@@ -301,12 +301,12 @@ namespace ET
         
         public static GameObject GetORedDotGameObjectFromPool(this RedDotComponent self)
         {
-            return Game.Scene.GetComponent<EasyObjectPoolComponent>().GetObjectFromPool("RedDot",true,5);
+            return ObjectPoolHelper.GetObjectFromPool("RedDot",true,5);
         }
 
         public static void RecycleRedDotGameObject(this RedDotComponent self, GameObject go)
         {
-            Game.Scene.GetComponent<EasyObjectPoolComponent>().ReturnTransformToPool(go.transform);
+            ObjectPoolHelper.ReturnTransformToPool(go.transform);
         }
     }
 }

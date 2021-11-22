@@ -9,14 +9,7 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [DisallowMultipleComponent]
-    [AddComponentMenu("")]
-    public class PoolObject : MonoBehaviour
-    {
-        public string poolName;
-        //defines whether the object is waiting in pool or is in use
-        public bool isPooled;
-    }
+
 
     public enum PoolInflationType
     {
@@ -92,7 +85,9 @@ namespace ET
             {
                 PoolObject po = GameObject.Instantiate(availableObjStack.Peek());
                 AddObjectToPool(po);
-                await TimerComponent.Instance.WaitFrameAsync();
+                //await TimerComponent.Instance.WaitFrameAsync();
+                //TODD
+                await ETTask.CompletedTask;
             }
         }
         
