@@ -5,24 +5,6 @@ namespace ET
 {
 	public  class DlgLoginViewComponent : Entity 
 	{
-		public ESReuseUI ESReuseUI
-     	{
-     		get
-     		{
-     			if (this.uiTransform == null)
-     			{
-     				Log.Error("uiTransform is null.");
-     				return null;
-     			}
-     			if( this.m_esreuseui == null )
-     			{
-		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,"Sprite_BackGround/ESReuseUI");
-		    	   this.m_esreuseui = this.AddChild<ESReuseUI,Transform>(subTrans);
-     			}
-     			return this.m_esreuseui;
-     		}
-     	}
-
 		public UnityEngine.UI.Button EButton_LoginBtn
      	{
      		get
@@ -108,7 +90,6 @@ namespace ET
      		}
      	}
 
-		public ESReuseUI m_esreuseui = null;
 		public UnityEngine.UI.Image m_EButton_LoginBtnImage = null;
 		public UnityEngine.UI.Button m_EButton_LoginBtn = null;
 		public UnityEngine.UI.InputField m_EInput_Account = null;

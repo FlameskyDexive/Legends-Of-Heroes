@@ -18,8 +18,6 @@ namespace ET
 	{
 		public override void Destroy(DlgLoginViewComponent self)
 		{
-			self.m_esreuseui?.Dispose();
-			self.m_esreuseui = null;
 			self.m_EButton_LoginBtnImage = null;
 			self.m_EButton_LoginBtn = null;
 			self.m_EInput_Account = null;
