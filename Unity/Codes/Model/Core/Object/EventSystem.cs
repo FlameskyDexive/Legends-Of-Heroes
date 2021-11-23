@@ -87,32 +87,46 @@ namespace ET
 
 		private EventSystem()
 		{
-			this.Add(typeof(EventSystem).Assembly);
 		}
 
-		public void Add(Assembly assembly)
+
+		private static List<Type> GetBaseAttributes(Type[] addTypes)
 		{
-			this.assemblies[$"{assembly.GetName().Name}.dll"] = assembly;
-			this.types.Clear();
-			foreach (Assembly value in this.assemblies.Values)
+			List<Type> attributeTypes = new List<Type>();
+			foreach (Type type in addTypes)
 			{
-				foreach (Type type in value.GetTypes())
+				if (type.IsAbstract)
+				{
+					continue;
+				}
+                
+				if (type.IsSubclassOf(typeof(BaseAttribute)))
+				{
+					attributeTypes.Add(type);
+				}
+			}
+			return attributeTypes;
+		}
+
+		public void Add(Type[] addTypes)
+		{
+			this.types.Clear();
+			
+			List<Type> baseAttributeTypes = GetBaseAttributes(addTypes);
+			foreach (Type baseAttributeType in baseAttributeTypes)
+			{
+				foreach (Type type in addTypes)
 				{
 					if (type.IsAbstract)
 					{
 						continue;
 					}
-
-					object[] objects = type.GetCustomAttributes(typeof(BaseAttribute), true);
+					object[] objects = type.GetCustomAttributes(baseAttributeType, true);
 					if (objects.Length == 0)
 					{
 						continue;
 					}
-
-					foreach (BaseAttribute baseAttribute in objects)
-					{
-						this.types.Add(baseAttribute.AttributeType, type);
-					}
+					this.types.Add(baseAttributeType, type);
 				}
 			}
 

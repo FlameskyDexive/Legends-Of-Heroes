@@ -3,7 +3,7 @@ using UnityEngine.Networking;
 
 namespace ET
 {
-	
+	/*
 	public class UnityWebRequestUpdateSystem : UpdateSystem<UnityWebRequestAsync>
 	{
 		public override void Update(UnityWebRequestAsync self)
@@ -100,5 +100,5 @@ namespace ET
 			
 			await this.tcs;
 		}
-	}
+	}*/
 }
