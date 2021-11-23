@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 namespace ET
 {
-    /*
+    
     public class UnityWebRequestRenewalUpdateSystem: UpdateSystem<UnityWebRequestRenewalAsync>
     {
         public override void Update(UnityWebRequestRenewalAsync self)
@@ -349,5 +349,5 @@ namespace ET
             this.fileStream = null;
             this.isCancel = false;
         }
-    }*/
+    }
 }

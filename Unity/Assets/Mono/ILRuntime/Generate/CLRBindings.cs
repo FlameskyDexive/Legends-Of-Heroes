@@ -214,6 +214,14 @@ namespace ILRuntime.Runtime.Generated
             System_Action_1_ET_ISupportInitializeAdapter_Binding_Adapter_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Int64_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_List_1_ILTypeInstance_Binding.Register(app);
+            UnityEngine_Networking_UnityWebRequest_Binding.Register(app);
+            ET_AcceptAllCertificate_Binding.Register(app);
+            System_Collections_Generic_List_1_UnityWebRequest_Binding.Register(app);
+            System_Collections_Generic_List_1_UnityWebRequest_Binding_Enumerator_Binding.Register(app);
+            UnityEngine_PlayerPrefs_Binding.Register(app);
+            System_Int64_Binding.Register(app);
+            UnityEngine_Networking_DownloadHandler_Binding.Register(app);
+            System_IO_FileStream_Binding.Register(app);
             ET_CodeLoader_Binding.Register(app);
             UnityEngine_AssetBundle_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_AssetBundle_Binding.Register(app);
