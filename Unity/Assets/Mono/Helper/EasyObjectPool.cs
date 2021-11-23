@@ -79,20 +79,6 @@ namespace ET
             }
         }
         
-        private async ETTask populatePoolAsync(int initialCount)
-        {
-            for (int index = 0; index < initialCount; index++)
-            {
-                PoolObject po = GameObject.Instantiate(availableObjStack.Peek());
-                AddObjectToPool(po);
-                //await TimerComponent.Instance.WaitFrameAsync();
-                //TODD
-                await ETTask.CompletedTask;
-            }
-        }
-        
-        
-
         //o(1)
         public GameObject NextAvailableObject(bool autoActive)
         {
@@ -138,52 +124,6 @@ namespace ET
             return result;
         }
 
-        
-        public async ETTask<GameObject> NextAvailableObjectAsync(bool autoActive)
-        {
-            PoolObject po = null;
-            if (availableObjStack.Count > 1)
-            {
-                po = availableObjStack.Pop();
-            }
-            else
-            {
-                int increaseSize = 0;
-                //increment size var, this is for info purpose only
-                if (inflationType == PoolInflationType.INCREMENT)
-                {
-                    increaseSize = 1;
-                }
-                else if (inflationType == PoolInflationType.DOUBLE)
-                {
-                    increaseSize = availableObjStack.Count + Mathf.Max(objectsInUse, 0);
-                }
-#if UNITY_EDITOR
-                Debug.Log(string.Format("Growing pool {0}: {1} populated", poolName, increaseSize));
-#endif
-                if (increaseSize > 0)
-                {
-                    await populatePoolAsync(increaseSize);
-                    po = availableObjStack.Pop();
-                }
-            }
-
-            GameObject result = null;
-            if (po != null)
-            {
-                objectsInUse++;
-                po.isPooled = false;
-                result = po.gameObject;
-                if (autoActive)
-                {
-                    result.SetActive(true);
-                }
-            }
-
-            return result;
-        }
-        
-        
         
         
         //o(1)

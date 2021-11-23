@@ -19,9 +19,6 @@ namespace ET
 
 		public static void ShowWindow(this DlgLogin self, Entity contextData = null)
 		{
-			//调用公共UI
-			self.View.ESReuseUI.TestFunction("请选择服务器");
-			
 			//使用循环列表
 			int count = 100;
 			self.AddUIScrollItems(ref self.ItemsDictionary,count);
@@ -49,7 +46,7 @@ namespace ET
 
 		public static void OnScrollItemClickHandler(this DlgLogin self,int index)
 		{
-			self.View.ESReuseUI.TestFunction( $"当前选择第{index}服");
+			
 		}
 		
 	}
