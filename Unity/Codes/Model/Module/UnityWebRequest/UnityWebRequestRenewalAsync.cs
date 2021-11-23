@@ -20,14 +20,6 @@ namespace ET
     /// </summary>
     public class UnityWebRequestRenewalAsync: Entity
     {
-        public class AcceptAllCertificate: CertificateHandler
-        {
-            protected override bool ValidateCertificate(byte[] certificateData)
-            {
-                return true;
-            }
-        }
-
         public static AcceptAllCertificate certificateHandler = new AcceptAllCertificate();
 
         public UnityWebRequest headRequest;
