@@ -149,11 +149,18 @@ namespace ET
 			this.Load();
 		}
 
-
-		
-		public Assembly GetAssembly(string name)
+		public void Add(Assembly assembly)
 		{
-			return this.assemblies[name];
+			this.assemblies[$"{assembly.GetName().Name}.dll"] = assembly;
+
+			List<Type> addTypes = new List<Type>();
+
+			foreach (Assembly ass in this.assemblies.Values)
+			{
+				addTypes.AddRange(ass.GetTypes());
+			}
+			
+			this.Add(addTypes.ToArray());
 		}
 		
 		public HashSet<Type> GetTypes(Type systemAttributeType)
