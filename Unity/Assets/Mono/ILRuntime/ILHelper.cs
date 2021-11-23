@@ -8,6 +8,7 @@ using ILRuntime.CLR.TypeSystem;
 using ILRuntime.Runtime.Enviorment;
 using ILRuntime.Runtime.Generated;
 using ILRuntime.Runtime.Intepreter;
+using ProtoBuf;
 using UnityEngine;
 
 namespace ET
