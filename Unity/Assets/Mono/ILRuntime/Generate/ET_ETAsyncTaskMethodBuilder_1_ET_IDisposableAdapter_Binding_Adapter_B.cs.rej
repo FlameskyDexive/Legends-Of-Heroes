@@ -1,0 +1,43 @@
+diff a/Unity/Assets/Mono/ILRuntime/Generate/ET_ETAsyncTaskMethodBuilder_1_ET_IDisposableAdapter_Binding_Adapter_B.cs b/Unity/Assets/Mono/ILRuntime/Generate/ET_ETAsyncTaskMethodBuilder_1_ET_IDisposableAdapter_Binding_Adapter_B.cs	(rejected hunks)
+@@ -56,12 +56,12 @@ namespace ILRuntime.Runtime.Generated
+             args = new Type[]{};
+             method = type.GetMethod("get_Task", flag, null, args, null);
+             app.RegisterCLRMethodRedirection(method, get_Task_2);
+-            args = new Type[]{typeof(ET.ETTask<ET.ISupportInitializeAdapter.Adapter>), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)};
++            args = new Type[]{typeof(ET.ETTask<ET.IDisposableAdapter.Adapter>), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor)};
+             if (genericMethods.TryGetValue("AwaitUnsafeOnCompleted", out lst))
+             {
+                 foreach(var m in lst)
+                 {
+-                    if(m.MatchGenericParameters(args, typeof(void), typeof(ET.ETTask<ET.ISupportInitializeAdapter.Adapter>).MakeByRefType(), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
++                    if(m.MatchGenericParameters(args, typeof(void), typeof(ET.ETTask<ET.IDisposableAdapter.Adapter>).MakeByRefType(), typeof(ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor).MakeByRefType()))
+                     {
+                         method = m.MakeGenericMethod(args);
+                         app.RegisterCLRMethodRedirection(method, AwaitUnsafeOnCompleted_3);
+@@ -73,7 +73,7 @@ namespace ILRuntime.Runtime.Generated
+             args = new Type[]{typeof(System.Exception)};
+             method = type.GetMethod("SetException", flag, null, args, null);
+             app.RegisterCLRMethodRedirection(method, SetException_4);
+-            args = new Type[]{typeof(ET.ISupportInitializeAdapter.Adapter)};
++            args = new Type[]{typeof(ET.IDisposableAdapter.Adapter)};
+             method = type.GetMethod("SetResult", flag, null, args, null);
+             app.RegisterCLRMethodRedirection(method, SetResult_5);
+             args = new Type[]{typeof(System.Runtime.CompilerServices.IAsyncStateMachine)};
+@@ -485,7 +485,7 @@ namespace ILRuntime.Runtime.Generated
+ 
+             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
+             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
+-            ET.ETAsyncTaskMethodBuilder<ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<ET.ISupportInitializeAdapter.Adapter>)typeof(ET.ETAsyncTaskMethodBuilder<ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
++            ET.ETAsyncTaskMethodBuilder<ET.IDisposableAdapter.Adapter> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<ET.IDisposableAdapter.Adapter>)typeof(ET.ETAsyncTaskMethodBuilder<ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+ 
+             instance_of_this_method.SetStateMachine(@stateMachine);
+ 
+@@ -915,7 +915,7 @@ namespace ILRuntime.Runtime.Generated
+ 
+             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
+             ptr_of_this_method = ILIntepreter.GetObjectAndResolveReference(ptr_of_this_method);
+-            ET.ETAsyncTaskMethodBuilder<ET.ISupportInitializeAdapter.Adapter> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<ET.ISupportInitializeAdapter.Adapter>)typeof(ET.ETAsyncTaskMethodBuilder<ET.ISupportInitializeAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
++            ET.ETAsyncTaskMethodBuilder<ET.IDisposableAdapter.Adapter> instance_of_this_method = (ET.ETAsyncTaskMethodBuilder<ET.IDisposableAdapter.Adapter>)typeof(ET.ETAsyncTaskMethodBuilder<ET.IDisposableAdapter.Adapter>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+ 
+             instance_of_this_method.AwaitUnsafeOnCompleted<ET.ETTaskCompleted, ET.IAsyncStateMachineClassInheritanceAdaptor.IAsyncStateMachineAdaptor>(ref @awaiter, ref @stateMachine);
+ 
