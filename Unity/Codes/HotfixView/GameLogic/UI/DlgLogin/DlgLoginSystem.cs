@@ -19,7 +19,6 @@ namespace ET
 
 		public static void ShowWindow(this DlgLogin self, Entity contextData = null)
 		{
-			Log.Error("ShowWindow");
 			//使用循环列表
 			int count = 100;
 			self.AddUIScrollItems(ref self.ItemsDictionary,count);

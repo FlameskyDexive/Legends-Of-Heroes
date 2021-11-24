@@ -109,8 +109,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_HashSet_1_String_Binding.Register(app);
             UnityEngine_AnimationClip_Binding.Register(app);
             UnityEngine_UI_Text_Binding.Register(app);
-            UnityEngine_UI_Button_Binding.Register(app);
-            UnityEngine_Events_UnityEvent_Binding.Register(app);
+            UnityEngine_UI_LoopScrollRect_Binding.Register(app);
+            UnityEngine_UI_InputField_Binding.Register(app);
             ReferenceCollector_Binding.Register(app);
             UnityEngine_U2D_SpriteAtlas_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Sprite_Binding.Register(app);
@@ -134,12 +134,13 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Debug_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Int32_ILTypeInstance_Binding.Register(app);
-            UnityEngine_UI_LoopScrollRect_Binding.Register(app);
             UnityEngine_UI_Selectable_Binding.Register(app);
             UnityEngine_UI_Toggle_Binding.Register(app);
             System_ValueTuple_2_Int32_Toggle_Binding.Register(app);
             UnityEngine_Events_UnityEvent_1_Boolean_Binding.Register(app);
             UnityEngine_Events_UnityEventBase_Binding.Register(app);
+            UnityEngine_UI_Button_Binding.Register(app);
+            UnityEngine_Events_UnityEvent_Binding.Register(app);
             System_Action_1_Int32_Binding.Register(app);
             System_Action_1_Int64_Binding.Register(app);
             ET_Options_Binding.Register(app);
