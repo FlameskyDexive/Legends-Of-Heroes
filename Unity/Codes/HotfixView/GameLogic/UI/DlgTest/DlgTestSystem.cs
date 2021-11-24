@@ -11,8 +11,8 @@ namespace ET
 
 		public static void RegisterUIEvent(this DlgTest self)
 		{
-			self.View.EButton_EnterMap.AddListener(self.OnEnterMapClickHandler);
-			self.View.EButton_Test.AddListener(self.OnTestClickHandler);
+			self.View.EButton_EnterMap.AddListener(()=> { self.OnEnterMapClickHandler(); });
+			self.View.EButton_Test.AddListener(() => { self.OnTestClickHandler(); });
 		}
 
 		public static void ShowWindow(this DlgTest self, Entity contextData = null)

@@ -80,11 +80,6 @@ namespace ET
             self.UIEventHandlers.Clear();
             foreach (Type v in Game.EventSystem.GetTypes(typeof (AUIEventAttribute)))
             {
-                Type inter = v.GetInterface(typeof (IAUIEventHandler).Name);
-                if (inter == null)
-                {
-                    continue;
-                }
                 AUIEventAttribute attr = v.GetCustomAttributes(typeof (AUIEventAttribute), false)[0] as AUIEventAttribute;
                 self.UIEventHandlers.Add(attr.WindowID, Activator.CreateInstance(v) as IAUIEventHandler);
             }

@@ -10,6 +10,7 @@ using ILRuntime.Runtime.Generated;
 using ILRuntime.Runtime.Intepreter;
 using ProtoBuf;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace ET
 {
@@ -30,7 +31,7 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<long, MemoryStream>();
             appdomain.DelegateManager.RegisterMethodDelegate<long, IPEndPoint>();
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
-            
+            appdomain.DelegateManager.RegisterMethodDelegate<Transform,int>();
             
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Object, ET.ETTask>();
@@ -61,6 +62,14 @@ namespace ET
                 });
             });
             
+            appdomain.DelegateManager.RegisterDelegateConvertor<UnityEngine.Events.UnityAction>((act) =>
+            {
+                return new UnityEngine.Events.UnityAction(() =>
+                {
+                    ((Action)act)();
+                });
+            });
+
             // 注册适配器
             RegisterAdaptor(appdomain);
             

@@ -11,7 +11,10 @@ namespace ET
 
 		public static void RegisterUIEvent(this DlgLobby self)
 		{
-		  self.View.EButton_EnterMap.AddListener(self.OnEnterMapClickHandler);
+		  self.View.EButton_EnterMap.AddListener(()=>
+		  {
+			  self.OnEnterMapClickHandler();
+		  });
 		
 		}
 

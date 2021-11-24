@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace ET
@@ -11,14 +12,14 @@ namespace ET
 
 		public static void RegisterUIEvent(this DlgLogin self)
 		{
-			self.View.EButton_LoginBtn.AddListener(self.OnLoginClickHandler);
-			
+			self.View.EButton_LoginBtn.AddListener(() => { self.OnLoginClickHandler();});
 			//注册循环列表事件
-			self.View.ELoopScrollList_Test.AddItemRefreshListener(self.OnRefreshItemHandler);
+			self.View.ELoopScrollList_Test.AddItemRefreshListener((transform,index)=> { self.OnRefreshItemHandler(transform,index); });
 		}
 
 		public static void ShowWindow(this DlgLogin self, Entity contextData = null)
 		{
+			Log.Error("ShowWindow");
 			//使用循环列表
 			int count = 100;
 			self.AddUIScrollItems(ref self.ItemsDictionary,count);
@@ -35,7 +36,11 @@ namespace ET
 			Scroll_Item_test test = self.ItemsDictionary[index].BindTrans(transform);
 
 			test.ELabel_Content.text = $"第{index}服";
-			test.EButton_Select.AddListenerWithId(self.OnScrollItemClickHandler,index);
+			test.EButton_Select.AddListener(()=>
+			{
+				int localIndex = index;
+				self.OnScrollItemClickHandler(localIndex);
+			});
 		}
 		
 		public static void HideWindow(this DlgLogin self)
