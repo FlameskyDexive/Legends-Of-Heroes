@@ -14,24 +14,24 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class System_Collections_Generic_Dictionary_2_Int64_ET_ISupportInitializeAdapter_Binding_Adapter_Binding
+    unsafe class System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(System.Collections.Generic.Dictionary<System.Int64, ET.ISupportInitializeAdapter.Adapter>);
+            Type type = typeof(System.Collections.Generic.Dictionary<System.Int64, ILRuntime.Runtime.Intepreter.ILTypeInstance>);
             args = new Type[]{};
             method = type.GetMethod("get_Values", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, get_Values_0);
             args = new Type[]{};
             method = type.GetMethod("Clear", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Clear_1);
-            args = new Type[]{typeof(System.Int64), typeof(ET.ISupportInitializeAdapter.Adapter)};
+            args = new Type[]{typeof(System.Int64), typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance)};
             method = type.GetMethod("Add", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, Add_2);
-            args = new Type[]{typeof(System.Int64), typeof(ET.ISupportInitializeAdapter.Adapter).MakeByRefType()};
+            args = new Type[]{typeof(System.Int64), typeof(ILRuntime.Runtime.Intepreter.ILTypeInstance).MakeByRefType()};
             method = type.GetMethod("TryGetValue", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, TryGetValue_3);
             args = new Type[]{typeof(System.Int64)};

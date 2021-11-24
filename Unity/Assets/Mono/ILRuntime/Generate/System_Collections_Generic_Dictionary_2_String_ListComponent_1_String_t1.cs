@@ -14,33 +14,33 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class UnityEngine_UI_InputField_Binding
+    unsafe class System_Collections_Generic_Dictionary_2_String_ListComponent_1_String_Binding_ValueCollection_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(UnityEngine.UI.InputField);
+            Type type = typeof(System.Collections.Generic.Dictionary<System.String, ET.ListComponent<System.String>>.ValueCollection);
             args = new Type[]{};
-            method = type.GetMethod("get_text", flag, null, args, null);
-            app.RegisterCLRMethodRedirection(method, get_text_0);
+            method = type.GetMethod("GetEnumerator", flag, null, args, null);
+            app.RegisterCLRMethodRedirection(method, GetEnumerator_0);
 
 
         }
 
 
-        static StackObject* get_text_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
+        static StackObject* GetEnumerator_0(ILIntepreter __intp, StackObject* __esp, IList<object> __mStack, CLRMethod __method, bool isNewObj)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
             StackObject* ptr_of_this_method;
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.UI.InputField instance_of_this_method = (UnityEngine.UI.InputField)typeof(UnityEngine.UI.InputField).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            System.Collections.Generic.Dictionary<System.String, ET.ListComponent<System.String>>.ValueCollection instance_of_this_method = (System.Collections.Generic.Dictionary<System.String, ET.ListComponent<System.String>>.ValueCollection)typeof(System.Collections.Generic.Dictionary<System.String, ET.ListComponent<System.String>>.ValueCollection).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.text;
+            var result_of_this_method = instance_of_this_method.GetEnumerator();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
