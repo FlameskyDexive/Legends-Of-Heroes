@@ -1,7 +1,7 @@
 ﻿using System;
-using ETModel;
 
-namespace ETHotfix
+
+namespace ET
 {
 	[MessageHandler]
 	public class C2M_ReloadHandler: AMRpcHandler<C2M_Reload, M2C_Reload>
@@ -22,6 +22,8 @@ namespace ETHotfix
 			//	await serverSession.Call(new M2A_Reload());
 			//}
 			reply();
+			
+			await ETTask.CompletedTask;
 		}
 	}
 }

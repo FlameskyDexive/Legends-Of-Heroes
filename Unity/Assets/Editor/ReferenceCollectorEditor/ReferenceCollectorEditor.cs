@@ -43,6 +43,9 @@ public class ReferenceCollectorEditor: Editor
 			if (gameObjectProperty.objectReferenceValue == null)
 			{
 				dataProperty.DeleteArrayElementAtIndex(i);
+				EditorUtility.SetDirty(referenceCollector);
+				serializedObject.ApplyModifiedProperties();
+				serializedObject.UpdateIfRequiredOrScript();
 			}
 		}
 	}
@@ -69,7 +72,7 @@ public class ReferenceCollectorEditor: Editor
 		}
 		if (GUILayout.Button("全部删除"))
 		{
-			dataProperty.ClearArray();
+			referenceCollector.Clear();
 		}
 		if (GUILayout.Button("删除空引用"))
 		{
@@ -104,7 +107,7 @@ public class ReferenceCollectorEditor: Editor
             property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("key");
             EditorGUILayout.TextField(property.stringValue, GUILayout.Width(150));
             property = dataProperty.GetArrayElementAtIndex(i).FindPropertyRelative("gameObject");
-            EditorGUILayout.ObjectField(property.objectReferenceValue, typeof(Object), true);
+            property.objectReferenceValue = EditorGUILayout.ObjectField(property.objectReferenceValue, typeof(Object), true);
 			if (GUILayout.Button("X"))
 			{
                 //将元素添加进删除list

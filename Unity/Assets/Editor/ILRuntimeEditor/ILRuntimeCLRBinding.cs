@@ -1,54 +1,45 @@
-﻿#if ILRuntime
+﻿using System.IO;
 using UnityEditor;
 using UnityEngine;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using ETModel;
 
-public static class ILRuntimeCLRBinding
+namespace ET
 {
-    //[MenuItem("Tools/ILRuntime/Generate CLR Binding Code")]
-    static void GenerateCLRBinding()
+    public static class ILRuntimeCLRBinding
     {
-        List<Type> types = new List<Type>();
-        types.Add(typeof(int));
-        types.Add(typeof(float));
-        types.Add(typeof(long));
-        types.Add(typeof(object));
-        types.Add(typeof(string));
-        types.Add(typeof(Array));
-        types.Add(typeof(Vector2));
-        types.Add(typeof(Vector3));
-        types.Add(typeof(Quaternion));
-        types.Add(typeof(GameObject));
-        types.Add(typeof(UnityEngine.Object));
-        types.Add(typeof(Transform));
-        types.Add(typeof(RectTransform));
-        types.Add(typeof(Time));
-        types.Add(typeof(Debug));
-        //所有DLL内的类型的真实C#类型都是ILTypeInstance
-        types.Add(typeof(List<ILRuntime.Runtime.Intepreter.ILTypeInstance>));
-
-        ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(types, "Assets/Model/ILBinding");
-		AssetDatabase.Refresh();
-    }
-
-    [MenuItem("Tools/ILRuntime/Generate CLR Binding Code by Analysis")]
-    static void GenerateCLRBindingByAnalysis()
-    {
-	    GenerateCLRBinding();
-	    
-        //用新的分析热更dll调用引用来生成绑定代码
-        ILRuntime.Runtime.Enviorment.AppDomain domain = new ILRuntime.Runtime.Enviorment.AppDomain();
-        using (FileStream fs = new FileStream("Assets/Res/Code/Hotfix.dll.bytes", FileMode.Open, FileAccess.Read))
+        [MenuItem("Tools/ILRuntime/通过自动分析热更DLL生成CLR绑定")]
+        private static void GenerateCLRBindingByAnalysis()
         {
-	        domain.LoadAssembly(fs);
-	        //Crossbind Adapter is needed to generate the correct binding code
-	        ILHelper.InitILRuntime(domain);
-	        ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(domain, "Assets/Model/ILBinding");
-	        AssetDatabase.Refresh();
+            //用新的分析热更dll调用引用来生成绑定代码
+            ILRuntime.Runtime.Enviorment.AppDomain domain = new ILRuntime.Runtime.Enviorment.AppDomain();
+            using (System.IO.FileStream fs = new System.IO.FileStream(Path.Combine(Define.BuildOutputDir, "Code.dll"), System.IO.FileMode.Open,
+                System.IO.FileAccess.Read))
+            {
+                domain.LoadAssembly(fs);
+                
+                ILHelper.RegisterAdaptor(domain);
+                
+                ILRuntime.Runtime.CLRBinding.BindingCodeGenerator.GenerateBindingCode(domain, "Assets/Mono/ILRuntime/Generate");
+            }
+
+            AssetDatabase.Refresh();
+
+            Debug.Log("生成CLR绑定文件完成");
+        }
+
+        [MenuItem("Tools/ILRuntime/生成跨域继承适配器")]
+        private static void GenerateCrossbindAdapter()
+        {
+            //由于跨域继承特殊性太多，自动生成无法实现完全无副作用生成，所以这里提供的代码自动生成主要是给大家生成个初始模版，简化大家的工作
+            //大多数情况直接使用自动生成的模版即可，如果遇到问题可以手动去修改生成后的文件，因此这里需要大家自行处理是否覆盖的问题
+            using (System.IO.StreamWriter sw = new System.IO.StreamWriter("Assets/Mono/ILRuntime/IDisposableAdapter.cs"))
+            {
+                sw.WriteLine(ILRuntime.Runtime.Enviorment.CrossBindingCodeGenerator.GenerateCrossBindingAdapterCode(
+                    typeof (System.IDisposable), "ET"));
+            }
+
+            AssetDatabase.Refresh();
+
+            Debug.Log("生成适配器完成");
         }
     }
 }
-#endif

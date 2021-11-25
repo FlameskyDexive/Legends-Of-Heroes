@@ -1,1 +1,0 @@
-{"buffId":1001,"name":"灼烧","desc":"燃烧buff","buffType":1,"skillLevel":1,"opportunity":0,"eventId":68}

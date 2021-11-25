@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<root>
-  <node type="BTSequenceNode" NodeId="0" isCanNotInterrupt="False" ai_id="4" templeteID="0" AnnotationStr="" IsSpread="True" des="" templeteDes="" templeteInfo="" nodeColor="0,0,0,0">
-    <node type="AIActionRunTree" NodeId="1" treeID="3" endRes="0" isCanNotInterrupt="False" ai_id="0" templeteID="0" AnnotationStr="" IsSpread="True" des="" templeteDes="" templeteInfo="" nodeColor="0,0,0,0" />
-  </node>
-</root>

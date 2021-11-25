@@ -1,1 +1,0 @@
-{"skillId":1001,"name":"米克尔","desc":"带有强力攻击技能","skillType":1,"skillLevel":1,"opportunity":0,"eventId":68}

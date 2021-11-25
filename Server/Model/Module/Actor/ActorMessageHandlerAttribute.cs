@@ -1,6 +1,6 @@
-﻿namespace ETModel
+﻿namespace ET
 {
-	public class ActorMessageHandlerAttribute : BaseAttribute
-	{
-	}
+    public class ActorMessageHandlerAttribute: BaseAttribute
+    {
+    }
 }

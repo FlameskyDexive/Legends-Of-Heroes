@@ -3,20 +3,17 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using MongoDB.Driver;
 
-namespace ETModel
+namespace ET
 {
-	[ObjectSystem]
-	public class DBComponentAwakeSystem : AwakeSystem<DBComponent, DBConfig>
+	public class DBComponentAwakeSystem : AwakeSystem<DBComponent, string, string>
 	{
-		public override void Awake(DBComponent self, DBConfig dbConfig)
+		public override void Awake(DBComponent self, string dbConnection, string dbName)
 		{
-			
-			string connectionString = dbConfig.ConnectionString;
-			self.mongoClient = new MongoClient(connectionString);
-			self.database = self.mongoClient.GetDatabase(dbConfig.DBName);
+			self.mongoClient = new MongoClient(dbConnection);
+			self.database = self.mongoClient.GetDatabase(dbName);
 			
 			self.Transfers.Clear();
-			foreach (Type type in Game.EventSystem.GetTypes())
+			foreach (Type type in Game.EventSystem.GetTypes().Values)
 			{
 				if (type == typeof (IDBCollection))
 				{
@@ -33,7 +30,6 @@ namespace ETModel
 		}
 	}
 	
-	[ObjectSystem]
     public class DBComponentDestroySystem: DestroySystem<DBComponent>
     {
         public override void Destroy(DBComponent self)
@@ -161,7 +157,7 @@ namespace ETModel
 
 		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, entity.Id % DBComponent.TaskCount))
 		    {
-			    await self.GetCollection(collection).ReplaceOneAsync(d => d.Id == entity.Id, entity, new UpdateOptions { IsUpsert = true });
+			    await self.GetCollection(collection).ReplaceOneAsync(d => d.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
 		    }
 	    }
 
@@ -181,7 +177,7 @@ namespace ETModel
 
 		    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.DB, taskId % DBComponent.TaskCount))
 		    {
-			    await self.GetCollection(collection).ReplaceOneAsync(d => d.Id == entity.Id, entity, new UpdateOptions { IsUpsert = true });
+			    await self.GetCollection(collection).ReplaceOneAsync(d => d.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
 		    }
 	    }
 
@@ -203,7 +199,7 @@ namespace ETModel
 				    }
 
 				    await self.GetCollection(entity.GetType().Name)
-						    .ReplaceOneAsync(d => d.Id == entity.Id, entity, new UpdateOptions { IsUpsert = true });
+						    .ReplaceOneAsync(d => d.Id == entity.Id, entity, new ReplaceOptions { IsUpsert = true });
 			    }
 		    }
 	    }

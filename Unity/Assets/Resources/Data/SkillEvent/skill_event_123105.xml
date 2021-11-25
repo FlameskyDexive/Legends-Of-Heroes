@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-<root>
-  <node type="BTSequenceNode" NodeId="0" isCanNotInterrupt="False" AnnotationStr="" IsSpread="True" des="">
-    <node type="SEAAddBuff" NodeId="1" selectBuffTraget="0" buffID="10023" buff1="False" buff2="False" buff3="False" endRes="0" isCanNotInterrupt="False" AnnotationStr="" IsSpread="True" des="" />
-  </node>
-</root>

@@ -1,0 +1,6 @@
+AppType.ClientH |  AppType.ClientM | AppType.Gate | AppType.Map,,,,,,,,,,
+,,,,,,,,,,
+,,id,#测试说明,名字,描述,技能类型,登记,事件触发时机,事件脚本ID,
+,,skillId,,name,desc,skillType,skillLevel,opportunity,eventId,
+,,int,,string,string,int,int,int,int,
+,,1001,测试说明,米克尔,带有强力攻击技能,1,1,0,68,
