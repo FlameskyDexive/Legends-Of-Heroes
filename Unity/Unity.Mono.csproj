@@ -56,6 +56,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Type_Binding.cs" />
      <Compile Include="Assets\Mono\Core\MultiMapSet.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Events_UnityEvent_Binding.cs" />
+     <Compile Include="Assets\Mono\Module\Mongo\BsonDictionaryOptionsAttribute.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_IO_Stream_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Log\NLogger.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.cs" />
@@ -68,6 +69,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Text_StringBuilder_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Int64_ILTypeInstance_Bindin.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_Int32_Binding.cs" />
+     <Compile Include="Assets\Mono\Module\Mongo\BsonIgnoreAttribute.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_ETTask_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_AsyncOperation_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETTask_1_Boolean_Binding.cs" />
@@ -134,6 +136,8 @@
      <Compile Include="Assets\Mono\Module\Network\AChannel.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_1_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Activator_Binding.cs" />
+     <Compile Include="Assets\Mono\Module\Mongo\BsonIdAttribute.cs" />
+     <Compile Include="Assets\Mono\Module\Mongo\BsonIgnoreExtraElementsAttribute.cs" />
      <Compile Include="Assets\Mono\Core\HashSetComponent.cs" />
      <Compile Include="Assets\Mono\Core\Helper\FileHelper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_ValueTuple_2_UInt16_MemoryStream_Binding.cs" />
@@ -220,6 +224,7 @@
      <Compile Include="Assets\Mono\Core\Async\AsyncETTaskCompletedMethodBuilder.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_String_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_AcceptAllCertificate_Binding.cs" />
+     <Compile Include="Assets\Mono\Module\Mongo\BsonIgnoreIfDefaultAttribute.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_ValueTuple_3_Int32_Int64_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Mathf_Binding.cs" />
@@ -266,6 +271,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_Toggle_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Object_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding_.cs" />
+     <Compile Include="Assets\Mono\Module\Mongo\BsonElementAttribute.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Component_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_IO_FileStream_Binding.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRect.cs" />
@@ -274,8 +280,8 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Bind_t1.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopVerticalScrollRect.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_RedDotMonoView_Binding.cs" />
-     <Compile Include="Assets\Mono\Module\NetworkTCP\TService.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopHorizontalScrollRect.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\TService.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Vector3_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_RuntimeAnimatorController_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_LoopScrollRect_Binding.cs" />
@@ -310,6 +316,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_String_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_AService_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Action_2_ILTypeInstance_Object_Binding.cs" />
+     <Compile Include="Assets\Mono\Module\Mongo\BsonDefaultValueAttribute.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Reflection_MemberInfo_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_UInt16_List_1_ILTypeInstance_.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETCancellationToken_Binding.cs" />
@@ -347,6 +354,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ProtoBuf_Serializer_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Async\ETTaskHelper.cs" />
+     <Compile Include="Assets\Mono\Module\Mongo\BsonIgnoreIfNullAttribute.cs" />
      <Compile Include="Assets\Mono\Module\Network\ErrorCore.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_IO_MemoryStream_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerato.cs" />
@@ -592,9 +600,6 @@
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
- </Reference>
- <Reference Include="MongoDB.Bson">
- <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/Plugins/MongoDB.Bson.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>E:/DevSoftWare/Unity/2020.3.21f1c1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

@@ -357,8 +357,8 @@
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Collections.Generic\ReadOnlyCollection.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\symbols\pdb\Microsoft.Cci.Pdb\PdbSource.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\RegisterVM\Optimizer.RegisterCleanup.cs" />
-     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSResolveVariable.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\ProtoEnumAttribute.cs" />
+     <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Debugger\Protocol\CSResolveVariable.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil.PE\ImageReader.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\ILRuntime\Runtime\Intepreter\ILRuntimeException.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\WindowsRuntimeProjections.cs" />
@@ -654,9 +654,6 @@
  </Reference>
  <Reference Include="ICSharpCode.SharpZipLib">
  <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>
- </Reference>
- <Reference Include="MongoDB.Bson">
- <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/Plugins/MongoDB.Bson.dll</HintPath>
  </Reference>
  <Reference Include="mscorlib">
  <HintPath>E:/DevSoftWare/Unity/2020.3.21f1c1/Editor/Data/MonoBleedingEdge/lib/mono/4.7.1-api/mscorlib.dll</HintPath>

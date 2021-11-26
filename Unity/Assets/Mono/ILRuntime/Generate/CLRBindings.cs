@@ -100,6 +100,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_Camera_Binding.Register(app);
             UnityEngine_Physics_Binding.Register(app);
             UnityEngine_RaycastHit_Binding.Register(app);
+            ET_CodeLoader_Binding.Register(app);
             UnityEngine_AsyncOperation_Binding.Register(app);
             UnityEngine_SceneManagement_SceneManager_Binding.Register(app);
             UnityEngine_Animator_Binding.Register(app);
@@ -222,7 +223,6 @@ namespace ILRuntime.Runtime.Generated
             System_Int64_Binding.Register(app);
             UnityEngine_Networking_DownloadHandler_Binding.Register(app);
             System_IO_FileStream_Binding.Register(app);
-            ET_CodeLoader_Binding.Register(app);
             UnityEngine_AssetBundle_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_AssetBundle_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Object_Array_Binding.Register(app);

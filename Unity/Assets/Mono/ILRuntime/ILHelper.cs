@@ -45,6 +45,8 @@ namespace ET
             list.Add(typeof(ListComponent<ETTask>));
             list.Add(typeof(ListComponent<Vector3>));
             
+            
+            
             // 注册重定向函数
 
             // 注册委托
@@ -58,6 +60,8 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<long, IPEndPoint>();
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
             appdomain.DelegateManager.RegisterMethodDelegate<Transform,int>();
+            appdomain.DelegateManager.RegisterMethodDelegate<AsyncOperation>();
+
             
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();
             appdomain.DelegateManager.RegisterFunctionDelegate<System.Object, ET.ETTask>();
