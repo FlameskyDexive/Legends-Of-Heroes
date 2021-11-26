@@ -30,14 +30,20 @@ namespace ET
             list.Add(typeof(Dictionary<string, long>));
             list.Add(typeof(Dictionary<string, int>));
             list.Add(typeof(Dictionary<string, object>));
+            list.Add(typeof(List<ILTypeInstance>));
             list.Add(typeof(List<int>));
             list.Add(typeof(List<long>));
             list.Add(typeof(List<string>));
             list.Add(typeof(List<object>));
+            list.Add(typeof(ListComponent<ILTypeInstance>));
             list.Add(typeof(ETTask<int>));
             list.Add(typeof(ETTask<long>));
             list.Add(typeof(ETTask<string>));
             list.Add(typeof(ETTask<object>));
+            list.Add(typeof(ETTask<AssetBundle>));
+            list.Add(typeof(ETTask<UnityEngine.Object[]>));
+            list.Add(typeof(ListComponent<ETTask>));
+            list.Add(typeof(ListComponent<Vector3>));
             
             // 注册重定向函数
 
