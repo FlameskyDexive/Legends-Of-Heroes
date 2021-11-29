@@ -48,7 +48,7 @@ namespace ILRuntime.Runtime.Generated
             System.Object instance_of_this_method = (System.Object)typeof(System.Object).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.ToString();
+            var result_of_this_method = instance_of_this_method.GetType();
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
