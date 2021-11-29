@@ -49,11 +49,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            System.Action<UnityEngine.Transform, System.Int32> @scrollMoveEvent = (System.Action<UnityEngine.Transform, System.Int32>)typeof(System.Action<UnityEngine.Transform, System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)8);
+            System.Action<UnityEngine.Transform, System.Int32> @scrollMoveEvent = (System.Action<UnityEngine.Transform, System.Int32>)typeof(System.Action<UnityEngine.Transform, System.Int32>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.LoopScrollRect instance_of_this_method = (UnityEngine.UI.LoopScrollRect)typeof(UnityEngine.UI.LoopScrollRect).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.LoopScrollRect instance_of_this_method = (UnityEngine.UI.LoopScrollRect)typeof(UnityEngine.UI.LoopScrollRect).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.AddItemRefreshListener(@scrollMoveEvent);
@@ -71,7 +71,7 @@ namespace ILRuntime.Runtime.Generated
             System.Boolean @isDestroyGameObject = ptr_of_this_method->Value == 1;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.LoopScrollRect instance_of_this_method = (UnityEngine.UI.LoopScrollRect)typeof(UnityEngine.UI.LoopScrollRect).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.LoopScrollRect instance_of_this_method = (UnityEngine.UI.LoopScrollRect)typeof(UnityEngine.UI.LoopScrollRect).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.ClearCells(@isDestroyGameObject);
@@ -92,7 +92,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @offset = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 3);
-            UnityEngine.UI.LoopScrollRect instance_of_this_method = (UnityEngine.UI.LoopScrollRect)typeof(UnityEngine.UI.LoopScrollRect).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.LoopScrollRect instance_of_this_method = (UnityEngine.UI.LoopScrollRect)typeof(UnityEngine.UI.LoopScrollRect).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.RefillCells(@offset, @fillViewRect);

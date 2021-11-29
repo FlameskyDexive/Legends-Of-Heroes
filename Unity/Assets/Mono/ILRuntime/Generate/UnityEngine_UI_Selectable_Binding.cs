@@ -40,7 +40,7 @@ namespace ILRuntime.Runtime.Generated
             System.Boolean @value = ptr_of_this_method->Value == 1;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            UnityEngine.UI.Selectable instance_of_this_method = (UnityEngine.UI.Selectable)typeof(UnityEngine.UI.Selectable).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.UI.Selectable instance_of_this_method = (UnityEngine.UI.Selectable)typeof(UnityEngine.UI.Selectable).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.interactable = value;

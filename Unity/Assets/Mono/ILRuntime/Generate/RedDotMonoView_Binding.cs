@@ -57,11 +57,11 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 2);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            UnityEngine.GameObject @redDotGameObject = (UnityEngine.GameObject)typeof(UnityEngine.GameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            UnityEngine.GameObject @redDotGameObject = (UnityEngine.GameObject)typeof(UnityEngine.GameObject).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            global::RedDotMonoView instance_of_this_method = (global::RedDotMonoView)typeof(global::RedDotMonoView).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            global::RedDotMonoView instance_of_this_method = (global::RedDotMonoView)typeof(global::RedDotMonoView).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.Show(@redDotGameObject);
@@ -76,7 +76,7 @@ namespace ILRuntime.Runtime.Generated
             StackObject* __ret = ILIntepreter.Minus(__esp, 1);
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 1);
-            global::RedDotMonoView instance_of_this_method = (global::RedDotMonoView)typeof(global::RedDotMonoView).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            global::RedDotMonoView instance_of_this_method = (global::RedDotMonoView)typeof(global::RedDotMonoView).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             var result_of_this_method = instance_of_this_method.Recovery();
@@ -94,7 +94,7 @@ namespace ILRuntime.Runtime.Generated
             System.Int32 @count = ptr_of_this_method->Value;
 
             ptr_of_this_method = ILIntepreter.Minus(__esp, 2);
-            global::RedDotMonoView instance_of_this_method = (global::RedDotMonoView)typeof(global::RedDotMonoView).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
+            global::RedDotMonoView instance_of_this_method = (global::RedDotMonoView)typeof(global::RedDotMonoView).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             __intp.Free(ptr_of_this_method);
 
             instance_of_this_method.RefreshRedDotCount(@count);
@@ -148,7 +148,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_RedDotScale_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            UnityEngine.Vector3 @RedDotScale = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+            UnityEngine.Vector3 @RedDotScale = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             ((global::RedDotMonoView)o).RedDotScale = @RedDotScale;
             return ptr_of_this_method;
         }
@@ -172,7 +172,7 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_PositionOffset_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            UnityEngine.Vector2 @PositionOffset = (UnityEngine.Vector2)typeof(UnityEngine.Vector2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+            UnityEngine.Vector2 @PositionOffset = (UnityEngine.Vector2)typeof(UnityEngine.Vector2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack));
             ((global::RedDotMonoView)o).PositionOffset = @PositionOffset;
             return ptr_of_this_method;
         }
