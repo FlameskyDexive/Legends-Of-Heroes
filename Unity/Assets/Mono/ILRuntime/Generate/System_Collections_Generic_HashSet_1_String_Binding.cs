@@ -56,7 +56,7 @@ namespace ILRuntime.Runtime.Generated
             System.Collections.Generic.HashSet<System.String> instance_of_this_method = (System.Collections.Generic.HashSet<System.String>)typeof(System.Collections.Generic.HashSet<System.String>).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)0);
             __intp.Free(ptr_of_this_method);
 
-            var result_of_this_method = instance_of_this_method.Contains(@item);
+            var result_of_this_method = instance_of_this_method.Add(@item);
 
             __ret->ObjectType = ObjectTypes.Integer;
             __ret->Value = result_of_this_method ? 1 : 0;

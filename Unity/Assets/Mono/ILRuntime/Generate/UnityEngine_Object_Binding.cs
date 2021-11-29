@@ -67,7 +67,7 @@ namespace ILRuntime.Runtime.Generated
                     if(m.MatchGenericParameters(args, typeof(UnityEngine.GameObject), typeof(UnityEngine.GameObject)))
                     {
                         method = m.MakeGenericMethod(args);
-                       // app.RegisterCLRMethodRedirection(method, Instantiate_0);
+                        app.RegisterCLRMethodRedirection(method, Instantiate_4);
 
                         break;
                     }
