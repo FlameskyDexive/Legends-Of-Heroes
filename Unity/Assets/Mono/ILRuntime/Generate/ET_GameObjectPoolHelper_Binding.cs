@@ -14,14 +14,14 @@ using ILRuntime.CLR.Utils;
 
 namespace ILRuntime.Runtime.Generated
 {
-    unsafe class ET_ObjectPoolHelper_Binding
+    unsafe class ET_GameObjectPoolHelper_Binding
     {
         public static void Register(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
             BindingFlags flag = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static | BindingFlags.DeclaredOnly;
             MethodBase method;
             Type[] args;
-            Type type = typeof(ET.ObjectPoolHelper);
+            Type type = typeof(ET.GameObjectPoolHelper);
             args = new Type[]{typeof(System.String), typeof(System.Boolean), typeof(System.Int32)};
             method = type.GetMethod("GetObjectFromPool", flag, null, args, null);
             app.RegisterCLRMethodRedirection(method, GetObjectFromPool_0);
@@ -50,7 +50,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
 
-            var result_of_this_method = ET.ObjectPoolHelper.GetObjectFromPool(@poolName, @autoActive, @autoCreate);
+            var result_of_this_method = ET.GameObjectPoolHelper.GetObjectFromPool(@poolName, @autoActive, @autoCreate);
 
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
         }
@@ -66,7 +66,7 @@ namespace ILRuntime.Runtime.Generated
             __intp.Free(ptr_of_this_method);
 
 
-            ET.ObjectPoolHelper.ReturnTransformToPool(@t);
+            ET.GameObjectPoolHelper.ReturnTransformToPool(@t);
 
             return __ret;
         }

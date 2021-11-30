@@ -19,7 +19,7 @@ namespace ET
         DOUBLE
     }
 
-    public class Pool
+    public class GameObjectPool
     {
         private Stack<PoolObject> availableObjStack = new Stack<PoolObject>();
 
@@ -29,7 +29,7 @@ namespace ET
         private string poolName;
         private int objectsInUse = 0;
 
-        public Pool(string poolName, GameObject poolObjectPrefab, GameObject rootPoolObj, int initialCount, PoolInflationType type)
+        public GameObjectPool(string poolName, GameObject poolObjectPrefab, GameObject rootPoolObj, int initialCount, PoolInflationType type)
         {
             if (poolObjectPrefab == null)
             {

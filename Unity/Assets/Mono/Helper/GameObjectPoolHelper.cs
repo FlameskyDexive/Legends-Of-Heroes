@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace ET
 {
-    public static class ObjectPoolHelper
+    public static class GameObjectPoolHelper
     {
-        private static Dictionary<string, Pool> poolDict = new Dictionary<string, Pool>();
+        private static Dictionary<string, GameObjectPool> poolDict = new Dictionary<string, GameObjectPool>();
         
         public static void InitPool( string poolName, int size, PoolInflationType type = PoolInflationType.DOUBLE)
         {
@@ -26,7 +26,7 @@ namespace ET
                     }
 
                     
-                    poolDict[poolName] = new Pool(poolName, pb, GameObject.Find("Global/PoolRoot"), size, type);
+                    poolDict[poolName] = new GameObjectPool(poolName, pb, GameObject.Find("Global/PoolRoot"), size, type);
                 }
                 catch (Exception e)
                 {
@@ -51,7 +51,7 @@ namespace ET
                         Debug.LogError("[ResourceManager] Invalide prefab name for pooling :" + poolName);
                         return;
                     }
-                    poolDict[poolName] = new Pool(poolName, pb, GameObject.Find("Global/PoolRoot"), size, type);
+                    poolDict[poolName] = new GameObjectPool(poolName, pb, GameObject.Find("Global/PoolRoot"), size, type);
                 }
                 catch (Exception e)
                 {
@@ -80,7 +80,7 @@ namespace ET
 
             if (poolDict.ContainsKey(poolName))
             {
-                Pool pool = poolDict[poolName];
+                GameObjectPool pool = poolDict[poolName];
                 result = pool.NextAvailableObject(autoActive);
                 //scenario when no available object is found in pool
 #if UNITY_EDITOR
@@ -115,7 +115,7 @@ namespace ET
             }
             else
             {
-                Pool pool = null;
+                GameObjectPool pool = null;
                 if (poolDict.TryGetValue(po.poolName, out pool))
                 {
                     pool.ReturnObjectToPool(po);

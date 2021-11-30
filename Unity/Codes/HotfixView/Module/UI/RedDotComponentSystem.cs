@@ -76,12 +76,12 @@ namespace ET
 
             if (self.RedDotNodeParentsDict.TryGetValue(parent, out ListComponent<string> list))
             {
-                list.List.Add(target);
+                list.Add(target);
                 return;
             }
 
             var listComponent = ListComponent<string>.Create();
-            listComponent.List.Add(target);
+            listComponent.Add(target);
             self.RedDotNodeParentsDict.Add(parent, listComponent);
         }
 
@@ -102,8 +102,8 @@ namespace ET
             self.ToParentDict.Remove(target);
             if (!string.IsNullOrEmpty(parent))
             {
-                self.RedDotNodeParentsDict[parent].List.Remove(target);
-                if ( self.RedDotNodeParentsDict[parent].List.Count <= 0 )
+                self.RedDotNodeParentsDict[parent].Remove(target);
+                if ( self.RedDotNodeParentsDict[parent].Count <= 0 )
                 {
                     self.RedDotNodeParentsDict[parent].Dispose();
                     self.RedDotNodeParentsDict.Remove(parent);
@@ -281,7 +281,7 @@ namespace ET
             {
                 var viewCount = 0;
                 
-                foreach (var childNode in self.RedDotNodeParentsDict[parent].List)
+                foreach (var childNode in self.RedDotNodeParentsDict[parent])
                 {
                     viewCount += self.RetainViewCount[childNode];
                 }
@@ -301,12 +301,12 @@ namespace ET
         
         public static GameObject GetORedDotGameObjectFromPool(this RedDotComponent self)
         {
-            return ObjectPoolHelper.GetObjectFromPool("RedDot",true,5);
+            return GameObjectPoolHelper.GetObjectFromPool("RedDot",true,5);
         }
 
         public static void RecycleRedDotGameObject(this RedDotComponent self, GameObject go)
         {
-            ObjectPoolHelper.ReturnTransformToPool(go.transform);
+            GameObjectPoolHelper.ReturnTransformToPool(go.transform);
         }
     }
 }
