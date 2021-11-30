@@ -148,6 +148,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_List_1_Action_Binding.Register(app);
             System_Collections_Generic_List_1_Action_Binding_Enumerator_Binding.Register(app);
             System_Action_Binding.Register(app);
+            ET_MonoPool_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding.Register(app);
@@ -181,6 +182,7 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_UnOrderMultiMap_2_Type_Object_Binding.Register(app);
             System_DateTime_Binding.Register(app);
             ET_JsonHelper_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Queue_1_ILTypeInstance_Binding.Register(app);
             ProtoBuf_Meta_RuntimeTypeModel_Binding.Register(app);
             ProtoBuf_Meta_TypeModel_Binding.Register(app);
@@ -245,9 +247,6 @@ namespace ILRuntime.Runtime.Generated
             ET_ListComponent_1_ETTask_Binding.Register(app);
             System_Collections_Generic_List_1_ETTask_Binding.Register(app);
             ET_ETTaskHelper_Binding.Register(app);
-            System_Collections_Generic_Queue_1_HashSet_1_ILTypeInstance_Binding.Register(app);
-            System_Collections_Generic_Queue_1_Dictionary_2_Type_ILTypeInstance_Binding.Register(app);
-            System_Collections_Generic_Queue_1_Dictionary_2_Int64_ILTypeInstance_Binding.Register(app);
         }
 
         /// <summary>

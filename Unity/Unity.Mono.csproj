@@ -64,6 +64,7 @@
      <Compile Include="Assets\Mono\Helper\AcceptAllCertificate.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_1_Boolean_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding__t1.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_ETTask_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Action_1_Boolean_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_DateTime_Binding.cs" />
      <Compile Include="Assets\Mono\Helper\AssetsBundleHelper.cs" />
@@ -88,6 +89,7 @@
      <Compile Include="Assets\Mono\Helper\GameObjectPoolHelper.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\ReferenceCollector.cs" />
      <Compile Include="Assets\Mono\Core\Log\FileLogger.cs" />
+     <Compile Include="Assets\Mono\Core\MonoPool.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_String_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_PlayerPrefs_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_TextAsset_Binding.cs" />
@@ -115,7 +117,6 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_Type_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Async\ETTask.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Queue_1_HashSet_1_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\RedDotMonoView.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Runtime_CompilerServices_TaskAwaiter_Binding.cs" />
      <Compile Include="Assets\Mono\Module\Network\AChannel.cs" />
@@ -126,6 +127,7 @@
      <Compile Include="Assets\Mono\Core\HashSetComponent.cs" />
      <Compile Include="Assets\Mono\Core\Helper\FileHelper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_ValueTuple_2_UInt16_MemoryStream_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Task_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_TService_Binding.cs" />
      <Compile Include="Assets\Mono\Core\ThreadSynchronizationContext.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_IEnumerator_1_KeyValuePair_2_Type_Int32_Bi.cs" />
@@ -175,7 +177,6 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_RpcException_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Type_Binding_Enumerator_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Queue_1_Dictionary_2_Int64_ILTypeInstance_.cs" />
      <Compile Include="Assets\Mono\CodeLoader.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_Button_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Log\Log.cs" />
@@ -194,6 +195,7 @@
      <Compile Include="Assets\Mono\Core\MultiDictionary.cs" />
      <Compile Include="Assets\Mono\ILRuntime\ICriticalNotifyCompletionAdapter.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_AnimatorControllerParameter_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_MonoPool_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Reflection_Assembly_Binding.cs" />
      <Compile Include="Assets\Mono\Module\Network\KChannel.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_UnOrderMultiMap_2_Type_Object_Binding.cs" />
@@ -233,6 +235,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_PathHelper_Binding.cs" />
      <Compile Include="Assets\Mono\Module\NetworkTCP\TChannel.cs" />
      <Compile Include="Assets\Mono\Module\NetworkTCP\PacketParser.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_Queue_1_ILTypeInstance_B.cs" />
      <Compile Include="Assets\Mono\Core\Log\ILog.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Int64_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_1_AssetBundle_Binding.cs" />
@@ -241,6 +244,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Int64_List_1_ILTypeInstance.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_IEnumerator_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Int64_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_GameObjectPoolHelper_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Async\AsyncETTaskMethodBuilder.cs" />
      <Compile Include="Assets\Mono\Core\Helper\MD5Helper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Vector2_Binding.cs" />
@@ -269,11 +273,11 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_RedDotMonoView_Binding.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopHorizontalScrollRect.cs" />
      <Compile Include="Assets\Mono\Module\NetworkTCP\TService.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Vector3_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_RuntimeAnimatorController_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_LoopScrollRect_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Stack_1_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollPrefabSource.cs" />
-     <Compile Include="Assets\Mono\Core\Pool.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_UnityWebRequest_Binding_Enumerator_.cs" />
      <Compile Include="Assets\Mono\Core\Async\ETTaskCompleted.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_String_Object_Binding.cs" />
@@ -333,9 +337,9 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Reflection_AssemblyName_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Single_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Helper\StringHelper.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Queue_1_Dictionary_2_Type_ILTypeInstance_B.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Int64_Binding_Enumerator_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ProtoBuf_Serializer_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETTask_Binding.cs" />
      <Compile Include="Assets\Mono\Core\Async\ETTaskHelper.cs" />
      <Compile Include="Assets\Mono\Module\Mongo\BsonIgnoreIfNullAttribute.cs" />
@@ -347,11 +351,6 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Char_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_AService_Binding_Enumerator_Bind.cs" />
      <Compile Include="Assets\Mono\Define.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_ETTask_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_GameObjectPoolHelper_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Vector3_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_ILTypeInstance_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Task_Binding.cs" />
      <None Include="Assets\Mono\Unity.Mono.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>E:/DevSoftWare/Unity/2020.3.21f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
