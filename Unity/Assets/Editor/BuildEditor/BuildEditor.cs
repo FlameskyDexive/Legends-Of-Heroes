@@ -9,11 +9,6 @@ using Object = UnityEngine.Object;
 
 namespace ET
 {
-    public class BundleInfo
-	{
-		public List<string> ParentPaths = new List<string>();
-	}
-
 	public enum PlatformType
 	{
 		None,
@@ -31,10 +26,6 @@ namespace ET
 
 	public class BuildEditor : EditorWindow
 	{
-        private const string settingAsset = "Assets/Editor/BuildEditor/ETBuildSettings.asset";
-
-        private readonly Dictionary<string, BundleInfo> dictionary = new Dictionary<string, BundleInfo>();
-
 		private PlatformType activePlatform;
 		private PlatformType platformType;
 		private bool clearFolder;
@@ -44,14 +35,10 @@ namespace ET
 		private BuildOptions buildOptions;
 		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
-		private ETBuildSettings buildSettings;
-
 		[MenuItem("Tools/打包工具")]
 		public static void ShowWindow()
 		{
-			EditorWindow window = GetWindow<BuildEditor>(true, "打包工具");
-			window.minSize = new Vector2(420, 220);
-			window.maxSize = new Vector2(700, 400);
+			GetWindow(typeof (BuildEditor));
 		}
 
         private void OnEnable()
@@ -68,27 +55,6 @@ namespace ET
 			activePlatform = PlatformType.None;
 #endif
             platformType = activePlatform;
-
-			if (!File.Exists(settingAsset))
-            {
-				buildSettings = new ETBuildSettings();
-				AssetDatabase.CreateAsset(buildSettings, settingAsset);
-            }
-			else
-			{
-				buildSettings = AssetDatabase.LoadAssetAtPath<ETBuildSettings>(settingAsset);
-
-				clearFolder = buildSettings.clearFolder;
-				isBuildExe = buildSettings.isBuildExe;
-				isContainAB = buildSettings.isContainAB;
-				buildType = buildSettings.buildType;
-				buildAssetBundleOptions = buildSettings.buildAssetBundleOptions;
-			}
-        }
-
-        private void OnDisable()
-        {
-			SaveSettings();
         }
 
         private void OnGUI() 
@@ -105,7 +71,7 @@ namespace ET
 			switch (buildType)
 			{
 				case BuildType.Development:
-					this.buildOptions = BuildOptions.Development | BuildOptions.AutoRunPlayer | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
+					this.buildOptions = BuildOptions.Development | BuildOptions.ConnectWithProfiler | BuildOptions.AllowDebugging;
 					break;
 				case BuildType.Release:
 					this.buildOptions = BuildOptions.None;
@@ -114,7 +80,7 @@ namespace ET
 
 			GUILayout.Space(5);
 
-			if (GUILayout.Button("开始打包", GUILayout.ExpandHeight(true)))
+			if (GUILayout.Button("开始打包"))
 			{
 				if (this.platformType == PlatformType.None)
 				{
@@ -140,17 +106,5 @@ namespace ET
 
 			GUILayout.Space(5);
 		}
-
-		private void SaveSettings()
-        {
-			buildSettings.clearFolder = clearFolder;
-			buildSettings.isBuildExe = isBuildExe;
-			buildSettings.isContainAB = isContainAB;
-			buildSettings.buildType = buildType;
-			buildSettings.buildAssetBundleOptions = buildAssetBundleOptions;
-
-			EditorUtility.SetDirty(buildSettings);
-			AssetDatabase.SaveAssets();
-        }
 	}
 }

@@ -120,7 +120,6 @@ namespace ET
             }
 
             this.types.Clear();
-
             List<Type> baseAttributeTypes = GetBaseAttributes(addTypes);
             foreach (Type baseAttributeType in baseAttributeTypes)
             {
@@ -583,7 +582,7 @@ namespace ET
 
                 try
                 {
-                    await ETTaskHelper.WaitAll(list.List);
+                    await ETTaskHelper.WaitAll(list);
                 }
                 catch (Exception e)
                 {

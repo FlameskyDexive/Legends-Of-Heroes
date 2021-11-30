@@ -47,7 +47,7 @@ namespace ET
 
         public abstract void Awake(T self);
     }
-
+    
     [ObjectSystem]
     public abstract class AwakeSystem<T, A> : IAwakeSystem<A>
     {
@@ -109,5 +109,26 @@ namespace ET
         }
 
         public abstract void Awake(T self, A a, B b, C c);
+    }
+    
+    [ObjectSystem]
+    public abstract class AwakeSystem<T, A, B, C, D> : IAwakeSystem<A, B, C, D>
+    {
+        public Type Type()
+        {
+            return typeof(T);
+        }
+		
+        public Type SystemType()
+        {
+            return typeof(IAwakeSystem<A, B, C, D>);
+        }
+
+        public void Run(object o, A a, B b, C c, D d)
+        {
+            this.Awake((T)o, a, b, c, d);
+        }
+
+        public abstract void Awake(T self, A a, B b, C c, D d);
     }
 }

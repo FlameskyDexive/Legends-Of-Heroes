@@ -2,11 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Reflection;
-using ILRuntime.CLR.Method;
-using ILRuntime.CLR.TypeSystem;
-using ILRuntime.Runtime.Enviorment;
-using ILRuntime.Runtime.Generated;
 using ILRuntime.Runtime.Intepreter;
 using ProtoBuf;
 using UnityEngine;
@@ -15,8 +10,36 @@ namespace ET
 {
     public static class ILHelper
     {
+        public static List<Type> list = new List<Type>();
+
         public static void InitILRuntime(ILRuntime.Runtime.Enviorment.AppDomain appdomain)
         {
+            list.Add(typeof(Dictionary<int, ILTypeInstance>));
+            list.Add(typeof(Dictionary<long, ILTypeInstance>));
+            list.Add(typeof(Dictionary<string, ILTypeInstance>));
+            list.Add(typeof(Dictionary<int, int>));
+            list.Add(typeof(Dictionary<object, object>));
+            list.Add(typeof(Dictionary<int, object>));
+            list.Add(typeof(Dictionary<long, object>));
+            list.Add(typeof(Dictionary<long, int>));
+            list.Add(typeof(Dictionary<int, long>));
+            list.Add(typeof(Dictionary<string, long>));
+            list.Add(typeof(Dictionary<string, int>));
+            list.Add(typeof(Dictionary<string, object>));
+            list.Add(typeof(List<ILTypeInstance>));
+            list.Add(typeof(List<int>));
+            list.Add(typeof(List<long>));
+            list.Add(typeof(List<string>));
+            list.Add(typeof(List<object>));
+            list.Add(typeof(ETTask<int>));
+            list.Add(typeof(ETTask<long>));
+            list.Add(typeof(ETTask<string>));
+            list.Add(typeof(ETTask<object>));
+            list.Add(typeof(ETTask<AssetBundle>));
+            list.Add(typeof(ETTask<UnityEngine.Object[]>));
+            list.Add(typeof(ListComponent<ILTypeInstance>));
+            list.Add(typeof(ListComponent<ETTask>));
+            list.Add(typeof(ListComponent<Vector3>));
             
             // 注册重定向函数
 
@@ -30,6 +53,7 @@ namespace ET
             appdomain.DelegateManager.RegisterMethodDelegate<long, MemoryStream>();
             appdomain.DelegateManager.RegisterMethodDelegate<long, IPEndPoint>();
             appdomain.DelegateManager.RegisterMethodDelegate<ILTypeInstance>();
+            appdomain.DelegateManager.RegisterMethodDelegate<AsyncOperation>();
             
             
             appdomain.DelegateManager.RegisterFunctionDelegate<UnityEngine.Events.UnityAction>();
@@ -70,7 +94,15 @@ namespace ET
             PType.RegisterILRuntimeCLRRedirection(appdomain);
            
             
-            CLRBindings.Initialize(appdomain);
+            ////////////////////////////////////
+            // CLR绑定的注册，一定要记得将CLR绑定的注册写在CLR重定向的注册后面，因为同一个方法只能被重定向一次，只有先注册的那个才能生效
+            ////////////////////////////////////
+            Type t = Type.GetType("ILRuntime.Runtime.Generated.CLRBindings");
+            if (t != null)
+            {
+                t.GetMethod("Initialize")?.Invoke(null, new object[] { appdomain });
+            }
+            //ILRuntime.Runtime.Generated.CLRBindings.Initialize(appdomain);
         }
         
         public static void RegisterAdaptor(ILRuntime.Runtime.Enviorment.AppDomain appdomain)

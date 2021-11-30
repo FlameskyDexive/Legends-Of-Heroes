@@ -12,8 +12,10 @@ namespace ET
 				CodeLoader.Instance.LateUpdate += Game.LateUpdate;
 				CodeLoader.Instance.OnApplicationQuit += Game.Close;
 				
+				
 				Game.EventSystem.Add(CodeLoader.Instance.GetTypes());
 
+				
 				Game.EventSystem.Publish(new EventType.AppStart()).Coroutine();
 			}
 			catch (Exception e)

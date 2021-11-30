@@ -1,6 +1,0 @@
-AppType.ClientH |  AppType.ClientM | AppType.Gate | AppType.Map,,,,,,,,,
-,,,,,,,,,
-,,id,#测试说明,名字,描述,位置,身高,体重,
-,,_id,,Name,Desc,Position,Height,Weight,
-,,int,,string,string,int,int,int,
-,,1001,测试说明,米克尔,带有强力攻击技能,1,178,68,

@@ -1,7 +1,0 @@
-{
-  "name": "com.github.jlreymendez.planilo",
-  "description": "A xNode based tool for designing AI Graphs like Behavior Trees and Finite State Machines in Unity",
-  "version": "0.1.0",
-  "unity": "2018.1",
-  "displayName": "planilo"
-}

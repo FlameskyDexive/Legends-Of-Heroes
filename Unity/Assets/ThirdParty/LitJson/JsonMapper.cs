@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Serialization;
 using ILRuntime.Runtime.Intepreter;
 using ILRuntime.Runtime.Stack;
 using ILRuntime.CLR.Method;
@@ -976,6 +977,8 @@ namespace LitJson
             IList<PropertyMetadata> props = type_properties[obj_type];
 
             writer.WriteObjectStart();
+            writer.WritePropertyName("_t");
+            writer.Write(obj_type.Name);
             foreach (PropertyMetadata p_data in props)
             {
                 if (p_data.IsField)

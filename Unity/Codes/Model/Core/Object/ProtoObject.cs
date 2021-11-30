@@ -36,11 +36,10 @@ namespace ET
 
         public virtual void AfterEndInit()
         {
-            
         }
     }
     
-    public abstract class DisposeObject: IDisposable, ISupportInitialize
+    public abstract class DisposeObject: Object, IDisposable, ISupportInitialize
     {
         public virtual void Dispose()
         {
@@ -53,5 +52,13 @@ namespace ET
         public virtual void EndInit()
         {
         }
+        
+#if !NOT_UNITY
+        public override string ToString()
+        {
+            return this.GetType().Name;
+
+        }
+#endif
     }
 }
