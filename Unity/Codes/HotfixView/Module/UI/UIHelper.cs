@@ -46,31 +46,9 @@ namespace ET
         
         public static void SetVisible(this LoopScrollRect loopScrollRect,bool isVisible,int count = 0)
         {
-            if (isVisible)
-            {
-                if ( !loopScrollRect.gameObject.activeSelf )
-                {
-                    loopScrollRect.gameObject.SetActive(true);
-                }
-                loopScrollRect.totalCount = count;
-                if (count == 0)
-                {
-                    loopScrollRect.ClearCells();
-                }
-                else
-                {
-                    loopScrollRect.RefillCells();
-                }
-            }
-            else
-            {
-                loopScrollRect.totalCount = 0;
-                loopScrollRect.RefillCells();
-                if (loopScrollRect.gameObject.activeSelf)
-                {
-                    loopScrollRect.gameObject.SetActive(false);
-                }
-            }
+            loopScrollRect.gameObject.SetActive(isVisible);
+            loopScrollRect.totalCount = count;
+            loopScrollRect.RefillCells();
         }
 
 
