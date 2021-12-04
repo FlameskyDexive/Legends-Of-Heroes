@@ -9,8 +9,7 @@ public partial class UICodeSpawner
 {
     static public void SpawnSubUICode(GameObject go)
     {
-        IsCreateItemCode  = false;
-        IsCreateSubUICode = true;
+      
         Path2WidgetCachedDict?.Clear();
         Path2WidgetCachedDict = new Dictionary<string, Component>();
         FindAllWidgets(go.transform, "");
@@ -27,14 +26,14 @@ public partial class UICodeSpawner
         }
         string strDlgName = objPanel.name;
 
-        string strFilePath = Application.dataPath + "/HotfixView/GameLogic/UIBehaviour/CommonUI" +
+        string strFilePath = Application.dataPath + "/../Codes/HotfixView/GameLogic/UIBehaviour/CommonUI" +
                              "";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath     = Application.dataPath + "/HotfixView/GameLogic/UIBehaviour/CommonUI/" + strDlgName + "ViewSystem.cs";
+        strFilePath     = Application.dataPath + "/../Codes/HotfixView/GameLogic/UIBehaviour/CommonUI/" + strDlgName + "ViewSystem.cs";
 	    
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
@@ -81,13 +80,13 @@ public partial class UICodeSpawner
         }
         string strDlgName = objPanel.name;
 
-        string strFilePath = Application.dataPath + "/ModelView/GameLogic/UIBehaviour/CommonUI";
+        string strFilePath = Application.dataPath + "/../Codes/ModelView/GameLogic/UIBehaviour/CommonUI";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath = Application.dataPath + "/ModelView/GameLogic/UIBehaviour/CommonUI/" + strDlgName + ".cs";
+        strFilePath = Application.dataPath + "/../Codes/ModelView/GameLogic/UIBehaviour/CommonUI/" + strDlgName + ".cs";
 	    
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 

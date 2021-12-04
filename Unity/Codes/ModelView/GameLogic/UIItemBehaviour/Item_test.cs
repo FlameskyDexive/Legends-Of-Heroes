@@ -3,9 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	public partial class Scroll_Item_test : Entity 
+	public  class Scroll_Item_test : Entity 
 	{
-		private Transform uiTransform;
 		private bool isCacheNode = true;
 		public void SetCacheMode(bool isCache)
 		{
@@ -91,17 +90,9 @@ namespace ET
      		}
      	}
 
-		public override void Dispose()
-		{
-			this.m_EButton_SelectImage = null;
-			this.m_EButton_Select = null;
-			this.m_ELabel_Content = null;
-			this.uiTransform = null;
-			base.Dispose();
-		}
-
 		public UnityEngine.UI.Image m_EButton_SelectImage = null;
 		public UnityEngine.UI.Button m_EButton_Select = null;
 		public UnityEngine.UI.Text m_ELabel_Content = null;
+		public Transform uiTransform = null;
 	}
 }

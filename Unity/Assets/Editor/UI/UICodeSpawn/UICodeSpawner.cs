@@ -43,10 +43,7 @@ public partial class UICodeSpawner
 	
     static public void SpawnDlgCode(GameObject go)
     {
-	    IsCreateSubUICode = false;
-		IsCreateItemCode = false;
-		
-		Path2WidgetCachedDict?.Clear();
+	    Path2WidgetCachedDict?.Clear();
         Path2WidgetCachedDict = new Dictionary<string, Component>();
         
 		FindAllWidgets(go.transform, "");
@@ -391,7 +388,7 @@ public partial class UICodeSpawner
 			strBuilder.AppendLine("     				return null;");
 			strBuilder.AppendLine("     			}");
 
-			if (IsCreateItemCode)
+			if (transRoot.gameObject.name.StartsWith("Item"))
 			{
 				strBuilder.AppendLine("     			if (this.isCacheNode)");
 				strBuilder.AppendLine("     			{");
@@ -433,7 +430,7 @@ public partial class UICodeSpawner
              strBuilder.AppendLine("     			}");
 
 
-             if (IsCreateItemCode)
+             if (transRoot.gameObject.name.StartsWith("Item"))
              {
 	             strBuilder.AppendLine("     			if (this.isCacheNode)");
 	             strBuilder.AppendLine("     			{");
@@ -463,33 +460,7 @@ public partial class UICodeSpawner
 
         }
     }
-
-    public static void CreateWidgetsDeclareCode(ref StringBuilder strBuilder)
-    {
-	    if (IsCreateItemCode || IsCreateSubUICode)
-	    {
-		    strBuilder.AppendLine("		public override void Dispose()");
-		    strBuilder.AppendLine("		{");
-	    }
-	    else
-	    {
-		    strBuilder.AppendLine("		public override void OnDispose()");
-		    strBuilder.AppendLine("		{");
-		    strBuilder.AppendLine("			base.OnDispose();");
-	    }
-	    
-		CreateDlgWidgetDisposeCode(ref strBuilder);
-		
-	    if ( IsCreateItemCode || IsCreateSubUICode )
-	    {
-		    strBuilder.AppendFormat("\t\t\tthis.uiTransform = null;\r\n");
-		    strBuilder.AppendLine("			base.Dispose();");
-	    }
-	    strBuilder.AppendLine("		}\n");
-        
-        CreateDeclareCode(ref strBuilder);
-    }
-
+    
     public static void CreateDeclareCode(ref StringBuilder strBuilder)
     {
 	    foreach (KeyValuePair<string, Component> pair in Path2WidgetCachedDict)
@@ -586,42 +557,15 @@ public partial class UICodeSpawner
 	    strBuilder.AppendLine("     				Log.Error(\"uiTransform is null.\");");
 	    strBuilder.AppendLine("     				return null;");
 	    strBuilder.AppendLine("     			}");
-			
 	    
-	    if (IsCreateItemCode)
-	    {
-		    strBuilder.AppendLine("     			if (this.isCacheNode)");
-		    strBuilder.AppendLine("     			{");
-		    strBuilder.AppendFormat("     			   if( this.m_{0} == null )\n" ,widget.ToLower());
-		    strBuilder.AppendLine("     			   {");
-		    strBuilder.AppendFormat("		    		  Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,\"{0}\");\r\n",  strPath);
-		    strBuilder.AppendFormat("		    		  this.m_{0} = this.AddChild<{1},Transform>(subTrans);\r\n",widget.ToLower(),widget);
-		    strBuilder.AppendLine("     			   }");
-		    strBuilder.AppendFormat("     			   return this.m_{0};\n" , widget.ToLower());
-		    strBuilder.AppendLine("     			}");
-		    strBuilder.AppendLine("     			else");
-		    strBuilder.AppendLine("     			{");
-		    strBuilder.AppendFormat("     			   if( this.m_{0} != null )\n" , widget.ToLower());
-		    strBuilder.AppendLine("     			   {");
-		    strBuilder.AppendFormat("		    		 this.m_{0}?.Dispose();\r\n",widget.ToLower());
-		    strBuilder.AppendFormat("		    		 this.m_{0} = null;\r\n",widget.ToLower());
-		    strBuilder.AppendLine("     			   }");
-		    strBuilder.AppendFormat("		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,\"{0}\");\r\n",  strPath);
-		    strBuilder.AppendFormat("		    	   this.m_{0} = this.AddChild<{1},Transform>(subTrans);\r\n", widget.ToLower(),subUIClassType);
-		    strBuilder.AppendFormat("     			   return this.m_{0};\n" , widget.ToLower());
-		    strBuilder.AppendLine("     			}");
-		    strBuilder.AppendLine("     	    }\n");
-	    }
-	    else
-	    {
-		    strBuilder.AppendFormat("     			if( this.m_{0} == null )\n" , widget.ToLower());
-		    strBuilder.AppendLine("     			{");
-		    strBuilder.AppendFormat("		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,\"{0}\");\r\n",  strPath);
-		    strBuilder.AppendFormat("		    	   this.m_{0} = this.AddChild<{1},Transform>(subTrans);\r\n", widget.ToLower(),subUIClassType);
-		    strBuilder.AppendLine("     			}");
-		    strBuilder.AppendFormat("     			return this.m_{0};\n" , widget.ToLower());
-		    strBuilder.AppendLine("     		}");
-	    }
+	    strBuilder.AppendFormat("     			if( this.m_{0} == null )\n" , widget.ToLower());
+	    strBuilder.AppendLine("     			{");
+	    strBuilder.AppendFormat("		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,\"{0}\");\r\n",  strPath);
+	    strBuilder.AppendFormat("		    	   this.m_{0} = this.AddChild<{1},Transform>(subTrans);\r\n", widget.ToLower(),subUIClassType);
+	    strBuilder.AppendLine("     			}");
+	    strBuilder.AppendFormat("     			return this.m_{0};\n" , widget.ToLower());
+	    strBuilder.AppendLine("     		}");
+	    
 	    
 	    
 	    strBuilder.AppendLine("     	}\n");
@@ -651,7 +595,5 @@ public partial class UICodeSpawner
 
     private static Dictionary<string, Component> Path2WidgetCachedDict =null;
     private static List<string> WidgetInterfaceList = null;
-    private static bool IsCreateItemCode = false;
-    private static bool IsCreateSubUICode = false;
 }
 

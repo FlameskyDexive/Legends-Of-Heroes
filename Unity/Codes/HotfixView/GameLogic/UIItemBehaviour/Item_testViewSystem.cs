@@ -1,0 +1,17 @@
+﻿
+using UnityEngine;
+using UnityEngine.UI;
+namespace ET
+{
+	[ObjectSystem]
+	public class Scroll_Item_testDestroySystem : DestroySystem<Scroll_Item_test> 
+	{
+		public override void Destroy( Scroll_Item_test self )
+		{
+			self.m_EButton_SelectImage = null;
+			self.m_EButton_Select = null;
+			self.m_ELabel_Content = null;
+			self.uiTransform = null;
+		}
+	}
+}
