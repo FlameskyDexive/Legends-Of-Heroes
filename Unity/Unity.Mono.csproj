@@ -56,8 +56,8 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_AssetBundleRequest_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_StringHelper_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Text_StringBuilder_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Int64_ILTypeInstance_Bindin.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_Int32_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Int64_ILTypeInstance_Bindin.cs" />
      <Compile Include="Assets\Mono\Module\Mongo\BsonIgnoreAttribute.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_AsyncOperation_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Queue_1_ILTypeInstance_Binding.cs" />
@@ -110,8 +110,8 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Type_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t2.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Type_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Debug_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Queue_1_Int64_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Debug_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Int64_List_1_Int64_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_AnimationClip_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_Type_Binding.cs" />
@@ -182,7 +182,6 @@
      <Compile Include="Assets\Mono\Core\Log\Log.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_V_t1.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Events_UnityEvent_1_Boolean_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_InputField_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Task_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Exception_Binding.cs" />
@@ -574,17 +573,8 @@
      <Reference Include="UnityEditor.WindowsStandalone.Extensions">
      <HintPath>E:/DevSoftWare/Unity/2020.3.21f1c1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
      </Reference>
-     <Reference Include="ILRuntime.Mono.Cecil">
-     <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.dll</HintPath>
-     </Reference>
-     <Reference Include="ILRuntime.Mono.Cecil.Mdb">
-     <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Mdb.dll</HintPath>
-     </Reference>
      <Reference Include="CommandLine">
      <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/Plugins/CommandLine.dll</HintPath>
-     </Reference>
-     <Reference Include="ILRuntime.Mono.Cecil.Pdb">
-     <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/ThirdParty/ILRuntime/Plugins/ILRuntime.Mono.Cecil.Pdb.dll</HintPath>
      </Reference>
      <Reference Include="ICSharpCode.SharpZipLib">
      <HintPath>E:/Project/UnityProject/ET-EUI/Unity/Assets/Plugins/ICSharpCode.SharpZipLib.dll</HintPath>

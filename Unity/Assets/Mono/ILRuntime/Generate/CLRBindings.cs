@@ -111,7 +111,6 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_AnimationClip_Binding.Register(app);
             UnityEngine_UI_Text_Binding.Register(app);
             UnityEngine_UI_LoopScrollRect_Binding.Register(app);
-            UnityEngine_UI_InputField_Binding.Register(app);
             ReferenceCollector_Binding.Register(app);
             UnityEngine_U2D_SpriteAtlas_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Sprite_Binding.Register(app);

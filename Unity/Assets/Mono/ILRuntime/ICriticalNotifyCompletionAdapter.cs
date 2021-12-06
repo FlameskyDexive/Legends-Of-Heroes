@@ -7,8 +7,6 @@ namespace ET
 {   
     public class ICriticalNotifyCompletionAdapter : CrossBindingAdaptor
     {
-        static CrossBindingMethodInfo<System.Action> mUnsafeOnCompleted_0 = new CrossBindingMethodInfo<System.Action>("UnsafeOnCompleted");
-        static CrossBindingMethodInfo<System.Action> mOnCompleted_1 = new CrossBindingMethodInfo<System.Action>("OnCompleted");
         public override Type BaseCLRType
         {
             get
@@ -32,6 +30,10 @@ namespace ET
 
         public class Adapter : System.Runtime.CompilerServices.ICriticalNotifyCompletion, CrossBindingAdaptorType
         {
+            CrossBindingMethodInfo<System.Action> mUnsafeOnCompleted_0 = new CrossBindingMethodInfo<System.Action>("UnsafeOnCompleted");
+            CrossBindingMethodInfo<System.Action> mOnCompleted_1 = new CrossBindingMethodInfo<System.Action>("OnCompleted");
+
+            bool isInvokingToString;
             ILTypeInstance instance;
             ILRuntime.Runtime.Enviorment.AppDomain appdomain;
 
@@ -64,7 +66,15 @@ namespace ET
                 m = instance.Type.GetVirtualMethod(m);
                 if (m == null || m is ILMethod)
                 {
-                    return instance.ToString();
+                    if (!isInvokingToString)
+                    {
+                        isInvokingToString = true;
+                        string res = instance.ToString();
+                        isInvokingToString = false;
+                        return res;
+                    }
+                    else
+                        return instance.Type.FullName;
                 }
                 else
                     return instance.Type.FullName;
