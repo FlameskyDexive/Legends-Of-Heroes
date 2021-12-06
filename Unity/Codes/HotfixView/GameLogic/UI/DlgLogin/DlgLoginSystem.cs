@@ -20,14 +20,21 @@ namespace ET
 		public static void ShowWindow(this DlgLogin self, Entity contextData = null)
 		{
 			//使用循环列表
-			int count = 100;
-			self.AddUIScrollItems(ref self.ItemsDictionary,count);
-			self.View.ELoopScrollList_Test.SetVisible(true,count);
+			//int count = 100;
+			//self.AddUIScrollItems(ref self.ItemsDictionary,count);
+			//self.View.ELoopScrollList_Test.SetVisible(true,count);
+			
+			self.View.ESCommonUI.SetLabelContent("登录界面");
+			
+			
 		}
 		
 		public static void OnLoginClickHandler(this DlgLogin self)
 		{
-			LoginHelper.Login(self.DomainScene(), ConstValue.LoginAddress, self.View.EInput_Account.text , self.View.EInput_Password.text).Coroutine();
+			UIComponent.Instance.CloseWindow(WindowID.WindowID_Login);
+			UIComponent.Instance.ShowWindow(WindowID.WindowID_Test);
+			
+			//LoginHelper.Login(self.DomainScene(), ConstValue.LoginAddress, self.View.EInput_Account.text , self.View.EInput_Password.text).Coroutine();
 		}
 
 		public static void OnRefreshItemHandler(this DlgLogin self,Transform transform,int index)

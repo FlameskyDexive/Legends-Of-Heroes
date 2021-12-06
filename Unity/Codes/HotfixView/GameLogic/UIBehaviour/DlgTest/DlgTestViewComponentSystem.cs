@@ -26,6 +26,8 @@ namespace ET
 			self.m_EButton_TestImage = null;
 			self.m_EButton_Test = null;
 			self.m_EText_Test = null;
+			self.m_escommonui?.Dispose();
+			self.m_escommonui = null;
 			self.uiTransform = null;
 		}
 	}

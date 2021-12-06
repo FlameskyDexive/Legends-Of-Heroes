@@ -125,6 +125,24 @@ namespace ET
      		}
      	}
 
+		public ESCommonUI ESCommonUI
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_escommonui == null )
+     			{
+		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,"ESCommonUI");
+		    	   this.m_escommonui = this.AddChild<ESCommonUI,Transform>(subTrans);
+     			}
+     			return this.m_escommonui;
+     		}
+     	}
+
 		public UnityEngine.RectTransform m_EGBackGround = null;
 		public ESReuseUI m_esreuseui = null;
 		public UnityEngine.UI.Image m_EButton_EnterMapImage = null;
@@ -132,6 +150,7 @@ namespace ET
 		public UnityEngine.UI.Image m_EButton_TestImage = null;
 		public UnityEngine.UI.Button m_EButton_Test = null;
 		public UnityEngine.UI.Text m_EText_Test = null;
+		public ESCommonUI m_escommonui = null;
 		public Transform uiTransform = null;
 	}
 }

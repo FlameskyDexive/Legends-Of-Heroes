@@ -23,6 +23,8 @@ namespace ET
 			self.m_EInput_Account = null;
 			self.m_EInput_Password = null;
 			self.m_ELoopScrollList_Test = null;
+			self.m_escommonui?.Dispose();
+			self.m_escommonui = null;
 			self.uiTransform = null;
 		}
 	}

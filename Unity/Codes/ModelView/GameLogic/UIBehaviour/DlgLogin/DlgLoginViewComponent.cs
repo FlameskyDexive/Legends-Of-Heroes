@@ -90,11 +90,30 @@ namespace ET
      		}
      	}
 
+		public ESCommonUI ESCommonUI
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_escommonui == null )
+     			{
+		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,"ESCommonUI");
+		    	   this.m_escommonui = this.AddChild<ESCommonUI,Transform>(subTrans);
+     			}
+     			return this.m_escommonui;
+     		}
+     	}
+
 		public UnityEngine.UI.Image m_EButton_LoginBtnImage = null;
 		public UnityEngine.UI.Button m_EButton_LoginBtn = null;
 		public UnityEngine.UI.InputField m_EInput_Account = null;
 		public UnityEngine.UI.InputField m_EInput_Password = null;
 		public UnityEngine.UI.LoopHorizontalScrollRect m_ELoopScrollList_Test = null;
+		public ESCommonUI m_escommonui = null;
 		public Transform uiTransform = null;
 	}
 }
