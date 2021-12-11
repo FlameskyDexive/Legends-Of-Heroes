@@ -143,6 +143,23 @@ namespace ET
      		}
      	}
 
+		public UnityEngine.UI.LoopHorizontalScrollRect ELoopScrollList_Test
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_ELoopScrollList_Test == null )
+     			{
+		    		this.m_ELoopScrollList_Test = UIFindHelper.FindDeepChild<UnityEngine.UI.LoopHorizontalScrollRect>(this.uiTransform.gameObject,"ELoopScrollList_Test");
+     			}
+     			return this.m_ELoopScrollList_Test;
+     		}
+     	}
+
 		public UnityEngine.RectTransform m_EGBackGround = null;
 		public ESReuseUI m_esreuseui = null;
 		public UnityEngine.UI.Image m_EButton_EnterMapImage = null;
@@ -151,6 +168,7 @@ namespace ET
 		public UnityEngine.UI.Button m_EButton_Test = null;
 		public UnityEngine.UI.Text m_EText_Test = null;
 		public ESCommonUI m_escommonui = null;
+		public UnityEngine.UI.LoopHorizontalScrollRect m_ELoopScrollList_Test = null;
 		public Transform uiTransform = null;
 	}
 }
