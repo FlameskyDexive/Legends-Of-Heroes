@@ -4,7 +4,9 @@
 #### 教程视频
 - [01-EUI介绍与UI控件获取](https://www.bilibili.com/video/BV12F411e7bP?share_source=copy_web) 
 
-- [02-EUI的公共UI的创建与使用](https://www.bilibili.com/video/BV1VP4y137Ah?share_source=copy_web) 
+- [02-EUI的公共UI的创建与使用](https://www.bilibili.com/video/BV1VP4y137Ah?share_source=copy_web)   
+
+- [03-EUI的循环列表的创建与使用](https://www.bilibili.com/video/BV1UF411z7uu?share_source=copy_web) 
 
 #### 使用方式
 
