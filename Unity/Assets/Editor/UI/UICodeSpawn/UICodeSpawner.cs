@@ -20,20 +20,23 @@ public partial class UICodeSpawner
 		string uiName = go.name;
 		if (uiName.StartsWith("Dlg"))
 		{
-			Debug.LogWarning($"开始生成Dlg: {uiName}");
+			Debug.LogWarning($"----------开始生成Dlg{uiName} 相关代码 ----------");
 			SpawnDlgCode(go);
+			Debug.LogWarning($"生成Dlg{uiName} 完毕!!!");
 			return;
 		}
 		else if(uiName.StartsWith("ES"))
 		{
-			Debug.LogWarning($"开始生成子UI: {uiName}");
+			Debug.LogWarning($"-------- 开始生成子UI: {uiName} 相关代码 -------------");
 			SpawnSubUICode(go);
+			Debug.LogWarning($"生成子UI: {uiName} 完毕!!!");
 			return;
 		}
 		else if (uiName.StartsWith("Item_"))
 		{
-			Debug.LogWarning($"开始生成滚动列表项: {uiName}");
+			Debug.LogWarning($"-------- 开始生成滚动列表项: {uiName} 相关代码 -------------");
 			SpawnLoopItemCode(go);
+			Debug.LogWarning($" 开始生成滚动列表项: {uiName} 完毕！！！");
 			return;
 		}
 		
@@ -511,9 +514,13 @@ public partial class UICodeSpawner
 					{
 						continue;
 					}
-					if ( Path2WidgetCachedDict.ContainsKey(child.name) )
+					if ( Path2WidgetCachedDict.ContainsKey(child.name)  )
 					{
-						Debug.LogWarning("预设物可能存在重复的物体名： " + strTemp );
+						string existComponent = Path2WidgetCachedDict[child.name].GetType().ToString();
+						if (!existComponent.Equals("UnityEngine.UI.Button"))
+						{
+							Debug.LogWarning("预设物可能存在重复的物体名： " + strTemp );
+						}
 						continue;
 					}
 					Path2WidgetCachedDict.Add(child.name, component);
