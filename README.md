@@ -6,7 +6,9 @@
 
 - [02-EUI的公共UI的创建与使用](https://www.bilibili.com/video/BV1VP4y137Ah?share_source=copy_web)   
 
-- [03-EUI的循环列表的创建与使用](https://www.bilibili.com/video/BV1UF411z7uu?share_source=copy_web) 
+- [03-EUI的循环列表的创建与使用](https://www.bilibili.com/video/BV1UF411z7uu?share_source=copy_web)   
+
+- [04-EUI的红点组件的创建与使用](https://www.bilibili.com/video/BV1KL4y1p7eh?share_source=copy_web) 
 
 #### 使用方式
 
