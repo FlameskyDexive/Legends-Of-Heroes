@@ -7,7 +7,7 @@ namespace ET
             Scene zoneScene = args.ZoneScene;
             zoneScene.AddComponent<UIComponent>();
             zoneScene.AddComponent<RedDotComponent>();
-            UIComponent.Instance.ShowWindow(WindowID.WindowID_Test);
+            UIComponent.Instance.ShowWindow(WindowID.WindowID_RedDot);
             await ETTask.CompletedTask;
         }
     }
