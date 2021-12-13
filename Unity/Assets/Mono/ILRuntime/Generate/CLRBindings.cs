@@ -30,12 +30,11 @@ namespace ILRuntime.Runtime.Generated
             System_IDisposable_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding.Register(app);
             ET_TimeHelper_Binding.Register(app);
-            ET_AsyncETVoidMethodBuilder_Binding.Register(app);
+            ET_ETAsyncTaskMethodBuilder_Binding.Register(app);
             ET_Log_Binding.Register(app);
             System_String_Binding.Register(app);
             ET_ETTask_1_Boolean_Binding.Register(app);
             ET_ETTask_1_Int32_Binding.Register(app);
-            ET_ETAsyncTaskMethodBuilder_Binding.Register(app);
             ET_ETTask_1_ILTypeInstance_Binding.Register(app);
             ET_ETTask_Binding.Register(app);
             ET_NetworkHelper_Binding.Register(app);
@@ -67,7 +66,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
-            ET_ETVoid_Binding.Register(app);
             System_Type_Binding.Register(app);
             System_Collections_Generic_HashSet_1_Type_Binding.Register(app);
             System_Collections_Generic_HashSet_1_Type_Binding_Enumerator_Binding.Register(app);
@@ -111,6 +109,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_AnimationClip_Binding.Register(app);
             UnityEngine_UI_Text_Binding.Register(app);
             UnityEngine_UI_LoopScrollRect_Binding.Register(app);
+            UnityEngine_Vector2_Binding.Register(app);
             ReferenceCollector_Binding.Register(app);
             UnityEngine_U2D_SpriteAtlas_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Sprite_Binding.Register(app);
@@ -191,7 +190,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_KeyValuePair_2_Int64_List_1_Int64_Binding.Register(app);
             ET_MultiMap_2_Int64_Int64_Binding.Register(app);
             System_Collections_Generic_List_1_Int64_Binding_Enumerator_Binding.Register(app);
-            UnityEngine_Vector2_Binding.Register(app);
             UnityEngine_Mathf_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
