@@ -21,19 +21,19 @@ namespace ET
 		public static void ShowWindow(this DlgRedDot self, Entity contextData = null)
 		{
 			//生成根节点逻辑层
-			RedDotHelper.AddRodDotNode(self.ZoneScene(),"Root",self.View.EButton_root.name,true);
+			RedDotHelper.AddRedDotNode(self.ZoneScene(),"Root",self.View.EButton_root.name,true);
 			
 			//生成背包和邮箱节点逻辑层
-			RedDotHelper.AddRodDotNode(self.ZoneScene(),self.View.EButton_root.name,self.View.EButton_Bag.name,true);
-			RedDotHelper.AddRodDotNode(self.ZoneScene(),self.View.EButton_root.name,self.View.EButton_Mail.name,true);
+			RedDotHelper.AddRedDotNode(self.ZoneScene(),self.View.EButton_root.name,self.View.EButton_Bag.name,true);
+			RedDotHelper.AddRedDotNode(self.ZoneScene(),self.View.EButton_root.name,self.View.EButton_Mail.name,true);
 			
 			//生成背包子节点 逻辑层
-			RedDotHelper.AddRodDotNode(self.ZoneScene(),self.View.EButton_Bag.name,self.View.EButton_BagNode1.name,true);
-			RedDotHelper.AddRodDotNode(self.ZoneScene(),self.View.EButton_Bag.name,self.View.EButton_BagNode2.name,true);	
+			RedDotHelper.AddRedDotNode(self.ZoneScene(),self.View.EButton_Bag.name,self.View.EButton_BagNode1.name,true);
+			RedDotHelper.AddRedDotNode(self.ZoneScene(),self.View.EButton_Bag.name,self.View.EButton_BagNode2.name,true);	
 			
 			//生成邮箱子节点 逻辑层
-			RedDotHelper.AddRodDotNode(self.ZoneScene(),self.View.EButton_Mail.name,self.View.EButton_MailNode1.name,true);
-			RedDotHelper.AddRodDotNode(self.ZoneScene(),self.View.EButton_Mail.name,self.View.EButton_MailNode2.name,false);
+			RedDotHelper.AddRedDotNode(self.ZoneScene(),self.View.EButton_Mail.name,self.View.EButton_MailNode1.name,true);
+			RedDotHelper.AddRedDotNode(self.ZoneScene(),self.View.EButton_Mail.name,self.View.EButton_MailNode2.name,false);
 
 			
 			//为根节点添加显示层

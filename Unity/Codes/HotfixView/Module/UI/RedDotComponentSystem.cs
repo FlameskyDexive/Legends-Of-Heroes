@@ -32,7 +32,7 @@ namespace ET
 
     public static class RedDotComponentSystem
     {
-        public static void AddRodDotNode(this RedDotComponent self, string parent, string target, bool isNeedShowNum)
+        public static void AddRedDotNode(this RedDotComponent self, string parent, string target, bool isNeedShowNum)
         {
             if (string.IsNullOrEmpty(target))
             {

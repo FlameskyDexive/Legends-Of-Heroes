@@ -11,7 +11,7 @@ namespace ET
         /// <param name="parent"></param>
         /// <param name="target"></param>
         /// <param name="isNeedShowNum"></param>
-        public static void AddRodDotNode(Scene ZoneScene, string parent, string target,bool isNeedShowNum)
+        public static void AddRedDotNode(Scene ZoneScene, string parent, string target,bool isNeedShowNum)
         {
             RedDotComponent RedDotComponent = ZoneScene.GetComponent<RedDotComponent>();
             if (RedDotComponent == null)
@@ -24,7 +24,7 @@ namespace ET
                 Log.Warning("Runtime动态添加的红点，其父节点是新节点： " + parent);
             }
 
-            RedDotComponent.AddRodDotNode(parent, target, isNeedShowNum);
+            RedDotComponent.AddRedDotNode(parent, target, isNeedShowNum);
         }
         
         /// <summary>
