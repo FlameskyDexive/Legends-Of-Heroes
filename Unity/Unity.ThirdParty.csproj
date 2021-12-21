@@ -61,6 +61,7 @@
      <Compile Include="Assets\ThirdParty\protobuf-net\Serializers\GuidSerializer.cs" />
      <Compile Include="Assets\ThirdParty\ShareLib\Kcp\Kcp.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Mono.Cecil\Mono.Cecil\IMemberDefinition.cs" />
+     <Compile Include="Assets\ThirdParty\ILRuntime\CLR\Method\IMethodExtensions.cs" />
      <Compile Include="Assets\ThirdParty\protobuf-net\BufferPool.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Debugger\DebuggerServer\DebuggerServer.cs" />
      <Compile Include="Assets\ThirdParty\ILRuntime\Runtime\Debugger\StackFrameInfo.cs" />
