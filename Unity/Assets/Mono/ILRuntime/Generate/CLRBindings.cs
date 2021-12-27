@@ -89,6 +89,12 @@ namespace ILRuntime.Runtime.Generated
             System_Exception_Binding.Register(app);
             ET_TimeInfo_Binding.Register(app);
             ET_RpcException_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_String_Int64_Binding.Register(app);
+            System_Func_2_String_Byte_Array_Binding.Register(app);
+            ET_Recast_Binding.Register(app);
+            ET_MathHelper_Binding.Register(app);
+            UnityEngine_Mathf_Binding.Register(app);
+            ET_StringHelper_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Object_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_String_Object_Binding.Register(app);
@@ -190,7 +196,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_KeyValuePair_2_Int64_List_1_Int64_Binding.Register(app);
             ET_MultiMap_2_Int64_Int64_Binding.Register(app);
             System_Collections_Generic_List_1_Int64_Binding_Enumerator_Binding.Register(app);
-            UnityEngine_Mathf_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Queue_1_ValueTuple_3_Int32_Int64_Int32_Binding.Register(app);
@@ -201,7 +206,6 @@ namespace ILRuntime.Runtime.Generated
             ET_MultiMap_2_Int64_ILTypeInstance_Binding.Register(app);
             System_IO_Stream_Binding.Register(app);
             ET_ByteHelper_Binding.Register(app);
-            ET_StringHelper_Binding.Register(app);
             System_ValueTuple_2_UInt16_MemoryStream_Binding.Register(app);
             System_Collections_Generic_HashSet_1_UInt16_Binding.Register(app);
             ET_ILog_Binding.Register(app);
@@ -212,6 +216,7 @@ namespace ILRuntime.Runtime.Generated
             System_Action_1_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_Int64_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_List_1_ILTypeInstance_Binding.Register(app);
+            System_Single_Binding.Register(app);
             UnityEngine_Networking_UnityWebRequest_Binding.Register(app);
             ET_AcceptAllCertificate_Binding.Register(app);
             System_Collections_Generic_List_1_UnityWebRequest_Binding.Register(app);
