@@ -10,7 +10,6 @@ namespace ET
 		{
 			UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
 			Unit unit = unitComponent.AddChildWithId<Unit, int>(IdGenerater.Instance.GenerateId(), 1001);
-			unit.Type = UnitType.Player;
 			unit.AddComponent<MoveComponent>();
 			unit.AddComponent<PathfindingComponent, string>("solo");
 			unit.Position = new Vector3(-10, 0, -10);
@@ -24,7 +23,7 @@ namespace ET
 			unit.AddComponent<UnitGateComponent, long>(request.GateSessionId);
 			unitComponent.Add(unit);
 			// 加入aoi
-			unit.AddComponent<AOIEntity, int, Vector3>(15, unit.Position);
+			unit.AddComponent<AOIEntity, int, Vector3>(9 * 1000, unit.Position);
 
 			M2C_CreateUnits m2CCreateUnits = new M2C_CreateUnits();
 			m2CCreateUnits.Units.Add(UnitHelper.CreateUnitInfo(unit));
