@@ -107,6 +107,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_1_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Threading_Monitor_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Int64_Binding.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\WChannel.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Type_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding_t2.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Type_Binding.cs" />
@@ -282,6 +283,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ProtoBuf_Meta_RuntimeTypeModel_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_ILTypeInstance_Binding_Enumerator_B.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_Object_Binding.cs" />
+     <Compile Include="Assets\Mono\Module\NetworkTCP\WService.cs" />
      <Compile Include="Assets\Mono\Module\Network\KService.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_Recast_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Transform_Binding.cs" />
