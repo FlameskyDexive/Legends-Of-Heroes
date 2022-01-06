@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-	public  class DlgRedDot :Entity
+	public  class DlgRedDot :Entity,IAwake
 	{
 
 		public DlgRedDotViewComponent View { get => this.Parent.GetComponent<DlgRedDotViewComponent>();}

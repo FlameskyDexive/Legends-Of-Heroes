@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ET
 {
-    public class RedDotComponent: Entity
+    public class RedDotComponent: Entity,IAwake,IDestroy
     {
         public Dictionary<string,  ListComponent<string>  > RedDotNodeParentsDict = new Dictionary<string, ListComponent<string>>();
 

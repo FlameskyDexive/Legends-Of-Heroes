@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	public  class DlgLoginViewComponent : Entity 
+	public  class DlgLoginViewComponent : Entity ,IDestroy,IAwake
 	{
 		public UnityEngine.UI.Button EButton_LoginBtn
      	{

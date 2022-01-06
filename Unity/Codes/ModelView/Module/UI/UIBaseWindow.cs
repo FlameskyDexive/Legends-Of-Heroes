@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class UIBaseWindow : Entity
+    public class UIBaseWindow : Entity,IAwake
     {
         public bool IsPreLoad
         {

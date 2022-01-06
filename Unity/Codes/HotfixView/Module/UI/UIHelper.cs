@@ -99,7 +99,7 @@ namespace ET
         }
         
         
-        public static void AddUIScrollItems<T>(this Entity self, ref Dictionary<int, T> dictionary, int count)  where T : Entity 
+        public static void AddUIScrollItems<T>(this Entity self, ref Dictionary<int, T> dictionary, int count)  where T : Entity,IAwake
         {
             if (dictionary == null)
             {

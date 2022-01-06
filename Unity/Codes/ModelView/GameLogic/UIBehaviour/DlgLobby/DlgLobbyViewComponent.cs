@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	public  class DlgLobbyViewComponent : Entity 
+	public  class DlgLobbyViewComponent : Entity ,IDestroy,IAwake
 	{
 		public UnityEngine.RectTransform EGBackGround
      	{

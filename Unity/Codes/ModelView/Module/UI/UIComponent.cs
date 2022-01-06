@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public class UIComponent : Entity
+    public class UIComponent : Entity,IAwake,IDestroy
     {
         public  static UIComponent Instance                    = null;
         public HashSet<WindowID> LoadingWindows                = new HashSet<WindowID>();

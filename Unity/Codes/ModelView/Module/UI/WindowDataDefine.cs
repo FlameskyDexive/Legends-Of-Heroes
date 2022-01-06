@@ -13,7 +13,7 @@ namespace ET
         Other,      //其他窗口
     }
     
-    public class WindowCoreData : Entity
+    public class WindowCoreData : Entity,IAwake
     {
         public UIWindowType windowType = UIWindowType.Normal;
     }

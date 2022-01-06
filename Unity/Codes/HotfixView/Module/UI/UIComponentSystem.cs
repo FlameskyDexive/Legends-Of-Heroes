@@ -12,16 +12,7 @@ namespace ET
             self.Init();
         }
     }
-    
-    [ObjectSystem]
-    public class UIComponentUpdateSystem : UpdateSystem<UIComponent>
-    {
-        public override void Update(UIComponent self)
-        {
-          
-        }
-    }
-    
+
     [ObjectSystem]
     public class UIComponentDestroySystem : DestroySystem<UIComponent>
     {
