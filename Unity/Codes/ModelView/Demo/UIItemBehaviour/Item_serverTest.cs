@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	public  class Scroll_Item_serverTest : Entity ,IDestroy,IAwake
+	public  class Scroll_Item_serverTest : Entity ,IAwake,IDestroy
 	{
 		private bool isCacheNode = true;
 		public void SetCacheMode(bool isCache)

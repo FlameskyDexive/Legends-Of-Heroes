@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
-    public static class UIHelper
+    public static class EUIHelper
     {
         
   #region UI辅助方法

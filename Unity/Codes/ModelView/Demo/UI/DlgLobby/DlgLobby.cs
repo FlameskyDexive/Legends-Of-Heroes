@@ -2,7 +2,7 @@
 
 namespace ET
 {
-	public  class DlgLobby :Entity,IAwake
+	public  class DlgLobby :Entity,IAwake,IDestroy
 	{
 
 		public DlgLobbyViewComponent View { get => this.Parent.GetComponent<DlgLobbyViewComponent>();}
