@@ -31,10 +31,11 @@ namespace ET
 		
 		public static void OnLoginClickHandler(this DlgLogin self)
 		{
-			UIComponent.Instance.CloseWindow(WindowID.WindowID_Login);
-			UIComponent.Instance.ShowWindow(WindowID.WindowID_Test);
-			
-			//LoginHelper.Login(self.DomainScene(), ConstValue.LoginAddress, self.View.EInput_Account.text , self.View.EInput_Password.text).Coroutine();
+			LoginHelper.Login(
+				self.DomainScene(), 
+				ConstValue.LoginAddress, 
+				self.View.EInput_Account.GetComponent<InputField>().text, 
+				self.View.EInput_Password.GetComponent<InputField>().text).Coroutine();
 		}
 
 		public static void OnRefreshItemHandler(this DlgLogin self,Transform transform,int index)
@@ -53,11 +54,10 @@ namespace ET
 		{
 			self.RemoveUIScrollItems(ref self.ItemsDictionary);
 		}
-
-
+		
 		public static void OnScrollItemClickHandler(this DlgLogin self,int index)
 		{
-			
+			Log.Debug(index.ToString());
 		}
 		
 	}

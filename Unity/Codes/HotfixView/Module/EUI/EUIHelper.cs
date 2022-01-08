@@ -199,10 +199,8 @@ namespace ET
         public static void RegisterCloseEvent(this Entity self,Button closeButton) 
         {
             closeButton.onClick.RemoveAllListeners();
-            closeButton.onClick.AddListener(() => { UIComponent.Instance?.HideWindow(self.GetParent<UIBaseWindow>().WindowID); });
+            closeButton.onClick.AddListener(() => { self.DomainScene().GetComponent<UIComponent>().HideWindow(self.GetParent<UIBaseWindow>().WindowID); });
         }
-        
-        
         #endregion
         
     }

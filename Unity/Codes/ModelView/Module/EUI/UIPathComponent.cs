@@ -1,0 +1,13 @@
+﻿using System.Collections.Generic;
+
+namespace ET
+{
+    public class UIPathComponent : Entity,IAwake,IDestroy
+    {
+        public static UIPathComponent Instance { get; set; }
+
+        public  Dictionary<int, string> WindowPrefabPath = new Dictionary<int, string>();
+        
+        public  Dictionary<string,int> WindowTypeIdDict = new Dictionary<string, int>();
+    }
+}

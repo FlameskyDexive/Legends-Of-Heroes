@@ -13,7 +13,7 @@ namespace ET
 		{
 		  self.View.EButton_EnterMap.AddListener(()=>
 		  {
-			  self.OnEnterMapClickHandler();
+			  self.OnEnterMapClickHandler().Coroutine();
 		  });
 		
 		}
@@ -28,9 +28,9 @@ namespace ET
 
 		}
 		
-		public static void OnEnterMapClickHandler(this DlgLobby self)
+		public static async ETTask OnEnterMapClickHandler(this DlgLobby self)
 		{
-			EnterMapHelper.EnterMapAsync(self.ZoneScene()).Coroutine();
+			await EnterMapHelper.EnterMapAsync(self.ZoneScene());
 		}
 	}
 }

@@ -9,10 +9,10 @@ namespace ET
     {
         public override void Awake(UIComponent self)
         {
-            self.Init();
+            self.Awake();
         }
     }
-
+    
     [ObjectSystem]
     public class UIComponentDestroySystem : DestroySystem<UIComponent>
     {
@@ -24,15 +24,7 @@ namespace ET
     
     public static class UIComponentSystem
     {
-        public static void Init(this UIComponent self)
-        {
-            UIComponent.Instance = self;
-            self.InitWindowManager();
-            self.InitWindowControl();
-            self.InitUIEventHandler();
-        }
-        
-        private static void InitWindowManager(this UIComponent self)
+        public static void Awake(this UIComponent self)
         {
             if (null != self.AllWindowsDic)
             {
@@ -51,31 +43,6 @@ namespace ET
                 self.HideWindowsStack.Clear();
             }
         }
-        
-        private static void InitWindowControl(this UIComponent self)
-        {
-            self.ManagedWindowIds.Clear();
-            UIGlobalDefine.WindowPrefabPath.Clear();
-            UIGlobalDefine.WindowTypeIdDict.Clear();
-            foreach (WindowID windowID in Enum.GetValues(typeof(WindowID)))
-            {
-                string dlgName = "Dlg" + windowID.ToString().Split('_')[1];
-                UIGlobalDefine.WindowPrefabPath.Add((int)windowID , dlgName);
-                UIGlobalDefine.WindowTypeIdDict.Add(dlgName, (int)windowID );
-                self.ManagedWindowIds.Add((int)windowID);
-            }
-        }
-        
-        private static void InitUIEventHandler(this UIComponent self)
-        {
-            self.UIEventHandlers.Clear();
-            foreach (Type v in Game.EventSystem.GetTypes(typeof (AUIEventAttribute)))
-            {
-                AUIEventAttribute attr = v.GetCustomAttributes(typeof (AUIEventAttribute), false)[0] as AUIEventAttribute;
-                self.UIEventHandlers.Add(attr.WindowID, Activator.CreateInstance(v) as IAUIEventHandler);
-            }
-        }
-        
         
         /// <summary>
         /// 窗口是否是正在显示的 
@@ -234,21 +201,23 @@ namespace ET
         /// 卸载指定的UI窗口实例
         /// </summary>
         /// <OtherParam name="id"></OtherParam>
-        public static void UnLoadWindow(this UIComponent self,WindowID id)
+        public static void UnLoadWindow(this UIComponent self,WindowID id,bool isDispose = true)
         {
             UIBaseWindow baseWindow = self.GetUIBaseWindow(id);
-            if (null != baseWindow)
+            if (null == baseWindow)
             {
-                self.GetUIEventHandler(id).BeforeUnload(baseWindow);
-                if(baseWindow.IsPreLoad)
-                {
-                    if (null != baseWindow.m_uiPrefabGameObject)
-                    {
-                        Game.Scene.GetComponent<ResourcesComponent>()?.UnloadBundle(baseWindow.m_uiPrefabGameObject.name.StringToAB());
-                        UnityEngine.Object.Destroy( baseWindow.m_uiPrefabGameObject);
-                        baseWindow.m_uiPrefabGameObject = null;
-                    }
-                }
+              Log.Error($"UIBaseWindow WindowId {id} is null!!!");
+              return;
+            }
+            UIEventComponent.Instance.GetUIEventHandler(id).BeforeUnload(baseWindow);
+            if(baseWindow.IsPreLoad)
+            {
+                Game.Scene.GetComponent<ResourcesComponent>()?.UnloadBundle(baseWindow.UIPrefabGameObject.name.StringToAB());
+                UnityEngine.Object.Destroy( baseWindow.UIPrefabGameObject);
+                baseWindow.UIPrefabGameObject = null;
+            }
+            if (isDispose)
+            {
                 self.AllWindowsDic.Remove((int) id);
                 self.VisibleWindowsDic.Remove((int) id);
                 self.VisibleWindowsQueue.Remove(id);
@@ -264,149 +233,39 @@ namespace ET
 
         private static  UIBaseWindow  ReadyToShowBaseWindow(this UIComponent self,WindowID id, ShowWindowData showData = null)
         {
-            // 检查状态
-            if (!self.IsWindowInControl(id))
-            {
-                return null;
-            }
-
             UIBaseWindow baseWindow = self.GetUIBaseWindow(id);
             // 如果UI不存在开始实例化新的窗口
             if (null == baseWindow)
             {
-                if (UIGlobalDefine.WindowPrefabPath.ContainsKey((int)id))
-                {
-                    baseWindow = self.AddChild<UIBaseWindow>();
-                    baseWindow.WindowID = id;
-                    baseWindow.Load();
-                    self.GetUIEventHandler(id).OnInitWindowCoreData(baseWindow);
-                    self.GetUIEventHandler(id).OnInitComponent(baseWindow);
-                    self.GetUIEventHandler(id).OnRegisterUIEvent(baseWindow);
-                    if (baseWindow.IsPreLoad)
-                    {
-                        if (baseWindow.WindowID != id)
-                        {
-                            Debug.LogError(string.Format("<color=cyan>[BaseWindowId :{0} != shownWindowId :{1}]</color>", baseWindow.WindowID, id));
-                            return null;
-                        }
-                       
-                        // 设置根节点
-                        baseWindow.SetRoot(self.GetTargetRoot(baseWindow.WindowData.windowType));
-                        self.AllWindowsDic[(int)id] = baseWindow;
-                    }
-                }
-            }
-            else
-            {
-                if (!baseWindow.IsPreLoad)
-                {
-                    baseWindow.Load();
-                    self.GetUIEventHandler(id).OnInitWindowCoreData(baseWindow);
-                    self.GetUIEventHandler(id).OnInitComponent(baseWindow);
-                    self.GetUIEventHandler(id).OnRegisterUIEvent(baseWindow);
-                    baseWindow.SetRoot(self.GetTargetRoot(baseWindow.WindowData.windowType));
-                    self.AllWindowsDic[(int)id] = baseWindow;
-                }
-
-            }
-            if (baseWindow == null)
-            {
-                Debug.LogError("[window m_singleton is null.]" + id.ToString());
-                return null;
+                baseWindow = self.AddChild<UIBaseWindow>();
+                baseWindow.WindowID = id;
+                self.LoadBaseWindows(baseWindow);
             }
             
-            // 改变层级关系
-            if (baseWindow.uiTransform != null)
+            if (!baseWindow.IsPreLoad)
             {
-                baseWindow.uiTransform.SetAsLastSibling();
+                self.LoadBaseWindows(baseWindow);
             }
-            //baseWindow.uiTransform.SetAsLastSibling();
             return baseWindow;
         }
 
         private static async ETTask<UIBaseWindow> ShowBaseWindowAsync(this UIComponent self,WindowID id, ShowWindowData showData = null)
         {
-            // 检查状态
-            if (!self.IsWindowInControl(id))
-            {
-                return null;
-            }
-
             UIBaseWindow baseWindow = self.GetUIBaseWindow(id);
             if (null == baseWindow)
             {
-                if (UIGlobalDefine.WindowPrefabPath.ContainsKey((int)id))
+                if (UIPathComponent.Instance.WindowPrefabPath.ContainsKey((int)id))
                 {
-                    self.LoadingWindows.Add(id);
                     baseWindow          = self.AddChild<UIBaseWindow>();
                     baseWindow.WindowID = id;
-                    baseWindow.WindowID = id;
-                    await baseWindow.LoadAsync();
-                    self.GetUIEventHandler(id).OnInitWindowCoreData(baseWindow);
-                    self.GetUIEventHandler(id).OnInitComponent(baseWindow);
-                    self.GetUIEventHandler(id).OnRegisterUIEvent(baseWindow);
-                    if (baseWindow.IsPreLoad)
-                    {
-                        if (baseWindow.WindowID != id)
-                        {
-                            Debug.LogError(string.Format("<color=cyan>[BaseWindowId :{0} != shownWindowId :{1}]</color>", baseWindow.WindowID, id));
-                            return null;
-                        }
-                        // 设置根节点
-                        baseWindow.SetRoot(self.GetTargetRoot(baseWindow.WindowData.windowType));
-                        self.AllWindowsDic[(int)id] = baseWindow;
-                    }
-                    self.LoadingWindows.Remove(id);
+                    await self.LoadBaseWindowsAsync(baseWindow);
                 }
             }
-            else
+            if (!baseWindow.IsPreLoad)
             {
-                if (!baseWindow.IsPreLoad)
-                {
-                    await baseWindow.LoadAsync();
-                    self.GetUIEventHandler(id).OnInitWindowCoreData(baseWindow);
-                    self.GetUIEventHandler(id).OnInitComponent(baseWindow);
-                    self.GetUIEventHandler(id).OnRegisterUIEvent(baseWindow);
-                    baseWindow.SetRoot(self.GetTargetRoot(baseWindow.WindowData.windowType));
-                    self.AllWindowsDic[(int)id] = baseWindow;
-                }
-            }
-            if (baseWindow == null)
-            {
-                Debug.LogError("[window m_singleton is null.]" + id.ToString());
-                return null;
-            }
-            
-            // 改变层级关系
-            if (baseWindow.uiTransform != null)
-            {
-                baseWindow.uiTransform.SetAsLastSibling();
+                await self.LoadBaseWindowsAsync(baseWindow);
             }
             return baseWindow;
-        }
-        
-
-        private static Transform GetTargetRoot(this UIComponent self,UIWindowType type)
-        {
-            if (type == UIWindowType.Normal)
-            {
-                return Game.Scene.GetComponent<GlobalComponent>().NormalRoot;
-            }
-            else if (type == UIWindowType.Fixed)
-            {
-                return Game.Scene.GetComponent<GlobalComponent>().FixedRoot;
-            }
-            else if (type == UIWindowType.PopUp)
-            {
-                return Game.Scene.GetComponent<GlobalComponent>().PopUpRoot;
-            }
-            else if (type == UIWindowType.Other)
-            {
-                return Game.Scene.GetComponent<GlobalComponent>().OtherRoot;
-            }
-
-            Log.Error("uiroot type is error: " + type.ToString());
-            return null;
         }
         
         public static void Destroy(this UIComponent self)
@@ -416,10 +275,6 @@ namespace ET
 
         private static UIBaseWindow GetUIBaseWindow(this UIComponent self,WindowID id)
         {
-            if ( !self.IsWindowInControl(id) )
-            {
-                return null;
-            }
             if (self.AllWindowsDic.ContainsKey((int)id))
             {
                 return self.AllWindowsDic[(int)id];
@@ -456,7 +311,7 @@ namespace ET
         
         public static WindowID GetWindowIdByGeneric<T>(this UIComponent self) where  T : Entity
         {
-            if ( UIGlobalDefine.WindowTypeIdDict.TryGetValue(typeof(T).Name,out int windowsId) )
+            if ( UIPathComponent.Instance.WindowTypeIdDict.TryGetValue(typeof(T).Name,out int windowsId) )
             {
                 return (WindowID)windowsId;
             }
@@ -466,12 +321,6 @@ namespace ET
         
         public static void CloseWindow(this UIComponent self,WindowID windowId)
         {
-            if (!self.IsWindowInControl(windowId))
-            {
-                Debug.LogError("## Current UI Manager has no control power of " + windowId.ToString());
-                return;
-            }
-
             if (!self.VisibleWindowsDic.ContainsKey((int)windowId))
             {
                 return;
@@ -491,19 +340,27 @@ namespace ET
         {
             if (self.AllWindowsDic != null)
             {
-                foreach (KeyValuePair<int, UIBaseWindow> window in self.AllWindowsDic)
-                {
-                    UIBaseWindow baseWindow = window.Value;
-                    self.GetUIEventHandler(baseWindow.WindowID).BeforeUnload(baseWindow);
-                    (baseWindow as Entity)?.Dispose();
-                }
-                self.AllWindowsDic.Clear();
-                self.VisibleWindowsDic.Clear();
-                self.LoadingWindows.Clear();
-                self.VisibleWindowsQueue.Clear();
-                self.HideWindowsStack.Clear();
+                return;
             }
+            foreach (KeyValuePair<int, UIBaseWindow> window in self.AllWindowsDic)
+            {
+                UIBaseWindow baseWindow = window.Value;
+                if (baseWindow == null)
+                {
+                    continue;
+                }
+                self.HideWindow(baseWindow.WindowID);
+                self.UnLoadWindow(baseWindow.WindowID,false);
+                baseWindow?.Dispose();
+            }
+            self.AllWindowsDic.Clear();
+            self.VisibleWindowsDic.Clear();
+            self.LoadingWindows.Clear();
+            self.VisibleWindowsQueue.Clear();
+            self.HideWindowsStack.Clear();
+            self.UIBaseWindowlistCached.Clear();
         }
+        
         public static void HideAllShownWindow(this UIComponent self,bool includeFixed = false)
         {
             self.UIBaseWindowlistCached.Clear();
@@ -512,12 +369,8 @@ namespace ET
                 if (window.Value.WindowData.windowType == UIWindowType.Fixed && !includeFixed)
                     continue;
                 self.UIBaseWindowlistCached.Add((WindowID)window.Key);
-                
-                if (null != window.Value.m_uiPrefabGameObject)
-                {
-                    window.Value.m_uiPrefabGameObject.SetActive(false);
-                }
-                self.GetUIEventHandler(window.Value.WindowID).OnHideWindow(window.Value);
+                window.Value.UIPrefabGameObject?.SetActive(false);
+                UIEventComponent.Instance.GetUIEventHandler(window.Value.WindowID).OnHideWindow(window.Value);
             }
             if (self.UIBaseWindowlistCached.Count > 0)
             {
@@ -538,11 +391,8 @@ namespace ET
             }
             
             Entity contextData = showData == null ? null : showData.contextData;
-            if (null != baseWindow.m_uiPrefabGameObject)
-            {
-                baseWindow.m_uiPrefabGameObject.SetActive(true);
-            }
-            self.GetUIEventHandler(id).OnShowWindow(baseWindow,showData);
+            baseWindow.UIPrefabGameObject?.SetActive(true);
+            UIEventComponent.Instance.GetUIEventHandler(id).OnShowWindow(baseWindow,contextData);
             
             self.VisibleWindowsDic[(int)id] = baseWindow;
             if (preWindowID != WindowID.WindowID_Invaild)
@@ -555,43 +405,73 @@ namespace ET
         
         private static bool CheckDirectlyHide(this UIComponent self,WindowID id)
         {
-            if (!self.IsWindowInControl(id))
-            {
-                Debug.Log("## Current UI Manager has no control power of " + id.ToString());
-                return false;
-            }
-            
             if (!self.VisibleWindowsDic.ContainsKey((int)id))
             {
                 return false;
             }
 
             UIBaseWindow baseWindow = self.VisibleWindowsDic[(int)id];
-            if (null != baseWindow.m_uiPrefabGameObject)
-            {
-                baseWindow.m_uiPrefabGameObject.SetActive(false);
-            }
+            baseWindow.UIPrefabGameObject?.SetActive(false);
           
-            self.GetUIEventHandler(id).OnHideWindow(baseWindow);
+            UIEventComponent.Instance.GetUIEventHandler(id).OnHideWindow(baseWindow);
             self.VisibleWindowsDic.Remove((int)id);
             self.VisibleWindowsQueue.Remove(id);
             return true;
         }
         
-        private static bool IsWindowInControl(this UIComponent self,WindowID id)
+        /// <summary>
+        /// 同步加载
+        /// </summary>
+        private static void LoadBaseWindows(this UIComponent self,  UIBaseWindow baseWindow)
         {
-            return self.ManagedWindowIds.Contains((int)id);
-        }
-        
-        public static IAUIEventHandler GetUIEventHandler(this UIComponent self,WindowID windowID)
-        {
-            if (self.UIEventHandlers.TryGetValue(windowID, out IAUIEventHandler handler))
+            if ( !UIPathComponent.Instance.WindowPrefabPath.TryGetValue((int)baseWindow.WindowID,out string value) )
             {
-                return handler;
+                Log.Error($"{baseWindow.WindowID} uiPath is not Exist!");
+                return;
             }
-            Log.Error($"windowId : {windowID} is not have any uiEvent");
-            return null;
+            ResourcesComponent.Instance.LoadBundle(value.StringToAB());
+            GameObject go                      = ResourcesComponent.Instance.GetAsset(value.StringToAB(), value ) as GameObject;
+            baseWindow.UIPrefabGameObject      = UnityEngine.Object.Instantiate(go);
+            baseWindow.UIPrefabGameObject.name = go.name;
+            
+            baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.WindowData.windowType));
+            baseWindow.uiTransform.SetAsLastSibling();
+            
+            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
+            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
+            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
+            
+            self.AllWindowsDic[(int)baseWindow.WindowID] = baseWindow;
         }
+
+        /// <summary>
+        /// 异步加载
+        /// </summary>
+        private static async ETTask LoadBaseWindowsAsync(this UIComponent self,  UIBaseWindow baseWindow)
+        {
+            
+            if ( !UIPathComponent.Instance.WindowPrefabPath.TryGetValue((int)baseWindow.WindowID,out string value) )
+            {
+                Log.Error($"{baseWindow.WindowID} is not Exist!");
+                return;
+            }
+            self.LoadingWindows.Add(baseWindow.WindowID);
+            await ResourcesComponent.Instance.LoadBundleAsync(value.StringToAB());
+            GameObject go                      = ResourcesComponent.Instance.GetAsset(value.StringToAB(), value ) as GameObject;
+            baseWindow.UIPrefabGameObject      = UnityEngine.Object.Instantiate(go);
+            baseWindow.UIPrefabGameObject.name = go.name;
+            
+            baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.WindowData.windowType));
+            baseWindow.uiTransform.SetAsLastSibling();
+            
+            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
+            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
+            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
+            
+            self.AllWindowsDic[(int)baseWindow.WindowID] = baseWindow;
+            self.LoadingWindows.Remove(baseWindow.WindowID);
+        }
+       
 
     }
 }

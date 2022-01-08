@@ -8,7 +8,7 @@ namespace ET
         {
             get
             {
-                return this.m_uiPrefabGameObject != null ;
+                return this.UIPrefabGameObject != null ;
             }
         }
         
@@ -16,9 +16,9 @@ namespace ET
         {
             get
             {
-                if (null != this.m_uiPrefabGameObject)
+                if (null != this.UIPrefabGameObject)
                 {
-                    return m_uiPrefabGameObject.transform;
+                    return this.UIPrefabGameObject.transform;
                 }
                 return null;
             }
@@ -46,7 +46,7 @@ namespace ET
         public WindowID m_preWindowID = WindowID.WindowID_Invaild;
         public WindowID m_windowID = WindowID.WindowID_Invaild;
         
-        public GameObject m_uiPrefabGameObject = null;
+        public GameObject UIPrefabGameObject = null;
         public WindowCoreData WindowData = null;
     }
 }
