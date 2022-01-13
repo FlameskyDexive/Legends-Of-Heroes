@@ -20,11 +20,6 @@ namespace ET
 
 		public static void ShowWindow(this DlgLobby self, Entity contextData = null)
 		{
-			//调用公共UI
-			self.View.ESReuseUI.TestFunction("进入游戏大厅");
-			
-			//使用无任何组件的 GameObject
-			self.View.EGBackGround.GetComponent<RectTransform>();
 
 		}
 		

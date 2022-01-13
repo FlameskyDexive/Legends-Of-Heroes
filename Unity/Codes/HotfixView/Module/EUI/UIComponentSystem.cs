@@ -209,7 +209,7 @@ namespace ET
               Log.Error($"UIBaseWindow WindowId {id} is null!!!");
               return;
             }
-            UIEventComponent.Instance.GetUIEventHandler(id).BeforeUnload(baseWindow);
+            UIEventComponent.Instance?.GetUIEventHandler(id).BeforeUnload(baseWindow);
             if(baseWindow.IsPreLoad)
             {
                 Game.Scene.GetComponent<ResourcesComponent>()?.UnloadBundle(baseWindow.UIPrefabGameObject.name.StringToAB());
@@ -370,7 +370,7 @@ namespace ET
                     continue;
                 self.UIBaseWindowlistCached.Add((WindowID)window.Key);
                 window.Value.UIPrefabGameObject?.SetActive(false);
-                UIEventComponent.Instance.GetUIEventHandler(window.Value.WindowID).OnHideWindow(window.Value);
+                UIEventComponent.Instance?.GetUIEventHandler(window.Value.WindowID).OnHideWindow(window.Value);
             }
             if (self.UIBaseWindowlistCached.Count > 0)
             {
@@ -392,7 +392,7 @@ namespace ET
             
             Entity contextData = showData == null ? null : showData.contextData;
             baseWindow.UIPrefabGameObject?.SetActive(true);
-            UIEventComponent.Instance.GetUIEventHandler(id).OnShowWindow(baseWindow,contextData);
+            UIEventComponent.Instance?.GetUIEventHandler(id).OnShowWindow(baseWindow,contextData);
             
             self.VisibleWindowsDic[(int)id] = baseWindow;
             if (preWindowID != WindowID.WindowID_Invaild)
@@ -413,7 +413,7 @@ namespace ET
             UIBaseWindow baseWindow = self.VisibleWindowsDic[(int)id];
             baseWindow.UIPrefabGameObject?.SetActive(false);
           
-            UIEventComponent.Instance.GetUIEventHandler(id).OnHideWindow(baseWindow);
+            UIEventComponent.Instance?.GetUIEventHandler(id).OnHideWindow(baseWindow);
             self.VisibleWindowsDic.Remove((int)id);
             self.VisibleWindowsQueue.Remove(id);
             return true;
@@ -437,9 +437,9 @@ namespace ET
             baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.WindowData.windowType));
             baseWindow.uiTransform.SetAsLastSibling();
             
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
+            UIEventComponent.Instance?.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
+            UIEventComponent.Instance?.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
+            UIEventComponent.Instance?.GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
             
             self.AllWindowsDic[(int)baseWindow.WindowID] = baseWindow;
         }
@@ -464,9 +464,9 @@ namespace ET
             baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.WindowData.windowType));
             baseWindow.uiTransform.SetAsLastSibling();
             
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
+            UIEventComponent.Instance?.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
+            UIEventComponent.Instance?.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
+            UIEventComponent.Instance?.GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
             
             self.AllWindowsDic[(int)baseWindow.WindowID] = baseWindow;
             self.LoadingWindows.Remove(baseWindow.WindowID);

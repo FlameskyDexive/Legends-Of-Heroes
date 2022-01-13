@@ -104,9 +104,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_AsyncOperation_Binding.Register(app);
             UnityEngine_SceneManagement_SceneManager_Binding.Register(app);
             UnityEngine_UI_Text_Binding.Register(app);
-            UnityEngine_UI_LoopScrollRect_Binding.Register(app);
             UnityEngine_UI_InputField_Binding.Register(app);
-            System_Int32_Binding.Register(app);
             UnityEngine_Vector2_Binding.Register(app);
             UnityEngine_Animator_Binding.Register(app);
             UnityEngine_RuntimeAnimatorController_Binding.Register(app);
@@ -114,12 +112,11 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_AnimatorControllerParameter_Binding.Register(app);
             System_Collections_Generic_HashSet_1_String_Binding.Register(app);
             UnityEngine_AnimationClip_Binding.Register(app);
+            UnityEngine_UI_LoopScrollRect_Binding.Register(app);
             UnityEngine_UI_Selectable_Binding.Register(app);
             UnityEngine_UI_Toggle_Binding.Register(app);
             System_ValueTuple_2_Int32_Toggle_Binding.Register(app);
             UnityEngine_Events_UnityEvent_1_Boolean_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
-            System_Collections_Generic_KeyValuePair_2_Int32_ILTypeInstance_Binding.Register(app);
             UnityEngine_Events_UnityEventBase_Binding.Register(app);
             UnityEngine_UI_Button_Binding.Register(app);
             UnityEngine_Events_UnityEvent_Binding.Register(app);
@@ -141,6 +138,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Stack_1_Int32_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_ILTypeInstance_Binding.Register(app);
             UnityEngine_Debug_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
+            System_Collections_Generic_KeyValuePair_2_Int32_ILTypeInstance_Binding.Register(app);
             System_Collections_Generic_HashSet_1_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_String_Binding.Register(app);
             System_Enum_Binding.Register(app);
@@ -230,6 +229,7 @@ namespace ILRuntime.Runtime.Generated
             UnityEngine_AssetBundle_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_AssetBundle_Binding.Register(app);
             ET_ETAsyncTaskMethodBuilder_1_Object_Array_Binding.Register(app);
+            System_Int32_Binding.Register(app);
             UnityEngine_AssetBundleCreateRequest_Binding.Register(app);
             ET_ETTask_1_AssetBundle_Binding.Register(app);
             UnityEngine_AssetBundleRequest_Binding.Register(app);

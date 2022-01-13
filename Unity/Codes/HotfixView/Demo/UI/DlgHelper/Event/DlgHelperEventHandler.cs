@@ -1,7 +1,7 @@
 ﻿namespace ET
 {
-	[AUIEvent(WindowID.WindowID_Test)]
-	public  class DlgTestEventHandler : IAUIEventHandler
+	[AUIEvent(WindowID.WindowID_Helper)]
+	public  class DlgHelperEventHandler : IAUIEventHandler
 	{
 
 		public void OnInitWindowCoreData(UIBaseWindow uiBaseWindow)
@@ -11,23 +11,22 @@
 
 		public void OnInitComponent(UIBaseWindow uiBaseWindow)
 		{
-		  uiBaseWindow.AddComponent<DlgTestViewComponent>(); 
-		  uiBaseWindow.AddComponent<DlgTest>(); 
+		  uiBaseWindow.AddComponent<DlgHelperViewComponent>(); 
+		  uiBaseWindow.AddComponent<DlgHelper>(); 
 		}
 
 		public void OnRegisterUIEvent(UIBaseWindow uiBaseWindow)
 		{
-		  uiBaseWindow.GetComponent<DlgTest>().RegisterUIEvent(); 
+		  uiBaseWindow.GetComponent<DlgHelper>().RegisterUIEvent(); 
 		}
 
 		public void OnShowWindow(UIBaseWindow uiBaseWindow, Entity contextData = null)
 		{
-		  uiBaseWindow.GetComponent<DlgTest>().ShowWindow(contextData); 
+		  uiBaseWindow.GetComponent<DlgHelper>().ShowWindow(contextData); 
 		}
 
 		public void OnHideWindow(UIBaseWindow uiBaseWindow)
 		{
-			
 		}
 
 		public void BeforeUnload(UIBaseWindow uiBaseWindow)

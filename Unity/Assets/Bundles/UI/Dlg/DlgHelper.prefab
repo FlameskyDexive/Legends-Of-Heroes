@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 168794662070825854}
   - component: {fileID: 1656523492439578131}
   m_Layer: 5
-  m_Name: DlgTest
+  m_Name: DlgHelper
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 7744778932085017243}
   - component: {fileID: 309125567558803647}
   m_Layer: 0
-  m_Name: ELabel_Test
+  m_Name: ELabel_Tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
