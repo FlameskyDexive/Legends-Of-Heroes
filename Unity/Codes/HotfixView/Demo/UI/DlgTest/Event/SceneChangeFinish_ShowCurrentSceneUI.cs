@@ -6,7 +6,7 @@
         protected override async ETTask Run(EventType.SceneChangeFinish args)
         {
             args.ZoneScene.GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
-            await args.ZoneScene.CurrentScene().GetComponent<UIComponent>().ShowWindowAsync(WindowID.WindowID_Test);
+            await ETTask.CompletedTask;
         }
     }
     

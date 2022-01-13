@@ -18,8 +18,6 @@ namespace ET
 	{
 		public override void Destroy(DlgTestViewComponent self)
 		{
-			self.m_EButton_TestImage = null;
-			self.m_EButton_Test = null;
 			self.m_ELabel_Test = null;
 			self.uiTransform = null;
 		}
