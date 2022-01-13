@@ -172,7 +172,7 @@ namespace ET
         {
             if ( !self.CheckDirectlyHide(id))
             {
-                Log.Error($"检测关闭 WindowsID: {id} 失败！");
+                Log.Warning($"检测关闭 WindowsID: {id} 失败！");
                 return;
             }
 
@@ -338,7 +338,7 @@ namespace ET
         
         public static void ClearAllWindow(this UIComponent self)
         {
-            if (self.AllWindowsDic != null)
+            if (self.AllWindowsDic == null)
             {
                 return;
             }
