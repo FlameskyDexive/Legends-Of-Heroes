@@ -7,14 +7,14 @@ using UnityEngine;
 
 public partial class UICodeSpawner
 {
-    static public void SpawnSubUICode(GameObject go)
+    static public void SpawnSubUICode(GameObject gameObject)
     {
       
         Path2WidgetCachedDict?.Clear();
         Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
-        FindAllWidgets(go.transform, "");
-        SpawnCodeForSubUI(go);
-        SpawnCodeForSubUIBehaviour(go);
+        FindAllWidgets(gameObject.transform, "");
+        SpawnCodeForSubUI(gameObject);
+        SpawnCodeForSubUIBehaviour(gameObject);
         AssetDatabase.Refresh();
     }
     

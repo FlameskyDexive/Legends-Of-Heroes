@@ -11,9 +11,9 @@ using NUnit.Framework;
 
 public partial class UICodeSpawner
 {
-	static public void SpawnEUICode(GameObject go)
+	static public void SpawnEUICode(GameObject gameObject)
 	{
-		if (null == go)
+		if (null == gameObject)
 		{
 			Debug.LogError("UICode Select GameObject is null!");
 			return;
@@ -21,25 +21,25 @@ public partial class UICodeSpawner
 
 		try
 		{
-			string uiName = go.name;
+			string uiName = gameObject.name;
 			if (uiName.StartsWith("Dlg"))
 			{
 				Debug.LogWarning($"----------开始生成Dlg{uiName} 相关代码 ----------");
-				SpawnDlgCode(go);
+				SpawnDlgCode(gameObject);
 				Debug.LogWarning($"生成Dlg{uiName} 完毕!!!");
 				return;
 			}
 			else if(uiName.StartsWith("ES"))
 			{
 				Debug.LogWarning($"-------- 开始生成子UI: {uiName} 相关代码 -------------");
-				SpawnSubUICode(go);
+				SpawnSubUICode(gameObject);
 				Debug.LogWarning($"生成子UI: {uiName} 完毕!!!");
 				return;
 			}
 			else if (uiName.StartsWith("Item_"))
 			{
 				Debug.LogWarning($"-------- 开始生成滚动列表项: {uiName} 相关代码 -------------");
-				SpawnLoopItemCode(go);
+				SpawnLoopItemCode(gameObject);
 				Debug.LogWarning($" 开始生成滚动列表项: {uiName} 完毕！！！");
 				return;
 			}
@@ -53,19 +53,19 @@ public partial class UICodeSpawner
 	}
 	
 	
-    static public void SpawnDlgCode(GameObject go)
+    static public void SpawnDlgCode(GameObject gameObject)
     {
 	    Path2WidgetCachedDict?.Clear();
         Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
         
-		FindAllWidgets(go.transform, "");
+		FindAllWidgets(gameObject.transform, "");
 		
-        SpawnCodeForDlg(go);
-        SpawnCodeForDlgEventHandle(go);
-        SpawnCodeForDlgModel(go);
+        SpawnCodeForDlg(gameObject);
+        SpawnCodeForDlgEventHandle(gameObject);
+        SpawnCodeForDlgModel(gameObject);
         
-        SpawnCodeForDlgBehaviour(go);
-        SpawnCodeForDlgComponentBehaviour(go);
+        SpawnCodeForDlgBehaviour(gameObject);
+        SpawnCodeForDlgComponentBehaviour(gameObject);
         
         AssetDatabase.Refresh();
     }

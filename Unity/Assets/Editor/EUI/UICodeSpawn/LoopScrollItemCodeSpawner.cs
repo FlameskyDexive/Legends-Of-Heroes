@@ -9,23 +9,23 @@ using ET;
 
 public partial class UICodeSpawner
 {
-    static public void SpawnLoopItemCode(GameObject go)
+    static public void SpawnLoopItemCode(GameObject gameObject)
     {
         Path2WidgetCachedDict?.Clear();
         Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
-        FindAllWidgets(go.transform, "");
-        SpawnCodeForScrollLoopItemBehaviour(go);
-        SpawnCodeForScrollLoopItemViewSystem(go);
+        FindAllWidgets(gameObject.transform, "");
+        SpawnCodeForScrollLoopItemBehaviour(gameObject);
+        SpawnCodeForScrollLoopItemViewSystem(gameObject);
         AssetDatabase.Refresh();
     }
     
-    static void SpawnCodeForScrollLoopItemViewSystem(GameObject gameoBject)
+    static void SpawnCodeForScrollLoopItemViewSystem(GameObject gameObject)
     {
-        if (null == gameoBject)
+        if (null == gameObject)
         {
             return;
         }
-        string strDlgName = gameoBject.name;
+        string strDlgName = gameObject.name;
 
         string strFilePath = Application.dataPath + "/../Codes/HotfixView/Demo/UIItemBehaviour";
 
@@ -62,13 +62,13 @@ public partial class UICodeSpawner
     }
     
     
-    static void SpawnCodeForScrollLoopItemBehaviour(GameObject gameoBject)
+    static void SpawnCodeForScrollLoopItemBehaviour(GameObject gameObject)
     {
-        if (null == gameoBject)
+        if (null == gameObject)
         {
             return;
         }
-        string strDlgName = gameoBject.name;
+        string strDlgName = gameObject.name;
 
         string strFilePath = Application.dataPath + "/../Codes/ModelView/Demo/UIItemBehaviour";
 
@@ -100,7 +100,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("\t\t\treturn this;");
         strBuilder.AppendLine("\t\t}\n");
         
-        CreateWidgetBindCode(ref strBuilder, gameoBject.transform);
+        CreateWidgetBindCode(ref strBuilder, gameObject.transform);
         CreateDestroyWidgetCode(ref strBuilder);
         CreateDeclareCode(ref strBuilder);
         
