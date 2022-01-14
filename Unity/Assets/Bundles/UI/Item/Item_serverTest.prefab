@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4348650626819832965}
   - component: {fileID: 8756944548494382604}
   m_Layer: 5
-  m_Name: EImage_serverTest
+  m_Name: EI_serverTest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 415721446094665525}
   - component: {fileID: 4541454996338898173}
   m_Layer: 5
-  m_Name: ELabel_serverTest
+  m_Name: E_serverTestTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

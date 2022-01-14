@@ -5,7 +5,7 @@ namespace ET
 {
 	public  class DlgHelperViewComponent : Entity,IAwake,IDestroy 
 	{
-		public UnityEngine.UI.Text ELabel_Tip
+		public UnityEngine.UI.Text E_TipText
      	{
      		get
      		{
@@ -14,15 +14,15 @@ namespace ET
      				Log.Error("uiTransform is null.");
      				return null;
      			}
-     			if( this.m_ELabel_Tip == null )
+     			if( this.m_E_TipText == null )
      			{
-		    		this.m_ELabel_Tip = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"ELabel_Tip");
+		    		this.m_E_TipText = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"E_Tip");
      			}
-     			return this.m_ELabel_Tip;
+     			return this.m_E_TipText;
      		}
      	}
 
-		public UnityEngine.UI.Text m_ELabel_Tip = null;
+		public UnityEngine.UI.Text m_E_TipText = null;
 		public Transform uiTransform = null;
 	}
 }

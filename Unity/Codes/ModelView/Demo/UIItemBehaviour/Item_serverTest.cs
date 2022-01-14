@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
-	public  class Scroll_Item_serverTest : Entity ,IAwake,IDestroy
+	public  class Scroll_Item_serverTest : Entity,IAwake,IDestroy 
 	{
 		private bool isCacheNode = true;
 		public void SetCacheMode(bool isCache)
@@ -17,7 +17,7 @@ namespace ET
 			return this;
 		}
 
-		public UnityEngine.UI.Image EImage_serverTest
+		public UnityEngine.UI.Image EI_serverTestImage
      	{
      		get
      		{
@@ -28,20 +28,20 @@ namespace ET
      			}
      			if (this.isCacheNode)
      			{
-     				if( this.m_EImage_serverTest == null )
+     				if( this.m_EI_serverTestImage == null )
      				{
-		    			this.m_EImage_serverTest = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"EImage_serverTest");
+		    			this.m_EI_serverTestImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"EI_serverTest");
      				}
-     				return this.m_EImage_serverTest;
+     				return this.m_EI_serverTestImage;
      			}
      			else
      			{
-		    		return UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"EImage_serverTest");
+		    		return UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"EI_serverTest");
      			}
      		}
      	}
 
-		public UnityEngine.UI.Text ELabel_serverTest
+		public UnityEngine.UI.Text E_serverTestTipText
      	{
      		get
      		{
@@ -52,21 +52,21 @@ namespace ET
      			}
      			if (this.isCacheNode)
      			{
-     				if( this.m_ELabel_serverTest == null )
+     				if( this.m_E_serverTestTipText == null )
      				{
-		    			this.m_ELabel_serverTest = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"ELabel_serverTest");
+		    			this.m_E_serverTestTipText = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"E_serverTestTip");
      				}
-     				return this.m_ELabel_serverTest;
+     				return this.m_E_serverTestTipText;
      			}
      			else
      			{
-		    		return UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"ELabel_serverTest");
+		    		return UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"E_serverTestTip");
      			}
      		}
      	}
 
-		public UnityEngine.UI.Image m_EImage_serverTest = null;
-		public UnityEngine.UI.Text m_ELabel_serverTest = null;
+		public UnityEngine.UI.Image m_EI_serverTestImage = null;
+		public UnityEngine.UI.Text m_E_serverTestTipText = null;
 		public Transform uiTransform = null;
 	}
 }

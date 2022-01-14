@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 689191378617964509}
   - component: {fileID: 5723564823610257797}
   m_Layer: 5
-  m_Name: EButton_EnterMap
+  m_Name: E_EnterMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

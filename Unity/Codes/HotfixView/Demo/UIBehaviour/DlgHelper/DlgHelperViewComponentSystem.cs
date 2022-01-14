@@ -18,7 +18,7 @@ namespace ET
 	{
 		public override void Destroy(DlgHelperViewComponent self)
 		{
-			self.m_ELabel_Tip = null;
+			self.m_E_TipText = null;
 			self.uiTransform = null;
 		}
 	}

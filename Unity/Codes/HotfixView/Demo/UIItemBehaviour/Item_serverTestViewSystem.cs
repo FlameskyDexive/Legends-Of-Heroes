@@ -8,8 +8,8 @@ namespace ET
 	{
 		public override void Destroy( Scroll_Item_serverTest self )
 		{
-			self.m_EImage_serverTest = null;
-			self.m_ELabel_serverTest = null;
+			self.m_EI_serverTestImage = null;
+			self.m_E_serverTestTipText = null;
 			self.uiTransform = null;
 		}
 	}
