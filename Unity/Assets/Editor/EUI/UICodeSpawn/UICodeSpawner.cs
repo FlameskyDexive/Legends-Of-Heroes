@@ -289,10 +289,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("\t{");
         strBuilder.AppendFormat("\t\tpublic override void Destroy({0} self)",strDlgComponentName);
         strBuilder.AppendLine("\n\t\t{");
-        
-        CreateDlgWidgetDisposeCode(ref strBuilder,true);
-        strBuilder.AppendFormat("\t\t\tself.uiTransform = null;\r\n");
-
+        strBuilder.AppendFormat("\t\t\tself.DestroyWidget();\r\n");
         strBuilder.AppendLine("\t\t}");
         strBuilder.AppendLine("\t}");
         strBuilder.AppendLine("}");
@@ -328,6 +325,9 @@ public partial class UICodeSpawner
 		    .AppendLine("\t{");
      
 	    CreateWidgetBindCode(ref strBuilder, gameObject.transform);
+
+	    CreateDestroyWidgetCode(ref strBuilder);
+	    
 	    CreateDeclareCode(ref strBuilder);
 	    strBuilder.AppendFormat("\t\tpublic Transform uiTransform = null;\r\n");
 	    strBuilder.AppendLine("\t}");
@@ -337,9 +337,18 @@ public partial class UICodeSpawner
 	    sw.Flush();
 	    sw.Close();
     }
-    
-    
 
+
+    public static void CreateDestroyWidgetCode( ref StringBuilder strBuilder)
+    {
+	    strBuilder.AppendFormat("\t\tpublic void DestroyWidget()");
+	    strBuilder.AppendLine("\n\t\t{");
+	    CreateDlgWidgetDisposeCode(ref strBuilder);
+	    strBuilder.AppendFormat("\t\t\tthis.uiTransform = null;\r\n");
+	    strBuilder.AppendLine("\t\t}\n");
+    }
+    
+    
     public static void CreateDlgWidgetDisposeCode(ref StringBuilder strBuilder,bool isSelf = false)
     {
 	    string pointStr = isSelf ? "self" : "this";
@@ -438,12 +447,12 @@ public partial class UICodeSpawner
 			    if ( pair.Key.StartsWith("ES"))
 			    {
 				    string subUIClassType = Regex.Replace(pair.Key, @"\d", "");  
-				    strBuilder.AppendFormat("\t\tpublic {0} m_{1} = null;\r\n", subUIClassType, pair.Key.ToLower());
+				    strBuilder.AppendFormat("\t\tprivate {0} m_{1} = null;\r\n", subUIClassType, pair.Key.ToLower());
 				    continue;
 			    }
 
 			     string widgetName = widget.name + strClassType.Split('.').ToList().Last();
-			    strBuilder.AppendFormat("\t\tpublic {0} m_{1} = null;\r\n", strClassType, widgetName);
+			    strBuilder.AppendFormat("\t\tprivate {0} m_{1} = null;\r\n", strClassType, widgetName);
 		    }
 		    
 	    }

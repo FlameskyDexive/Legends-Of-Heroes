@@ -59,10 +59,9 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("\t{");
         strBuilder.AppendFormat("\t\tpublic override void Destroy({0} self)",strDlgName);
         strBuilder.AppendLine("\n\t\t{");
-        
-        CreateDlgWidgetDisposeCode(ref strBuilder,true);
-        strBuilder.AppendFormat("\t\t\tself.uiTransform = null;\r\n");
 
+        strBuilder.AppendFormat("\t\t\tself.DestroyWidget();\r\n");
+        
         strBuilder.AppendLine("\t\t}");
         strBuilder.AppendLine("\t}");
         strBuilder.AppendLine("}");
@@ -101,6 +100,7 @@ public partial class UICodeSpawner
         
        
         CreateWidgetBindCode(ref strBuilder, objPanel.transform);
+        CreateDestroyWidgetCode(ref strBuilder);
         CreateDeclareCode(ref strBuilder);
         strBuilder.AppendLine("\t\tpublic Transform uiTransform = null;");
         strBuilder.AppendLine("\t}");

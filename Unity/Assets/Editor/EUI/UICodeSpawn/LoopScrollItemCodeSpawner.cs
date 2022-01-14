@@ -50,8 +50,7 @@ public partial class UICodeSpawner
         strBuilder.AppendFormat("\t\tpublic override void Destroy( Scroll_{0} self )",strDlgName);
         strBuilder.AppendLine("\n\t\t{");
         
-        CreateDlgWidgetDisposeCode(ref strBuilder,true);
-        strBuilder.AppendFormat("\t\t\tself.uiTransform = null;\r\n");
+        strBuilder.AppendFormat("\t\t\tself.DestroyWidget();\r\n");
 
         strBuilder.AppendLine("\t\t}");
         strBuilder.AppendLine("\t}");
@@ -102,7 +101,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("\t\t}\n");
         
         CreateWidgetBindCode(ref strBuilder, gameoBject.transform);
-        
+        CreateDestroyWidgetCode(ref strBuilder);
         CreateDeclareCode(ref strBuilder);
         
         strBuilder.AppendLine("\t\tpublic Transform uiTransform = null;");
