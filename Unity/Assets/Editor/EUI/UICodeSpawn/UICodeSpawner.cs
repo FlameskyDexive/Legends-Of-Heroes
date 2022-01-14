@@ -18,31 +18,38 @@ public partial class UICodeSpawner
 			Debug.LogError("UICode Select GameObject is null!");
 			return;
 		}
-            
-		string uiName = go.name;
-		if (uiName.StartsWith("Dlg"))
+
+		try
 		{
-			Debug.LogWarning($"----------开始生成Dlg{uiName} 相关代码 ----------");
-			SpawnDlgCode(go);
-			Debug.LogWarning($"生成Dlg{uiName} 完毕!!!");
-			return;
+			string uiName = go.name;
+			if (uiName.StartsWith("Dlg"))
+			{
+				Debug.LogWarning($"----------开始生成Dlg{uiName} 相关代码 ----------");
+				SpawnDlgCode(go);
+				Debug.LogWarning($"生成Dlg{uiName} 完毕!!!");
+				return;
+			}
+			else if(uiName.StartsWith("ES"))
+			{
+				Debug.LogWarning($"-------- 开始生成子UI: {uiName} 相关代码 -------------");
+				SpawnSubUICode(go);
+				Debug.LogWarning($"生成子UI: {uiName} 完毕!!!");
+				return;
+			}
+			else if (uiName.StartsWith("Item_"))
+			{
+				Debug.LogWarning($"-------- 开始生成滚动列表项: {uiName} 相关代码 -------------");
+				SpawnLoopItemCode(go);
+				Debug.LogWarning($" 开始生成滚动列表项: {uiName} 完毕！！！");
+				return;
+			}
+			Debug.LogError($"选择的预设物不属于 Dlg, 子UI，滚动列表项，请检查 {uiName}！！！！！！");
 		}
-		else if(uiName.StartsWith("ES"))
+		finally
 		{
-			Debug.LogWarning($"-------- 开始生成子UI: {uiName} 相关代码 -------------");
-			SpawnSubUICode(go);
-			Debug.LogWarning($"生成子UI: {uiName} 完毕!!!");
-			return;
+			Path2WidgetCachedDict?.Clear();
+			Path2WidgetCachedDict = null;
 		}
-		else if (uiName.StartsWith("Item_"))
-		{
-			Debug.LogWarning($"-------- 开始生成滚动列表项: {uiName} 相关代码 -------------");
-			SpawnLoopItemCode(go);
-			Debug.LogWarning($" 开始生成滚动列表项: {uiName} 完毕！！！");
-			return;
-		}
-		
-		Debug.LogError($"选择的预设物不属于 Dlg, 子UI，滚动列表项，请检查 {uiName}！！！！！！");
 	}
 	
 	
