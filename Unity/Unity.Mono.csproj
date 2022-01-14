@@ -261,7 +261,7 @@
      <Compile Include="Assets\Mono\Module\Mongo\BsonElementAttribute.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Component_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_IO_FileStream_Binding.cs" />
-     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRect.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRectBase.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETTask_1_Boolean_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_RaycastHit_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Bind_t1.cs" />
@@ -271,7 +271,6 @@
      <Compile Include="Assets\Mono\Module\NetworkTCP\TService.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ListComponent_1_Vector3_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_RuntimeAnimatorController_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_LoopScrollRect_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Stack_1_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollPrefabSource.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_UnityWebRequest_Binding_Enumerator_.cs" />
@@ -347,6 +346,13 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Char_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_AService_Binding_Enumerator_Bind.cs" />
      <Compile Include="Assets\Mono\Define.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRect.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopHorizontalScrollRectMulti.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollMultiDataSource.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopVerticalScrollRectMulti.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRectMulti.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollSizeHelper.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_LoopScrollRectBase_Binding.cs" />
      <None Include="Assets\Mono\Unity.Mono.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>E:/DevSoftWare/Unity/2020.3.21f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
