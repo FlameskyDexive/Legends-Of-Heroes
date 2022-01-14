@@ -18,10 +18,7 @@ namespace ET
 	{
 		public override void Destroy(DlgLobbyViewComponent self)
 		{
-			self.m_EGBackGroundRectTransform = null;
-			self.m_E_EnterMapButton = null;
-			self.m_E_EnterMapImage = null;
-			self.uiTransform = null;
+			self.DestroyWidget();
 		}
 	}
 }

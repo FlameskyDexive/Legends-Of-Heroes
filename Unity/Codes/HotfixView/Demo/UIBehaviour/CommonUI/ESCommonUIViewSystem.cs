@@ -18,9 +18,7 @@ namespace ET
 	{
 		public override void Destroy(ESCommonUI self)
 		{
-			self.m_EImage_Test1 = null;
-			self.m_ELabel_Test2 = null;
-			self.uiTransform = null;
+			self.DestroyWidget();
 		}
 	}
 }

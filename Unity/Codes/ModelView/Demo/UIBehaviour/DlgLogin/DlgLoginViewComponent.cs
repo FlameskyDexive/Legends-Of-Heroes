@@ -107,12 +107,23 @@ namespace ET
      		}
      	}
 
-		public UnityEngine.UI.Button m_E_LoginButton = null;
-		public UnityEngine.UI.Image m_E_LoginImage = null;
-		public UnityEngine.UI.InputField m_E_AccountInputField = null;
-		public UnityEngine.UI.Image m_E_AccountImage = null;
-		public UnityEngine.UI.InputField m_E_PasswordInputField = null;
-		public UnityEngine.UI.Image m_E_PasswordImage = null;
+		public void DestroyWidget()
+		{
+			this.m_E_LoginButton = null;
+			this.m_E_LoginImage = null;
+			this.m_E_AccountInputField = null;
+			this.m_E_AccountImage = null;
+			this.m_E_PasswordInputField = null;
+			this.m_E_PasswordImage = null;
+			this.uiTransform = null;
+		}
+
+		private UnityEngine.UI.Button m_E_LoginButton = null;
+		private UnityEngine.UI.Image m_E_LoginImage = null;
+		private UnityEngine.UI.InputField m_E_AccountInputField = null;
+		private UnityEngine.UI.Image m_E_AccountImage = null;
+		private UnityEngine.UI.InputField m_E_PasswordInputField = null;
+		private UnityEngine.UI.Image m_E_PasswordImage = null;
 		public Transform uiTransform = null;
 	}
 }

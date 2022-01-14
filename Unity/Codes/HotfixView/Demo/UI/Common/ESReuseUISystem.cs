@@ -4,7 +4,7 @@
     {
         public static void TestFunction(this ESReuseUI self,string content)
         {
-            self.ELabel_test.text = content;
+            self.ELabel_testText.text = content;
         }
     }
 }

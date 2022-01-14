@@ -65,8 +65,15 @@ namespace ET
      		}
      	}
 
-		public UnityEngine.UI.Image m_EI_serverTestImage = null;
-		public UnityEngine.UI.Text m_E_serverTestTipText = null;
+		public void DestroyWidget()
+		{
+			this.m_EI_serverTestImage = null;
+			this.m_E_serverTestTipText = null;
+			this.uiTransform = null;
+		}
+
+		private UnityEngine.UI.Image m_EI_serverTestImage = null;
+		private UnityEngine.UI.Text m_E_serverTestTipText = null;
 		public Transform uiTransform = null;
 	}
 }

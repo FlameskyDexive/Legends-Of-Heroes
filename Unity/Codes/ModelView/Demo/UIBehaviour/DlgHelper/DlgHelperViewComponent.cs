@@ -22,7 +22,13 @@ namespace ET
      		}
      	}
 
-		public UnityEngine.UI.Text m_E_TipText = null;
+		public void DestroyWidget()
+		{
+			this.m_E_TipText = null;
+			this.uiTransform = null;
+		}
+
+		private UnityEngine.UI.Text m_E_TipText = null;
 		public Transform uiTransform = null;
 	}
 }

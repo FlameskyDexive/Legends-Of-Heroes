@@ -56,9 +56,17 @@ namespace ET
      		}
      	}
 
-		public UnityEngine.RectTransform m_EGBackGroundRectTransform = null;
-		public UnityEngine.UI.Button m_E_EnterMapButton = null;
-		public UnityEngine.UI.Image m_E_EnterMapImage = null;
+		public void DestroyWidget()
+		{
+			this.m_EGBackGroundRectTransform = null;
+			this.m_E_EnterMapButton = null;
+			this.m_E_EnterMapImage = null;
+			this.uiTransform = null;
+		}
+
+		private UnityEngine.RectTransform m_EGBackGroundRectTransform = null;
+		private UnityEngine.UI.Button m_E_EnterMapButton = null;
+		private UnityEngine.UI.Image m_E_EnterMapImage = null;
 		public Transform uiTransform = null;
 	}
 }

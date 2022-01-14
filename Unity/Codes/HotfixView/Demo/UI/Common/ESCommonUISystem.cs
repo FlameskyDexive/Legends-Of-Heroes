@@ -5,7 +5,7 @@
 
         public static void SetLabelContent(this ESCommonUI self, string message)
         {
-            self.ELabel_Test2.text = message;
+            self.ELabel_Test2Text.text = message;
         }
         
         
