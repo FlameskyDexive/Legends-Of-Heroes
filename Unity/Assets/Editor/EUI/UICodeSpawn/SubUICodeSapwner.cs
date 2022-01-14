@@ -11,7 +11,7 @@ public partial class UICodeSpawner
     {
       
         Path2WidgetCachedDict?.Clear();
-        Path2WidgetCachedDict = new Dictionary<string, Component>();
+        Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
         FindAllWidgets(go.transform, "");
         SpawnCodeForSubUI(go);
         SpawnCodeForSubUIBehaviour(go);

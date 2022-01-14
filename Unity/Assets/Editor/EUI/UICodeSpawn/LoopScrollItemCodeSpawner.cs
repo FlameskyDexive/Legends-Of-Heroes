@@ -12,7 +12,7 @@ public partial class UICodeSpawner
     static public void SpawnLoopItemCode(GameObject go)
     {
         Path2WidgetCachedDict?.Clear();
-        Path2WidgetCachedDict = new Dictionary<string, Component>();
+        Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
         FindAllWidgets(go.transform, "");
         SpawnCodeForScrollLoopItemBehaviour(go);
         SpawnCodeForScrollLoopItemViewSystem(go);

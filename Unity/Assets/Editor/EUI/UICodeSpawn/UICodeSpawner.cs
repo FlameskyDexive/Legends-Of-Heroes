@@ -2,10 +2,12 @@
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 using ET;
+using NUnit.Framework;
 
 public partial class UICodeSpawner
 {
@@ -47,7 +49,7 @@ public partial class UICodeSpawner
     static public void SpawnDlgCode(GameObject go)
     {
 	    Path2WidgetCachedDict?.Clear();
-        Path2WidgetCachedDict = new Dictionary<string, Component>();
+        Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
         
 		FindAllWidgets(go.transform, "");
 		
@@ -341,24 +343,24 @@ public partial class UICodeSpawner
     public static void CreateDlgWidgetDisposeCode(ref StringBuilder strBuilder,bool isSelf = false)
     {
 	    string pointStr = isSelf ? "self" : "this";
-	    foreach (KeyValuePair<string, Component> pair in Path2WidgetCachedDict)
+	    foreach (KeyValuePair<string, List<Component>> pair in Path2WidgetCachedDict)
 	    {
-		    Component widget = pair.Value;
-		    string strClassType = widget.GetType().ToString();
+		    foreach (var info in pair.Value)
+		    {
+			    Component widget = info;
+			    string strClassType = widget.GetType().ToString();
 		   
-		    if (pair.Key.StartsWith("ES"))
-		    {
-			    strBuilder.AppendFormat("\t\t	{0}.m_{1}?.Dispose();\r\n", pointStr,pair.Key.ToLower());
-			    strBuilder.AppendFormat("\t\t	{0}.m_{1} = null;\r\n", pointStr,pair.Key.ToLower());
-			    continue;
+			    if (pair.Key.StartsWith("ES"))
+			    {
+				    strBuilder.AppendFormat("\t\t	{0}.m_{1}?.Dispose();\r\n", pointStr,pair.Key.ToLower());
+				    strBuilder.AppendFormat("\t\t	{0}.m_{1} = null;\r\n", pointStr,pair.Key.ToLower());
+				    continue;
+			    }
+			    
+			    string widgetName = widget.name + strClassType.Split('.').ToList().Last();
+			    strBuilder.AppendFormat("\t\t	{0}.m_{1} = null;\r\n", pointStr,widgetName);
 		    }
-
-		    if ( strClassType== "UnityEngine.UI.Button")
-		    {
-			    strBuilder.AppendFormat("\t\t	{0}.m_{1} = null;\r\n", pointStr,widget.name+"Image");
-		    }
-
-		    strBuilder.AppendFormat("\t\t	{0}.m_{1} = null;\r\n", pointStr,widget.name);
+		 
 	    }
 
 	 
@@ -366,125 +368,84 @@ public partial class UICodeSpawner
 
     public static void CreateWidgetBindCode(ref StringBuilder strBuilder, Transform transRoot)
     {
-        foreach (KeyValuePair<string, Component> pair in Path2WidgetCachedDict)
+        foreach (KeyValuePair<string, List<Component>> pair in Path2WidgetCachedDict)
         {
-	        Component widget = pair.Value;
-			string strPath = GetWidgetPath(widget.transform, transRoot);
-			string strClassType = widget.GetType().ToString();
-			string strInterfaceType = strClassType;
-			
-			if (pair.Key.StartsWith("ES"))
-			{
-				GetSubUIBaseWindowCode(ref strBuilder, pair.Key,strPath);
-				continue;
-			}
-
-			
-			strBuilder.AppendFormat("		public {0} {1}\r\n", strInterfaceType, widget.name);
-			strBuilder.AppendLine("     	{");
-			strBuilder.AppendLine("     		get");
-			strBuilder.AppendLine("     		{");
-			
-			strBuilder.AppendLine("     			if (this.uiTransform == null)");
-			strBuilder.AppendLine("     			{");
-			strBuilder.AppendLine("     				Log.Error(\"uiTransform is null.\");");
-			strBuilder.AppendLine("     				return null;");
-			strBuilder.AppendLine("     			}");
-
-			if (transRoot.gameObject.name.StartsWith("Item"))
-			{
-				strBuilder.AppendLine("     			if (this.isCacheNode)");
+	        foreach (var info in pair.Value)
+	        {
+		        Component widget = info;
+				string strPath = GetWidgetPath(widget.transform, transRoot);
+				string strClassType = widget.GetType().ToString();
+				string strInterfaceType = strClassType;
+				
+				if (pair.Key.StartsWith("ES"))
+				{
+					GetSubUIBaseWindowCode(ref strBuilder, pair.Key,strPath);
+					continue;
+				}
+				string widgetName = widget.name + strClassType.Split('.').ToList().Last();
+				
+				
+				strBuilder.AppendFormat("		public {0} {1}\r\n", strInterfaceType, widgetName);
+				strBuilder.AppendLine("     	{");
+				strBuilder.AppendLine("     		get");
+				strBuilder.AppendLine("     		{");
+				
+				strBuilder.AppendLine("     			if (this.uiTransform == null)");
 				strBuilder.AppendLine("     			{");
-				strBuilder.AppendFormat("     				if( this.m_{0} == null )\n" , widget.name);
-				strBuilder.AppendLine("     				{");
-				strBuilder.AppendFormat("		    			this.m_{0} = UIFindHelper.FindDeepChild<{2}>(this.uiTransform.gameObject,\"{1}\");\r\n", widget.name, strPath, strInterfaceType);
-				strBuilder.AppendLine("     				}");
-				strBuilder.AppendFormat("     				return this.m_{0};\n" , widget.name);
+				strBuilder.AppendLine("     				Log.Error(\"uiTransform is null.\");");
+				strBuilder.AppendLine("     				return null;");
 				strBuilder.AppendLine("     			}");
-				strBuilder.AppendLine("     			else");
-				strBuilder.AppendLine("     			{");
-				strBuilder.AppendFormat("		    		return UIFindHelper.FindDeepChild<{2}>(this.uiTransform.gameObject,\"{1}\");\r\n", widget.name, strPath, strInterfaceType);
-				strBuilder.AppendLine("     			}");
-			}
-			else
-			{
-				strBuilder.AppendFormat("     			if( this.m_{0} == null )\n" , widget.name);
-				strBuilder.AppendLine("     			{");
-				strBuilder.AppendFormat("		    		this.m_{0} = UIFindHelper.FindDeepChild<{2}>(this.uiTransform.gameObject,\"{1}\");\r\n", widget.name, strPath, strInterfaceType);
-				strBuilder.AppendLine("     			}");
-				strBuilder.AppendFormat("     			return this.m_{0};\n" , widget.name);
-			}
-			
-            strBuilder.AppendLine("     		}");
-            strBuilder.AppendLine("     	}\n");
 
-          if (strInterfaceType  == "UnityEngine.UI.Button")
-          {
-             string newName = widget.name + "Image";
-             
-             strBuilder.AppendFormat("		public {0} {1}\r\n", "UnityEngine.UI.Image", newName);
-             strBuilder.AppendLine("     	{");
-             strBuilder.AppendLine("     		get");
-             strBuilder.AppendLine("     		{");
-             strBuilder.AppendLine("     			if (this.uiTransform == null)");
-             strBuilder.AppendLine("     			{");
-             strBuilder.AppendLine("     				Log.Error(\"uiTransform is null.\");");
-             strBuilder.AppendLine("     				return null;");
-             strBuilder.AppendLine("     			}");
-
-
-             if (transRoot.gameObject.name.StartsWith("Item"))
-             {
-	             strBuilder.AppendLine("     			if (this.isCacheNode)");
-	             strBuilder.AppendLine("     			{");
-	             strBuilder.AppendFormat("     			    if( this.m_{0} == null )\n" , newName);
-	             strBuilder.AppendLine("     			   {");
-	             strBuilder.AppendFormat("		    		this.m_{0} = UIFindHelper.FindDeepChild<{2}>(this.uiTransform.gameObject,\"{1}\");\r\n", newName, strPath, "UnityEngine.UI.Image");
-	             strBuilder.AppendLine("     			   }");
-	             strBuilder.AppendFormat("     			   return this.m_{0};\n" , newName);
-	             strBuilder.AppendLine("     			}");
-	             strBuilder.AppendLine("     			else");
-	             strBuilder.AppendLine("     			{");
-	             strBuilder.AppendFormat("		    		return UIFindHelper.FindDeepChild<{2}>(this.uiTransform.gameObject,\"{1}\");\r\n", newName, strPath, "UnityEngine.UI.Image");
-	             strBuilder.AppendLine("     			}");
-	             strBuilder.AppendLine("     	    }\n");
-             }
-             else
-             {
-	             strBuilder.AppendFormat("     			if( this.m_{0} == null )\n" , newName);
-	             strBuilder.AppendLine("     			{");
-	             strBuilder.AppendFormat("		    		this.m_{0} = UIFindHelper.FindDeepChild<{2}>(this.uiTransform.gameObject,\"{1}\");\r\n", newName, strPath, "UnityEngine.UI.Image");
-	             strBuilder.AppendLine("     			}");
-	             strBuilder.AppendFormat("     			return this.m_{0};\n" , newName);
-	             strBuilder.AppendLine("     		}");
-             }
-             strBuilder.AppendLine("     	}\n");
-          }
-
+				if (transRoot.gameObject.name.StartsWith("Item"))
+				{
+					strBuilder.AppendLine("     			if (this.isCacheNode)");
+					strBuilder.AppendLine("     			{");
+					strBuilder.AppendFormat("     				if( this.m_{0} == null )\n" , widgetName);
+					strBuilder.AppendLine("     				{");
+					strBuilder.AppendFormat("		    			this.m_{0} = UIFindHelper.FindDeepChild<{2}>(this.uiTransform.gameObject,\"{1}\");\r\n", widgetName, strPath, strInterfaceType);
+					strBuilder.AppendLine("     				}");
+					strBuilder.AppendFormat("     				return this.m_{0};\n" , widgetName);
+					strBuilder.AppendLine("     			}");
+					strBuilder.AppendLine("     			else");
+					strBuilder.AppendLine("     			{");
+					strBuilder.AppendFormat("		    		return UIFindHelper.FindDeepChild<{2}>(this.uiTransform.gameObject,\"{1}\");\r\n", widgetName, strPath, strInterfaceType);
+					strBuilder.AppendLine("     			}");
+				}
+				else
+				{
+					strBuilder.AppendFormat("     			if( this.m_{0} == null )\n" , widgetName);
+					strBuilder.AppendLine("     			{");
+					strBuilder.AppendFormat("		    		this.m_{0} = UIFindHelper.FindDeepChild<{2}>(this.uiTransform.gameObject,\"{1}\");\r\n", widgetName, strPath, strInterfaceType);
+					strBuilder.AppendLine("     			}");
+					strBuilder.AppendFormat("     			return this.m_{0};\n" , widgetName);
+				}
+				
+	            strBuilder.AppendLine("     		}");
+	            strBuilder.AppendLine("     	}\n");
+	        }
         }
     }
     
     public static void CreateDeclareCode(ref StringBuilder strBuilder)
     {
-	    foreach (KeyValuePair<string, Component> pair in Path2WidgetCachedDict)
+	    foreach (KeyValuePair<string,List<Component> > pair in Path2WidgetCachedDict)
 	    {
-		    Component widget = pair.Value;
-		    string strClassType = widget.GetType().ToString();
-
-		    if ( pair.Key.StartsWith("ES"))
+		    foreach (var info in pair.Value)
 		    {
-			    string subUIClassType = Regex.Replace(pair.Key, @"\d", "");  
-			    strBuilder.AppendFormat("\t\tpublic {0} m_{1} = null;\r\n", subUIClassType, pair.Key.ToLower());
-			    continue;
-		    }
+			    Component widget = info;
+			    string strClassType = widget.GetType().ToString();
 
-		    if ( strClassType== "UnityEngine.UI.Button")
-		    {
-			    strBuilder.AppendFormat("\t\tpublic {0} m_{1} = null;\r\n", "UnityEngine.UI.Image",
-				    widget.name + "Image");
-		    }
+			    if ( pair.Key.StartsWith("ES"))
+			    {
+				    string subUIClassType = Regex.Replace(pair.Key, @"\d", "");  
+				    strBuilder.AppendFormat("\t\tpublic {0} m_{1} = null;\r\n", subUIClassType, pair.Key.ToLower());
+				    continue;
+			    }
 
-		    strBuilder.AppendFormat("\t\tpublic {0} m_{1} = null;\r\n", strClassType, widget.name);
+			     string widgetName = widget.name + strClassType.Split('.').ToList().Last();
+			    strBuilder.AppendFormat("\t\tpublic {0} m_{1} = null;\r\n", strClassType, widgetName);
+		    }
+		    
 	    }
     }
 
@@ -503,7 +464,9 @@ public partial class UICodeSpawner
 			bool isSubUI = child.name.StartsWith("ES");
 			if (isSubUI || child.name.StartsWith("EG"))
 			{
-				Path2WidgetCachedDict.Add(child.name,child.GetComponent<RectTransform>());
+				List<Component> rectTransfomrComponents = new List<Component>(); 
+				rectTransfomrComponents.Add(child.GetComponent<RectTransform>());
+				Path2WidgetCachedDict.Add(child.name,rectTransfomrComponents);
 			}
 			else if (child.name.StartsWith("E"))
 			{
@@ -514,16 +477,16 @@ public partial class UICodeSpawner
 					{
 						continue;
 					}
+					
 					if ( Path2WidgetCachedDict.ContainsKey(child.name)  )
 					{
-						string existComponent = Path2WidgetCachedDict[child.name].GetType().ToString();
-						if (!existComponent.Equals("UnityEngine.UI.Button"))
-						{
-							Debug.LogWarning("预设物可能存在重复的物体名： " + strTemp );
-						}
+						Path2WidgetCachedDict[child.name].Add(component);
 						continue;
 					}
-					Path2WidgetCachedDict.Add(child.name, component);
+					
+					List<Component> componentsList = new List<Component>(); 
+					componentsList.Add(component);
+					Path2WidgetCachedDict.Add(child.name, componentsList);
 				}
 			}
 		
@@ -600,7 +563,7 @@ public partial class UICodeSpawner
         WidgetInterfaceList.Add("LoopHorizontalScrollRect");
     }
 
-    private static Dictionary<string, Component> Path2WidgetCachedDict =null;
+    private static Dictionary<string, List<Component> > Path2WidgetCachedDict =null;
     private static List<string> WidgetInterfaceList = null;
 }
 
