@@ -345,7 +345,7 @@ namespace ET
             foreach (KeyValuePair<int, UIBaseWindow> window in self.AllWindowsDic)
             {
                 UIBaseWindow baseWindow = window.Value;
-                if (baseWindow == null)
+                if (baseWindow == null|| baseWindow.IsDisposed)
                 {
                     continue;
                 }
@@ -368,6 +368,11 @@ namespace ET
             {
                 if (window.Value.WindowData.windowType == UIWindowType.Fixed && !includeFixed)
                     continue;
+                if (window.Value.IsDisposed)
+                {
+                    continue;
+                }
+                
                 self.UIBaseWindowlistCached.Add((WindowID)window.Key);
                 window.Value.UIPrefabGameObject?.SetActive(false);
                 UIEventComponent.Instance.GetUIEventHandler(window.Value.WindowID).OnHideWindow(window.Value);
@@ -411,9 +416,11 @@ namespace ET
             }
 
             UIBaseWindow baseWindow = self.VisibleWindowsDic[(int)id];
-            baseWindow.UIPrefabGameObject?.SetActive(false);
-          
-            UIEventComponent.Instance.GetUIEventHandler(id).OnHideWindow(baseWindow);
+            if (baseWindow != null && !baseWindow.IsDisposed )
+            {
+                baseWindow.UIPrefabGameObject?.SetActive(false);
+                UIEventComponent.Instance.GetUIEventHandler(id).OnHideWindow(baseWindow);
+            }
             self.VisibleWindowsDic.Remove((int)id);
             self.VisibleWindowsQueue.Remove(id);
             return true;
