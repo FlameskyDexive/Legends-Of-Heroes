@@ -22,21 +22,21 @@ public partial class UICodeSpawner
 		try
 		{
 			string uiName = gameObject.name;
-			if (uiName.StartsWith("Dlg"))
+			if (uiName.StartsWith(UIPanelPrefix))
 			{
 				Debug.LogWarning($"----------开始生成Dlg{uiName} 相关代码 ----------");
 				SpawnDlgCode(gameObject);
 				Debug.LogWarning($"生成Dlg{uiName} 完毕!!!");
 				return;
 			}
-			else if(uiName.StartsWith("ES"))
+			else if(uiName.StartsWith(CommonUIPrefix))
 			{
 				Debug.LogWarning($"-------- 开始生成子UI: {uiName} 相关代码 -------------");
 				SpawnSubUICode(gameObject);
 				Debug.LogWarning($"生成子UI: {uiName} 完毕!!!");
 				return;
 			}
-			else if (uiName.StartsWith("Item_"))
+			else if (uiName.StartsWith(UIItemPrefix))
 			{
 				Debug.LogWarning($"-------- 开始生成滚动列表项: {uiName} 相关代码 -------------");
 				SpawnLoopItemCode(gameObject);
@@ -366,7 +366,7 @@ public partial class UICodeSpawner
 			    Component widget = info;
 			    string strClassType = widget.GetType().ToString();
 		   
-			    if (pair.Key.StartsWith("ES"))
+			    if (pair.Key.StartsWith(CommonUIPrefix))
 			    {
 				    strBuilder.AppendFormat("\t\t	{0}.m_{1}?.Dispose();\r\n", pointStr,pair.Key.ToLower());
 				    strBuilder.AppendFormat("\t\t	{0}.m_{1} = null;\r\n", pointStr,pair.Key.ToLower());
@@ -393,7 +393,7 @@ public partial class UICodeSpawner
 				string strClassType = widget.GetType().ToString();
 				string strInterfaceType = strClassType;
 				
-				if (pair.Key.StartsWith("ES"))
+				if (pair.Key.StartsWith(CommonUIPrefix))
 				{
 					GetSubUIBaseWindowCode(ref strBuilder, pair.Key,strPath);
 					continue;
@@ -412,7 +412,7 @@ public partial class UICodeSpawner
 				strBuilder.AppendLine("     				return null;");
 				strBuilder.AppendLine("     			}");
 
-				if (transRoot.gameObject.name.StartsWith("Item"))
+				if (transRoot.gameObject.name.StartsWith(UIItemPrefix))
 				{
 					strBuilder.AppendLine("     			if (this.isCacheNode)");
 					strBuilder.AppendLine("     			{");
@@ -451,7 +451,7 @@ public partial class UICodeSpawner
 			    Component widget = info;
 			    string strClassType = widget.GetType().ToString();
 
-			    if ( pair.Key.StartsWith("ES"))
+			    if ( pair.Key.StartsWith(CommonUIPrefix))
 			    {
 				    string subUIClassType = Regex.Replace(pair.Key, @"\d", "");  
 				    strBuilder.AppendFormat("\t\tprivate {0} m_{1} = null;\r\n", subUIClassType, pair.Key.ToLower());
@@ -477,14 +477,14 @@ public partial class UICodeSpawner
 			string strTemp = strPath+"/"+child.name;
 			
 		
-			bool isSubUI = child.name.StartsWith("ES");
-			if (isSubUI || child.name.StartsWith("EG"))
+			bool isSubUI = child.name.StartsWith(CommonUIPrefix);
+			if (isSubUI || child.name.StartsWith(UIGameObjectPrefix))
 			{
 				List<Component> rectTransfomrComponents = new List<Component>(); 
 				rectTransfomrComponents.Add(child.GetComponent<RectTransform>());
 				Path2WidgetCachedDict.Add(child.name,rectTransfomrComponents);
 			}
-			else if (child.name.StartsWith("E"))
+			else if (child.name.StartsWith(UIWidgetPrefix))
 			{
 				foreach (var uiComponent in WidgetInterfaceList)
 				{
@@ -581,5 +581,10 @@ public partial class UICodeSpawner
 
     private static Dictionary<string, List<Component> > Path2WidgetCachedDict =null;
     private static List<string> WidgetInterfaceList = null;
+    private const string CommonUIPrefix = "ES";
+    private const string UIPanelPrefix  = "Dlg";
+    private const string UIWidgetPrefix = "E";
+    private const string UIGameObjectPrefix = "EG";
+    private const string UIItemPrefix = "Item";
 }
 
