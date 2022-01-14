@@ -13,7 +13,7 @@ namespace UnityEngine.UI
         public int poolSize = 5;
 
         private bool inited = false;
-        public virtual GameObject GetObject()
+        public virtual GameObject GetObject(int index)
         {
             try
             {

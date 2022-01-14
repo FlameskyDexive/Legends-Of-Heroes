@@ -4,9 +4,9 @@ using System.Collections;
 
 namespace UnityEngine.UI
 {
-    [AddComponentMenu("UI/Loop Vertical Scroll Rect", 51)]
+    [AddComponentMenu("UI/Loop Vertical Scroll Rect(MultiPrefab)", 53)]
     [DisallowMultipleComponent]
-    public class LoopVerticalScrollRect : LoopScrollRect
+    public class LoopVerticalScrollRectMulti : LoopScrollRectMulti
     {
         protected override float GetSize(RectTransform item, bool includeSpacing)
         {

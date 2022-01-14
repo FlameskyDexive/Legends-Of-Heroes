@@ -3,9 +3,9 @@ using System.Collections;
 
 namespace UnityEngine.UI
 {
-    [AddComponentMenu("UI/Loop Horizontal Scroll Rect", 50)]
+    [AddComponentMenu("UI/Loop Horizontal Scroll Rect(MultiPrefab)", 52)]
     [DisallowMultipleComponent]
-    public class LoopHorizontalScrollRect : LoopScrollRect
+    public class LoopHorizontalScrollRectMulti : LoopScrollRectMulti
     {
         protected override float GetSize(RectTransform item, bool includeSpacing)
         {
