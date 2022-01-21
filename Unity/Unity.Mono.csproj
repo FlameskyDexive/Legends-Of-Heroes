@@ -121,6 +121,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Single_Binding.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\RedDotMonoView.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Runtime_CompilerServices_TaskAwaiter_Binding.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopVerticalScrollRectMulti.cs" />
      <Compile Include="Assets\Mono\Module\Network\AChannel.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Activator_Binding.cs" />
      <Compile Include="Assets\Mono\Module\Mongo\BsonIdAttribute.cs" />
@@ -169,6 +170,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding__t2.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETTask_1_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_String_Binding.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollMultiDataSource.cs" />
      <Compile Include="Assets\Mono\Core\Helper\ByteHelper.cs" />
      <Compile Include="Assets\Mono\Helper\IStaticMethod.cs" />
      <Compile Include="Assets\Mono\Core\TimeHelper.cs" />
@@ -211,6 +213,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_U2D_SpriteAtlas_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_UnOrderMultiMapSet_2_Type_Type_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Action_1_Int32_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_LoopScrollRectBase_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Object_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_SceneManagement_SceneManager_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_ListComponent_1_String.cs" />
@@ -218,6 +221,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_AcceptAllCertificate_Binding.cs" />
      <Compile Include="Assets\Mono\Module\Mongo\BsonIgnoreIfDefaultAttribute.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_ValueTuple_3_Int32_Int64_Int32_Binding.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollSizeHelper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Mathf_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_UnityWebRequest_Binding.cs" />
@@ -261,6 +265,7 @@
      <Compile Include="Assets\Mono\Module\Mongo\BsonElementAttribute.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Component_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_IO_FileStream_Binding.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRect.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRectBase.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETTask_1_Boolean_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_RaycastHit_Binding.cs" />
@@ -291,6 +296,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ObjectHelper_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Math_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_Options_Binding.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopHorizontalScrollRectMulti.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Vector3_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_String_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Int32_Binding.cs" />
@@ -317,6 +323,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_SortedDictionary_2_Int64_List_1_ILTypeInst_t1.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Input_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Threading_Tasks_Task_Binding.cs" />
+     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRectMulti.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_MultiMap_2_Int64_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Object_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_IEnumerable_1_KeyValuePair_2_Type_Int32_Bi.cs" />
@@ -346,13 +353,6 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Char_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_AService_Binding_Enumerator_Bind.cs" />
      <Compile Include="Assets\Mono\Define.cs" />
-     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRect.cs" />
-     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopHorizontalScrollRectMulti.cs" />
-     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollMultiDataSource.cs" />
-     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopVerticalScrollRectMulti.cs" />
-     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRectMulti.cs" />
-     <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollSizeHelper.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_LoopScrollRectBase_Binding.cs" />
      <None Include="Assets\Mono\Unity.Mono.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>E:/DevSoftWare/Unity/2020.3.21f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

@@ -89,7 +89,7 @@ public partial class UICodeSpawner
             .AppendLine("\t{");
         
         
-        strBuilder.AppendLine("\t\tprivate bool isCacheNode = true;");
+        strBuilder.AppendLine("\t\tprivate bool isCacheNode = false;");
         strBuilder.AppendLine("\t\tpublic void SetCacheMode(bool isCache)");
         strBuilder.AppendLine("\t\t{");
         strBuilder.AppendLine("\t\t\tthis.isCacheNode = isCache;");

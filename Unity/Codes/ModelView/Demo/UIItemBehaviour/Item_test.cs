@@ -5,7 +5,7 @@ namespace ET
 {
 	public  class Scroll_Item_test : Entity,IAwake,IDestroy 
 	{
-		private bool isCacheNode = true;
+		private bool isCacheNode = false;
 		public void SetCacheMode(bool isCache)
 		{
 			this.isCacheNode = isCache;
