@@ -85,7 +85,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("using UnityEngine.UI;");
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
-        strBuilder.AppendFormat("\tpublic  class Scroll_{0} : Entity,IAwake,IDestroy \r\n", strDlgName)
+        strBuilder.AppendFormat("\tpublic  class Scroll_{0} : Entity,IAwake,IDestroy,IUIScrollItem \r\n", strDlgName)
             .AppendLine("\t{");
         
         

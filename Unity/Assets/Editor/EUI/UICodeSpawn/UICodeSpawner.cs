@@ -238,7 +238,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("{");
 
       
-        strBuilder.AppendFormat("\tpublic  class {0} :Entity,IAwake\r\n", strDlgName);
+        strBuilder.AppendFormat("\tpublic  class {0} :Entity,IAwake,IUILogic\r\n", strDlgName);
           strBuilder.AppendLine("\t{");
           strBuilder.AppendLine("");
           
