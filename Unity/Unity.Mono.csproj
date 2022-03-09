@@ -339,6 +339,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Input_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Threading_Tasks_Task_Binding.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollRectMulti.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_UI_LoopScrollRect_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_IEnumerable_1_KeyValuePair_2_Type_Int32_Bi.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Bind.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Assembly_Binding_Value_t1.cs" />

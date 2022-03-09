@@ -2,10 +2,11 @@
 
 namespace ET
 {
-	public  class DlgLogin :Entity,IAwake
+	public  class DlgLogin :Entity,IAwake,IUILogic
 	{
 
 		public DlgLoginViewComponent View { get => this.Parent.GetComponent<DlgLoginViewComponent>();} 
+
 		
 	}
 }

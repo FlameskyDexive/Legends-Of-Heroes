@@ -99,7 +99,7 @@ namespace ET
         }
         
         
-        public static void AddUIScrollItems<T>(this Entity self, ref Dictionary<int, T> dictionary, int count)  where T : Entity,IAwake
+        public static void AddUIScrollItems<K,T>(this K self, ref Dictionary<int, T> dictionary, int count) where K : Entity,IUILogic  where T : Entity,IAwake,IUIScrollItem
         {
             if (dictionary == null)
             {
@@ -124,7 +124,7 @@ namespace ET
         }
         
         
-        public static void RemoveUIScrollItems<T>(this Entity self, ref Dictionary<int, T> dictionary)  where T : Entity
+        public static void RemoveUIScrollItems<K,T>(this K self, ref Dictionary<int, T> dictionary) where K : Entity,IUILogic  where T : Entity,IUIScrollItem
         {
             if (dictionary == null)
             {
@@ -196,7 +196,7 @@ namespace ET
         /// </summary>
         /// <OtherParam name="self"></OtherParam>
         /// <OtherParam name="closeButton"></OtherParam>
-        public static void RegisterCloseEvent(this Entity self,Button closeButton) 
+        public static void RegisterCloseEvent<T>(this Entity self,Button closeButton)  where T : Entity,IAwake,IUILogic
         {
             closeButton.onClick.RemoveAllListeners();
             closeButton.onClick.AddListener(() => { self.DomainScene().GetComponent<UIComponent>().HideWindow(self.GetParent<UIBaseWindow>().WindowID); });
