@@ -71,6 +71,7 @@
      <Compile Include="Assets\Mono\Core\TimeInfo.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Action_1_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_Type_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\LitJson_JsonMapper_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Action_1_Int64_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_UInt16_Type_Binding.cs" />
      <Compile Include="Assets\Mono\Module\NetworkTCP\WChannel.cs" />
@@ -351,7 +352,6 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Animator_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_AService_Binding_Enumerator_Bind.cs" />
      <Compile Include="Assets\Mono\Define.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\LitJson_JsonMapper_Binding.cs" />
      <None Include="Assets\Mono\Unity.Mono.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>E:/DevSoftWare/Unity/2020.3.21f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
