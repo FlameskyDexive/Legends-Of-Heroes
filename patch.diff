@@ -1,0 +1,65 @@
+From 674215ee0e4b1b37493f41fe050958553c55862c Mon Sep 17 00:00:00 2001
+From: wenchao <susices@hotmail.com>
+Date: Wed, 30 Mar 2022 12:07:06 +0800
+Subject: [PATCH] =?UTF-8?q?=E6=94=AF=E6=8C=81=E5=85=AC=E5=85=B1UI=E5=9C=A8?=
+ =?UTF-8?q?Dlg=E5=86=85=E8=87=AA=E5=AE=9A=E4=B9=89=E5=8F=98=E9=87=8F?=
+ =?UTF-8?q?=E5=90=8D=20=E5=8F=AA=E8=A6=81=E5=89=8D=E7=BC=80=E6=98=AFES?=
+ =?UTF-8?q?=E5=8D=B3=E5=8F=AF?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+---
+ .../Editor/EUI/UICodeSpawn/UICodeSpawner.cs   | 20 ++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
+
+diff --git a/Unity/Assets/Editor/EUI/UICodeSpawn/UICodeSpawner.cs b/Unity/Assets/Editor/EUI/UICodeSpawn/UICodeSpawner.cs
+index a29e53d0..a791f40b 100644
+--- a/Unity/Assets/Editor/EUI/UICodeSpawn/UICodeSpawner.cs
++++ b/Unity/Assets/Editor/EUI/UICodeSpawn/UICodeSpawner.cs
+@@ -395,7 +395,13 @@ public partial class UICodeSpawner
+ 				
+ 				if (pair.Key.StartsWith(CommonUIPrefix))
+ 				{
+-					GetSubUIBaseWindowCode(ref strBuilder, pair.Key,strPath);
++					var subUIClassPrefab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(widget);
++					if (subUIClassPrefab==null)
++					{
++						Debug.LogError($"公共UI找不到所属的Prefab! {pair.Key}");
++						return;
++					}
++					GetSubUIBaseWindowCode(ref strBuilder, pair.Key,strPath,subUIClassPrefab.name);
+ 					continue;
+ 				}
+ 				string widgetName = widget.name + strClassType.Split('.').ToList().Last();
+@@ -453,7 +459,13 @@ public partial class UICodeSpawner
+ 
+ 			    if ( pair.Key.StartsWith(CommonUIPrefix))
+ 			    {
+-				    string subUIClassType = Regex.Replace(pair.Key, @"\d", "");  
++				    var subUIClassPrefab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(widget);
++				    if (subUIClassPrefab==null)
++				    {
++					    Debug.LogError($"公共UI找不到所属的Prefab! {pair.Key}");
++					    return;
++				    }
++				    string subUIClassType = subUIClassPrefab.name;
+ 				    strBuilder.AppendFormat("\t\tprivate {0} m_{1} = null;\r\n", subUIClassType, pair.Key.ToLower());
+ 				    continue;
+ 			    }
+@@ -528,11 +540,9 @@ public partial class UICodeSpawner
+     }
+ 
+ 
+-    static void GetSubUIBaseWindowCode(ref StringBuilder strBuilder,string widget,string strPath)
++    static void GetSubUIBaseWindowCode(ref StringBuilder strBuilder,string widget,string strPath, string subUIClassType)
+     {
+ 	    
+-	    string subUIClassType = Regex.Replace(widget, @"\d", "");
+-	    
+ 	    strBuilder.AppendFormat("		public {0} {1}\r\n", subUIClassType, widget );
+ 	    strBuilder.AppendLine("     	{");
+ 	    strBuilder.AppendLine("     		get");
+-- 
+2.23.0.windows.1
+
