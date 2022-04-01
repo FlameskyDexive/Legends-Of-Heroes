@@ -134,6 +134,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Type_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Action_Binding_Enumerator_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_String_Array_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\ValueTypeBinders\Vector3Binder.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Action_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Int32_ILTypeInstance_Bindin.cs" />
@@ -203,6 +204,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_Int64_ILTypeInstance_Bindin.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_AsyncOperation_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\ValueTypeBinders\QuaternionBinder.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Queue_1_ILTypeInstance_Binding.cs" />
      <Compile Include="Assets\Mono\Helper\AcceptAllCertificate.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_1_Boolean_Binding.cs" />
@@ -249,6 +251,7 @@
      <Compile Include="Assets\Mono\Core\Helper\MathHelper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_UInt16_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_LayerMask_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\ValueTypeBinders\Vector2Binder.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding__t1.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Assembly_Binding_Value.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_UInt16_Binding.cs" />
@@ -263,7 +266,6 @@
      <Compile Include="Assets\Mono\CodeLoader.cs" />
      <Compile Include="Assets\Mono\Core\Log\Log.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_List_1_Object_Binding_Enumerator_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ThreadSynchronizationContext_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ILog_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETTask_1_Object_Array_Binding.cs" />

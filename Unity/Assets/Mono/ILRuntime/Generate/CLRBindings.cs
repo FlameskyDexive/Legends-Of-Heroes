@@ -16,6 +16,9 @@ namespace ILRuntime.Runtime.Generated
             ILRuntime.Runtime.CLRBinding.CLRBindingUtils.RegisterBindingAction(Initialize);
         }
 
+        internal static ILRuntime.Runtime.Enviorment.ValueTypeBinder<UnityEngine.Vector2> s_UnityEngine_Vector2_Binding_Binder = null;
+        internal static ILRuntime.Runtime.Enviorment.ValueTypeBinder<UnityEngine.Vector3> s_UnityEngine_Vector3_Binding_Binder = null;
+        internal static ILRuntime.Runtime.Enviorment.ValueTypeBinder<UnityEngine.Quaternion> s_UnityEngine_Quaternion_Binding_Binder = null;
 
         /// <summary>
         /// Initialize the CLR binding, please invoke this AFTER CLR Redirection registration
@@ -175,7 +178,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_String_Assembly_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Assembly_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Queue_1_Int64_Binding.Register(app);
-            System_Collections_Generic_List_1_Object_Binding_Enumerator_Binding.Register(app);
             ET_ObjectHelper_Binding.Register(app);
             System_Text_StringBuilder_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Int32_Binding.Register(app);
@@ -250,6 +252,14 @@ namespace ILRuntime.Runtime.Generated
             ET_ListComponent_1_ETTask_Binding.Register(app);
             System_Collections_Generic_List_1_ETTask_Binding.Register(app);
             ET_ETTaskHelper_Binding.Register(app);
+
+            ILRuntime.CLR.TypeSystem.CLRType __clrType = null;
+            __clrType = (ILRuntime.CLR.TypeSystem.CLRType)app.GetType (typeof(UnityEngine.Vector2));
+            s_UnityEngine_Vector2_Binding_Binder = __clrType.ValueTypeBinder as ILRuntime.Runtime.Enviorment.ValueTypeBinder<UnityEngine.Vector2>;
+            __clrType = (ILRuntime.CLR.TypeSystem.CLRType)app.GetType (typeof(UnityEngine.Vector3));
+            s_UnityEngine_Vector3_Binding_Binder = __clrType.ValueTypeBinder as ILRuntime.Runtime.Enviorment.ValueTypeBinder<UnityEngine.Vector3>;
+            __clrType = (ILRuntime.CLR.TypeSystem.CLRType)app.GetType (typeof(UnityEngine.Quaternion));
+            s_UnityEngine_Quaternion_Binding_Binder = __clrType.ValueTypeBinder as ILRuntime.Runtime.Enviorment.ValueTypeBinder<UnityEngine.Quaternion>;
         }
 
         /// <summary>
@@ -257,6 +267,9 @@ namespace ILRuntime.Runtime.Generated
         /// </summary>
         public static void Shutdown(ILRuntime.Runtime.Enviorment.AppDomain app)
         {
+            s_UnityEngine_Vector2_Binding_Binder = null;
+            s_UnityEngine_Vector3_Binding_Binder = null;
+            s_UnityEngine_Quaternion_Binding_Binder = null;
         }
     }
 }

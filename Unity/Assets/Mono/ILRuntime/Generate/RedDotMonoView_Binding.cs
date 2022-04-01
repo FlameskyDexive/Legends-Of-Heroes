@@ -137,7 +137,12 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* CopyToStack_RedDotScale_1(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
             var result_of_this_method = ((global::RedDotMonoView)o).RedDotScale;
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
+                return __ret + 1;
+            } else {
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+            }
         }
 
         static void set_RedDotScale_1(ref object o, object v)
@@ -148,7 +153,12 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_RedDotScale_1(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            UnityEngine.Vector3 @RedDotScale = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+            UnityEngine.Vector3 @RedDotScale = new UnityEngine.Vector3();
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector3_Binding_Binder.ParseValue(ref @RedDotScale, __intp, ptr_of_this_method, __mStack, true);
+            } else {
+                @RedDotScale = (UnityEngine.Vector3)typeof(UnityEngine.Vector3).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+            }
             ((global::RedDotMonoView)o).RedDotScale = @RedDotScale;
             return ptr_of_this_method;
         }
@@ -161,7 +171,12 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* CopyToStack_PositionOffset_2(ref object o, ILIntepreter __intp, StackObject* __ret, IList<object> __mStack)
         {
             var result_of_this_method = ((global::RedDotMonoView)o).PositionOffset;
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector2_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector2_Binding_Binder.PushValue(ref result_of_this_method, __intp, __ret, __mStack);
+                return __ret + 1;
+            } else {
             return ILIntepreter.PushObject(__ret, __mStack, result_of_this_method);
+            }
         }
 
         static void set_PositionOffset_2(ref object o, object v)
@@ -172,7 +187,12 @@ namespace ILRuntime.Runtime.Generated
         static StackObject* AssignFromStack_PositionOffset_2(ref object o, ILIntepreter __intp, StackObject* ptr_of_this_method, IList<object> __mStack)
         {
             ILRuntime.Runtime.Enviorment.AppDomain __domain = __intp.AppDomain;
-            UnityEngine.Vector2 @PositionOffset = (UnityEngine.Vector2)typeof(UnityEngine.Vector2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+            UnityEngine.Vector2 @PositionOffset = new UnityEngine.Vector2();
+            if (ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector2_Binding_Binder != null) {
+                ILRuntime.Runtime.Generated.CLRBindings.s_UnityEngine_Vector2_Binding_Binder.ParseValue(ref @PositionOffset, __intp, ptr_of_this_method, __mStack, true);
+            } else {
+                @PositionOffset = (UnityEngine.Vector2)typeof(UnityEngine.Vector2).CheckCLRTypes(StackObject.ToObject(ptr_of_this_method, __domain, __mStack), (CLR.Utils.Extensions.TypeFlags)16);
+            }
             ((global::RedDotMonoView)o).PositionOffset = @PositionOffset;
             return ptr_of_this_method;
         }
