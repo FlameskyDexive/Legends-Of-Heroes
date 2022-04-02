@@ -66,8 +66,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_SortedDictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_ILTypeInstance_Binding.Register(app);
             System_Type_Binding.Register(app);
-            System_Collections_Generic_HashSet_1_Type_Binding.Register(app);
-            System_Collections_Generic_HashSet_1_Type_Binding_Enumerator_Binding.Register(app);
+            System_Collections_Generic_List_1_Type_Binding.Register(app);
+            System_Collections_Generic_List_1_Type_Binding_Enumerator_Binding.Register(app);
             System_Activator_Binding.Register(app);
             System_Reflection_MemberInfo_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Object_Binding.Register(app);
@@ -82,8 +82,8 @@ namespace ILRuntime.Runtime.Generated
             ET_AService_Binding.Register(app);
             ET_RandomHelper_Binding.Register(app);
             ET_ThreadSynchronizationContext_Binding.Register(app);
+            ET_ForeachHelper_Binding.Register(app);
             System_Collections_Generic_HashSet_1_AService_Binding.Register(app);
-            System_Collections_Generic_HashSet_1_AService_Binding_Enumerator_Binding.Register(app);
             System_Object_Binding.Register(app);
             System_Exception_Binding.Register(app);
             ET_TimeInfo_Binding.Register(app);
@@ -164,11 +164,9 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Type_ILTypeInstance_Binding.Register(app);
-            System_Collections_Generic_List_1_Type_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_String_Type_Binding.Register(app);
-            System_Collections_Generic_Dictionary_2_Type_HashSet_1_Type_Binding.Register(app);
-            System_Collections_Generic_List_1_Type_Binding_Enumerator_Binding.Register(app);
-            ET_UnOrderMultiMapSet_2_Type_Type_Binding.Register(app);
+            System_Collections_Generic_Dictionary_2_Type_List_1_Type_Binding.Register(app);
+            ET_UnOrderMultiMap_2_Type_Type_Binding.Register(app);
             ET_UnOrderMultiMap_2_Type_Object_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_List_1_Object_Binding.Register(app);
             System_Collections_Generic_List_1_Object_Binding.Register(app);
@@ -180,9 +178,11 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Queue_1_Int64_Binding.Register(app);
             ET_ObjectHelper_Binding.Register(app);
             System_Text_StringBuilder_Binding.Register(app);
+            System_Collections_Generic_HashSet_1_Type_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Type_Int32_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int64_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_KeyValuePair_2_Int64_ILTypeInstance_Binding.Register(app);
+            System_Collections_Generic_HashSet_1_Type_Binding_Enumerator_Binding.Register(app);
             System_Linq_Enumerable_Binding.Register(app);
             System_Collections_Generic_IEnumerable_1_KeyValuePair_2_Type_Int32_Binding.Register(app);
             System_Collections_Generic_IEnumerator_1_KeyValuePair_2_Type_Int32_Binding.Register(app);
@@ -195,8 +195,6 @@ namespace ILRuntime.Runtime.Generated
             ProtoBuf_Meta_TypeModel_Binding.Register(app);
             ProtoBuf_Serializer_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Binding.Register(app);
-            System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Binding_Enumerator_Binding.Register(app);
-            System_Collections_Generic_KeyValuePair_2_Int64_List_1_Int64_Binding.Register(app);
             ET_MultiMap_2_Int64_Int64_Binding.Register(app);
             UnityEngine_Vector2_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
@@ -204,8 +202,6 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_Queue_1_ValueTuple_3_Int32_Int64_Int32_Binding.Register(app);
             System_Collections_Generic_SortedDictionary_2_Int64_List_1_ILTypeInstance_Binding.Register(app);
             System_ValueTuple_3_Int32_Int64_Int32_Binding.Register(app);
-            System_Collections_Generic_SortedDictionary_2_Int64_List_1_ILTypeInstance_Binding_Enumerator_Binding.Register(app);
-            System_Collections_Generic_KeyValuePair_2_Int64_List_1_ILTypeInstance_Binding.Register(app);
             ET_MultiMap_2_Int64_ILTypeInstance_Binding.Register(app);
             System_IO_Stream_Binding.Register(app);
             ET_ByteHelper_Binding.Register(app);

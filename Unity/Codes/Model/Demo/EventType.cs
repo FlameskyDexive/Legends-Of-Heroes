@@ -4,11 +4,11 @@ namespace ET
 {
     namespace EventType
     {
-        public class AppStart
+        public struct AppStart
         {
         }
 
-        public class SceneChangeStart
+        public struct SceneChangeStart
         {
             public Scene ZoneScene;
         }
@@ -20,39 +20,39 @@ namespace ET
             public Scene CurrentScene;
         }
 
-        public class ChangePosition
+        public struct ChangePosition
         {
             public Unit Unit;
             public Vector3 OldPos;
         }
 
-        public class ChangeRotation
+        public struct ChangeRotation
         {
             public Unit Unit;
         }
 
-        public class PingChange
+        public struct PingChange
         {
             public Scene ZoneScene;
             public long Ping;
         }
         
-        public class AfterCreateZoneScene
+        public struct AfterCreateZoneScene
         {
             public Scene ZoneScene;
         }
         
-        public class AfterCreateCurrentScene
+        public struct AfterCreateCurrentScene
         {
             public Scene CurrentScene;
         }
         
-        public class AfterCreateLoginScene
+        public struct AfterCreateLoginScene
         {
             public Scene LoginScene;
         }
 
-        public class AppStartInitFinish
+        public struct AppStartInitFinish
         {
             public Scene ZoneScene;
         }
@@ -62,37 +62,37 @@ namespace ET
             public Scene ZoneScene;
         }
 
-        public class LoadingBegin
+        public struct LoadingBegin
         {
             public Scene Scene;
         }
 
-        public class LoadingFinish
+        public struct LoadingFinish
         {
             public Scene Scene;
         }
 
-        public class EnterMapFinish
+        public struct EnterMapFinish
         {
             public Scene ZoneScene;
         }
 
-        public class AfterUnitCreate
+        public struct AfterUnitCreate
         {
             public Unit Unit;
         }
         
-        public class MoveStart
+        public struct MoveStart
         {
             public Unit Unit;
         }
 
-        public class MoveStop
+        public struct MoveStop
         {
             public Unit Unit;
         }
 
-        public class UnitEnterSightRange
+        public struct UnitEnterSightRange
         {
         }
     }
