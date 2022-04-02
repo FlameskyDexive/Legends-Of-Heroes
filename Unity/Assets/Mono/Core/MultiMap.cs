@@ -40,14 +40,6 @@ namespace ET
             return true;
         }
 
-        public void ForEach(Action<T, List<K>> action)
-        {
-            foreach (var kv in this)
-            {
-                action(kv.Key, kv.Value);
-            }
-        }
-        
         public new bool Remove(T t)
         {
             List<K> list;
