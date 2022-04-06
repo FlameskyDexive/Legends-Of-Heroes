@@ -351,6 +351,13 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerato.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Animator_Binding.cs" />
      <Compile Include="Assets\Mono\Define.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\InputHelper.cs" />
+     <Compile Include="Assets\Mono\Core\WrapVector2.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_InputHelper_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_WrapVector3_Binding.cs" />
+     <Compile Include="Assets\Mono\Core\WrapQuaternion.cs" />
+     <Compile Include="Assets\Mono\Core\WrapVector3.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\ET_WrapQuaternion_Binding.cs" />
      <None Include="Assets\Mono\Unity.Mono.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>E:/DevSoftWare/Unity/2020.3.21f1c1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

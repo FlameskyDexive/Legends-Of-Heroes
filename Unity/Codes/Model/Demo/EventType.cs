@@ -20,15 +20,32 @@ namespace ET
             public Scene CurrentScene;
         }
 
-        public struct ChangePosition
+        public class ChangePosition: DisposeObject
         {
-            public Unit Unit;
-            public Vector3 OldPos;
-        }
+            public static readonly ChangePosition Instance = new ChangePosition();
 
-        public struct ChangeRotation
-        {
             public Unit Unit;
+            public WrapVector3 OldPos = new WrapVector3();
+
+            // 因为是重复利用的，所以用完PublishClass会调用Dispose
+            public override void Dispose()
+            {
+                this.Unit = null;
+            }
+        }
+    
+
+        public class ChangeRotation: DisposeObject
+        {
+            public static readonly ChangeRotation Instance = new ChangeRotation();
+                   
+            public Unit Unit;
+                   
+            // 因为是重复利用的，所以用完PublishClass会调用Dispose
+            public override void Dispose()
+            {
+                this.Unit = null;
+            }
         }
 
         public struct PingChange
@@ -90,10 +107,6 @@ namespace ET
         public struct MoveStop
         {
             public Unit Unit;
-        }
-
-        public struct UnitEnterSightRange
-        {
         }
     }
 }

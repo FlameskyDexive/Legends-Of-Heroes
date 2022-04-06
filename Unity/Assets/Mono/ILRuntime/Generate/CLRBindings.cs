@@ -99,8 +99,9 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_KeyValuePair_2_String_Object_Binding.Register(app);
             UnityEngine_TextAsset_Binding.Register(app);
             UnityEngine_LayerMask_Binding.Register(app);
-            UnityEngine_Input_Binding.Register(app);
+            ET_InputHelper_Binding.Register(app);
             UnityEngine_Camera_Binding.Register(app);
+            UnityEngine_Input_Binding.Register(app);
             UnityEngine_Physics_Binding.Register(app);
             UnityEngine_RaycastHit_Binding.Register(app);
             ET_CodeLoader_Binding.Register(app);
@@ -197,6 +198,8 @@ namespace ILRuntime.Runtime.Generated
             System_Collections_Generic_SortedDictionary_2_Int64_List_1_Int64_Binding.Register(app);
             ET_MultiMap_2_Int64_Int64_Binding.Register(app);
             UnityEngine_Vector2_Binding.Register(app);
+            ET_WrapVector3_Binding.Register(app);
+            ET_WrapQuaternion_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding.Register(app);
             System_Collections_Generic_Dictionary_2_Int32_ILTypeInstance_Binding_ValueCollection_Binding_Enumerator_Binding.Register(app);
             System_Collections_Generic_Queue_1_ValueTuple_3_Int32_Int64_Int32_Binding.Register(app);
