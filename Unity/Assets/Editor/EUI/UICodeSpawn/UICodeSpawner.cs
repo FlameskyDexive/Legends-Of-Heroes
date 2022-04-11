@@ -99,6 +99,8 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("namespace ET");
         strBuilder.AppendLine("{");
         
+        strBuilder.AppendFormat("\t[FriendClass(typeof({0}))]\r\n", strDlgName);
+       
         strBuilder.AppendFormat("\tpublic static  class {0}\r\n", strDlgName + "System");
           strBuilder.AppendLine("\t{");
           strBuilder.AppendLine("");

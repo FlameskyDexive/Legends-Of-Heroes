@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [FriendClass(typeof(RedDotComponent))]
     public static class RedDotHelper
     {
         /// <summary>

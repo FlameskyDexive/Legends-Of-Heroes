@@ -22,7 +22,7 @@ namespace ET
         }
     }
     
-    
+    [FriendClass(typeof(UIEventComponent))]
     public static class UIEventComponentSystem
     {
         public static void Awake(this UIEventComponent self)

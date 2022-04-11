@@ -1,5 +1,7 @@
 ﻿namespace ET
 {
+	[FriendClass(typeof(WindowCoreData))]
+	[FriendClass(typeof(UIBaseWindow))]
 	[AUIEvent(WindowID.WindowID_RedDot)]
 	public  class DlgRedDotEventHandler : IAUIEventHandler
 	{

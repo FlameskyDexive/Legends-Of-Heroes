@@ -1,5 +1,7 @@
 ﻿namespace ET
 {
+	[FriendClass(typeof(WindowCoreData))]
+	[FriendClass(typeof(UIBaseWindow))]
 	[AUIEvent(WindowID.WindowID_Login)]
 	public  class DlgLoginEventHandler : IAUIEventHandler
 	{

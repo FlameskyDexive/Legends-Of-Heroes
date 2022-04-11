@@ -24,6 +24,7 @@ namespace ET
         }
     }
     
+    [FriendClass(typeof(UIPathComponent))]
     public static class UIPathComponentSystem
     {
         public static void Awake(this UIPathComponent self)

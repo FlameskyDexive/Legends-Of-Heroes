@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace ET
 {
+	[FriendClass(typeof(DlgRedDot))]
 	public static  class DlgRedDotSystem
 	{
 

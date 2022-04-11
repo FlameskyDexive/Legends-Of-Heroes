@@ -30,6 +30,7 @@ namespace ET
         }
     }
 
+    [FriendClass(typeof(RedDotComponent))]
     public static class RedDotComponentSystem
     {
         public static void AddRedDotNode(this RedDotComponent self, string parent, string target, bool isNeedShowNum)
