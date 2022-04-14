@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ET
 {
     [FriendClass(typeof(GlobalComponent))]
-    public class EUIRootHelper
+    public static class EUIRootHelper
     {
         public static void Init()
         {
