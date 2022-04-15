@@ -12,7 +12,7 @@ namespace ET
         
     }
     
-    
+    [ChildType(typeof(UIBaseWindow))]
     public class UIComponent : Entity,IAwake,IDestroy
     {
         public HashSet<WindowID> LoadingWindows                = new HashSet<WindowID>();

@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [ChildType(typeof(WindowCoreData))]
     public class UIBaseWindow : Entity,IAwake
     {
         public bool IsPreLoad

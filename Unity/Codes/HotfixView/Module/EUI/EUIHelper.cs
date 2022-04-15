@@ -99,29 +99,7 @@ namespace ET
         }
         
         
-        public static void AddUIScrollItems<K,T>(this K self, ref Dictionary<int, T> dictionary, int count) where K : Entity,IUILogic  where T : Entity,IAwake,IUIScrollItem
-        {
-            if (dictionary == null)
-            {
-                dictionary = new Dictionary<int, T>();
-            }
-            
-            if (count <= 0)
-            {
-                return;
-            }
-            
-            foreach (var item in dictionary)
-            {
-                item.Value.Dispose();
-            }
-            dictionary.Clear();
-            for (int i = 0; i <= count; i++)
-            {
-                T itemServer = self.AddChild<T>(true);
-                dictionary.Add(i , itemServer);
-            }
-        }
+
         
         
         public static void RemoveUIScrollItems<K,T>(this K self, ref Dictionary<int, T> dictionary) where K : Entity,IUILogic  where T : Entity,IUIScrollItem
