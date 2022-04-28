@@ -148,7 +148,7 @@ namespace ET
         public static GameObject GetGameObjectByResType( string poolName)
         {
             GameObject pb = null;
-            Dictionary<string, UnityEngine.Object>  assetDict = AssetsBundleHelper.LoadBundle(poolName + ".unity3d");
+            Dictionary<string, UnityEngine.Object>  assetDict = AssetsBundleHelper.LoadBundle(poolName + ".unity3d").Item2;
             pb = assetDict[poolName] as GameObject;
             return pb;
         }
