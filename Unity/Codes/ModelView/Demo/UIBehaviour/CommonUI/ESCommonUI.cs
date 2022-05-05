@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[EnableMethod]
 	public  class ESCommonUI : Entity,ET.IAwake<UnityEngine.Transform>,IDestroy 
 	{
 		public UnityEngine.UI.Image EImage_Test1Image

@@ -239,6 +239,7 @@
      <Compile Include="Assets\Mono\MonoBehaviour\RedDotMonoView.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Runtime_CompilerServices_TaskAwaiter_Binding.cs" />
      <Compile Include="Assets\Mono\Module\Network\AChannel.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_String_Type_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Activator_Binding.cs" />
      <Compile Include="Assets\Mono\Module\Mongo\BsonIdAttribute.cs" />
      <Compile Include="Assets\Mono\Core\Helper\FileHelper.cs" />
@@ -264,6 +265,7 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Networking_UnityWebRequest_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Networking_DownloadHandler_Binding.cs" />
      <Compile Include="Assets\Mono\MonoBehaviour\LoopScrollRect\LoopScrollMultiDataSource.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Type_Binding_Enumerato.cs" />
      <Compile Include="Assets\Mono\Core\TimeHelper.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_UnOrderMultiMap_2_Type_O.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_Type_ILTypeInstance_Binding.cs" />
@@ -271,6 +273,7 @@
      <Compile Include="Assets\Mono\CodeLoader.cs" />
      <Compile Include="Assets\Mono\Core\Log\Log.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETAsyncTaskMethodBuilder_Binding.cs" />
+     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Events_UnityAction_1_Int32_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ThreadSynchronizationContext_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ILog_Binding.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\ET_ETTask_1_Object_Array_Binding.cs" />
@@ -358,9 +361,6 @@
      <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_HashSet_1_ILTypeInstance_Binding_Enumerato.cs" />
      <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Animator_Binding.cs" />
      <Compile Include="Assets\Mono\Define.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\UnityEngine_Events_UnityAction_1_Int32_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_KeyValuePair_2_String_Type_Binding.cs" />
-     <Compile Include="Assets\Mono\ILRuntime\Generate\System_Collections_Generic_Dictionary_2_String_Type_Binding_Enumerato.cs" />
      <None Include="Assets\Mono\Unity.Mono.asmdef" />
      <Reference Include="UnityEngine">
      <HintPath>E:/DevSoftWare/Unity/2020.3.33f1c2/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

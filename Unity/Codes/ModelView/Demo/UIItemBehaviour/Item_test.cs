@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[EnableMethod]
 	public  class Scroll_Item_test : Entity,IAwake,IDestroy ,IUIScrollItem
 	{
 		private bool isCacheNode = false;

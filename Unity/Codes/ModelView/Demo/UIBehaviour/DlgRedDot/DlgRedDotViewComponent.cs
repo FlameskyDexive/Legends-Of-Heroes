@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET
 {
+	[EnableMethod]
 	public  class DlgRedDotViewComponent : Entity,IAwake,IDestroy 
 	{
 		public UnityEngine.RectTransform EGBackGroundRectTransform
