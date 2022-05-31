@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class UIEventComponent : Entity,IAwake,IDestroy
     {
         public static UIEventComponent Instance { get; set; }

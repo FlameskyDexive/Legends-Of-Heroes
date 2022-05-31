@@ -301,7 +301,7 @@ namespace ET
                 Log.Warning($"{windowsId} is not loaded!");
                 return null;
             }
-
+       
             if (isNeedShowState )
             {
                 if ( !self.IsWindowVisible(windowsId) )

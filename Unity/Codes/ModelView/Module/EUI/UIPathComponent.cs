@@ -2,6 +2,7 @@
 
 namespace ET
 {
+    [ComponentOf(typeof(Scene))]
     public class UIPathComponent : Entity,IAwake,IDestroy
     {
         public static UIPathComponent Instance { get; set; }

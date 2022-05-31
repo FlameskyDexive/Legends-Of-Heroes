@@ -1,5 +1,6 @@
 ﻿namespace ET
 {
+	[ComponentOf(typeof(UIBaseWindow))]
 	public  class DlgRedDot :Entity,IAwake,IUILogic
 	{
 

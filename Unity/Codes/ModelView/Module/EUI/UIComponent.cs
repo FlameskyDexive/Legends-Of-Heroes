@@ -12,6 +12,7 @@ namespace ET
         
     }
     
+    [ComponentOf(typeof(Scene))]
     [ChildType(typeof(UIBaseWindow))]
     public class UIComponent : Entity,IAwake,IDestroy
     {

@@ -16,6 +16,7 @@ namespace ET
         IsNew = 1 << 4,
     }
 
+   [ComponentOf(null)]
     public partial class Entity: DisposeObject
     {
         [IgnoreDataMember]

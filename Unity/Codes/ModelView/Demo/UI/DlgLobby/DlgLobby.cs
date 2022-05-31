@@ -2,6 +2,7 @@
 
 namespace ET
 {
+	[ComponentOf(typeof(UIBaseWindow))]
 	public  class DlgLobby :Entity,IAwake,IDestroy,IUILogic
 	{
 
