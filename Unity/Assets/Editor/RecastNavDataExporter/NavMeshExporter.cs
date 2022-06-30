@@ -67,12 +67,12 @@ namespace ETEditor
         private static Dictionary<Vert, Dictionary<Vert, Pair>> vertPairDict = new Dictionary<Vert, Dictionary<Vert, Pair>>();
         private static Dictionary<float, Dictionary<float, Vert>> pointVertDict = new Dictionary<float, Dictionary<float, Vert>>();
         private static Dictionary<int, Vert> indexVertDict = new Dictionary<int, Vert>();
-        private static string outputClientFolder = "../RecastNavMesh/Meshes/";
+        private static string outputClientFolder = "../Tools/RecastNavExportor/Meshes/";
         private static string outputServerFolder = "../Config/RecastNavData/ExportedObj/";
 
         #region 菜单主函数
-        [MenuItem("Tools/NavMesh/ExportSceneObj")]
-        public static void ExportScene()
+        [MenuItem("Tools/NavMesh/ExportObjFile")]
+        public static void ExportObjFile()
         {
             var triangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
             if (triangulation.indices.Length < 3)
@@ -94,13 +94,20 @@ namespace ETEditor
             //WriteFile();
 
             // 导出*_internal.Obj，仅供Unity编辑器自己查看
-            //WriteUnityObjFile();
+            WriteUnityObjFile();
             // 导出Recast可用的*.Obj文件
-            WriteRecastObjFile();
+            // WriteRecastObjFile();
             // 拷贝Obj和Bytes文件到服务器目录下 TODO 暂不需要
             //CopyObjFiles();
 
             Debug.Log($"NavMesh Output Info - Vertices:[{vertList.Count}] - Faces:[{faceList.Count}]");
+        }
+        
+        
+        [MenuItem("Tools/NavMesh/ExportObjToRecast")]
+        public static void ExportObjToRecast()
+        {
+            WriteRecastObjFile();
         }
 
         #endregion
@@ -456,7 +463,7 @@ namespace ETEditor
 
         private static void WriteUnityObjFile()
         {
-            var path = outputClientFolder + SceneManager.GetActiveScene().name + "_internal.obj";
+            var path = $"Assets/Scenes/{SceneManager.GetActiveScene().name}/" + SceneManager.GetActiveScene().name + "_internal.obj";
             StreamWriter tmpStreamWriter = new StreamWriter(path);
 
             NavMeshTriangulation tmpNavMeshTriangulation = UnityEngine.AI.NavMesh.CalculateTriangulation();
@@ -464,8 +471,8 @@ namespace ETEditor
             //顶点
             for (int i = 0; i < tmpNavMeshTriangulation.vertices.Length; i++)
             {
-                tmpStreamWriter.WriteLine("v  " + tmpNavMeshTriangulation.vertices[i].x + " " + tmpNavMeshTriangulation.vertices[i].y + " " +
-                    tmpNavMeshTriangulation.vertices[i].z);
+                tmpStreamWriter.WriteLine("v  " + (-1 * tmpNavMeshTriangulation.vertices[i].x) + " " + tmpNavMeshTriangulation.vertices[i].y + " " +
+                    (tmpNavMeshTriangulation.vertices[i].z));
             }
 
             tmpStreamWriter.WriteLine("g pPlane1");
@@ -473,8 +480,7 @@ namespace ETEditor
             //索引
             for (int i = 0; i < tmpNavMeshTriangulation.indices.Length;)
             {
-                tmpStreamWriter.WriteLine("f " + (tmpNavMeshTriangulation.indices[i] + 1) + " " + (tmpNavMeshTriangulation.indices[i + 1] + 1) + " " +
-                    (tmpNavMeshTriangulation.indices[i + 2] + 1));
+                tmpStreamWriter.WriteLine("f " + (tmpNavMeshTriangulation.indices[i] + 1) + " " + (tmpNavMeshTriangulation.indices[i + 1] + 2) + " " + (tmpNavMeshTriangulation.indices[i + 1] + 1));
                 i = i + 3;
             }
 
