@@ -578,6 +578,7 @@ public partial class UICodeSpawner
         WidgetInterfaceList = new List<string>();        
         WidgetInterfaceList.Add("Button");
         WidgetInterfaceList.Add( "Text");
+        WidgetInterfaceList.Add("TMPro.TextMeshProUGUI");
         WidgetInterfaceList.Add("Input");
         WidgetInterfaceList.Add("InputField");
         WidgetInterfaceList.Add( "Scrollbar");
@@ -592,6 +593,7 @@ public partial class UICodeSpawner
         WidgetInterfaceList.Add("UIWarpContent");
         WidgetInterfaceList.Add("LoopVerticalScrollRect");
         WidgetInterfaceList.Add("LoopHorizontalScrollRect");
+        WidgetInterfaceList.Add("UnityEngine.EventSystems.EventTrigger");
     }
 
     private static Dictionary<string, List<Component> > Path2WidgetCachedDict =null;
