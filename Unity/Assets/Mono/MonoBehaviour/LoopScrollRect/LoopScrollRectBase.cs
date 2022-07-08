@@ -10,32 +10,61 @@ namespace UnityEngine.UI
     [AddComponentMenu("")]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]
+    /// <summary>
+    /// A component for making a child RectTransform scroll with reuseable content.
+    /// </summary>
+    /// <remarks>
+    /// LoopScrollRect will not do any clipping on its own. Combined with a Mask component, it can be turned into a loop scroll view.
+    /// </remarks>
     public abstract class LoopScrollRectBase : UIBehaviour, IInitializePotentialDragHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IScrollHandler, ICanvasElement, ILayoutElement, ILayoutGroup
     {
         //==========LoopScrollRect==========
-        [Tooltip("Prefab Source")]
-        public LoopScrollPrefabSource prefabSource = new LoopScrollPrefabSource();
+        /// <summary>
+        /// The scroll data source to fill items.
+        /// </summary>
+        public LoopScrollPrefabSourceInstance prefabSource = new  LoopScrollPrefabSourceInstance();
 
+        /// <summary>
+        /// The scroll's total count for items with id in [0, totalCount]. Negative value like -1 means infinite items.
+        /// </summary>
         [Tooltip("Total count, negative means INFINITE mode")]
         public int totalCount;
 
+        /// <summary>
+        /// [Optional] Helper for accurate size so we can achieve better scrolling.
+        /// </summary>
         [HideInInspector]
         [NonSerialized]
         public LoopScrollSizeHelper sizeHelper = null;
 
+        /// <summary>
+        /// When threshold reached, we prepare new items outside view. This will be expanded to at least 1.5 * itemSize.
+        /// </summary>
         protected float threshold = 0;
+
+        /// <summary>
+        /// Whether we use down-upsize or right-left direction?
+        /// </summary>
         [Tooltip("Reverse direction for dragging")]
         public bool reverseDirection = false;
-        [Tooltip("Rubber scale for outside")]
-        public float rubberScale = 1;
 
+        /// <summary>
+        /// The first item id in LoopScroll.
+        /// </summary>
         protected int itemTypeStart = 0;
+
+        /// <summary>
+        /// The last item id in LoopScroll.
+        /// </summary>
         protected int itemTypeEnd = 0;
 
         protected abstract float GetSize(RectTransform item, bool includeSpacing = true);
         protected abstract float GetDimension(Vector2 vector);
         protected abstract float GetAbsDimension(Vector2 vector);
         protected abstract Vector2 GetVector(float value);
+        /// <summary>
+        /// Direction for LoopScroll. This is a bit confusing with m_Horizontal/m_Vertical.
+        /// </summary>
         protected enum LoopScrollRectDirection
         {
             Vertical,
@@ -60,9 +89,9 @@ namespace UnityEngine.UI
                 }
                 m_ContentSpaceInit = true;
                 m_ContentSpacing = 0;
-                if (content != null)
+                if (m_Content != null)
                 {
-                    HorizontalOrVerticalLayoutGroup layout1 = content.GetComponent<HorizontalOrVerticalLayoutGroup>();
+                    HorizontalOrVerticalLayoutGroup layout1 = m_Content.GetComponent<HorizontalOrVerticalLayoutGroup>();
                     if (layout1 != null)
                     {
                         m_ContentSpacing = layout1.spacing;
@@ -71,7 +100,7 @@ namespace UnityEngine.UI
                         m_ContentTopPadding = layout1.padding.top;
                         m_ContentBottomPadding = layout1.padding.bottom;
                     }
-                    m_GridLayout = content.GetComponent<GridLayoutGroup>();
+                    m_GridLayout = m_Content.GetComponent<GridLayoutGroup>();
                     if (m_GridLayout != null)
                     {
                         m_ContentSpacing = GetAbsDimension(m_GridLayout.spacing);
@@ -97,9 +126,9 @@ namespace UnityEngine.UI
                 }
                 m_ContentConstraintCountInit = true;
                 m_ContentConstraintCount = 1;
-                if (content != null)
+                if (m_Content != null)
                 {
-                    GridLayoutGroup layout2 = content.GetComponent<GridLayoutGroup>();
+                    GridLayoutGroup layout2 = m_Content.GetComponent<GridLayoutGroup>();
                     if (layout2 != null)
                     {
                         if (layout2.constraint == GridLayoutGroup.Constraint.Flexible)
@@ -113,7 +142,9 @@ namespace UnityEngine.UI
             }
         }
 
-        // the first line
+        /// <summary>
+        /// The first line in scroll. Grid may have multiply items in one line.
+        /// </summary>
         protected int StartLine
         {
             get
@@ -121,8 +152,10 @@ namespace UnityEngine.UI
                 return Mathf.CeilToInt((float)(itemTypeStart) / contentConstraintCount);
             }
         }
-
-        // how many lines we have for now
+        
+        /// <summary>
+        /// Current line count in scroll. Grid may have multiply items in one line.
+        /// </summary>
         protected int CurrentLines
         {
             get
@@ -130,8 +163,10 @@ namespace UnityEngine.UI
                 return Mathf.CeilToInt((float)(itemTypeEnd - itemTypeStart) / contentConstraintCount);
             }
         }
-
-        // how many lines we have in total
+        
+        /// <summary>
+        /// Total line count in scroll. Grid may have multiply items in one line.
+        /// </summary>
         protected int TotalLines
         {
             get
@@ -140,64 +175,296 @@ namespace UnityEngine.UI
             }
         }
 
-        protected virtual bool UpdateItems(Bounds viewBounds, Bounds contentBounds) { return false; }
+        protected virtual bool UpdateItems(ref Bounds viewBounds, ref Bounds contentBounds) { return false; }
         //==========LoopScrollRect==========
 
+        /// <summary>
+        /// A setting for which behavior to use when content moves beyond the confines of its container.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI;  // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///     public Scrollbar newScrollBar;
+        ///
+        ///     //Called when a button is pressed
+        ///     public void Example(int option)
+        ///     {
+        ///         if (option == 0)
+        ///         {
+        ///             myScrollRect.movementType = ScrollRect.MovementType.Clamped;
+        ///         }
+        ///         else if (option == 1)
+        ///         {
+        ///             myScrollRect.movementType = ScrollRect.MovementType.Elastic;
+        ///         }
+        ///         else if (option == 2)
+        ///         {
+        ///             myScrollRect.movementType = ScrollRect.MovementType.Unrestricted;
+        ///         }
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public enum MovementType
         {
-            Unrestricted, // Unrestricted movement -- can scroll forever
-            Elastic, // Restricted but flexible -- can go past the edges, but springs back in place
-            Clamped, // Restricted movement where it's not possible to go past the edges
+            /// <summary>
+            /// Unrestricted movement. The content can move forever.
+            /// </summary>
+            Unrestricted,
+
+            /// <summary>
+            /// Elastic movement. The content is allowed to temporarily move beyond the container, but is pulled back elastically.
+            /// </summary>
+            Elastic,
+
+            /// <summary>
+            /// Clamped movement. The content can not be moved beyond its container.
+            /// </summary>
+            Clamped,
         }
 
+        /// <summary>
+        /// Enum for which behavior to use for scrollbar visibility.
+        /// </summary>
         public enum ScrollbarVisibility
         {
+            /// <summary>
+            /// Always show the scrollbar.
+            /// </summary>
             Permanent,
+
+            /// <summary>
+            /// Automatically hide the scrollbar when no scrolling is needed on this axis. The viewport rect will not be changed.
+            /// </summary>
             AutoHide,
+
+            /// <summary>
+            /// Automatically hide the scrollbar when no scrolling is needed on this axis, and expand the viewport rect accordingly.
+            /// </summary>
+            /// <remarks>
+            /// When this setting is used, the scrollbar and the viewport rect become driven, meaning that values in the RectTransform are calculated automatically and can't be manually edited.
+            /// </remarks>
             AutoHideAndExpandViewport,
         }
 
         [Serializable]
-        public class ScrollRectEvent : UnityEvent<Vector2> { }
+        /// <summary>
+        /// Event type used by the ScrollRect.
+        /// </summary>
+        public class ScrollRectEvent : UnityEvent<Vector2> {}
 
         [SerializeField]
-        protected RectTransform m_Content;
+        protected RectTransform m_Content;	//==========LoopScrollRect==========
+
+        /// <summary>
+        /// The content that can be scrolled. It should be a child of the GameObject with ScrollRect on it.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI; // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///     public RectTransform scrollableContent;
+        ///
+        ///     //Do this when the Save button is selected.
+        ///     public void Start()
+        ///     {
+        ///         // assigns the contect that can be scrolled using the ScrollRect.
+        ///         myScrollRect.content = scrollableContent;
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public RectTransform content { get { return m_Content; } set { m_Content = value; } }
 
         [SerializeField]
         private bool m_Horizontal = true;
+
+        /// <summary>
+        /// Should horizontal scrolling be enabled?
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI; // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///
+        ///     public void Start()
+        ///     {
+        ///         // Is horizontal scrolling enabled?
+        ///         if (myScrollRect.horizontal == true)
+        ///         {
+        ///             Debug.Log("Horizontal Scrolling is Enabled!");
+        ///         }
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public bool horizontal { get { return m_Horizontal; } set { m_Horizontal = value; } }
 
         [SerializeField]
         private bool m_Vertical = true;
+
+        /// <summary>
+        /// Should vertical scrolling be enabled?
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI;  // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///
+        ///     public void Start()
+        ///     {
+        ///         // Is Vertical scrolling enabled?
+        ///         if (myScrollRect.vertical == true)
+        ///         {
+        ///             Debug.Log("Vertical Scrolling is Enabled!");
+        ///         }
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public bool vertical { get { return m_Vertical; } set { m_Vertical = value; } }
 
         [SerializeField]
         private MovementType m_MovementType = MovementType.Elastic;
+
+        /// <summary>
+        /// The behavior to use when the content moves beyond the scroll rect.
+        /// </summary>
         public MovementType movementType { get { return m_MovementType; } set { m_MovementType = value; } }
 
         [SerializeField]
-        private float m_Elasticity = 0.1f; // Only used for MovementType.Elastic
+        private float m_Elasticity = 0.1f;
+
+        /// <summary>
+        /// The amount of elasticity to use when the content moves beyond the scroll rect.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI;
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///
+        ///     public void Start()
+        ///     {
+        ///         // assigns a new value to the elasticity of the scroll rect.
+        ///         // The higher the number the longer it takes to snap back.
+        ///         myScrollRect.elasticity = 3.0f;
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public float elasticity { get { return m_Elasticity; } set { m_Elasticity = value; } }
 
         [SerializeField]
         private bool m_Inertia = true;
+
+        /// <summary>
+        /// Should movement inertia be enabled?
+        /// </summary>
+        /// <remarks>
+        /// Inertia means that the scrollrect content will keep scrolling for a while after being dragged. It gradually slows down according to the decelerationRate.
+        /// </remarks>
         public bool inertia { get { return m_Inertia; } set { m_Inertia = value; } }
 
         [SerializeField]
         private float m_DecelerationRate = 0.135f; // Only used when inertia is enabled
+
+        /// <summary>
+        /// The rate at which movement slows down.
+        /// </summary>
+        /// <remarks>
+        /// The deceleration rate is the speed reduction per second. A value of 0.5 halves the speed each second. The default is 0.135. The deceleration rate is only used when inertia is enabled.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI; // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///
+        ///     public void Start()
+        ///     {
+        ///         // assigns a new value to the decelerationRate of the scroll rect.
+        ///         // The higher the number the longer it takes to decelerate.
+        ///         myScrollRect.decelerationRate = 5.0f;
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public float decelerationRate { get { return m_DecelerationRate; } set { m_DecelerationRate = value; } }
 
         [SerializeField]
         private float m_ScrollSensitivity = 1.0f;
+
+        /// <summary>
+        /// The sensitivity to scroll wheel and track pad scroll events.
+        /// </summary>
+        /// <remarks>
+        /// Higher values indicate higher sensitivity.
+        /// </remarks>
         public float scrollSensitivity { get { return m_ScrollSensitivity; } set { m_ScrollSensitivity = value; } }
 
         [SerializeField]
         private RectTransform m_Viewport;
+
+        /// <summary>
+        /// Reference to the viewport RectTransform that is the parent of the content RectTransform.
+        /// </summary>
         public RectTransform viewport { get { return m_Viewport; } set { m_Viewport = value; SetDirtyCaching(); } }
 
         [SerializeField]
         private Scrollbar m_HorizontalScrollbar;
+
+        /// <summary>
+        /// Optional Scrollbar object linked to the horizontal scrolling of the ScrollRect.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI;  // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///     public Scrollbar newScrollBar;
+        ///
+        ///     public void Start()
+        ///     {
+        ///         // Assigns a scroll bar element to the ScrollRect, allowing you to scroll in the horizontal axis.
+        ///         myScrollRect.horizontalScrollbar = newScrollBar;
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public Scrollbar horizontalScrollbar
         {
             get
@@ -217,6 +484,29 @@ namespace UnityEngine.UI
 
         [SerializeField]
         private Scrollbar m_VerticalScrollbar;
+
+        /// <summary>
+        /// Optional Scrollbar object linked to the vertical scrolling of the ScrollRect.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI;  // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///     public Scrollbar newScrollBar;
+        ///
+        ///     public void Start()
+        ///     {
+        ///         // Assigns a scroll bar element to the ScrollRect, allowing you to scroll in the vertical axis.
+        ///         myScrollRect.verticalScrollbar = newScrollBar;
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public Scrollbar verticalScrollbar
         {
             get
@@ -236,27 +526,82 @@ namespace UnityEngine.UI
 
         [SerializeField]
         private ScrollbarVisibility m_HorizontalScrollbarVisibility;
+
+        /// <summary>
+        /// The mode of visibility for the horizontal scrollbar.
+        /// </summary>
         public ScrollbarVisibility horizontalScrollbarVisibility { get { return m_HorizontalScrollbarVisibility; } set { m_HorizontalScrollbarVisibility = value; SetDirtyCaching(); } }
 
         [SerializeField]
         private ScrollbarVisibility m_VerticalScrollbarVisibility;
+
+        /// <summary>
+        /// The mode of visibility for the vertical scrollbar.
+        /// </summary>
         public ScrollbarVisibility verticalScrollbarVisibility { get { return m_VerticalScrollbarVisibility; } set { m_VerticalScrollbarVisibility = value; SetDirtyCaching(); } }
 
         [SerializeField]
         private float m_HorizontalScrollbarSpacing;
+
+        /// <summary>
+        /// The space between the scrollbar and the viewport.
+        /// </summary>
         public float horizontalScrollbarSpacing { get { return m_HorizontalScrollbarSpacing; } set { m_HorizontalScrollbarSpacing = value; SetDirty(); } }
 
         [SerializeField]
         private float m_VerticalScrollbarSpacing;
+
+        /// <summary>
+        /// The space between the scrollbar and the viewport.
+        /// </summary>
         public float verticalScrollbarSpacing { get { return m_VerticalScrollbarSpacing; } set { m_VerticalScrollbarSpacing = value; SetDirty(); } }
 
         [SerializeField]
         private ScrollRectEvent m_OnValueChanged = new ScrollRectEvent();
+
+        /// <summary>
+        /// Callback executed when the position of the child changes.
+        /// </summary>
+        /// <remarks>
+        /// onValueChanged is used to watch for changes in the ScrollRect object.
+        /// The onValueChanged call will use the UnityEvent.AddListener API to watch for
+        /// changes.  When changes happen script code provided by the user will be called.
+        /// The UnityEvent.AddListener API for UI.ScrollRect._onValueChanged takes a Vector2.
+        ///
+        /// Note: The editor allows the onValueChanged value to be set up manually.For example the
+        /// value can be set to run only a runtime.  The object and script function to call are also
+        /// provided here.
+        ///
+        /// The onValueChanged variable can be alternatively set-up at runtime.The script example below
+        /// shows how this can be done.The script is attached to the ScrollRect object.
+        /// </remarks>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using UnityEngine.UI;
+        ///
+        /// public class ExampleScript : MonoBehaviour
+        /// {
+        ///     static ScrollRect scrollRect;
+        ///
+        ///     void Start()
+        ///     {
+        ///         scrollRect = GetComponent<ScrollRect>();
+        ///         scrollRect.onValueChanged.AddListener(ListenerMethod);
+        ///     }
+        ///
+        ///     public void ListenerMethod(Vector2 value)
+        ///     {
+        ///         Debug.Log("ListenerMethod: " + value);
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public ScrollRectEvent onValueChanged { get { return m_OnValueChanged; } set { m_OnValueChanged = value; } }
 
         // The offset from handle position to mouse down position
         private Vector2 m_PointerStartLocalCursor = Vector2.zero;
-        private Vector2 m_ContentStartPosition = Vector2.zero;
+        protected Vector2 m_ContentStartPosition = Vector2.zero;
 
         private RectTransform m_ViewRect;
 
@@ -272,13 +617,21 @@ namespace UnityEngine.UI
             }
         }
 
-        private Bounds m_ContentBounds;
+        protected Bounds m_ContentBounds;
         private Bounds m_ViewBounds;
 
         private Vector2 m_Velocity;
+
+        /// <summary>
+        /// The current velocity of the content.
+        /// </summary>
+        /// <remarks>
+        /// The velocity is defined in units per second.
+        /// </remarks>
         public Vector2 velocity { get { return m_Velocity; } set { m_Velocity = value; } }
 
         private bool m_Dragging;
+        private bool m_Scrolling;
 
         private Vector2 m_PrevPosition = Vector2.zero;
         private Bounds m_PrevContentBounds;
@@ -291,8 +644,7 @@ namespace UnityEngine.UI
         private float m_HSliderHeight;
         private float m_VSliderWidth;
 
-        [System.NonSerialized]
-        private RectTransform m_Rect;
+        [System.NonSerialized] private RectTransform m_Rect;
         private RectTransform rectTransform
         {
             get
@@ -309,23 +661,29 @@ namespace UnityEngine.UI
         private DrivenRectTransformTracker m_Tracker;
 
         protected LoopScrollRectBase()
-        {
-        }
+        {}
 
         //==========LoopScrollRect==========
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         protected override void Awake()
         {
             base.Awake();
             if (Application.isPlaying)
             {
                 float value = (reverseDirection ^ (direction == LoopScrollRectDirection.Horizontal)) ? 0 : 1;
-                Debug.Assert(GetAbsDimension(content.pivot) == value, this);
-                Debug.Assert(GetAbsDimension(content.anchorMin) == value, this);
-                Debug.Assert(GetAbsDimension(content.anchorMax) == value, this);
+                if (m_Content != null)
+                {
+                    Debug.Assert(GetAbsDimension(m_Content.pivot) == value, this);
+                    Debug.Assert(GetAbsDimension(m_Content.anchorMin) == value, this);
+                    Debug.Assert(GetAbsDimension(m_Content.anchorMax) == value, this);
+                }
+                if (direction == LoopScrollRectDirection.Vertical)
+                    Debug.Assert(m_Vertical && !m_Horizontal, this);
+                else
+                    Debug.Assert(!m_Vertical && m_Horizontal, this);
             }
         }
-#endif
+        #endif
 
         public void ClearCells()
         {
@@ -334,9 +692,9 @@ namespace UnityEngine.UI
                 itemTypeStart = 0;
                 itemTypeEnd = 0;
                 totalCount = 0;
-                for (int i = content.childCount - 1; i >= 0; i--)
+                for (int i = m_Content.childCount - 1; i >= 0; i--)
                 {
-                    prefabSource.ReturnObject(content.GetChild(i));
+                    prefabSource.ReturnObject(m_Content.GetChild(i));
                 }
             }
         }
@@ -350,12 +708,12 @@ namespace UnityEngine.UI
             int idx = 0;
             if (itemTypeEnd > itemTypeStart)
             {
-                float size = GetSize(content.GetChild(0) as RectTransform, false);
+                float size = GetSize(m_Content.GetChild(0) as RectTransform, false);
                 while (size + offset <= 0 && itemTypeStart + idx + contentConstraintCount < itemTypeEnd)
                 {
                     offset += size;
                     idx += contentConstraintCount;
-                    size = GetSize(content.GetChild(idx) as RectTransform);
+                    size = GetSize(m_Content.GetChild(idx) as RectTransform);
                 }
             }
             return idx + itemTypeStart;
@@ -370,13 +728,13 @@ namespace UnityEngine.UI
             int idx = 0;
             if (itemTypeEnd > itemTypeStart)
             {
-                int totalChildCount = content.childCount;
-                float size = GetSize(content.GetChild(totalChildCount - idx - 1) as RectTransform, false);
+                int totalChildCount = m_Content.childCount;
+                float size = GetSize(m_Content.GetChild(totalChildCount - idx - 1) as RectTransform, false);
                 while (size + offset <= 0 && itemTypeStart < itemTypeEnd - idx - contentConstraintCount)
                 {
                     offset += size;
                     idx += contentConstraintCount;
-                    size = GetSize(content.GetChild(totalChildCount - idx - 1) as RectTransform);
+                    size = GetSize(m_Content.GetChild(totalChildCount - idx - 1) as RectTransform);
                 }
             }
             offset = -offset;
@@ -504,7 +862,7 @@ namespace UnityEngine.UI
                     if (move != 0)
                     {
                         Vector2 offset = GetVector(move);
-                        content.anchoredPosition += offset;
+                        m_Content.anchoredPosition += offset;
                         m_PrevPosition += offset;
                         m_ContentStartPosition += offset;
                         UpdateBounds(true);
@@ -517,22 +875,25 @@ namespace UnityEngine.UI
 
         protected abstract void ProvideData(Transform transform, int index);
 
+        /// <summary>
+        /// Refresh item data
+        /// </summary>
         public void RefreshCells()
         {
             if (Application.isPlaying && this.isActiveAndEnabled)
             {
                 itemTypeEnd = itemTypeStart;
                 // recycle items if we can
-                for (int i = 0; i < content.childCount; i++)
+                for (int i = 0; i < m_Content.childCount; i++)
                 {
                     if (itemTypeEnd < totalCount)
                     {
-                        ProvideData(content.GetChild(i), itemTypeEnd);
+                        ProvideData(m_Content.GetChild(i), itemTypeEnd);
                         itemTypeEnd++;
                     }
                     else
                     {
-                        prefabSource.ReturnObject(content.GetChild(i));
+                        prefabSource.ReturnObject(m_Content.GetChild(i));
                         i--;
                     }
                 }
@@ -541,6 +902,9 @@ namespace UnityEngine.UI
             }
         }
 
+        /// <summary>
+        /// Refill cells from endItem at the end while clear existing ones
+        /// </summary>
         public void RefillCellsFromEnd(int endItem = 0, bool alignStart = false)
         {
             if (!Application.isPlaying)
@@ -591,13 +955,20 @@ namespace UnityEngine.UI
 
             ClearTempPool();
             // force build bounds here so scrollbar can access newest bounds
-            LayoutRebuilder.ForceRebuildLayoutImmediate(content);
-            m_ContentBounds = GetBounds();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_Content);
+            Canvas.ForceUpdateCanvases();
+            UpdateBounds(false);
             UpdateScrollbars(Vector2.zero);
             StopMovement();
             UpdatePrevData();
         }
 
+        /// <summary>
+        /// Refill cells with startItem at the beginning while clear existing ones
+        /// </summary>
+        /// <param name="startItem">The first item to fill</param>
+        /// <param name="fillViewRect">When [startItem, totalCount] is not enough for the whole viewBound, should we fill backwords with [0, startItem)? </param>
+        /// <param name="contentOffset">The first item's offset compared to viewBound</param>
         public void RefillCells(int startItem = 0, bool fillViewRect = false, float contentOffset = 0)
         {
             if (!Application.isPlaying)
@@ -642,10 +1013,15 @@ namespace UnityEngine.UI
 
             if (fillViewRect && itemSize > 0 && sizeFilled < sizeToFill)
             {
-                int itemsToAddCount = (int)((sizeToFill - sizeFilled) / itemSize);        //calculate how many items can be added above the offset, so it still is visible in the view
+                //calculate how many items can be added above the offset, so it still is visible in the view
+                int itemsToAddCount = (int)((sizeToFill - sizeFilled) / itemSize);
                 int newOffset = startItem - itemsToAddCount;
                 if (newOffset < 0) newOffset = 0;
-                if (newOffset != startItem) RefillCells(newOffset);                 //refill again, with the new offset value, and now with fillViewRect disabled.
+                if (newOffset != startItem)
+                {
+                    //refill again, with the new offset value, and now with fillViewRect disabled.
+                    RefillCells(newOffset);
+                }
             }
 
             Vector2 pos = m_Content.anchoredPosition;
@@ -658,8 +1034,9 @@ namespace UnityEngine.UI
 
             ClearTempPool();
             // force build bounds here so scrollbar can access newest bounds
-            LayoutRebuilder.ForceRebuildLayoutImmediate(content);
-            m_ContentBounds = GetBounds();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(m_Content);
+            Canvas.ForceUpdateCanvases();
+            UpdateBounds(false);
             UpdateScrollbars(Vector2.zero);
             StopMovement();
             UpdatePrevData();
@@ -681,12 +1058,16 @@ namespace UnityEngine.UI
             }
             threshold = Mathf.Max(threshold, size * 1.5f);
 
-            if (!reverseDirection)
+            if (size > 0)
             {
-                Vector2 offset = GetVector(size);
-                content.anchoredPosition += offset;
-                m_PrevPosition += offset;
-                m_ContentStartPosition += offset;
+                m_HasRebuiltLayout = false;
+                if (!reverseDirection)
+                {
+                    Vector2 offset = GetVector(size);
+                    m_Content.anchoredPosition += offset;
+                    m_PrevPosition += offset;
+                    m_ContentStartPosition += offset;
+                }
             }
 
             return size;
@@ -699,7 +1080,7 @@ namespace UnityEngine.UI
             {
                 return 0;
             }
-            int availableChilds = content.childCount - deletedItemTypeStart - deletedItemTypeEnd;
+            int availableChilds = m_Content.childCount - deletedItemTypeStart - deletedItemTypeEnd;
             Debug.Assert(availableChilds >= 0);
             if (availableChilds == 0)
             {
@@ -709,7 +1090,7 @@ namespace UnityEngine.UI
             float size = 0;
             for (int i = 0; i < contentConstraintCount; i++)
             {
-                RectTransform oldItem = content.GetChild(deletedItemTypeStart) as RectTransform;
+                RectTransform oldItem = m_Content.GetChild(deletedItemTypeStart) as RectTransform;
                 size = Mathf.Max(GetSize(oldItem), size);
                 ReturnToTempPool(true);
                 availableChilds--;
@@ -721,13 +1102,18 @@ namespace UnityEngine.UI
                 }
             }
 
-            if (!reverseDirection)
+            if (size > 0)
             {
-                Vector2 offset = GetVector(size);
-                content.anchoredPosition -= offset;
-                m_PrevPosition -= offset;
-                m_ContentStartPosition -= offset;
+                m_HasRebuiltLayout = false;
+                if (!reverseDirection)
+                {
+                    Vector2 offset = GetVector(size);
+                    m_Content.anchoredPosition -= offset;
+                    m_PrevPosition -= offset;
+                    m_ContentStartPosition -= offset;
+                }
             }
+
             return size;
         }
 
@@ -740,12 +1126,12 @@ namespace UnityEngine.UI
             }
             float size = 0;
             // issue 4: fill lines to end first
-            int availableChilds = content.childCount - deletedItemTypeStart - deletedItemTypeEnd;
+            int availableChilds = m_Content.childCount - deletedItemTypeStart - deletedItemTypeEnd;
             int count = contentConstraintCount - (availableChilds % contentConstraintCount);
             for (int i = 0; i < count; i++)
             {
                 RectTransform newItem = GetFromTempPool(itemTypeEnd);
-                newItem.SetSiblingIndex(content.childCount - deletedItemTypeEnd - 1);
+                newItem.SetSiblingIndex(m_Content.childCount - deletedItemTypeEnd - 1);
                 size = Mathf.Max(GetSize(newItem, includeSpacing), size);
                 itemTypeEnd++;
                 if (totalCount >= 0 && itemTypeEnd >= totalCount)
@@ -755,12 +1141,16 @@ namespace UnityEngine.UI
             }
             threshold = Mathf.Max(threshold, size * 1.5f);
 
-            if (reverseDirection)
+            if (size > 0)
             {
-                Vector2 offset = GetVector(size);
-                content.anchoredPosition -= offset;
-                m_PrevPosition -= offset;
-                m_ContentStartPosition -= offset;
+                m_HasRebuiltLayout = false;
+                if (reverseDirection)
+                {
+                    Vector2 offset = GetVector(size);
+                    m_Content.anchoredPosition -= offset;
+                    m_PrevPosition -= offset;
+                    m_ContentStartPosition -= offset;
+                }
             }
 
             return size;
@@ -772,7 +1162,7 @@ namespace UnityEngine.UI
             {
                 return 0;
             }
-            int availableChilds = content.childCount - deletedItemTypeStart - deletedItemTypeEnd;
+            int availableChilds = m_Content.childCount - deletedItemTypeStart - deletedItemTypeEnd;
             Debug.Assert(availableChilds >= 0);
             if (availableChilds == 0)
             {
@@ -782,7 +1172,7 @@ namespace UnityEngine.UI
             float size = 0;
             for (int i = 0; i < contentConstraintCount; i++)
             {
-                RectTransform oldItem = content.GetChild(content.childCount - deletedItemTypeEnd - 1) as RectTransform;
+                RectTransform oldItem = m_Content.GetChild(m_Content.childCount - deletedItemTypeEnd - 1) as RectTransform;
                 size = Mathf.Max(GetSize(oldItem), size);
                 ReturnToTempPool(false);
                 availableChilds--;
@@ -793,13 +1183,18 @@ namespace UnityEngine.UI
                 }
             }
 
-            if (reverseDirection)
+            if (size > 0)
             {
-                Vector2 offset = GetVector(size);
-                content.anchoredPosition += offset;
-                m_PrevPosition += offset;
-                m_ContentStartPosition += offset;
+                m_HasRebuiltLayout = false;
+                if (reverseDirection)
+                {
+                    Vector2 offset = GetVector(size);
+                    m_Content.anchoredPosition += offset;
+                    m_PrevPosition += offset;
+                    m_ContentStartPosition += offset;
+                }
             }
+
             return size;
         }
 
@@ -828,10 +1223,10 @@ namespace UnityEngine.UI
         }
 
         public virtual void LayoutComplete()
-        { }
+        {}
 
         public virtual void GraphicUpdateComplete()
-        { }
+        {}
 
         void UpdateCachedData()
         {
@@ -861,6 +1256,7 @@ namespace UnityEngine.UI
                 m_VerticalScrollbar.onValueChanged.AddListener(SetVerticalNormalizedPosition);
 
             CanvasUpdateRegistry.RegisterCanvasElementForLayoutRebuild(this);
+            SetDirty();
         }
 
         protected override void OnDisable()
@@ -872,6 +1268,8 @@ namespace UnityEngine.UI
             if (m_VerticalScrollbar)
                 m_VerticalScrollbar.onValueChanged.RemoveListener(SetVerticalNormalizedPosition);
 
+            m_Dragging = false;
+            m_Scrolling = false;
             m_HasRebuiltLayout = false;
             m_Tracker.Clear();
             m_Velocity = Vector2.zero;
@@ -879,6 +1277,30 @@ namespace UnityEngine.UI
             base.OnDisable();
         }
 
+        /// <summary>
+        /// See member in base class.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI;  // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///
+        ///     public void Start()
+        ///     {
+        ///         //Checks if the ScrollRect called "myScrollRect" is active.
+        ///         if (myScrollRect.IsActive())
+        ///         {
+        ///             Debug.Log("The Scroll Rect is active!");
+        ///         }
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public override bool IsActive()
         {
             return base.IsActive() && m_Content != null;
@@ -890,6 +1312,9 @@ namespace UnityEngine.UI
                 Canvas.ForceUpdateCanvases();
         }
 
+        /// <summary>
+        /// Sets the velocity to zero on both axes so the content stops moving.
+        /// </summary>
         public virtual void StopMovement()
         {
             m_Velocity = Vector2.zero;
@@ -919,6 +1344,9 @@ namespace UnityEngine.UI
                 delta.y = 0;
             }
 
+            if (data.IsScrolling())
+                m_Scrolling = true;
+
             Vector2 position = m_Content.anchoredPosition;
             position += delta * m_ScrollSensitivity;
             if (m_MovementType == MovementType.Clamped)
@@ -936,6 +1364,25 @@ namespace UnityEngine.UI
             m_Velocity = Vector2.zero;
         }
 
+        /// <summary>
+        /// Handling for when the content is beging being dragged.
+        /// </summary>
+        ///<example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.EventSystems; // Required when using event data
+        ///
+        /// public class ExampleClass : MonoBehaviour, IBeginDragHandler // required interface when using the OnBeginDrag method.
+        /// {
+        ///     //Do this when the user starts dragging the element this script is attached to..
+        ///     public void OnBeginDrag(PointerEventData data)
+        ///     {
+        ///         Debug.Log("They started dragging " + this.name);
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public virtual void OnBeginDrag(PointerEventData eventData)
         {
             if (eventData.button != PointerEventData.InputButton.Left)
@@ -952,6 +1399,25 @@ namespace UnityEngine.UI
             m_Dragging = true;
         }
 
+        /// <summary>
+        /// Handling for when the content has finished being dragged.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.EventSystems; // Required when using event data
+        ///
+        /// public class ExampleClass : MonoBehaviour, IEndDragHandler // required interface when using the OnEndDrag method.
+        /// {
+        ///     //Do this when the user stops dragging this UI Element.
+        ///     public void OnEndDrag(PointerEventData data)
+        ///     {
+        ///         Debug.Log("Stopped dragging " + this.name + "!");
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public virtual void OnEndDrag(PointerEventData eventData)
         {
             if (eventData.button != PointerEventData.InputButton.Left)
@@ -960,8 +1426,30 @@ namespace UnityEngine.UI
             m_Dragging = false;
         }
 
+        /// <summary>
+        /// Handling for when the content is dragged.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.EventSystems; // Required when using event data
+        ///
+        /// public class ExampleClass : MonoBehaviour, IDragHandler // required interface when using the OnDrag method.
+        /// {
+        ///     //Do this while the user is dragging this UI Element.
+        ///     public void OnDrag(PointerEventData data)
+        ///     {
+        ///         Debug.Log("Currently dragging " + this.name);
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public virtual void OnDrag(PointerEventData eventData)
         {
+            if (!m_Dragging)
+                return;
+
             if (eventData.button != PointerEventData.InputButton.Left)
                 return;
 
@@ -982,17 +1470,18 @@ namespace UnityEngine.UI
             position += offset;
             if (m_MovementType == MovementType.Elastic)
             {
-                //==========LoopScrollRect==========
                 if (offset.x != 0)
-                    position.x = position.x - RubberDelta(offset.x, m_ViewBounds.size.x) * rubberScale;
+                    position.x = position.x - RubberDelta(offset.x, m_ViewBounds.size.x);
                 if (offset.y != 0)
-                    position.y = position.y - RubberDelta(offset.y, m_ViewBounds.size.y) * rubberScale;
-                //==========LoopScrollRect==========
+                    position.y = position.y - RubberDelta(offset.y, m_ViewBounds.size.y);
             }
 
             SetContentAnchoredPosition(position);
         }
 
+        /// <summary>
+        /// Sets the anchored position of the content.
+        /// </summary>
         protected virtual void SetContentAnchoredPosition(Vector2 position)
         {
             if (!m_Horizontal)
@@ -1000,11 +1489,13 @@ namespace UnityEngine.UI
             if (!m_Vertical)
                 position.y = m_Content.anchoredPosition.y;
 
+            //==========LoopScrollRect==========
             if ((position - m_Content.anchoredPosition).sqrMagnitude > 0.001f)
             {
                 m_Content.anchoredPosition = position;
                 UpdateBounds(true);
             }
+            //==========LoopScrollRect==========
         }
 
         protected virtual void LateUpdate()
@@ -1013,7 +1504,6 @@ namespace UnityEngine.UI
                 return;
 
             EnsureLayoutHasRebuilt();
-            UpdateScrollbarVisibility();
             UpdateBounds();
             float deltaTime = Time.unscaledDeltaTime;
             Vector2 offset = CalculateOffset(Vector2.zero);
@@ -1026,7 +1516,12 @@ namespace UnityEngine.UI
                     if (m_MovementType == MovementType.Elastic && offset[axis] != 0)
                     {
                         float speed = m_Velocity[axis];
-                        position[axis] = Mathf.SmoothDamp(m_Content.anchoredPosition[axis], m_Content.anchoredPosition[axis] + offset[axis], ref speed, m_Elasticity, Mathf.Infinity, deltaTime);
+                        float smoothTime = m_Elasticity;
+                        if (m_Scrolling)
+                            smoothTime *= 3.0f;
+                        position[axis] = Mathf.SmoothDamp(m_Content.anchoredPosition[axis], m_Content.anchoredPosition[axis] + offset[axis], ref speed, smoothTime, Mathf.Infinity, deltaTime);
+                        if (Mathf.Abs(speed) < 1)
+                            speed = 0;
                         m_Velocity[axis] = speed;
                     }
                     // Else move content according to velocity with deceleration applied.
@@ -1044,16 +1539,13 @@ namespace UnityEngine.UI
                     }
                 }
 
-                if (m_Velocity != Vector2.zero)
+                if (m_MovementType == MovementType.Clamped)
                 {
-                    if (m_MovementType == MovementType.Clamped)
-                    {
-                        offset = CalculateOffset(position - m_Content.anchoredPosition);
-                        position += offset;
-                    }
-
-                    SetContentAnchoredPosition(position);
+                    offset = CalculateOffset(position - m_Content.anchoredPosition);
+                    position += offset;
                 }
+
+                SetContentAnchoredPosition(position);
             }
 
             if (m_Dragging && m_Inertia)
@@ -1065,12 +1557,20 @@ namespace UnityEngine.UI
             if (m_ViewBounds != m_PrevViewBounds || m_ContentBounds != m_PrevContentBounds || m_Content.anchoredPosition != m_PrevPosition)
             {
                 UpdateScrollbars(offset);
+                #if UNITY_2017_1_OR_NEWER
+                UISystemProfilerApi.AddMarker("ScrollRect.value", this);
+                #endif
                 m_OnValueChanged.Invoke(normalizedPosition);
                 UpdatePrevData();
             }
+            UpdateScrollbarVisibility();
+            m_Scrolling = false;
         }
 
-        private void UpdatePrevData()
+        /// <summary>
+        /// Helper function to update the previous data fields on a ScrollRect. Call this before you change data in the ScrollRect.
+        /// </summary>
+        protected void UpdatePrevData()
         {
             if (m_Content == null)
                 m_PrevPosition = Vector2.zero;
@@ -1147,6 +1647,28 @@ namespace UnityEngine.UI
             }
         }
 
+        /// <summary>
+        /// The scroll position as a Vector2 between (0,0) and (1,1) with (0,0) being the lower left corner.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI;  // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///     public Vector2 myPosition = new Vector2(0.5f, 0.5f);
+        ///
+        ///     public void Start()
+        ///     {
+        ///         //Change the current scroll position.
+        ///         myScrollRect.normalizedPosition = myPosition;
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public Vector2 normalizedPosition
         {
             get
@@ -1160,6 +1682,28 @@ namespace UnityEngine.UI
             }
         }
 
+        /// <summary>
+        /// The horizontal scroll position as a value between 0 and 1, with 0 being at the left.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI;  // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///     public Scrollbar newScrollBar;
+        ///
+        ///     public void Start()
+        ///     {
+        ///         //Change the current horizontal scroll position.
+        ///         myScrollRect.horizontalNormalizedPosition = 0.5f;
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
         public float horizontalNormalizedPosition
         {
             get
@@ -1184,6 +1728,29 @@ namespace UnityEngine.UI
                 SetNormalizedPosition(value, 0);
             }
         }
+
+        /// <summary>
+        /// The vertical scroll position as a value between 0 and 1, with 0 being at the bottom.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// using UnityEngine;
+        /// using System.Collections;
+        /// using UnityEngine.UI;  // Required when Using UI elements.
+        ///
+        /// public class ExampleClass : MonoBehaviour
+        /// {
+        ///     public ScrollRect myScrollRect;
+        ///     public Scrollbar newScrollBar;
+        ///
+        ///     public void Start()
+        ///     {
+        ///         //Change the current vertical scroll position.
+        ///         myScrollRect.verticalNormalizedPosition = 0.5f;
+        ///     }
+        /// }
+        /// </code>
+        /// </example>
 
         public float verticalNormalizedPosition
         {
@@ -1213,7 +1780,12 @@ namespace UnityEngine.UI
         private void SetHorizontalNormalizedPosition(float value) { SetNormalizedPosition(value, 0); }
         private void SetVerticalNormalizedPosition(float value) { SetNormalizedPosition(value, 1); }
 
-        private void SetNormalizedPosition(float value, int axis)
+        /// <summary>
+        /// >Set the horizontal or vertical scroll position as a value between 0 and 1, with 0 being at the left or at the bottom.
+        /// </summary>
+        /// <param name="value">The position to set, between 0 and 1.</param>
+        /// <param name="axis">The axis to set: 0 for horizontal, 1 for vertical.</param>
+        protected virtual void SetNormalizedPosition(float value, int axis)
         {
             //==========LoopScrollRect==========
             if (totalCount <= 0 || itemTypeEnd <= itemTypeStart)
@@ -1224,30 +1796,35 @@ namespace UnityEngine.UI
             UpdateBounds();
 
             //==========LoopScrollRect==========
-            Vector3 localPosition = m_Content.localPosition;
-            float newLocalPosition = localPosition[axis];
+            float totalSize, offset;
+            float newAnchoredPosition = m_Content.anchoredPosition[axis];
             if (axis == 0)
             {
-                float totalSize, offset;
                 GetHorizonalOffsetAndSize(out totalSize, out offset);
 
-                newLocalPosition += m_ViewBounds.min.x - value * (totalSize - m_ViewBounds.size[axis]) - offset;
+                if (totalSize >= m_ViewBounds.size.x)
+                {
+                    newAnchoredPosition += m_ViewBounds.min.x - value * (totalSize - m_ViewBounds.size.x) - offset;
+                }
             }
-            else if (axis == 1)
+            else
             {
-                float totalSize, offset;
                 GetVerticalOffsetAndSize(out totalSize, out offset);
-
-                newLocalPosition -= offset - value * (totalSize - m_ViewBounds.size.y) - m_ViewBounds.max.y;
+                
+                if (totalSize >= m_ViewBounds.size.y)
+                {
+                    newAnchoredPosition -= offset - value * (totalSize - m_ViewBounds.size.y) - m_ViewBounds.max.y;
+                }
             }
             //==========LoopScrollRect==========
-
-            if (Mathf.Abs(localPosition[axis] - newLocalPosition) > 0.01f)
+            
+            Vector3 anchoredPosition = m_Content.anchoredPosition;
+            if (Mathf.Abs(anchoredPosition[axis] - newAnchoredPosition) > 0.01f)
             {
-                localPosition[axis] = newLocalPosition;
-                m_Content.localPosition = localPosition;
+                anchoredPosition[axis] = newAnchoredPosition;
+                m_Content.anchoredPosition = anchoredPosition;
                 m_Velocity[axis] = 0;
-                UpdateBounds(true);
+                UpdateBounds(true);	//==========LoopScrollRect==========
             }
         }
 
@@ -1280,17 +1857,45 @@ namespace UnityEngine.UI
             }
         }
 
-        public virtual void CalculateLayoutInputHorizontal() { }
-        public virtual void CalculateLayoutInputVertical() { }
+        /// <summary>
+        /// Called by the layout system.
+        /// </summary>
+        public virtual void CalculateLayoutInputHorizontal() {}
 
+        /// <summary>
+        /// Called by the layout system.
+        /// </summary>
+        public virtual void CalculateLayoutInputVertical() {}
+
+        /// <summary>
+        /// Called by the layout system.
+        /// </summary>
         public virtual float minWidth { get { return -1; } }
+        /// <summary>
+        /// Called by the layout system.
+        /// </summary>
         public virtual float preferredWidth { get { return -1; } }
+        /// <summary>
+        /// Called by the layout system.
+        /// </summary>
         public virtual float flexibleWidth { get { return -1; } }
 
+        /// <summary>
+        /// Called by the layout system.
+        /// </summary>
         public virtual float minHeight { get { return -1; } }
+        /// <summary>
+        /// Called by the layout system.
+        /// </summary>
         public virtual float preferredHeight { get { return -1; } }
+        /// <summary>
+        /// Called by the layout system.
+        /// </summary>
         public virtual float flexibleHeight { get { return -1; } }
 
+        /// <summary>
+        /// Called by the layout system.
+        /// </summary>
         public virtual int layoutPriority { get { return -1; } }
 
         public virtual void SetLayoutHorizontal()
@@ -1311,7 +1916,7 @@ namespace UnityEngine.UI
                 viewRect.anchoredPosition = Vector2.zero;
 
                 // Recalculate content layout with this size to see if it fits when there are no scrollbars.
-                LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_Content);
                 m_ViewBounds = new Bounds(viewRect.rect.center, viewRect.rect.size);
                 m_ContentBounds = GetBounds();
             }
@@ -1323,7 +1928,7 @@ namespace UnityEngine.UI
 
                 // Recalculate content layout with this size to see if it fits vertically
                 // when there is a vertical scrollbar (which may reflowed the content to make it taller).
-                LayoutRebuilder.ForceRebuildLayoutImmediate(content);
+                LayoutRebuilder.ForceRebuildLayoutImmediate(m_Content);
                 m_ViewBounds = new Bounds(viewRect.rect.center, viewRect.rect.size);
                 m_ContentBounds = GetBounds();
             }
@@ -1354,11 +1959,25 @@ namespace UnityEngine.UI
 
         void UpdateScrollbarVisibility()
         {
-            if (m_VerticalScrollbar && m_VerticalScrollbarVisibility != ScrollbarVisibility.Permanent && m_VerticalScrollbar.gameObject.activeSelf != vScrollingNeeded)
-                m_VerticalScrollbar.gameObject.SetActive(vScrollingNeeded);
+            UpdateOneScrollbarVisibility(vScrollingNeeded, m_Vertical, m_VerticalScrollbarVisibility, m_VerticalScrollbar);
+            UpdateOneScrollbarVisibility(hScrollingNeeded, m_Horizontal, m_HorizontalScrollbarVisibility, m_HorizontalScrollbar);
+        }
 
-            if (m_HorizontalScrollbar && m_HorizontalScrollbarVisibility != ScrollbarVisibility.Permanent && m_HorizontalScrollbar.gameObject.activeSelf != hScrollingNeeded)
-                m_HorizontalScrollbar.gameObject.SetActive(hScrollingNeeded);
+        private static void UpdateOneScrollbarVisibility(bool xScrollingNeeded, bool xAxisEnabled, ScrollbarVisibility scrollbarVisibility, Scrollbar scrollbar)
+        {
+            if (scrollbar)
+            {
+                if (scrollbarVisibility == ScrollbarVisibility.Permanent)
+                {
+                    if (scrollbar.gameObject.activeSelf != xAxisEnabled)
+                        scrollbar.gameObject.SetActive(xAxisEnabled);
+                }
+                else
+                {
+                    if (scrollbar.gameObject.activeSelf != xScrollingNeeded)
+                        scrollbar.gameObject.SetActive(xScrollingNeeded);
+                }
+            }
         }
 
         void UpdateScrollbarLayout()
@@ -1366,10 +1985,10 @@ namespace UnityEngine.UI
             if (m_VSliderExpand && m_HorizontalScrollbar)
             {
                 m_Tracker.Add(this, m_HorizontalScrollbarRect,
-                              DrivenTransformProperties.AnchorMinX |
-                              DrivenTransformProperties.AnchorMaxX |
-                              DrivenTransformProperties.SizeDeltaX |
-                              DrivenTransformProperties.AnchoredPositionX);
+                    DrivenTransformProperties.AnchorMinX |
+                    DrivenTransformProperties.AnchorMaxX |
+                    DrivenTransformProperties.SizeDeltaX |
+                    DrivenTransformProperties.AnchoredPositionX);
                 m_HorizontalScrollbarRect.anchorMin = new Vector2(0, m_HorizontalScrollbarRect.anchorMin.y);
                 m_HorizontalScrollbarRect.anchorMax = new Vector2(1, m_HorizontalScrollbarRect.anchorMax.y);
                 m_HorizontalScrollbarRect.anchoredPosition = new Vector2(0, m_HorizontalScrollbarRect.anchoredPosition.y);
@@ -1382,10 +2001,10 @@ namespace UnityEngine.UI
             if (m_HSliderExpand && m_VerticalScrollbar)
             {
                 m_Tracker.Add(this, m_VerticalScrollbarRect,
-                              DrivenTransformProperties.AnchorMinY |
-                              DrivenTransformProperties.AnchorMaxY |
-                              DrivenTransformProperties.SizeDeltaY |
-                              DrivenTransformProperties.AnchoredPositionY);
+                    DrivenTransformProperties.AnchorMinY |
+                    DrivenTransformProperties.AnchorMaxY |
+                    DrivenTransformProperties.SizeDeltaY |
+                    DrivenTransformProperties.AnchoredPositionY);
                 m_VerticalScrollbarRect.anchorMin = new Vector2(m_VerticalScrollbarRect.anchorMin.x, 0);
                 m_VerticalScrollbarRect.anchorMax = new Vector2(m_VerticalScrollbarRect.anchorMax.x, 1);
                 m_VerticalScrollbarRect.anchoredPosition = new Vector2(m_VerticalScrollbarRect.anchoredPosition.x, 0);
@@ -1396,7 +2015,10 @@ namespace UnityEngine.UI
             }
         }
 
-        private void UpdateBounds(bool updateItems = false)
+        /// <summary>
+        /// Calculate the bounds the ScrollRect should be using.
+        /// </summary>
+        protected void UpdateBounds(bool updateItems = false) //==========LoopScrollRect==========
         {
             m_ViewBounds = new Bounds(viewRect.rect.center, viewRect.rect.size);
             m_ContentBounds = GetBounds();
@@ -1405,14 +2027,59 @@ namespace UnityEngine.UI
                 return;
 
             // ============LoopScrollRect============
-            // Don't do this in Rebuild
-            if (Application.isPlaying && updateItems && UpdateItems(m_ViewBounds, m_ContentBounds))
+            // Don't do this in Rebuild. Make use of ContentBounds before Adjust here.
+            if (Application.isPlaying && updateItems && UpdateItems(ref m_ViewBounds, ref m_ContentBounds))
             {
-                Canvas.ForceUpdateCanvases();
+                EnsureLayoutHasRebuilt();
                 m_ContentBounds = GetBounds();
             }
             // ============LoopScrollRect============
+            
+            Vector3 contentSize = m_ContentBounds.size;
+            Vector3 contentPos = m_ContentBounds.center;
+            var contentPivot = m_Content.pivot;
+            AdjustBounds(ref m_ViewBounds, ref contentPivot, ref contentSize, ref contentPos);
+            m_ContentBounds.size = contentSize;
+            m_ContentBounds.center = contentPos;
 
+            if (movementType == MovementType.Clamped)
+            {
+                // Adjust content so that content bounds bottom (right side) is never higher (to the left) than the view bounds bottom (right side).
+                // top (left side) is never lower (to the right) than the view bounds top (left side).
+                // All this can happen if content has shrunk.
+                // This works because content size is at least as big as view size (because of the call to InternalUpdateBounds above).
+                Vector2 delta = Vector2.zero;
+                if (m_ViewBounds.max.x > m_ContentBounds.max.x)
+                {
+                    delta.x = Math.Min(m_ViewBounds.min.x - m_ContentBounds.min.x, m_ViewBounds.max.x - m_ContentBounds.max.x);
+                }
+                else if (m_ViewBounds.min.x < m_ContentBounds.min.x)
+                {
+                    delta.x = Math.Max(m_ViewBounds.min.x - m_ContentBounds.min.x, m_ViewBounds.max.x - m_ContentBounds.max.x);
+                }
+
+                if (m_ViewBounds.min.y < m_ContentBounds.min.y)
+                {
+                    delta.y = Math.Max(m_ViewBounds.min.y - m_ContentBounds.min.y, m_ViewBounds.max.y - m_ContentBounds.max.y);
+                }
+                else if (m_ViewBounds.max.y > m_ContentBounds.max.y)
+                {
+                    delta.y = Math.Min(m_ViewBounds.min.y - m_ContentBounds.min.y, m_ViewBounds.max.y - m_ContentBounds.max.y);
+                }
+                if (delta.sqrMagnitude > float.Epsilon)
+                {
+                    contentPos = m_Content.anchoredPosition + delta;
+                    if (!m_Horizontal)
+                        contentPos.x = m_Content.anchoredPosition.x;
+                    if (!m_Vertical)
+                        contentPos.y = m_Content.anchoredPosition.y;
+                    AdjustBounds(ref m_ViewBounds, ref contentPivot, ref contentSize, ref contentPos);
+                }
+            }
+        }
+
+        internal static void AdjustBounds(ref Bounds viewBounds, ref Vector2 contentPivot, ref Vector3 contentSize, ref Vector3 contentPos)
+        {
             // Make sure content bounds are at least as large as view by adding padding if not.
             // One might think at first that if the content is smaller than the view, scrolling should be allowed.
             // However, that's not how scroll views normally work.
@@ -1420,22 +2087,17 @@ namespace UnityEngine.UI
             // We use the pivot of the content rect to decide in which directions the content bounds should be expanded.
             // E.g. if pivot is at top, bounds are expanded downwards.
             // This also works nicely when ContentSizeFitter is used on the content.
-            Vector3 contentSize = m_ContentBounds.size;
-            Vector3 contentPos = m_ContentBounds.center;
-            Vector3 excess = m_ViewBounds.size - contentSize;
+            Vector3 excess = viewBounds.size - contentSize;
             if (excess.x > 0)
             {
-                contentPos.x -= excess.x * (m_Content.pivot.x - 0.5f);
-                contentSize.x = m_ViewBounds.size.x;
+                contentPos.x -= excess.x * (contentPivot.x - 0.5f);
+                contentSize.x = viewBounds.size.x;
             }
             if (excess.y > 0)
             {
-                contentPos.y -= excess.y * (m_Content.pivot.y - 0.5f);
-                contentSize.y = m_ViewBounds.size.y;
+                contentPos.y -= excess.y * (contentPivot.y - 0.5f);
+                contentSize.y = viewBounds.size.y;
             }
-
-            m_ContentBounds.size = contentSize;
-            m_ContentBounds.center = contentPos;
         }
 
         private readonly Vector3[] m_Corners = new Vector3[4];
@@ -1443,15 +2105,19 @@ namespace UnityEngine.UI
         {
             if (m_Content == null)
                 return new Bounds();
+            m_Content.GetWorldCorners(m_Corners);
+            var viewWorldToLocalMatrix = viewRect.worldToLocalMatrix;
+            return InternalGetBounds(m_Corners, ref viewWorldToLocalMatrix);
+        }
 
+        internal static Bounds InternalGetBounds(Vector3[] corners, ref Matrix4x4 viewWorldToLocalMatrix)
+        {
             var vMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
             var vMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
 
-            var toLocal = viewRect.worldToLocalMatrix;
-            m_Content.GetWorldCorners(m_Corners);
             for (int j = 0; j < 4; j++)
             {
-                Vector3 v = toLocal.MultiplyPoint3x4(m_Corners[j]);
+                Vector3 v = viewWorldToLocalMatrix.MultiplyPoint3x4(corners[j]);
                 vMin = Vector3.Min(v, vMin);
                 vMax = Vector3.Max(v, vMax);
             }
@@ -1460,76 +2126,91 @@ namespace UnityEngine.UI
             bounds.Encapsulate(vMax);
             return bounds;
         }
-
+        
+        //==========LoopScrollRect==========
         private Bounds GetBounds4Item(int index)
         {
             if (m_Content == null)
                 return new Bounds();
 
-            var vMin = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-            var vMax = new Vector3(float.MinValue, float.MinValue, float.MinValue);
-
-            var toLocal = viewRect.worldToLocalMatrix;
             int offset = index - itemTypeStart;
             if (offset < 0 || offset >= m_Content.childCount)
                 return new Bounds();
+
             var rt = m_Content.GetChild(offset) as RectTransform;
             if (rt == null)
                 return new Bounds();
             rt.GetWorldCorners(m_Corners);
-            for (int j = 0; j < 4; j++)
-            {
-                Vector3 v = toLocal.MultiplyPoint3x4(m_Corners[j]);
-                vMin = Vector3.Min(v, vMin);
-                vMax = Vector3.Max(v, vMax);
-            }
 
-            var bounds = new Bounds(vMin, Vector3.zero);
-            bounds.Encapsulate(vMax);
-            return bounds;
+            var viewWorldToLocalMatrix = viewRect.worldToLocalMatrix;
+            return InternalGetBounds(m_Corners, ref viewWorldToLocalMatrix);
         }
+        //==========LoopScrollRect==========
 
         private Vector2 CalculateOffset(Vector2 delta)
         {
+            return InternalCalculateOffset(ref m_ViewBounds, ref m_ContentBounds, m_Horizontal, m_Vertical, m_MovementType, ref delta,
+                GetDimension(delta), itemTypeStart, itemTypeEnd, totalCount);
+        }
+
+        internal static Vector2 InternalCalculateOffset(ref Bounds viewBounds, ref Bounds contentBounds, bool horizontal, bool vertical, MovementType movementType, ref Vector2 delta,
+            float deltaDimension, int itemTypeStart, int itemTypeEnd, int totalCount) //==========LoopScrollRect==========
+        {
             Vector2 offset = Vector2.zero;
-            if (m_MovementType == MovementType.Unrestricted)
+            if (movementType == MovementType.Unrestricted)
                 return offset;
-            if (m_MovementType == MovementType.Clamped)
+            
+        	//==========LoopScrollRect==========
+            if (movementType == MovementType.Clamped || movementType == MovementType.Elastic)
             {
                 if (totalCount < 0)
                     return offset;
-                if (GetDimension(delta) < 0 && itemTypeStart > 0)
+                if (deltaDimension < 0 && itemTypeStart > 0)
                     return offset;
-                if (GetDimension(delta) > 0 && itemTypeEnd < totalCount)
+                if (deltaDimension > 0 && itemTypeEnd < totalCount)
                     return offset;
             }
+        	//==========LoopScrollRect==========
 
-            Vector2 min = m_ContentBounds.min;
-            Vector2 max = m_ContentBounds.max;
+            Vector2 min = contentBounds.min;
+            Vector2 max = contentBounds.max;
 
-            if (m_Horizontal)
+            // min/max offset extracted to check if approximately 0 and avoid recalculating layout every frame (case 1010178)
+
+            if (horizontal)
             {
                 min.x += delta.x;
                 max.x += delta.x;
-                if (min.x > m_ViewBounds.min.x)
-                    offset.x = m_ViewBounds.min.x - min.x;
-                else if (max.x < m_ViewBounds.max.x)
-                    offset.x = m_ViewBounds.max.x - max.x;
+
+                float maxOffset = viewBounds.max.x - max.x;
+                float minOffset = viewBounds.min.x - min.x;
+
+                if (minOffset < -0.001f)
+                    offset.x = minOffset;
+                else if (maxOffset > 0.001f)
+                    offset.x = maxOffset;
             }
 
-            if (m_Vertical)
+            if (vertical)
             {
                 min.y += delta.y;
                 max.y += delta.y;
-                if (max.y < m_ViewBounds.max.y)
-                    offset.y = m_ViewBounds.max.y - max.y;
-                else if (min.y > m_ViewBounds.min.y)
-                    offset.y = m_ViewBounds.min.y - min.y;
+
+                float maxOffset = viewBounds.max.y - max.y;
+                float minOffset = viewBounds.min.y - min.y;
+
+                if (maxOffset > 0.001f)
+                    offset.y = maxOffset;
+                else if (minOffset < -0.001f)
+                    offset.y = minOffset;
             }
 
             return offset;
         }
 
+        /// <summary>
+        /// Override to alter or add to the code that keeps the appearance of the scroll rect synced with its data.
+        /// </summary>
         protected void SetDirty()
         {
             if (!IsActive())
@@ -1538,6 +2219,9 @@ namespace UnityEngine.UI
             LayoutRebuilder.MarkLayoutForRebuild(rectTransform);
         }
 
+        /// <summary>
+        /// Override to alter or add to the code that caches data to avoid repeated heavy operations.
+        /// </summary>
         protected void SetDirtyCaching()
         {
             if (!IsActive())
@@ -1547,11 +2231,12 @@ namespace UnityEngine.UI
             LayoutRebuilder.MarkLayoutForRebuild(rectTransform);
         }
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         protected override void OnValidate()
         {
             SetDirtyCaching();
         }
-#endif
+
+        #endif
     }
 }

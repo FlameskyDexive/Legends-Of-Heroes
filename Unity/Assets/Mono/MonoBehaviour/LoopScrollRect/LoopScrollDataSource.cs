@@ -8,7 +8,7 @@ namespace UnityEngine.UI
     {
         void ProvideData(Transform transform, int idx);
     }
-
+    
     public class LoopScrollDataSourceInstance: LoopScrollDataSource
     {
         public Action<Transform,int> scrollMoveEvent;
@@ -17,5 +17,4 @@ namespace UnityEngine.UI
             scrollMoveEvent?.Invoke(transform,idx);
         }
     }
-    
 }

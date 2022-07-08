@@ -42,20 +42,22 @@ namespace UnityEngine.UI
         {
             direction = LoopScrollRectDirection.Vertical;
             base.Awake();
-
-            GridLayoutGroup layout = content.GetComponent<GridLayoutGroup>();
-            if (layout != null && layout.constraint != GridLayoutGroup.Constraint.FixedColumnCount)
+            if (m_Content)
             {
-                Debug.LogError("[LoopHorizontalScrollRect] unsupported GridLayoutGroup constraint");
+                GridLayoutGroup layout = m_Content.GetComponent<GridLayoutGroup>();
+                if (layout != null && layout.constraint != GridLayoutGroup.Constraint.FixedColumnCount)
+                {
+                    Debug.LogError("[LoopScrollRect] unsupported GridLayoutGroup constraint");
+                }
             }
         }
 
-        protected override bool UpdateItems(Bounds viewBounds, Bounds contentBounds)
+        protected override bool UpdateItems(ref Bounds viewBounds, ref Bounds contentBounds)
         {
             bool changed = false;
 
             // special case: handling move several page in one frame
-            if (viewBounds.max.y < contentBounds.min.y && itemTypeEnd > itemTypeStart)
+            if ((viewBounds.size.y < contentBounds.min.y - viewBounds.max.y) && itemTypeEnd > itemTypeStart)
             {
                 int maxItemTypeStart = -1;
                 if (totalCount >= 0)
@@ -80,14 +82,14 @@ namespace UnityEngine.UI
                 itemTypeEnd = itemTypeStart;
 
                 float offset = offsetCount * (elementSize + contentSpacing);
-                content.anchoredPosition -= new Vector2(0, offset + (reverseDirection ? 0 : currentSize));
+                m_Content.anchoredPosition -= new Vector2(0, offset + (reverseDirection ? 0 : currentSize));
                 contentBounds.center -= new Vector3(0, offset + currentSize / 2, 0);
                 contentBounds.size = Vector3.zero;
 
                 changed = true;
             }
 
-            if (viewBounds.min.y > contentBounds.max.y && itemTypeEnd > itemTypeStart)
+            if ((viewBounds.min.y - contentBounds.max.y > viewBounds.size.y) && itemTypeEnd > itemTypeStart)
             {
                 float currentSize = contentBounds.size.y;
                 float elementSize = (currentSize - contentSpacing * (CurrentLines - 1)) / CurrentLines;
@@ -107,7 +109,7 @@ namespace UnityEngine.UI
                 itemTypeEnd = itemTypeStart;
 
                 float offset = offsetCount * (elementSize + contentSpacing);
-                content.anchoredPosition += new Vector2(0, offset + (reverseDirection ? currentSize : 0));
+                m_Content.anchoredPosition += new Vector2(0, offset + (reverseDirection ? currentSize : 0));
                 contentBounds.center += new Vector3(0, offset + currentSize / 2, 0);
                 contentBounds.size = Vector3.zero;
 
