@@ -19,9 +19,6 @@ namespace UnityEngine.UI
     public abstract class LoopScrollRectBase : UIBehaviour, IInitializePotentialDragHandler, IBeginDragHandler, IEndDragHandler, IDragHandler, IScrollHandler, ICanvasElement, ILayoutElement, ILayoutGroup
     {
         //==========LoopScrollRect==========
-        /// <summary>
-        /// The scroll data source to fill items.
-        /// </summary>
         public LoopScrollPrefabSourceInstance prefabSource = new  LoopScrollPrefabSourceInstance();
 
         /// <summary>
@@ -785,7 +782,7 @@ namespace UnityEngine.UI
             {
                 if (sizeHelper != null)
                 {
-                    dist = GetDimension(sizeHelper.GetItemsSize(currentFirst) - sizeHelper.GetItemsSize(index));
+                    dist = GetDimension(sizeHelper.GetItemsSize(currentFirst) - sizeHelper.GetItemsSize(index)) + contentSpacing * (CurrentLine - TargetLine - 1);
                     dist += offset;
                 }
                 else
@@ -1585,7 +1582,7 @@ namespace UnityEngine.UI
         {
             if (sizeHelper != null)
             {
-                totalSize = sizeHelper.GetItemsSize(TotalLines).x;
+                totalSize = sizeHelper.GetItemsSize(TotalLines).x + contentSpacing * (TotalLines - 1);
                 offset = m_ContentBounds.min.x - sizeHelper.GetItemsSize(StartLine).x - contentSpacing * StartLine;
             }
             else
@@ -1600,7 +1597,7 @@ namespace UnityEngine.UI
         {
             if (sizeHelper != null)
             {
-                totalSize = sizeHelper.GetItemsSize(TotalLines).y;
+                totalSize = sizeHelper.GetItemsSize(TotalLines).y + contentSpacing * (TotalLines - 1);
                 offset = m_ContentBounds.max.y + sizeHelper.GetItemsSize(StartLine).y + contentSpacing * StartLine;
             }
             else

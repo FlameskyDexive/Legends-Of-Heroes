@@ -3,7 +3,7 @@
 namespace ET
 {
     [ChildType(typeof(WindowCoreData))]
-    public class UIBaseWindow : Entity,IAwake
+    public class UIBaseWindow : Entity,IAwake, IDestroy
     {
         public bool IsPreLoad
         {
@@ -37,17 +37,16 @@ namespace ET
             }
             set { m_windowID = value; }
         }
-        public WindowID PreWindowID
+        
+        public bool IsInStackQueue
         {
-            get { return m_preWindowID; }
-            set { m_preWindowID = value; }
+            get;
+            set;
         }
-
+                
         
-        public WindowID m_preWindowID = WindowID.WindowID_Invaild;
-        public WindowID m_windowID = WindowID.WindowID_Invaild;
-        
+        public WindowID m_windowID           = WindowID.WindowID_Invaild;
         public GameObject UIPrefabGameObject = null;
-        public WindowCoreData WindowData = null;
+        public WindowCoreData WindowData     = null;
     }
 }

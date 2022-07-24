@@ -263,10 +263,18 @@ namespace ET
         /// </summary>
         /// <OtherParam name="self"></OtherParam>
         /// <OtherParam name="closeButton"></OtherParam>
-        public static void RegisterCloseEvent<T>(this Entity self,Button closeButton)  where T : Entity,IAwake,IUILogic
+        public static void RegisterCloseEvent<T>(this Entity self,Button closeButton,bool isClose = false)  where T : Entity,IAwake,IUILogic
         {
             closeButton.onClick.RemoveAllListeners();
-            closeButton.onClick.AddListener(() => { self.DomainScene().GetComponent<UIComponent>().HideWindow(self.GetParent<UIBaseWindow>().WindowID); });
+            if (isClose)
+            {
+                closeButton.onClick.AddListener(() => { self.DomainScene().GetComponent<UIComponent>().CloseWindow(self.GetParent<UIBaseWindow>().WindowID); });
+
+            }
+            else
+            {
+                closeButton.onClick.AddListener(() => { self.DomainScene().GetComponent<UIComponent>().HideWindow(self.GetParent<UIBaseWindow>().WindowID); });
+            }
         }
 
 
