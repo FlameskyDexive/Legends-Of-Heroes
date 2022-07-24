@@ -22,6 +22,27 @@ namespace ET
             Label.text = content;
         }
         
+        public static void SetVisibleWithScale(this UIBehaviour uiBehaviour, bool isVisible)
+        {
+            if (null == uiBehaviour)
+            {
+                Log.Error("uibehaviour is null!");
+                return;
+            }
+
+            if (null == uiBehaviour.gameObject)
+            {
+                Log.Error("uiBehaviour gameObject is null!");
+                return;
+            }
+            
+            if (uiBehaviour.gameObject.activeSelf == isVisible)
+            {
+                return;
+            }
+            uiBehaviour.transform.localScale = isVisible ? Vector3.one : Vector3.zero;
+        }
+        
         public static void SetVisible(this UIBehaviour uiBehaviour, bool isVisible)
         {
             if (null == uiBehaviour)
@@ -51,6 +72,24 @@ namespace ET
             loopScrollRect.RefillCells();
         }
 
+        
+        public static void SetVisibleWithScale(this Transform transform, bool isVisible)
+        {
+            if (null == transform)
+            {
+                Log.Error("uibehaviour is null!");
+                return;
+            }
+
+            if (null == transform.gameObject)
+            {
+                Log.Error("uiBehaviour gameObject is null!");
+                return;
+            }
+            
+            transform.localScale = isVisible ? Vector3.one : Vector3.zero;
+        }
+        
         public static void SetVisible(this Transform transform, bool isVisible)
         {
             if (null == transform)
