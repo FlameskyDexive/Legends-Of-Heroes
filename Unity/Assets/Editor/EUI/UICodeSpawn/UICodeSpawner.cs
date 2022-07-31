@@ -351,12 +351,16 @@ public partial class UICodeSpawner
     }
 
 
-    public static void CreateDestroyWidgetCode( ref StringBuilder strBuilder)
+    public static void CreateDestroyWidgetCode( ref StringBuilder strBuilder,bool isScrollItem = false)
     {
 	    strBuilder.AppendFormat("\t\tpublic void DestroyWidget()");
 	    strBuilder.AppendLine("\n\t\t{");
 	    CreateDlgWidgetDisposeCode(ref strBuilder);
 	    strBuilder.AppendFormat("\t\t\tthis.uiTransform = null;\r\n");
+	    if (isScrollItem)
+	    {
+		    strBuilder.AppendLine("\t\t\tthis.DataId = 0;");
+	    }
 	    strBuilder.AppendLine("\t\t}\n");
     }
     
