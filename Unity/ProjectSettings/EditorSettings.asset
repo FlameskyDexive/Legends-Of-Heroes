@@ -11,14 +11,15 @@ EditorSettings:
     type: 3}
   m_PrefabUIEnvironment: {fileID: 102900000, guid: e0d691ac8c1d0454ba07089ea820e18a,
     type: 3}
-  m_SpritePackerMode: 4
+  m_SpritePackerMode: 5
   m_SpritePackerPaddingPower: 1
+  m_Bc7TextureCompressor: 0
   m_EtcTextureCompressorBehavior: 0
   m_EtcTextureFastCompressor: 2
   m_EtcTextureNormalCompressor: 2
   m_EtcTextureBestCompressor: 5
   m_ProjectGenerationIncludedExtensions: txt;xml;fnt;cd;asmdef;asmref
-  m_ProjectGenerationRootNamespace: 
+  m_ProjectGenerationRootNamespace: ET
   m_EnableTextureStreamingInEditMode: 1
   m_EnableTextureStreamingInPlayMode: 1
   m_AsyncShaderCompilation: 1
@@ -32,8 +33,8 @@ EditorSettings:
   m_UseLegacyProbeSampleCount: 1
   m_SerializeInlineMappingsOnOneLine: 0
   m_DisableCookiesInLightmapper: 1
-  m_UseCloudEnlightenBake: 0
   m_AssetPipelineMode: 1
+  m_RefreshImportMode: 0
   m_CacheServerMode: 0
   m_CacheServerEndpoint: 
   m_CacheServerNamespacePrefix: default
@@ -41,3 +42,4 @@ EditorSettings:
   m_CacheServerEnableUpload: 1
   m_CacheServerEnableAuth: 0
   m_CacheServerEnableTls: 0
+  m_CacheServerValidationMode: 2
