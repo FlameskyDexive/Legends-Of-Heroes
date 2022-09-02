@@ -171,9 +171,8 @@ public partial class UICodeSpawner
           
           strBuilder.AppendLine("\t\tpublic void OnInitComponent(UIBaseWindow uiBaseWindow)")
             		.AppendLine("\t\t{");
-
-          strBuilder.AppendFormat("\t\t  uiBaseWindow.AddComponent<{0}ViewComponent>(); \r\n",strDlgName);
-          strBuilder.AppendFormat("\t\t  uiBaseWindow.AddComponent<{0}>(); \r\n",strDlgName);
+          
+          strBuilder.AppendFormat("\t\t  uiBaseWindow.AddComponent<{0}>().AddComponent<{1}ViewComponent>();\r\n",strDlgName,strDlgName);
           
           strBuilder.AppendLine("\t\t}")
             .AppendLine();
@@ -245,7 +244,7 @@ public partial class UICodeSpawner
           strBuilder.AppendLine("\t{");
           strBuilder.AppendLine("");
           
-	    strBuilder.AppendLine("\t\tpublic "+strDlgName+"ViewComponent View { get => this.Parent.GetComponent<"+ strDlgName +"ViewComponent>();} \r\n");
+	    strBuilder.AppendLine("\t\tpublic "+strDlgName+"ViewComponent View { get => this.GetComponent<"+ strDlgName +"ViewComponent>();} \r\n");
 	    
         strBuilder.AppendLine("\t\t \r\n");
         strBuilder.AppendLine("\t}");
@@ -288,7 +287,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("\t{");
         strBuilder.AppendFormat("\t\tprotected override void Awake({0} self)\n",strDlgComponentName);
         strBuilder.AppendLine("\t\t{");
-        strBuilder.AppendLine("\t\t\tself.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;");
+        strBuilder.AppendLine("\t\t\tself.uiTransform = self.Parent.GetParent<UIBaseWindow>().uiTransform;");
         strBuilder.AppendLine("\t\t}");
         strBuilder.AppendLine("\t}");
         strBuilder.AppendLine("\n");
@@ -331,7 +330,7 @@ public partial class UICodeSpawner
 	    strBuilder.AppendLine("using UnityEngine.UI;");
 	    strBuilder.AppendLine("namespace ET.Client");
 	    strBuilder.AppendLine("{");
-	    strBuilder.AppendLine("\t[ComponentOf(typeof(UIBaseWindow))]");
+	    strBuilder.AppendLine($"\t[ComponentOf(typeof({strDlgName}))]");
 	    strBuilder.AppendLine("\t[EnableMethod]");
 	    strBuilder.AppendFormat("\tpublic  class {0} : Entity,IAwake,IDestroy \r\n", strDlgComponentName)
 		    .AppendLine("\t{");

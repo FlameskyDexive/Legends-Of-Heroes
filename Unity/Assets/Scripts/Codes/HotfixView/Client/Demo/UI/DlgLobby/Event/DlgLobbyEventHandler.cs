@@ -13,8 +13,7 @@
 
 		public void OnInitComponent(UIBaseWindow uiBaseWindow)
 		{
-		  uiBaseWindow.AddComponent<DlgLobbyViewComponent>(); 
-		  uiBaseWindow.AddComponent<DlgLobby>(); 
+			uiBaseWindow.AddComponent<DlgLobby>().AddComponent<DlgLobbyViewComponent>(); 
 		}
 
 		public void OnRegisterUIEvent(UIBaseWindow uiBaseWindow)

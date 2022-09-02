@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET.Client
 {
-	[ComponentOf(typeof(UIBaseWindow))]
+	[ComponentOf(typeof(DlgLobby))]
 	[EnableMethod]
 	public  class DlgLobbyViewComponent : Entity,IAwake,IDestroy 
 	{

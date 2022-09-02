@@ -4,7 +4,7 @@
 	public  class DlgLobby :Entity,IAwake,IUILogic
 	{
 
-		public DlgLobbyViewComponent View { get => this.Parent.GetComponent<DlgLobbyViewComponent>();} 
+		public DlgLobbyViewComponent View { get => this.GetComponent<DlgLobbyViewComponent>();} 
 
 		 
 

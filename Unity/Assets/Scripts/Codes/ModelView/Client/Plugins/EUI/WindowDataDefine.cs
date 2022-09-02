@@ -12,7 +12,7 @@ namespace ET.Client
         PopUp,     // 弹出窗口
         Other,      //其他窗口
     }
-    
+    [ChildOf(typeof(UIBaseWindow))]
     public class WindowCoreData : Entity,IAwake
     {
         public UIWindowType windowType = UIWindowType.Normal;

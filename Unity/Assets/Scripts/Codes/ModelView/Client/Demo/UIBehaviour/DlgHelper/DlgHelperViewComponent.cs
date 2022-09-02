@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET.Client
 {
-	[ComponentOf(typeof(UIBaseWindow))]
+	[ComponentOf(typeof(DlgHelper))]
 	[EnableMethod]
 	public  class DlgHelperViewComponent : Entity,IAwake,IDestroy 
 	{

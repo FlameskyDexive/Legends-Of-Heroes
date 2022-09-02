@@ -8,7 +8,7 @@ namespace ET.Client
 	{
 		protected override void Awake(DlgHelperViewComponent self)
 		{
-			self.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;
+			self.uiTransform = self.Parent.GetParent<UIBaseWindow>().uiTransform;
 		}
 	}
 

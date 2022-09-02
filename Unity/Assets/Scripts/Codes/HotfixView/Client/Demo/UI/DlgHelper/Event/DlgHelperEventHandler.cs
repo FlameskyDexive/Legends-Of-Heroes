@@ -13,8 +13,7 @@
 
 		public void OnInitComponent(UIBaseWindow uiBaseWindow)
 		{
-		  uiBaseWindow.AddComponent<DlgHelperViewComponent>(); 
-		  uiBaseWindow.AddComponent<DlgHelper>(); 
+		  uiBaseWindow.AddComponent<DlgHelper>().AddComponent<DlgHelperViewComponent>();
 		}
 
 		public void OnRegisterUIEvent(UIBaseWindow uiBaseWindow)

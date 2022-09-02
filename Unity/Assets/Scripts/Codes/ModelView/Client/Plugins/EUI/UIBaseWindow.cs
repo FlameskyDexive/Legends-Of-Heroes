@@ -2,7 +2,7 @@
 
 namespace ET.Client
 {
-    [ChildOf(typeof(WindowCoreData))]
+    [ChildOf(typeof(UIComponent))]
     public class UIBaseWindow : Entity,IAwake, IDestroy
     {
         public bool IsPreLoad
