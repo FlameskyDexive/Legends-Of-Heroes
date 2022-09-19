@@ -6,7 +6,6 @@ using System.Threading;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Compilation;
-using Random = UnityEngine.Random;
 
 namespace ET
 {
@@ -46,7 +45,7 @@ namespace ET
                 case CodeMode.ClientServer:
                     codes = new List<string>()
                     {
-                        "Assets/Scripts/Codes/Model/Generate/Server",
+                        "Assets/Scripts/Codes/Model/Generate/ClientServer",
                         "Assets/Scripts/Codes/Model/Share",
                         "Assets/Scripts/Codes/Hotfix/Share",
                         "Assets/Scripts/Codes/Model/Client",
@@ -101,7 +100,7 @@ namespace ET
                         "Assets/Scripts/Codes/Model/Share/",
                         "Assets/Scripts/Codes/Model/Client/",
                         "Assets/Scripts/Codes/ModelView/Client/",
-                        "Assets/Scripts/Codes/Model/Generate/Server/",
+                        "Assets/Scripts/Codes/Model/Generate/ClientServer/",
                         "Assets/Scripts/Codes/Model/Server/",
                     };
                     break;
@@ -124,7 +123,7 @@ namespace ET
             }
 
             
-            int random = Random.Range(100000000, 999999999);
+            int random = RandomGenerator.RandomNumber(100000000, 999999999);
             string logicFile = $"Hotfix_{random}";
             
             List<string> codes;
