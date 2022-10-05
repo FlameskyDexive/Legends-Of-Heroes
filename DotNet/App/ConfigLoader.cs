@@ -2,14 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace ET
+namespace ET.Server
 {
-    [Callback]
-    public class GetAllConfigBytes: ACallbackHandler<ConfigComponent.GetAllConfigBytes, Dictionary<string, byte[]>>
+    [Invoke]
+    public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<Type, byte[]>>
     {
-        public override Dictionary<string, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
+        public override Dictionary<Type, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
         {
-            Dictionary<string, byte[]> output = new Dictionary<string, byte[]>();
+            Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
             List<string> startConfigs = new List<string>()
             {
                 "StartMachineConfigCategory", 
@@ -29,15 +29,15 @@ namespace ET
                 {
                     configFilePath = $"../Config/Excel/s/{configType.Name}.bytes";
                 }
-                output[configType.Name] = File.ReadAllBytes(configFilePath);
+                output[configType] = File.ReadAllBytes(configFilePath);
             }
 
             return output;
         }
     }
     
-    [Callback]
-    public class GetOneConfigBytes: ACallbackHandler<ConfigComponent.GetOneConfigBytes, byte[]>
+    [Invoke]
+    public class GetOneConfigBytes: AInvokeHandler<ConfigComponent.GetOneConfigBytes, byte[]>
     {
         public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
         {

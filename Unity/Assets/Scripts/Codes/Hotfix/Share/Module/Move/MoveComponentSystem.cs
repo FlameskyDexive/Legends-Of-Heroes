@@ -7,7 +7,7 @@ namespace ET
     [FriendOf(typeof(MoveComponent))]
     public static class MoveComponentSystem
     {
-        [Callback(TimerCallbackId.MoveTimer)]
+        [Invoke(TimerInvokeType.MoveTimer)]
         public class MoveTimer: ATimer<MoveComponent>
         {
             protected override void Run(MoveComponent self)
@@ -81,7 +81,8 @@ namespace ET
             return true;
         }
 
-        public static async ETTask<bool> MoveToAsync(this MoveComponent self, List<float3> target, float speed, int turnTime = 100, ETCancellationToken cancellationToken = null)
+        // 该方法不需要用cancelToken的方式取消，因为即使不传入cancelToken，多次调用该方法也要取消之前的移动协程,上层可以stop取消
+        public static async ETTask<bool> MoveToAsync(this MoveComponent self, List<float3> target, float speed, int turnTime = 100)
         {
             self.Stop();
 
@@ -99,21 +100,7 @@ namespace ET
             
             self.StartMove();
             
-            void CancelAction()
-            {
-                self.Stop();
-            }
-            
-            bool moveRet;
-            try
-            {
-                cancellationToken?.Add(CancelAction);
-                moveRet = await self.tcs;
-            }
-            finally
-            {
-                cancellationToken?.Remove(CancelAction);
-            }
+            bool moveRet = await self.tcs;
 
             if (moveRet)
             {
@@ -201,7 +188,7 @@ namespace ET
             self.StartTime = self.BeginTime;
             self.SetNextTarget();
 
-            self.MoveTimer = TimerComponent.Instance.NewFrameTimer(TimerCallbackId.MoveTimer, self);
+            self.MoveTimer = TimerComponent.Instance.NewFrameTimer(TimerInvokeType.MoveTimer, self);
         }
 
         private static void SetNextTarget(this MoveComponent self)

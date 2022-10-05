@@ -5,10 +5,15 @@ using System.Text;
 
 namespace ET
 {
-    using OneTypeSystems = UnOrderMultiMap<Type, object>;
-
     public class EventSystem: Singleton<EventSystem>, ISingletonUpdate, ISingletonLateUpdate
     {
+        private class OneTypeSystems
+        {
+            public readonly UnOrderMultiMap<Type, object> Map = new();
+            // 这里不用hash，数量比较少，直接for循环速度更快
+            public readonly bool[] QueueFlag = new bool[(int)InstanceQueueIndex.Max];
+        }
+        
         private class TypeSystems
         {
             private readonly Dictionary<Type, OneTypeSystems> typeSystemsMap = new();
@@ -42,7 +47,7 @@ namespace ET
                     return null;
                 }
 
-                if (!oneTypeSystems.TryGetValue(systemType, out List<object> systems))
+                if (!oneTypeSystems.Map.TryGetValue(systemType, out List<object> systems))
                 {
                     return null;
                 }
@@ -72,19 +77,11 @@ namespace ET
 
         private readonly Dictionary<Type, List<EventInfo>> allEvents = new();
         
-        private Dictionary<Type, Dictionary<int, object>> allCallbacks = new Dictionary<Type, Dictionary<int, object>>(); 
+        private Dictionary<Type, Dictionary<int, object>> allInvokes = new(); 
 
         private TypeSystems typeSystems = new();
 
-        private readonly Queue<long>[] queues = new Queue<long>[(int)QueueEnum.Max];
-
-        private enum QueueEnum
-        {
-            Update = 0,
-            LateUpdate = 1,
-            Load = 2,
-            Max = 3,
-        }
+        private readonly Queue<long>[] queues = new Queue<long>[(int)InstanceQueueIndex.Max];
 
         public EventSystem()
         {
@@ -151,7 +148,12 @@ namespace ET
                 if (obj is ISystemType iSystemType)
                 {
                     OneTypeSystems oneTypeSystems = this.typeSystems.GetOrCreateOneTypeSystems(iSystemType.Type());
-                    oneTypeSystems.Add(iSystemType.SystemType(), obj);
+                    oneTypeSystems.Map.Add(iSystemType.SystemType(), obj);
+                    InstanceQueueIndex index = iSystemType.GetInstanceQueueIndex();
+                    if (index > InstanceQueueIndex.None && index < InstanceQueueIndex.Max)
+                    {
+                        oneTypeSystems.QueueFlag[(int)index] = true;
+                    }
                 }
             }
 
@@ -169,7 +171,7 @@ namespace ET
                 {
                     EventAttribute eventAttribute = attr as EventAttribute;
 
-                    Type eventType = obj.GetEventType();
+                    Type eventType = obj.Type;
 
                     EventInfo eventInfo = new(obj, eventAttribute.SceneType);
 
@@ -181,34 +183,34 @@ namespace ET
                 }
             }
 
-            this.allCallbacks = new Dictionary<Type, Dictionary<int, object>>();
-            foreach (Type type in types[typeof (CallbackAttribute)])
+            this.allInvokes = new Dictionary<Type, Dictionary<int, object>>();
+            foreach (Type type in types[typeof (InvokeAttribute)])
             {
                 object obj = Activator.CreateInstance(type);
-                ICallbackType iCallbackType = obj as ICallbackType;
-                if (iCallbackType == null)
+                IInvoke iInvoke = obj as IInvoke;
+                if (iInvoke == null)
                 {
                     throw new Exception($"type not is callback: {type.Name}");
                 }
                 
-                object[] attrs = type.GetCustomAttributes(typeof(CallbackAttribute), false);
+                object[] attrs = type.GetCustomAttributes(typeof(InvokeAttribute), false);
                 foreach (object attr in attrs)
                 {
-                    if (!this.allCallbacks.TryGetValue(iCallbackType.Type, out var dict))
+                    if (!this.allInvokes.TryGetValue(iInvoke.Type, out var dict))
                     {
                         dict = new Dictionary<int, object>();
-                        this.allCallbacks.Add(iCallbackType.Type, dict);
+                        this.allInvokes.Add(iInvoke.Type, dict);
                     }
                     
-                    CallbackAttribute callbackAttribute = attr as CallbackAttribute;
+                    InvokeAttribute invokeAttribute = attr as InvokeAttribute;
                     
                     try
                     {
-                        dict.Add(callbackAttribute.Id, obj);
+                        dict.Add(invokeAttribute.Type, obj);
                     }
                     catch (Exception e)
                     {
-                        throw new Exception($"action type duplicate: {iCallbackType.Type.Name} {callbackAttribute.Id}", e);
+                        throw new Exception($"action type duplicate: {iInvoke.Type.Name} {invokeAttribute.Type}", e);
                     }
                     
                 }
@@ -252,27 +254,13 @@ namespace ET
             {
                 return;
             }
-            
-            if (component is ILoad)
+            for (int i = 0; i < oneTypeSystems.QueueFlag.Length; ++i)
             {
-                if (oneTypeSystems.ContainsKey(typeof (ILoadSystem)))
+                if (!oneTypeSystems.QueueFlag[i])
                 {
-                    this.queues[(int)QueueEnum.Load].Enqueue(component.InstanceId);
+                    continue;
                 }
-            }
-            if (component is IUpdate)
-            {
-                if (oneTypeSystems.ContainsKey(typeof (IUpdateSystem)))
-                {
-                    this.queues[(int)QueueEnum.Update].Enqueue(component.InstanceId);
-                }
-            }
-            if (component is ILateUpdate)
-            {
-                if (oneTypeSystems.ContainsKey(typeof (ILateUpdateSystem)))
-                {
-                    this.queues[(int)QueueEnum.LateUpdate].Enqueue(component.InstanceId);
-                }
+                this.queues[i].Enqueue(component.InstanceId);
             }
         }
 
@@ -505,7 +493,7 @@ namespace ET
 
         public void Load()
         {
-            Queue<long> queue = this.queues[(int)QueueEnum.Load];
+            Queue<long> queue = this.queues[(int)InstanceQueueIndex.Load];
             int count = queue.Count;
             while (count-- > 0)
             {
@@ -571,7 +559,7 @@ namespace ET
 
         public void Update()
         {
-            Queue<long> queue = this.queues[(int)QueueEnum.Update];
+            Queue<long> queue = this.queues[(int)InstanceQueueIndex.Update];
             int count = queue.Count;
             while (count-- > 0)
             {
@@ -611,7 +599,7 @@ namespace ET
 
         public void LateUpdate()
         {
-            Queue<long> queue = this.queues[(int)QueueEnum.LateUpdate];
+            Queue<long> queue = this.queues[(int)InstanceQueueIndex.LateUpdate];
             int count = queue.Count;
             while (count-- > 0)
             {
@@ -685,7 +673,7 @@ namespace ET
             }
         }
 
-        public void Publish<T>(Scene scene, T a)where T : struct
+        public void Publish<T>(Scene scene, T a) where T : struct
         {
             List<EventInfo> iEvents;
             if (!this.allEvents.TryGetValue(typeof (T), out iEvents))
@@ -712,44 +700,49 @@ namespace ET
             }
         }
         
-        public void Callback<A>(A args) where A: struct, ICallback
+        // Invoke跟Publish的区别(特别注意)
+        // Invoke类似函数，必须有被调用方，否则异常，调用者跟被调用者属于同一模块，比如MoveComponent中的Timer计时器，调用跟被调用的代码均属于移动模块
+        // 既然Invoke跟函数一样，那么为什么不使用函数呢? 因为有时候不方便直接调用，比如Config加载，在客户端跟服务端加载方式不一样。比如TimerComponent需要根据Id分发
+        // 注意，不要把Invoke当函数使用，这样会造成代码可读性降低，能用函数不要用Invoke
+        // publish是事件，抛出去可以没人订阅，调用者跟被调用者属于两个模块，比如任务系统需要知道道具使用的信息，则订阅道具使用事件
+        public void Invoke<A>(int type, A args) where A: struct
         {
-            if (!this.allCallbacks.TryGetValue(typeof(A), out var callbackHandlers))
+            if (!this.allInvokes.TryGetValue(typeof(A), out var invokeHandlers))
             {
-                throw new Exception($"Callback error: {typeof(A).Name}");
+                throw new Exception($"Invoke error: {typeof(A).Name}");
             }
-            if (!callbackHandlers.TryGetValue(args.Id, out var callbackHandler))
+            if (!invokeHandlers.TryGetValue(type, out var invokeHandler))
             {
-                throw new Exception($"Callback error: {typeof(A).Name} {args.Id}");
+                throw new Exception($"Invoke error: {typeof(A).Name} {type}");
             }
 
-            var aCallbackHandler = callbackHandler as ACallbackHandler<A>;
-            if (aCallbackHandler == null)
+            var aInvokeHandler = invokeHandler as AInvokeHandler<A>;
+            if (aInvokeHandler == null)
             {
-                throw new Exception($"Callback error, not ACallbackHandler: {typeof(A).Name} {args.Id}");
+                throw new Exception($"Invoke error, not AInvokeHandler: {typeof(A).Name} {type}");
             }
             
-            aCallbackHandler.Handle(args);
+            aInvokeHandler.Handle(args);
         }
         
-        public T Callback<A, T>(A args) where A: struct, ICallback
+        public T Invoke<A, T>(int type, A args) where A: struct
         {
-            if (!this.allCallbacks.TryGetValue(typeof(A), out var callbackHandlers))
+            if (!this.allInvokes.TryGetValue(typeof(A), out var invokeHandlers))
             {
-                throw new Exception($"ResultCallback error: {typeof(A).Name}");
+                throw new Exception($"Invoke error: {typeof(A).Name}");
             }
-            if (!callbackHandlers.TryGetValue(args.Id, out var callbackHandler))
+            if (!invokeHandlers.TryGetValue(type, out var invokeHandler))
             {
-                throw new Exception($"ResultCallback error: {typeof(A).Name} {args.Id}");
+                throw new Exception($"Invoke error: {typeof(A).Name} {type}");
             }
 
-            var aCallbackHandler = callbackHandler as ACallbackHandler<A, T>;
-            if (aCallbackHandler == null)
+            var aInvokeHandler = invokeHandler as AInvokeHandler<A, T>;
+            if (aInvokeHandler == null)
             {
-                throw new Exception($"ResultCallback error, not AResultCallbackHandler: {typeof(T).Name} {args.Id}");
+                throw new Exception($"Invoke error, not AInvokeHandler: {typeof(T).Name} {type}");
             }
             
-            return aCallbackHandler.Handle(args);
+            return aInvokeHandler.Handle(args);
         }
 
         public override string ToString()

@@ -3,18 +3,19 @@ using ProtoBuf;
 using System.Collections.Generic;
 namespace ET
 {
+// using
 	[ResponseType(nameof(ObjectQueryResponse))]
 	[Message(InnerMessage.ObjectQueryRequest)]
 	[ProtoContract]
-	public partial class ObjectQueryRequest: Object, IActorRequest
+	public partial class ObjectQueryRequest: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long Key { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public long InstanceId { get; set; }
 
 	}
@@ -22,24 +23,24 @@ namespace ET
 	[ResponseType(nameof(A2M_Reload))]
 	[Message(InnerMessage.M2A_Reload)]
 	[ProtoContract]
-	public partial class M2A_Reload: Object, IActorRequest
+	public partial class M2A_Reload: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
 	}
 
 	[Message(InnerMessage.A2M_Reload)]
 	[ProtoContract]
-	public partial class A2M_Reload: Object, IActorResponse
+	public partial class A2M_Reload: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
 	}
@@ -47,30 +48,30 @@ namespace ET
 	[ResponseType(nameof(G2G_LockResponse))]
 	[Message(InnerMessage.G2G_LockRequest)]
 	[ProtoContract]
-	public partial class G2G_LockRequest: Object, IActorRequest
+	public partial class G2G_LockRequest: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long Id { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public string Address { get; set; }
 
 	}
 
 	[Message(InnerMessage.G2G_LockResponse)]
 	[ProtoContract]
-	public partial class G2G_LockResponse: Object, IActorResponse
+	public partial class G2G_LockResponse: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
 	}
@@ -78,30 +79,30 @@ namespace ET
 	[ResponseType(nameof(G2G_LockReleaseResponse))]
 	[Message(InnerMessage.G2G_LockReleaseRequest)]
 	[ProtoContract]
-	public partial class G2G_LockReleaseRequest: Object, IActorRequest
+	public partial class G2G_LockReleaseRequest: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long Id { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public string Address { get; set; }
 
 	}
 
 	[Message(InnerMessage.G2G_LockReleaseResponse)]
 	[ProtoContract]
-	public partial class G2G_LockReleaseResponse: Object, IActorResponse
+	public partial class G2G_LockReleaseResponse: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
 	}
@@ -109,30 +110,30 @@ namespace ET
 	[ResponseType(nameof(ObjectAddResponse))]
 	[Message(InnerMessage.ObjectAddRequest)]
 	[ProtoContract]
-	public partial class ObjectAddRequest: Object, IActorRequest
+	public partial class ObjectAddRequest: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long Key { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public long InstanceId { get; set; }
 
 	}
 
 	[Message(InnerMessage.ObjectAddResponse)]
 	[ProtoContract]
-	public partial class ObjectAddResponse: Object, IActorResponse
+	public partial class ObjectAddResponse: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
 	}
@@ -140,33 +141,33 @@ namespace ET
 	[ResponseType(nameof(ObjectLockResponse))]
 	[Message(InnerMessage.ObjectLockRequest)]
 	[ProtoContract]
-	public partial class ObjectLockRequest: Object, IActorRequest
+	public partial class ObjectLockRequest: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long Key { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public long InstanceId { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(4)]
 		public int Time { get; set; }
 
 	}
 
 	[Message(InnerMessage.ObjectLockResponse)]
 	[ProtoContract]
-	public partial class ObjectLockResponse: Object, IActorResponse
+	public partial class ObjectLockResponse: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
 	}
@@ -174,33 +175,33 @@ namespace ET
 	[ResponseType(nameof(ObjectUnLockResponse))]
 	[Message(InnerMessage.ObjectUnLockRequest)]
 	[ProtoContract]
-	public partial class ObjectUnLockRequest: Object, IActorRequest
+	public partial class ObjectUnLockRequest: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long Key { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public long OldInstanceId { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(4)]
 		public long InstanceId { get; set; }
 
 	}
 
 	[Message(InnerMessage.ObjectUnLockResponse)]
 	[ProtoContract]
-	public partial class ObjectUnLockResponse: Object, IActorResponse
+	public partial class ObjectUnLockResponse: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
 	}
@@ -208,27 +209,27 @@ namespace ET
 	[ResponseType(nameof(ObjectRemoveResponse))]
 	[Message(InnerMessage.ObjectRemoveRequest)]
 	[ProtoContract]
-	public partial class ObjectRemoveRequest: Object, IActorRequest
+	public partial class ObjectRemoveRequest: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long Key { get; set; }
 
 	}
 
 	[Message(InnerMessage.ObjectRemoveResponse)]
 	[ProtoContract]
-	public partial class ObjectRemoveResponse: Object, IActorResponse
+	public partial class ObjectRemoveResponse: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
 	}
@@ -236,71 +237,19 @@ namespace ET
 	[ResponseType(nameof(ObjectGetResponse))]
 	[Message(InnerMessage.ObjectGetRequest)]
 	[ProtoContract]
-	public partial class ObjectGetRequest: Object, IActorRequest
+	public partial class ObjectGetRequest: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long Key { get; set; }
 
 	}
 
 	[Message(InnerMessage.ObjectGetResponse)]
 	[ProtoContract]
-	public partial class ObjectGetResponse: Object, IActorResponse
-	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(91)]
-		public int Error { get; set; }
-
-		[ProtoMember(92)]
-		public string Message { get; set; }
-
-		[ProtoMember(1)]
-		public long InstanceId { get; set; }
-
-	}
-
-	[ResponseType(nameof(G2R_GetLoginKey))]
-	[Message(InnerMessage.R2G_GetLoginKey)]
-	[ProtoContract]
-	public partial class R2G_GetLoginKey: Object, IActorRequest
-	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(1)]
-		public string Account { get; set; }
-
-	}
-
-	[Message(InnerMessage.G2R_GetLoginKey)]
-	[ProtoContract]
-	public partial class G2R_GetLoginKey: Object, IActorResponse
-	{
-		[ProtoMember(90)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(91)]
-		public int Error { get; set; }
-
-		[ProtoMember(92)]
-		public string Message { get; set; }
-
-		[ProtoMember(1)]
-		public long Key { get; set; }
-
-		[ProtoMember(2)]
-		public long GateId { get; set; }
-
-	}
-
-	[Message(InnerMessage.M2M_UnitTransferResponse)]
-	[ProtoContract]
-	public partial class M2M_UnitTransferResponse: Object, IActorResponse
+	public partial class ObjectGetResponse: ProtoObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
@@ -312,50 +261,102 @@ namespace ET
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
-		public long NewInstanceId { get; set; }
+		public long InstanceId { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2R_GetLoginKey))]
+	[Message(InnerMessage.R2G_GetLoginKey)]
+	[ProtoContract]
+	public partial class R2G_GetLoginKey: ProtoObject, IActorRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public string Account { get; set; }
+
+	}
+
+	[Message(InnerMessage.G2R_GetLoginKey)]
+	[ProtoContract]
+	public partial class G2R_GetLoginKey: ProtoObject, IActorResponse
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int Error { get; set; }
+
+		[ProtoMember(3)]
+		public string Message { get; set; }
+
+		[ProtoMember(4)]
+		public long Key { get; set; }
+
+		[ProtoMember(5)]
+		public long GateId { get; set; }
 
 	}
 
 	[Message(InnerMessage.G2M_SessionDisconnect)]
 	[ProtoContract]
-	public partial class G2M_SessionDisconnect: Object, IActorLocationMessage
+	public partial class G2M_SessionDisconnect: ProtoObject, IActorLocationMessage
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
 	}
 
 	[Message(InnerMessage.ObjectQueryResponse)]
 	[ProtoContract]
-	public partial class ObjectQueryResponse: Object, IActorResponse
+	public partial class ObjectQueryResponse: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
-		[ProtoMember(1)]
-		public byte[] entity { get; set; }
+		[ProtoMember(4)]
+		public byte[] Entity { get; set; }
 
 	}
 
 	[ResponseType(nameof(M2M_UnitTransferResponse))]
 	[Message(InnerMessage.M2M_UnitTransferRequest)]
 	[ProtoContract]
-	public partial class M2M_UnitTransferRequest: Object, IActorRequest
+	public partial class M2M_UnitTransferRequest: ProtoObject, IActorRequest
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
 		[ProtoMember(2)]
-		public byte[] Unit { get; set; }
+		public long OldInstanceId { get; set; }
 
 		[ProtoMember(3)]
-		public List<byte[]> Entitys = new List<byte[]>();
+		public byte[] Unit { get; set; }
+
+		[ProtoMember(4)]
+		public List<byte[]> Entitys { get; set; }
+
+	}
+
+	[Message(InnerMessage.M2M_UnitTransferResponse)]
+	[ProtoContract]
+	public partial class M2M_UnitTransferResponse: ProtoObject, IActorResponse
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int Error { get; set; }
+
+		[ProtoMember(3)]
+		public string Message { get; set; }
 
 	}
 
@@ -380,9 +381,9 @@ namespace ET
 		 public const ushort ObjectGetResponse = 20018;
 		 public const ushort R2G_GetLoginKey = 20019;
 		 public const ushort G2R_GetLoginKey = 20020;
-		 public const ushort M2M_UnitTransferResponse = 20021;
-		 public const ushort G2M_SessionDisconnect = 20022;
-		 public const ushort ObjectQueryResponse = 20023;
-		 public const ushort M2M_UnitTransferRequest = 20024;
+		 public const ushort G2M_SessionDisconnect = 20021;
+		 public const ushort ObjectQueryResponse = 20022;
+		 public const ushort M2M_UnitTransferRequest = 20023;
+		 public const ushort M2M_UnitTransferResponse = 20024;
 	}
 }

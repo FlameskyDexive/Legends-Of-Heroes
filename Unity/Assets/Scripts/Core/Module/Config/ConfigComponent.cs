@@ -9,14 +9,12 @@ namespace ET
     /// </summary>
     public class ConfigComponent: Singleton<ConfigComponent>
     {
-        public struct GetAllConfigBytes: ICallback
+        public struct GetAllConfigBytes
         {
-            public int Id { get; set; }
         }
         
-        public struct GetOneConfigBytes: ICallback
+        public struct GetOneConfigBytes
         {
-            public int Id { get; set; }
             public string ConfigName;
         }
 		
@@ -38,9 +36,9 @@ namespace ET
 				oneConfig.Destroy();
 			}
 			
-			byte[] oneConfigBytes = EventSystem.Instance.Callback<GetOneConfigBytes, byte[]>(new GetOneConfigBytes() {ConfigName = configType.FullName});
+			byte[] oneConfigBytes = EventSystem.Instance.Invoke<GetOneConfigBytes, byte[]>(0, new GetOneConfigBytes() {ConfigName = configType.FullName});
 
-			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = SerializeHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			ISingleton singleton = category as ISingleton;
 			singleton.Register();
 			
@@ -51,32 +49,26 @@ namespace ET
 		public void Load()
 		{
 			this.allConfig.Clear();
-			HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
-			
-			Dictionary<string, byte[]> configBytes = 
-			EventSystem.Instance.Callback<GetAllConfigBytes, Dictionary<string, byte[]>>(
-				new GetAllConfigBytes());
+			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(0, new GetAllConfigBytes());
 
-			foreach (Type type in types)
+			foreach (Type type in configBytes.Keys)
 			{
-				this.LoadOneInThread(type, configBytes);
+				byte[] oneConfigBytes = configBytes[type];
+				this.LoadOneInThread(type, oneConfigBytes);
 			}
 		}
 		
 		public async ETTask LoadAsync()
 		{
 			this.allConfig.Clear();
-			HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
-			
-			Dictionary<string, byte[]> configBytes = 
-					EventSystem.Instance.Callback<GetAllConfigBytes, Dictionary<string, byte[]>>(
-						new GetAllConfigBytes());
+			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(0, new GetAllConfigBytes());
 
 			using ListComponent<Task> listTasks = ListComponent<Task>.Create();
 			
-			foreach (Type type in types)
+			foreach (Type type in configBytes.Keys)
 			{
-				Task task = Task.Run(() => LoadOneInThread(type, configBytes));
+				byte[] oneConfigBytes = configBytes[type];
+				Task task = Task.Run(() => LoadOneInThread(type, oneConfigBytes));
 				listTasks.Add(task);
 			}
 
@@ -88,11 +80,9 @@ namespace ET
 			}
 		}
 		
-		private void LoadOneInThread(Type configType, Dictionary<string, byte[]> configBytes)
+		private void LoadOneInThread(Type configType, byte[] oneConfigBytes)
 		{
-			byte[] oneConfigBytes = configBytes[configType.Name];
-
-			object category = ProtobufHelper.FromBytes(configType, oneConfigBytes, 0, oneConfigBytes.Length);
+			object category = SerializeHelper.Deserialize(configType, oneConfigBytes, 0, oneConfigBytes.Length);
 			
 			lock (this)
 			{

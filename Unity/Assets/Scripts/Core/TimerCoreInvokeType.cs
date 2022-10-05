@@ -1,6 +1,7 @@
 ﻿namespace ET
 {
-    public static class TimerCoreCallbackId
+    [UniqueId(0, 100)]
+    public static class TimerCoreInvokeType
     {
         public const int CoroutineTimeout = 1;
     }
