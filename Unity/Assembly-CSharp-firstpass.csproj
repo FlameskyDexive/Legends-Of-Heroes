@@ -41,34 +41,34 @@
     <ImplicitlyExpandDesignTimeFacades>false</ImplicitlyExpandDesignTimeFacades>
   </PropertyGroup>
   <ItemGroup>
-     <Folder Include="Assets\Plugins\Android" />
-     <Folder Include="Assets\Plugins\MongoDB\runtimes\win\native" />
-     <Folder Include="Assets\Plugins\MongoDB\runtimes\linux" />
-     <Folder Include="Assets\Plugins\MacOS" />
-     <Folder Include="Assets\Plugins" />
-     <Folder Include="Assets\Plugins\MongoDB\runtimes" />
-     <Folder Include="Assets\Plugins\Android\libs\x86" />
-     <Folder Include="Assets\Plugins\MacOS\x86_64" />
-     <Folder Include="Assets\Plugins\MongoDB\runtimes\win" />
-     <Folder Include="Assets\Plugins\MongoDB" />
-     <Folder Include="Assets\Plugins\Android\libs\arm64-v8a" />
-     <Folder Include="Assets\Plugins\MacOS\arm64" />
-     <Folder Include="Assets\Plugins\Android\libs\armeabi-v7a" />
-     <Folder Include="Assets\Plugins\iOS" />
-     <Folder Include="Assets\Plugins\MongoDB\runtimes\osx" />
-     <Folder Include="Assets\Plugins\x86" />
-     <Folder Include="Assets\Plugins\MongoDB\runtimes\linux\native" />
-     <Folder Include="Assets\Plugins\Android\libs" />
-     <Folder Include="Assets\Plugins\x86_64" />
-     <Folder Include="Assets\Plugins\MongoDB\runtimes\osx\native" />
+     <Folder Include="Assets/Plugins/Android" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/win/native" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/linux" />
+     <Folder Include="Assets/Plugins/MacOS" />
+     <Folder Include="Assets/Plugins" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes" />
+     <Folder Include="Assets/Plugins/Android/libs/x86" />
+     <Folder Include="Assets/Plugins/MacOS/x86_64" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/win" />
+     <Folder Include="Assets/Plugins/MongoDB" />
+     <Folder Include="Assets/Plugins/Android/libs/arm64-v8a" />
+     <Folder Include="Assets/Plugins/MacOS/arm64" />
+     <Folder Include="Assets/Plugins/Android/libs/armeabi-v7a" />
+     <Folder Include="Assets/Plugins/iOS" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/osx" />
+     <Folder Include="Assets/Plugins/x86" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/linux/native" />
+     <Folder Include="Assets/Plugins/Android/libs" />
+     <Folder Include="Assets/Plugins/x86_64" />
+     <Folder Include="Assets/Plugins/MongoDB/runtimes/osx/native" />
      <Reference Include="UnityEngine">
-     <HintPath>E:\DevSoftWare\Unity\2021.3.4f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>
+     <HintPath>/Applications/Unity/Hub/Editor/2021.3.16f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
      </Reference>
      <Reference Include="UnityEngine.CoreModule">
-     <HintPath>E:\DevSoftWare\Unity\2021.3.4f1c1\Editor\Data\Managed\UnityEngine\UnityEngine.CoreModule.dll</HintPath>
+     <HintPath>/Applications/Unity/Hub/Editor/2021.3.16f1/Unity.app/Contents/Managed/UnityEngine/UnityEngine.CoreModule.dll</HintPath>
      </Reference>
      <Reference Include="UnityEditor">
-     <HintPath>E:\DevSoftWare\Unity\2021.3.4f1c1\Editor\Data\Managed\UnityEngine\UnityEditor.dll</HintPath>
+     <HintPath>/Applications/Unity/Hub/Editor/2021.3.16f1/Unity.app/Contents/Managed/UnityEngine/UnityEditor.dll</HintPath>
      </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
