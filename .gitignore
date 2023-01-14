@@ -84,3 +84,8 @@ Publish/
 /Unity/Unity.ModelView.Codes.csproj
 /Unity/Unity.GenerateClient.csproj
 /Unity/Unity.GenerateServer.csproj
+
+/Unity/Assets/Bundles/AotDlls
+/Unity/Assets/Bundles/AotDlls.meta
+/Unity/HybridCLRData
+/Unity/Assembly-CSharp-firstpass.csproj
