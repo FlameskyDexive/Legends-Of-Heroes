@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using ET.Client;
 
-namespace ET
+namespace ET.Client
 {
     [ObjectSystem]
     public class UIComponentAwakeSystem : AwakeSystem<UIComponent>
