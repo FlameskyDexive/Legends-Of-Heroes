@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Threading;
 using CommandLine;
 using UnityEngine;
+using YooAsset;
 
 namespace ET
 {
 	public class Init: MonoBehaviour
-	{
-		private void Start()
+    {
+        public EPlayMode PlayMode;
+        private IEnumerator Start()
 		{
 			DontDestroyOnLoad(gameObject);
 			
@@ -34,7 +37,12 @@ namespace ET
 			
 			ETTask.ExceptionHandler += Log.Error;
 
-			Game.AddSingleton<CodeLoader>().Start();
+            if (!Application.isEditor && PlayMode == EPlayMode.EditorSimulateMode)
+            {
+                PlayMode = EPlayMode.HostPlayMode;
+            }
+            yield return Game.AddSingleton<MonoResComponent>().InitAsync(PlayMode);
+            Game.AddSingleton<CodeLoader>().Start();
 		}
 
 		private void Update()
