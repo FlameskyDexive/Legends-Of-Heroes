@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 185f6993d5150494d98da50e26cb1c25, type: 3}
+  m_Name: AssetBundleCollectorSetting
+  m_EditorClassIdentifier: 
+  ShowPackageView: 0
+  EnableAddressable: 1
+  UniqueBundleName: 0
+  ShowEditorAlias: 0
+  Packages:
+  - PackageName: DefaultPackage
+    PackageDesc: 
+    Groups:
+    - GroupName: Config
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Bundles/Config
+        CollectorGUID: fa72a9d3b736d46988407658bca910e1
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 
+    - GroupName: UI
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Bundles/FUI
+        CollectorGUID: 90d4b1892ed984abd872a4e996d78bfb
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAtlas
+        AssetTags: 
+      - CollectPath: Assets/Bundles/FUI
+        CollectorGUID: 90d4b1892ed984abd872a4e996d78bfb
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackRawFile
+        FilterRuleName: CollectBytes
+        AssetTags: 
+    - GroupName: Unit
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Res/Unit
+        CollectorGUID: 20054f3f410561544a8b77946c75836d
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectPrefab
+        AssetTags: 
+    - GroupName: Scene
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Scenes
+        CollectorGUID: 921727de139ab454b8a316139a2ed5fa
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectScene
+        AssetTags: 
+    - GroupName: AotCode
+      GroupDesc: 
+      AssetTags: aotdlls
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Bundles/AotDlls
+        CollectorGUID: f632dbe3c739a4d4fb01c9f7a76180b7
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackRawFile
+        FilterRuleName: CollectAll
+        AssetTags: 
+    - GroupName: Code
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Bundles/Code
+        CollectorGUID: 55d9010d6a87934468703901aa518c85
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackRawFile
+        FilterRuleName: CollectAll
+        AssetTags: 
