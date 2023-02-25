@@ -1,20 +1,17 @@
 {
-    "name": "Unity.Editor",
+    "name": "YooAsset.Editor",
     "rootNamespace": "",
     "references": [
         "Unity.ThirdParty",
-        "Unity.Core",
-        "Unity.Loader",
-        "HybridCLR.Runtime",
-        "HybridCLR.Editor",
         "Unity.ScriptableBuildPipeline",
-        "Unity.ScriptableBuildPipeline.Editor"
+        "Unity.ScriptableBuildPipeline.Editor",
+        "ThirdPartyClient"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
-    "allowUnsafeCode": true,
+    "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,

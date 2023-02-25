@@ -37,19 +37,12 @@ MonoBehaviour:
       AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
-      - CollectPath: Assets/Bundles/FUI
-        CollectorGUID: 90d4b1892ed984abd872a4e996d78bfb
+      - CollectPath: Assets/Bundles/UI
+        CollectorGUID: 3a57d524d1e0d7543828b2ac7273f608
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAtlas
-        AssetTags: 
-      - CollectPath: Assets/Bundles/FUI
-        CollectorGUID: 90d4b1892ed984abd872a4e996d78bfb
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackRawFile
-        FilterRuleName: CollectBytes
         AssetTags: 
     - GroupName: Unit
       GroupDesc: 
@@ -81,7 +74,7 @@ MonoBehaviour:
       ActiveRuleName: EnableGroup
       Collectors:
       - CollectPath: Assets/Bundles/AotDlls
-        CollectorGUID: f632dbe3c739a4d4fb01c9f7a76180b7
+        CollectorGUID: 5ab302fa47c13924b8797a1ed3cbbb03
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackRawFile
