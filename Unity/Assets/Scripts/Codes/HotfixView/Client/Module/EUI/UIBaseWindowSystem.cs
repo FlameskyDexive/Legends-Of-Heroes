@@ -45,7 +45,7 @@ namespace ET.Client
                 Log.Error($"uibaseWindows {self.WindowID} rootTransform is null!!!");
                 return;
             }
-            self.uiTransform.SetParent(rootTransform/*, false*/);
+            self.uiTransform.SetParent(rootTransform, false);
             self.uiTransform.transform.localScale = Vector3.one;
             self.uiTransform.transform.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
         }

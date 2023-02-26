@@ -509,7 +509,7 @@ namespace ET.Client
             }
 
             // GameObject prefab = await ResComponent.Instance.LoadAssetAsync<GameObject>("Skeleton");
-            baseWindow.UIPrefabGameObject = ResComponent.Instance.LoadAsset<GameObject>($"{value}");
+            baseWindow.UIPrefabGameObject = UnityEngine.Object.Instantiate(ResComponent.Instance.LoadAsset<GameObject>($"{value}")) ;
             baseWindow.UIPrefabGameObject.SetActive(true);
             
             UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
@@ -536,7 +536,8 @@ namespace ET.Client
             }
 
             // baseWindow.UIPrefabGameObject = await self.DomainScene().GetComponent<AssetsLoaderComponent>().LoadGameObjectAsync(value, EAssetPathType.UIDlg);
-            baseWindow.UIPrefabGameObject = await ResComponent.Instance.LoadAssetAsync<GameObject>($"{value}");
+
+            baseWindow.UIPrefabGameObject = UnityEngine.Object.Instantiate(ResComponent.Instance.LoadAsset<GameObject>($"{value}"));
             baseWindow.UIPrefabGameObject.SetActive(true);
 
             UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
