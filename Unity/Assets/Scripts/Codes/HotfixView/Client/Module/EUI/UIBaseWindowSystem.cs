@@ -23,7 +23,7 @@ namespace ET.Client
             self.IsInStackQueue = false;
             if (self.UIPrefabGameObject != null)
             {
-                GameObject.Destroy(self.UIPrefabGameObject);
+                UnityEngine.Object.Destroy(self.UIPrefabGameObject);
                 self.UIPrefabGameObject = null;
             }
         }
