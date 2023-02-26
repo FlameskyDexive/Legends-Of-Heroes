@@ -1,13 +1,16 @@
 # Legends-Of-Heroes
-A moba game made by Unity Client and ET Server, Just Like League of legends.
+A ball heroes war's game of LOL (League of legends) style.
 ## Main
-### Role AI for both client and server
-### Skill Editor/Animation event system for both client and server
-### Recast pathfinding for both client and server
-### ECS for the battle part
-### Robot system for multiplayers testing
-### Auto Generate Protocol csharp code
-### Client and server support hot reload logic
+### base on ET7.2
+### multiplayers battle in a map
+###
+
+## Reference
+### Debugger, a runtime debugger for unity games
+### EUI, an ui system design for ET ECS
+### X-ET7, a branch of ET7 
+### YooAsset, a powerful asset system for unity 
+### Box2dSharp, a powerful 2d physics for .netcore. 
 
 ## TODO
-### Auto build apk/ipa
+### 
