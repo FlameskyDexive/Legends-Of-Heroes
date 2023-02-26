@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
     // [ChildOf(typeof(WindowCoreData))]
     [ChildOf(typeof(UIComponent))]

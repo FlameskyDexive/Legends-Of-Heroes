@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ET
+namespace ET.Client
 {
     [ObjectSystem]
     public class UIEventComponentAwakeSystem : AwakeSystem<UIEventComponent>

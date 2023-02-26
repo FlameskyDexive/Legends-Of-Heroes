@@ -5,7 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace ET
+namespace ET.Client
 {
     public static class EUIHelper
     {

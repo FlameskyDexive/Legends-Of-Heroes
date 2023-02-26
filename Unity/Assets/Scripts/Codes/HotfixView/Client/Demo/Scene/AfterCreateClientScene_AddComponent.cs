@@ -7,7 +7,9 @@ namespace ET.Client
         {
             scene.AddComponent<UIEventComponent>();
             scene.AddComponent<UIComponent>();
-            scene.AddComponent<ResourcesLoaderComponent>();
+            scene.AddComponent<UIPathComponent>();
+            // scene.AddComponent<ResourcesLoaderComponent>();
+            scene.GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Login);
             await ETTask.CompletedTask;
         }
     }

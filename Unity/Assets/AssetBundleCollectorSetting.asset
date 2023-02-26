@@ -42,7 +42,7 @@ MonoBehaviour:
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
-        FilterRuleName: CollectAtlas
+        FilterRuleName: CollectAll
         AssetTags: 
     - GroupName: Unit
       GroupDesc: 

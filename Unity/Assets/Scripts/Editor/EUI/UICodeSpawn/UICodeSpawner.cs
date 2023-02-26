@@ -96,7 +96,7 @@ public partial class UICodeSpawner
                   .AppendLine("using UnityEngine;")
                   .AppendLine("using UnityEngine.UI;\r\n");
 
-        strBuilder.AppendLine("namespace ET");
+        strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
         
         strBuilder.AppendFormat("\t[FriendOf(typeof({0}))]\r\n", strDlgName);
@@ -151,7 +151,7 @@ public partial class UICodeSpawner
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
         StringBuilder strBuilder = new StringBuilder();
         
-        strBuilder.AppendLine("namespace ET");
+        strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
         strBuilder.AppendLine("\t[FriendOf(typeof(WindowCoreData))]");
         strBuilder.AppendLine("\t[FriendOf(typeof(UIBaseWindow))]");
@@ -237,7 +237,7 @@ public partial class UICodeSpawner
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
         StringBuilder strBuilder = new StringBuilder();
         
-        strBuilder.AppendLine("namespace ET");
+        strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
         strBuilder.AppendLine("\t [ComponentOf(typeof(UIBaseWindow))]");
        
@@ -281,7 +281,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine()
 	        .AppendLine("using UnityEngine;");
         strBuilder.AppendLine("using UnityEngine.UI;");
-        strBuilder.AppendLine("namespace ET");
+        strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
         strBuilder.AppendLine("\t[ObjectSystem]");
         strBuilder.AppendFormat("\tpublic class {0}AwakeSystem : AwakeSystem<{1}> \r\n", strDlgComponentName, strDlgComponentName);
@@ -329,7 +329,7 @@ public partial class UICodeSpawner
 	    strBuilder.AppendLine()
 		    .AppendLine("using UnityEngine;");
 	    strBuilder.AppendLine("using UnityEngine.UI;");
-	    strBuilder.AppendLine("namespace ET");
+	    strBuilder.AppendLine("namespace ET.Client");
 	    strBuilder.AppendLine("{");
 	    strBuilder.AppendLine("\t[ComponentOf(typeof(UIBaseWindow))]");
 	    strBuilder.AppendLine("\t[EnableMethod]");

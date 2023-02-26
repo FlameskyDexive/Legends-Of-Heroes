@@ -296,9 +296,9 @@ namespace ET.Client
             if(baseWindow.IsPreLoad)
             {
                 // Game.Scene.GetComponent<ResourcesComponent>()?.UnloadBundle(baseWindow.UIPrefabGameObject.name.StringToAB());
-                // UnityEngine.Object.Destroy( baseWindow.UIPrefabGameObject);
+                UnityEngine.Object.Destroy( baseWindow.UIPrefabGameObject);
                 
-                self.DomainScene().GetComponent<AssetsLoaderComponent>().RecycleGameObject(baseWindow.UIPrefabGameObject);
+                // self.DomainScene().GetComponent<AssetsLoaderComponent>().RecycleGameObject(baseWindow.UIPrefabGameObject);
                 baseWindow.UIPrefabGameObject = null;
             }
             if (isDispose)
@@ -508,8 +508,10 @@ namespace ET.Client
                 return;
             }
 
-            baseWindow.UIPrefabGameObject = self.DomainScene().GetComponent<AssetsLoaderComponent>().LoadGameObject(value, EAssetPathType.UIDlg);
-
+            // GameObject prefab = await ResComponent.Instance.LoadAssetAsync<GameObject>("Skeleton");
+            baseWindow.UIPrefabGameObject = ResComponent.Instance.LoadAsset<GameObject>($"{value}");
+            baseWindow.UIPrefabGameObject.SetActive(true);
+            
             UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
             
             baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.WindowData.windowType));
@@ -532,9 +534,11 @@ namespace ET.Client
                 Log.Error($"{baseWindow.WindowID} is not Exist!");
                 return;
             }
-            
-            baseWindow.UIPrefabGameObject = await self.DomainScene().GetComponent<AssetsLoaderComponent>().LoadGameObjectAsync(value, EAssetPathType.UIDlg);
-            
+
+            // baseWindow.UIPrefabGameObject = await self.DomainScene().GetComponent<AssetsLoaderComponent>().LoadGameObjectAsync(value, EAssetPathType.UIDlg);
+            baseWindow.UIPrefabGameObject = await ResComponent.Instance.LoadAssetAsync<GameObject>($"{value}");
+            baseWindow.UIPrefabGameObject.SetActive(true);
+
             UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
             
             baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.WindowData.windowType));

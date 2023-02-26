@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace ET
+namespace ET.Client
 {
     
     public enum UIWindowType

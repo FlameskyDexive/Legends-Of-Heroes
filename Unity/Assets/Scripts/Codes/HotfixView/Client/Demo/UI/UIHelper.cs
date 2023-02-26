@@ -2,15 +2,28 @@
 {
     public static class UIHelper
     {
-        public static async ETTask<UI> Create(Scene scene, string uiType, UILayer uiLayer)
-        {
-            return await scene.GetComponent<UIComponent>().Create(uiType, uiLayer);
-        }
         
-        public static async ETTask Remove(Scene scene, string uiType)
+
+        public static string GetIconQualityBG_1_Name(int rare)
         {
-            scene.GetComponent<UIComponent>().Remove(uiType);
-            await ETTask.CompletedTask;
+            var rareName = "Common_003";
+            switch (rare)
+            {
+                case 2: { rareName = "Common_004"; } break;
+                case 3: { rareName = "Common_005"; } break;
+            }
+            return rareName;
+        }
+
+        public static string GetIconQualityBG_2_Name(int rare)
+        {
+            var rareName = "Common_014";
+            switch (rare)
+            {
+                case 2: { rareName = "Common_013"; } break;
+                case 3: { rareName = "Common_012"; } break;
+            }
+            return rareName;
         }
     }
 }
