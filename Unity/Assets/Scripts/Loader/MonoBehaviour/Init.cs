@@ -13,7 +13,7 @@ namespace ET
         private IEnumerator Start()
 		{
 			DontDestroyOnLoad(gameObject);
-			
+            Application.targetFrameRate = 60;
 			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
 				Log.Error(e.ExceptionObject.ToString());
