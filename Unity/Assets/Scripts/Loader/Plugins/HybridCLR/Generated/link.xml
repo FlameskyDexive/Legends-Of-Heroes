@@ -8,11 +8,15 @@
   </assembly>
   <assembly fullname="mscorlib">
     <type fullname="System.Action" preserve="all" />
+    <type fullname="System.Action`1" preserve="all" />
     <type fullname="System.Action`2" preserve="all" />
     <type fullname="System.Action`3" preserve="all" />
     <type fullname="System.Activator" preserve="all" />
+    <type fullname="System.ArgumentNullException" preserve="all" />
     <type fullname="System.ArgumentOutOfRangeException" preserve="all" />
     <type fullname="System.Array" preserve="all" />
+    <type fullname="System.AttributeTargets" preserve="all" />
+    <type fullname="System.AttributeUsageAttribute" preserve="all" />
     <type fullname="System.BitConverter" preserve="all" />
     <type fullname="System.Byte" preserve="all" />
     <type fullname="System.Collections.Generic.Dictionary`2" preserve="all" />
@@ -23,6 +27,7 @@
     <type fullname="System.Collections.Generic.KeyValuePair`2" preserve="all" />
     <type fullname="System.Collections.Generic.List`1" preserve="all" />
     <type fullname="System.Collections.Generic.List`1/Enumerator" preserve="all" />
+    <type fullname="System.Collections.IEnumerator" preserve="all" />
     <type fullname="System.Console" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
@@ -39,7 +44,6 @@
     <type fullname="System.Int32" preserve="all" />
     <type fullname="System.Int64" preserve="all" />
     <type fullname="System.IO.File" preserve="all" />
-    <type fullname="System.IO.Path" preserve="all" />
     <type fullname="System.IO.TextReader" preserve="all" />
     <type fullname="System.Math" preserve="all" />
     <type fullname="System.NotImplementedException" preserve="all" />
@@ -63,7 +67,6 @@
     <type fullname="System.Single" preserve="all" />
     <type fullname="System.String" preserve="all" />
     <type fullname="System.StringSplitOptions" preserve="all" />
-    <type fullname="System.Text.StringBuilder" preserve="all" />
     <type fullname="System.Threading.CancellationToken" preserve="all" />
     <type fullname="System.Threading.CancellationTokenSource" preserve="all" />
     <type fullname="System.Threading.Tasks.Task" preserve="all" />
@@ -78,6 +81,7 @@
     <type fullname="System.ValueType" preserve="all" />
   </assembly>
   <assembly fullname="System">
+    <type fullname="System.Collections.Generic.Queue`1" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2/ValueCollection" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2/ValueCollection/Enumerator" preserve="all" />
@@ -94,12 +98,28 @@
     <type fullname="System.Collections.Generic.HashSet`1" preserve="all" />
     <type fullname="System.Collections.Generic.HashSet`1/Enumerator" preserve="all" />
     <type fullname="System.Linq.Enumerable" preserve="all" />
-    <type fullname="System.Linq.IOrderedEnumerable`1" preserve="all" />
   </assembly>
   <assembly fullname="System.Net.Http">
     <type fullname="System.Net.Http.HttpClient" preserve="all" />
     <type fullname="System.Net.Http.HttpContent" preserve="all" />
     <type fullname="System.Net.Http.HttpResponseMessage" preserve="all" />
+  </assembly>
+  <assembly fullname="ThirdPartyClient">
+    <type fullname="YooAsset.AssetOperationHandle" preserve="all" />
+    <type fullname="YooAsset.AssetsPackage" preserve="all" />
+    <type fullname="YooAsset.AsyncOperationBase" preserve="all" />
+    <type fullname="YooAsset.DownloaderOperation" preserve="all" />
+    <type fullname="YooAsset.DownloaderOperation/OnDownloadError" preserve="all" />
+    <type fullname="YooAsset.DownloaderOperation/OnDownloadProgress" preserve="all" />
+    <type fullname="YooAsset.EOperationStatus" preserve="all" />
+    <type fullname="YooAsset.OperationHandleBase" preserve="all" />
+    <type fullname="YooAsset.PatchDownloaderOperation" preserve="all" />
+    <type fullname="YooAsset.RawFileOperationHandle" preserve="all" />
+    <type fullname="YooAsset.SceneOperationHandle" preserve="all" />
+    <type fullname="YooAsset.SubAssetsOperationHandle" preserve="all" />
+    <type fullname="YooAsset.UpdatePackageManifestOperation" preserve="all" />
+    <type fullname="YooAsset.UpdatePackageVersionOperation" preserve="all" />
+    <type fullname="YooAsset.YooAssets" preserve="all" />
   </assembly>
   <assembly fullname="Unity.Core">
     <type fullname="ET.AEvent`1" preserve="all" />
@@ -122,6 +142,7 @@
     <type fullname="ET.CoroutineLockComponent" preserve="all" />
     <type fullname="ET.DestroySystem`1" preserve="all" />
     <type fullname="ET.DisposeObject" preserve="all" />
+    <type fullname="ET.EnableMethodAttribute" preserve="all" />
     <type fullname="ET.Entity" preserve="all" />
     <type fullname="ET.EntitySceneFactory" preserve="all" />
     <type fullname="ET.ErrorCore" preserve="all" />
@@ -175,14 +196,19 @@
     <type fullname="ET.WinPeriod" preserve="all" />
   </assembly>
   <assembly fullname="Unity.Loader">
+    <type fullname="ET.ButtonPointerClickEvent" preserve="all" />
+    <type fullname="ET.ButtonPressEvent" preserve="all" />
     <type fullname="ET.CodeLoader" preserve="all" />
     <type fullname="ET.CodeMode" preserve="all" />
-    <type fullname="ET.CoroutineHelper" preserve="all" />
     <type fullname="ET.Define" preserve="all" />
+    <type fullname="ET.EUIButton" preserve="all" />
+    <type fullname="ET.GameObjectPoolHelper" preserve="all" />
     <type fullname="ET.GlobalConfig" preserve="all" />
-    <type fullname="ET.PathHelper" preserve="all" />
-    <type fullname="ET.UILayer" preserve="all" />
+    <type fullname="ET.YooAssetHelper" preserve="all" />
+    <type fullname="RedDotMonoView" preserve="all" />
     <type fullname="ReferenceCollector" preserve="all" />
+    <type fullname="UnityEngine.UI.LoopScrollRect" preserve="all" />
+    <type fullname="UnityEngine.UI.LoopScrollRectBase" preserve="all" />
   </assembly>
   <assembly fullname="Unity.Mathematics">
     <type fullname="Unity.Mathematics.float3" preserve="all" />
@@ -209,28 +235,31 @@
     <type fullname="UnityEngine.AnimatorControllerParameter" preserve="all" />
     <type fullname="UnityEngine.RuntimeAnimatorController" preserve="all" />
   </assembly>
-  <assembly fullname="UnityEngine.AssetBundleModule">
-    <type fullname="UnityEngine.AssetBundle" preserve="all" />
-    <type fullname="UnityEngine.AssetBundleCreateRequest" preserve="all" />
-    <type fullname="UnityEngine.AssetBundleManifest" preserve="all" />
-    <type fullname="UnityEngine.AssetBundleRequest" preserve="all" />
-  </assembly>
   <assembly fullname="UnityEngine.CoreModule">
-    <type fullname="UnityEngine.AsyncOperation" preserve="all" />
     <type fullname="UnityEngine.Camera" preserve="all" />
     <type fullname="UnityEngine.Component" preserve="all" />
+    <type fullname="UnityEngine.Debug" preserve="all" />
     <type fullname="UnityEngine.Events.UnityAction" preserve="all" />
+    <type fullname="UnityEngine.Events.UnityAction`1" preserve="all" />
     <type fullname="UnityEngine.Events.UnityEvent" preserve="all" />
+    <type fullname="UnityEngine.Events.UnityEvent`1" preserve="all" />
+    <type fullname="UnityEngine.Events.UnityEventBase" preserve="all" />
     <type fullname="UnityEngine.GameObject" preserve="all" />
     <type fullname="UnityEngine.KeyCode" preserve="all" />
     <type fullname="UnityEngine.LayerMask" preserve="all" />
+    <type fullname="UnityEngine.Material" preserve="all" />
     <type fullname="UnityEngine.Object" preserve="all" />
     <type fullname="UnityEngine.Quaternion" preserve="all" />
     <type fullname="UnityEngine.Ray" preserve="all" />
+    <type fullname="UnityEngine.RectTransform" preserve="all" />
     <type fullname="UnityEngine.Resources" preserve="all" />
-    <type fullname="UnityEngine.SceneManagement.SceneManager" preserve="all" />
+    <type fullname="UnityEngine.SceneManagement.LoadSceneMode" preserve="all" />
+    <type fullname="UnityEngine.SceneManagement.Scene" preserve="all" />
+    <type fullname="UnityEngine.Shader" preserve="all" />
+    <type fullname="UnityEngine.Sprite" preserve="all" />
     <type fullname="UnityEngine.TextAsset" preserve="all" />
     <type fullname="UnityEngine.Transform" preserve="all" />
+    <type fullname="UnityEngine.Vector2" preserve="all" />
     <type fullname="UnityEngine.Vector3" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.InputLegacyModule">
@@ -241,9 +270,23 @@
     <type fullname="UnityEngine.RaycastHit" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.UI">
+    <type fullname="UnityEngine.EventSystems.BaseEventData" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.EventTrigger" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.EventTrigger/Entry" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.EventTrigger/TriggerEvent" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.EventTriggerType" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.PointerEventData" preserve="all" />
+    <type fullname="UnityEngine.EventSystems.UIBehaviour" preserve="all" />
     <type fullname="UnityEngine.UI.Button" preserve="all" />
     <type fullname="UnityEngine.UI.Button/ButtonClickedEvent" preserve="all" />
+    <type fullname="UnityEngine.UI.Graphic" preserve="all" />
+    <type fullname="UnityEngine.UI.Image" preserve="all" />
     <type fullname="UnityEngine.UI.InputField" preserve="all" />
+    <type fullname="UnityEngine.UI.InputField/OnChangeEvent" preserve="all" />
+    <type fullname="UnityEngine.UI.Selectable" preserve="all" />
     <type fullname="UnityEngine.UI.Text" preserve="all" />
+    <type fullname="UnityEngine.UI.Toggle" preserve="all" />
+    <type fullname="UnityEngine.UI.Toggle/ToggleEvent" preserve="all" />
+    <type fullname="UnityEngine.UI.ToggleGroup" preserve="all" />
   </assembly>
 </linker>

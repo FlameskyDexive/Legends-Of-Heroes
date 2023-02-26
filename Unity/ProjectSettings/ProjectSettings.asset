@@ -861,7 +861,7 @@ PlayerSettings:
   scriptingBackend:
     Android: 1
     Server: 0
-    Standalone: 1
+    Standalone: 0
     iPhone: 1
   il2cppCompilerConfiguration: {}
   managedStrippingLevel: {}
