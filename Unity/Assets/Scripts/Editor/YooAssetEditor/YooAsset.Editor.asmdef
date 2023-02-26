@@ -5,7 +5,7 @@
         "Unity.ThirdParty",
         "Unity.ScriptableBuildPipeline",
         "Unity.ScriptableBuildPipeline.Editor",
-        "ThirdPartyClient"
+        "Unity.ThirdPartyClient"
     ],
     "includePlatforms": [
         "Editor"

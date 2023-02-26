@@ -8,8 +8,7 @@
         "Unity.ModelView",
         "Unity.Core",
         "Unity.Mathematics",
-        "Unity.Loader",
-        "ThirdPartyClient"
+        "Unity.Loader"
     ],
     "includePlatforms": [
         "Editor"
@@ -20,6 +19,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "Select...",
+            "expression": "",
+            "define": ""
+        }
+    ],
     "noEngineReferences": false
 }

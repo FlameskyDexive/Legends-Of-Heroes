@@ -4,8 +4,7 @@
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
-        "HybridCLR.Runtime",
-        "ThirdPartyClient"
+        "HybridCLR.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

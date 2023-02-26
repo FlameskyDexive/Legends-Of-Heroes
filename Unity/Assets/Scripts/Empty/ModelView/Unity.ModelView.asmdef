@@ -6,8 +6,7 @@
         "Unity.ThirdParty",
         "Unity.Core",
         "Unity.Mathematics",
-        "Unity.Loader",
-        "ThirdPartyClient"
+        "Unity.Loader"
     ],
     "includePlatforms": [
         "Editor"
