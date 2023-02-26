@@ -1,8 +1,8 @@
 # Legends-Of-Heroes
-A ball heroes war's game of LOL (League of legends) style.
+A battle of balls game, lol style
 ## Main
-### base on ET7.2
-### multiplayers battle in a map
+### Base on ET7.2 (https://github.com/egametang/ET)
+### Multiplayers battle in a map
 ###
 
 ## Reference
