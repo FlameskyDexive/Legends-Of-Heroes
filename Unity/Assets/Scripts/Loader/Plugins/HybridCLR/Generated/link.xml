@@ -104,23 +104,6 @@
     <type fullname="System.Net.Http.HttpContent" preserve="all" />
     <type fullname="System.Net.Http.HttpResponseMessage" preserve="all" />
   </assembly>
-  <assembly fullname="ThirdPartyClient">
-    <type fullname="YooAsset.AssetOperationHandle" preserve="all" />
-    <type fullname="YooAsset.AssetsPackage" preserve="all" />
-    <type fullname="YooAsset.AsyncOperationBase" preserve="all" />
-    <type fullname="YooAsset.DownloaderOperation" preserve="all" />
-    <type fullname="YooAsset.DownloaderOperation/OnDownloadError" preserve="all" />
-    <type fullname="YooAsset.DownloaderOperation/OnDownloadProgress" preserve="all" />
-    <type fullname="YooAsset.EOperationStatus" preserve="all" />
-    <type fullname="YooAsset.OperationHandleBase" preserve="all" />
-    <type fullname="YooAsset.PatchDownloaderOperation" preserve="all" />
-    <type fullname="YooAsset.RawFileOperationHandle" preserve="all" />
-    <type fullname="YooAsset.SceneOperationHandle" preserve="all" />
-    <type fullname="YooAsset.SubAssetsOperationHandle" preserve="all" />
-    <type fullname="YooAsset.UpdatePackageManifestOperation" preserve="all" />
-    <type fullname="YooAsset.UpdatePackageVersionOperation" preserve="all" />
-    <type fullname="YooAsset.YooAssets" preserve="all" />
-  </assembly>
   <assembly fullname="Unity.Core">
     <type fullname="ET.AEvent`1" preserve="all" />
     <type fullname="ET.AInvokeHandler`2" preserve="all" />
@@ -228,6 +211,21 @@
     <type fullname="ProtoBuf.ProtoContractAttribute" preserve="all" />
     <type fullname="ProtoBuf.ProtoIgnoreAttribute" preserve="all" />
     <type fullname="ProtoBuf.ProtoMemberAttribute" preserve="all" />
+    <type fullname="YooAsset.AssetOperationHandle" preserve="all" />
+    <type fullname="YooAsset.AssetsPackage" preserve="all" />
+    <type fullname="YooAsset.AsyncOperationBase" preserve="all" />
+    <type fullname="YooAsset.DownloaderOperation" preserve="all" />
+    <type fullname="YooAsset.DownloaderOperation/OnDownloadError" preserve="all" />
+    <type fullname="YooAsset.DownloaderOperation/OnDownloadProgress" preserve="all" />
+    <type fullname="YooAsset.EOperationStatus" preserve="all" />
+    <type fullname="YooAsset.OperationHandleBase" preserve="all" />
+    <type fullname="YooAsset.PatchDownloaderOperation" preserve="all" />
+    <type fullname="YooAsset.RawFileOperationHandle" preserve="all" />
+    <type fullname="YooAsset.SceneOperationHandle" preserve="all" />
+    <type fullname="YooAsset.SubAssetsOperationHandle" preserve="all" />
+    <type fullname="YooAsset.UpdatePackageManifestOperation" preserve="all" />
+    <type fullname="YooAsset.UpdatePackageVersionOperation" preserve="all" />
+    <type fullname="YooAsset.YooAssets" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.AnimationModule">
     <type fullname="UnityEngine.AnimationClip" preserve="all" />
