@@ -1,7 +1,7 @@
 # Legends-Of-Heroes
 A battle of balls game, lol style
 
-![image](https://user-images.githubusercontent.com/8274346/221425588-7589bfc4-f5a0-4698-8eec-c1bef85edfce.png)
+![image](https://user-images.githubusercontent.com/8274346/221614980-2390ad29-ae4b-4877-9bb5-30b730dd0819.png)
 
 ## Main
 ### Base on ET7.2 (https://github.com/egametang/ET)
