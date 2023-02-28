@@ -1,0 +1,5 @@
+{"list":[
+{"_t":"SkillLevelConfig","_id":1001,"Level":1,"Name":"哈撒开1"},
+{"_t":"SkillLevelConfig","_id":1001,"Level":2,"Name":"哈撒开2"},
+{"_t":"SkillLevelConfig","_id":1003,"Level":1,"Name":"米克尔3"},
+]}

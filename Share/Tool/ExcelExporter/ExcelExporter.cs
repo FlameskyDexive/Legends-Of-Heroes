@@ -220,6 +220,7 @@ namespace ET
                 return;
             }
 
+            Log.Console($"export excel: {fileName}");
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
             string fileNameWithoutCS = fileNameWithoutExtension;
             string cs = "cs";

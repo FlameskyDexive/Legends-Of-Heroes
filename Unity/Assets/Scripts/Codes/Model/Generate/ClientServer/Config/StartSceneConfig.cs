@@ -29,8 +29,19 @@ namespace ET
             foreach (StartSceneConfig config in list)
             {
                 config.AfterEndInit();
-                this.dict.Add(config.Id, config);
+                try
+                {
+                    this.dict.Add(config.Id, config);
+                }
+                catch (Exception e)
+                {
+                    Log.Console($"{config.Id} error:{e}");
+                    Log.Error($"{config.Id} error:{e}");
+                }
+                
             }
+            
+            
             this.list.Clear();
             
             this.AfterEndInit();

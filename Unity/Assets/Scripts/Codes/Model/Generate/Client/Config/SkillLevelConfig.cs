@@ -7,26 +7,26 @@ namespace ET
 {
     [ProtoContract]
     [Config]
-    public partial class StartZoneConfigCategory : ConfigSingleton<StartZoneConfigCategory>, IMerge
+    public partial class SkillLevelConfigCategory : ConfigSingleton<SkillLevelConfigCategory>, IMerge
     {
         [ProtoIgnore]
         [BsonIgnore]
-        private Dictionary<int, StartZoneConfig> dict = new Dictionary<int, StartZoneConfig>();
+        private Dictionary<int, SkillLevelConfig> dict = new Dictionary<int, SkillLevelConfig>();
 		
         [BsonElement]
         [ProtoMember(1)]
-        private List<StartZoneConfig> list = new List<StartZoneConfig>();
+        private List<SkillLevelConfig> list = new List<SkillLevelConfig>();
 		
         public void Merge(object o)
         {
-            StartZoneConfigCategory s = o as StartZoneConfigCategory;
+            SkillLevelConfigCategory s = o as SkillLevelConfigCategory;
             this.list.AddRange(s.list);
         }
 		
 		[ProtoAfterDeserialization]        
         public void ProtoEndInit()
         {
-            foreach (StartZoneConfig config in list)
+            foreach (SkillLevelConfig config in list)
             {
                 config.AfterEndInit();
                 try
@@ -47,13 +47,13 @@ namespace ET
             this.AfterEndInit();
         }
 		
-        public StartZoneConfig Get(int id)
+        public SkillLevelConfig Get(int id)
         {
-            this.dict.TryGetValue(id, out StartZoneConfig item);
+            this.dict.TryGetValue(id, out SkillLevelConfig item);
 
             if (item == null)
             {
-                throw new Exception($"配置找不到，配置表名: {nameof (StartZoneConfig)}，配置id: {id}");
+                throw new Exception($"配置找不到，配置表名: {nameof (SkillLevelConfig)}，配置id: {id}");
             }
 
             return item;
@@ -64,12 +64,12 @@ namespace ET
             return this.dict.ContainsKey(id);
         }
 
-        public Dictionary<int, StartZoneConfig> GetAll()
+        public Dictionary<int, SkillLevelConfig> GetAll()
         {
             return this.dict;
         }
 
-        public StartZoneConfig GetOne()
+        public SkillLevelConfig GetOne()
         {
             if (this.dict == null || this.dict.Count <= 0)
             {
@@ -80,17 +80,17 @@ namespace ET
     }
 
     [ProtoContract]
-	public partial class StartZoneConfig: ProtoObject, IConfig
+	public partial class SkillLevelConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
 		[ProtoMember(1)]
 		public int Id { get; set; }
-		/// <summary>数据库地址</summary>
+		/// <summary>Type</summary>
 		[ProtoMember(2)]
-		public string DBConnection { get; set; }
-		/// <summary>数据库名</summary>
+		public int Level { get; set; }
+		/// <summary>名字</summary>
 		[ProtoMember(3)]
-		public string DBName { get; set; }
+		public string Name { get; set; }
 
 	}
 }
