@@ -94,9 +94,9 @@ namespace ET
 		/// <summary>位置</summary>
 		[ProtoMember(4)]
 		public int Position { get; set; }
-		/// <summary>身高</summary>
+		/// <summary>模型</summary>
 		[ProtoMember(5)]
-		public int Height { get; set; }
+		public string ModelName { get; set; }
 		/// <summary>体重</summary>
 		[ProtoMember(6)]
 		public int Weight { get; set; }
