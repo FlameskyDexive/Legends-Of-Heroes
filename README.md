@@ -9,9 +9,9 @@ A battle of balls game, lol style
 ### Multiplayers battle in a map
 
 ## 运行步骤：
-### 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,然后点击BuildModelAndHotfix.
-### 2. Unity打开YooAsset/AssetBundleBuilder, 点击构建.
-### 3. 打开ET.sln，编译整个项目，运行DotNet.App.
+- 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,然后点击BuildModelAndHotfix.
+- 2. Unity打开YooAsset/AssetBundleBuilder, 点击构建.
+- 3. 打开ET.sln，编译整个项目，运行DotNet.App.
 ### 4. Unity运行游戏即可看到登录页面,输入账号密码登录即可
 
 # TODO && Features
@@ -29,6 +29,3 @@ A battle of balls game, lol style
 
 ## 鸣谢
 ### [X-ET7, a branch of ET7](https://github.com/IcePower/X-ET7)
-
-## TODO
-### 
