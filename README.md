@@ -6,14 +6,13 @@
 ![image](https://user-images.githubusercontent.com/8274346/221614980-2390ad29-ae4b-4877-9bb5-30b730dd0819.png)
 
 ## Main
-### 基于C#双端框架[ET7.2](https://github.com/egametang/ET)
-### 此游戏为ET7.2的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
+#### 基于C#双端框架[ET7.2](https://github.com/egametang/ET)
+#### 此游戏为ET7.2的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
 ## 运行步骤：
 - 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,然后点击BuildModelAndHotfix.
-- 2. Unity打开YooAsset/AssetBundleBuilder, 点击构建.
-- 3. 打开ET.sln，编译整个项目，运行DotNet.App.
-### 4. Unity运行游戏即可看到登录页面,输入账号密码登录即可
+- 2. 打开ET.sln，编译整个项目，运行DotNet.App.
+- 3. Unity运行游戏即可看到登录页面,输入账号密码登录即可
 
 # TODO && Features
 
