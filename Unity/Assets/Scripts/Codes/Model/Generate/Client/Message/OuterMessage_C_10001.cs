@@ -245,6 +245,9 @@ namespace ET
 		[ProtoMember(2)]
 		public Unity.Mathematics.float3 Position { get; set; }
 
+		[ProtoMember(3)]
+		public Unity.Mathematics.float3 MoveForward { get; set; }
+
 	}
 
 	[Message(OuterMessage.C2M_Stop)]

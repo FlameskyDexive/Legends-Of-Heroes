@@ -55,6 +55,8 @@ namespace ET.Client
 
         public static void OnPressJoystick(this DlgBattle self, Vector2 v)
         {
+            if(v == Vector2.zero)
+                return;
             self.DomainScene().GetComponent<OperaComponent>().OnMove(v);
 
         }

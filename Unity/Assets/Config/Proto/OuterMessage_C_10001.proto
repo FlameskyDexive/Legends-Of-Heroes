@@ -120,6 +120,7 @@ message M2C_JoystickMove // IActorMessage
 {
 	int64 Id = 1;
 	Unity.Mathematics.float3 Position = 2;
+	Unity.Mathematics.float3 MoveForward = 3;
 }
 
 message C2M_Stop // IActorLocationMessage

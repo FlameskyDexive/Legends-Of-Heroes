@@ -11,6 +11,7 @@ namespace ET.Client
 
 			// float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
             unit.Position = message.Position;
+            unit.Forward = message.MoveForward;
             // await unit.GetComponent<MoveComponent>().MoveToAsync(message.Points, speed);
         }
 	}

@@ -27,7 +27,7 @@ namespace ET.Client
         {
             await EnterMapHelper.EnterMapAsync(self.DomainScene());
             self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
-            self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Battle);
+            // self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Battle);
 			// await EnterMapHelper.EnterMapAsync(self.ClientScene());
 		}
 	}
