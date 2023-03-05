@@ -55,7 +55,7 @@ namespace ET.Client
 
         public static void OnPressJoystick(this DlgBattle self, Vector2 v)
         {
-            Log.Info($"press joystick: {v}");
+            self.DomainScene().GetComponent<OperaComponent>().OnMove(v);
 
         }
 

@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace ET.Client
@@ -38,13 +39,24 @@ namespace ET.Client
                     EventSystem.Instance.Load();
                     Log.Debug("hot reload success!");
                 }
-            
+
                 if (Input.GetKeyDown(KeyCode.T))
                 {
                     C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
                     self.ClientScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
                 }
             }
+
+
         }
+
+
+        public static void OnMove(this OperaComponent self, Vector2 v2)
+        {
+            Log.Info($"press joystick: {v2}");
+            C2M_JoystickMove c2mJoystickMove = new C2M_JoystickMove() { MoveForward = new float3(v2.x, 0, v2.y) };
+            self.ClientScene().GetComponent<SessionComponent>().Session.Send(c2mJoystickMove);
+        }
+
     }
 }
