@@ -1,9 +1,0 @@
-{
-  "name": "com.xx.joystick",
-  "displayName": "Joystick",
-  "version": "1.0.0",
-  "unity": "2021.4",
-  "description": "Unity UGUI Joystick",
-  "type": "library"
-  
-}

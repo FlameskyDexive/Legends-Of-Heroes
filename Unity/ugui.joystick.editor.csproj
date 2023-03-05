@@ -56,10 +56,10 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Packages\Joystick\Editor\JoystickEditor.cs" />
+    <Compile Include="Assets\Scripts\Editor\Joystick\JoystickEditor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Packages\Joystick\Editor\ugui.joystick.editor.asmdef" />
+    <None Include="Assets\Scripts\Editor\Joystick\ugui.joystick.editor.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -781,9 +781,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="ugui.joystick.csproj">
-      <Project>{CE8BC9C8-2709-9EDB-102F-AE8283CF6BC8}</Project>
-      <Name>ugui.joystick</Name>
+    <ProjectReference Include="Unity.Loader.csproj">
+      <Project>{986BB732-F4B8-64F8-D1F9-50CF255042D8}</Project>
+      <Name>Unity.Loader</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

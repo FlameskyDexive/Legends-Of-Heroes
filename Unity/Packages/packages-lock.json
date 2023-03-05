@@ -146,12 +146,6 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
-    "com.xx.joystick": {
-      "version": "file:Joystick",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.unity.modules.ai": {
       "version": "1.0.0",
       "depth": 0,

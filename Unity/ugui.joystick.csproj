@@ -56,12 +56,12 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Packages\Joystick\Runtime\Joystick.cs" />
-    <Compile Include="Packages\Joystick\Runtime\TouchPad.cs" />
-    <Compile Include="Packages\Joystick\Runtime\InputExtension.cs" />
+    <Compile Include="Assets\Scripts\Loader\MonoBehaviour\UIExtention\Joystick\Runtime\Joystick.cs" />
+    <Compile Include="Assets\Scripts\Loader\MonoBehaviour\UIExtention\Joystick\Runtime\TouchPad.cs" />
+    <Compile Include="Assets\Scripts\Loader\MonoBehaviour\UIExtention\Joystick\Runtime\InputExtension.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Packages\Joystick\Runtime\ugui.joystick.asmdef" />
+    <None Include="Assets\Scripts\Loader\MonoBehaviour\UIExtention\Joystick\Runtime\ugui.joystick.asmdef" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

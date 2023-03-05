@@ -1,8 +1,12 @@
 {
-    "name": "ugui.joystick",
+    "name": "ugui.joystick.editor",
     "rootNamespace": "",
-    "references": [],
-    "includePlatforms": [],
+    "references": [
+        "GUID:6e17cd4649ea94c0cb18f30a60b9b4b4"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
