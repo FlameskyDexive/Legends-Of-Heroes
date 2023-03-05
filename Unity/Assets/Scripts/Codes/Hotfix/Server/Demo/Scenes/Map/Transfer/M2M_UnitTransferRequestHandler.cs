@@ -21,8 +21,10 @@ namespace ET.Server
 			}
 			
 			unit.AddComponent<MoveComponent>();
-			unit.AddComponent<PathfindingComponent, string>(scene.Name);
-			unit.Position = new float3(-10, 0, -10);
+            
+            //暂不需要巡逻组件
+			// unit.AddComponent<PathfindingComponent, string>(scene.Name);
+			unit.Position = new float3(0, 0, 0);
 			
 			unit.AddComponent<MailBoxComponent>();
 
