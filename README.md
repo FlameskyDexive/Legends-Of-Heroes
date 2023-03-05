@@ -4,6 +4,7 @@
 一个LOL风格的球球大作战游戏，基于ET7.2，使用状态同步
 
 ![image](https://user-images.githubusercontent.com/8274346/221614980-2390ad29-ae4b-4877-9bb5-30b730dd0819.png)
+![battle](https://user-images.githubusercontent.com/8274346/222968848-f183ccd6-a268-4c2e-af1f-4a75f37a1512.png)
 
 ## Main
 #### 基于C#双端框架[ET7.2](https://github.com/egametang/ET)
