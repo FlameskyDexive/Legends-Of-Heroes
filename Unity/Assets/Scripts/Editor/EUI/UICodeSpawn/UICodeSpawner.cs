@@ -591,6 +591,7 @@ public partial class UICodeSpawner
     static UICodeSpawner()
     {
         WidgetInterfaceList = new List<string>();
+        WidgetInterfaceList.Add("Joystick");
         WidgetInterfaceList.Add("EUIButton");
 		WidgetInterfaceList.Add("EUIImage");
 		WidgetInterfaceList.Add("EUIText");
