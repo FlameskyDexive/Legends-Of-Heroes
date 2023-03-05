@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 8069470002037632316}
   - component: {fileID: 8069470002037632315}
   m_Layer: 5
-  m_Name: Joystick
+  m_Name: E_Joystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -257,8 +257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b509d37a016b4b9419665292627db670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetY: -380
-  maxRadius: 38
+  offsetY: -580
+  maxRadius: 36
   activatedAxis: 0
   dynamic: 1
   showDirectionArrow: 1
@@ -289,6 +289,7 @@ GameObject:
   - component: {fileID: 8069470002180757944}
   - component: {fileID: 8069470002180757946}
   - component: {fileID: 8069470002180757945}
+  - component: {fileID: 119178043}
   m_Layer: 5
   m_Name: BackGround
   m_TagString: Untagged
@@ -305,7 +306,7 @@ RectTransform:
   m_GameObject: {fileID: 8069470002180757943}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8069470002947410061}
@@ -316,7 +317,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 220, y: 220}
+  m_SizeDelta: {x: 136, y: 136}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8069470002180757946
 CanvasRenderer:
@@ -356,6 +357,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &119178043
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8069470002180757943}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8069470002248576834
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +518,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 80, y: 80}
+  m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8069470002947410063
 CanvasRenderer:
@@ -579,7 +592,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -575.9, y: 355.3}
+  m_AnchoredPosition: {x: -575.9, y: 416.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &8069470003402786292
@@ -655,7 +668,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 45, y: 100}
+  m_SizeDelta: {x: 48, y: 100}
   m_Pivot: {x: -1, y: 0.5}
 --- !u!222 &8069470003449029142
 CanvasRenderer:
