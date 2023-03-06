@@ -5,6 +5,7 @@ namespace ET
 {
 	public static class Init
 	{
+        
 		public static void Start()
 		{
 			try
@@ -50,6 +51,11 @@ namespace ET
 		public static void LateUpdate()
 		{
 			Game.LateUpdate();
+		}
+
+		public static void FixedUpdate()
+		{
+			Game.FixedUpdate();
 		}
 
 		public static void FrameFinishUpdate()

@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-	public static class Define
+	public static partial class Define
 	{
 		public const string BuildOutputDir = "./Temp/Bin/Debug";
 
@@ -15,9 +15,9 @@
 #else
         public static bool IsEditor = false;
 #endif
-		
+
 #if ENABLE_CODES
-		public static bool EnableCodes = true;
+        public static bool EnableCodes = true;
 #else
         public static bool EnableCodes = false;
 #endif

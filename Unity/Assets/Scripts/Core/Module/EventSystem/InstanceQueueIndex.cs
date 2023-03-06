@@ -6,6 +6,7 @@
         Update,
         LateUpdate,
         Load,
+        FixedUpdate,
         Max,
     }
 }

@@ -14,6 +14,8 @@ namespace ET
         [StaticField]
         private static readonly Queue<ISingleton> lateUpdates = new Queue<ISingleton>();
         [StaticField]
+        private static readonly Queue<ISingleton> fixedUpdates = new Queue<ISingleton>();
+        [StaticField]
         private static readonly Queue<ETTask> frameFinishTask = new Queue<ETTask>();
 
         public static T AddSingleton<T>() where T: Singleton<T>, new()
@@ -109,6 +111,35 @@ namespace ET
                 try
                 {
                     lateUpdate.LateUpdate();
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
+            }
+        }
+        
+        public static void FixedUpdate()
+        {
+            int count = fixedUpdates.Count;
+            while (count-- > 0)
+            {
+                ISingleton singleton = fixedUpdates.Dequeue();
+                
+                if (singleton.IsDisposed())
+                {
+                    continue;
+                }
+
+                if (singleton is not ISingletonFixedUpdate fixedUpdate)
+                {
+                    continue;
+                }
+
+                fixedUpdates.Enqueue(singleton);
+                try
+                {
+                    fixedUpdate.FixedUpdate();
                 }
                 catch (Exception e)
                 {
