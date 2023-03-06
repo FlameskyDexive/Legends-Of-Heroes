@@ -8,6 +8,7 @@
         
         public struct SceneChangeFinish
         {
+            public Unit myUnit;
         }
         
         public struct AfterCreateClientScene

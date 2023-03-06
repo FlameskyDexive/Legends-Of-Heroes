@@ -17,10 +17,6 @@ namespace ET.Client
 
             await ResComponent.Instance.LoadSceneAsync(currentScene.Name);
 
-            currentScene.AddComponent<OperaComponent>();
-
-            currentScene.GetComponent<UIComponent>()?.ShowWindow(WindowID.WindowID_Battle);
-
         }
     }
 }

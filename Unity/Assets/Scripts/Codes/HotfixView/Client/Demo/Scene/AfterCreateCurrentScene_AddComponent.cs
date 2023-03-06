@@ -7,6 +7,13 @@ namespace ET.Client
         {
             scene.AddComponent<UIComponent>();
             // scene.AddComponent<ResourcesLoaderComponent>();
+
+
+            scene.AddComponent<OperaComponent>();
+            scene.AddComponent<CameraComponent>();
+
+            scene.GetComponent<UIComponent>()?.ShowWindow(WindowID.WindowID_Battle);
+
             await ETTask.CompletedTask;
         }
     }
