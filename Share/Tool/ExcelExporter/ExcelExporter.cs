@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using MongoDB.Bson.Serialization;
 using OfficeOpenXml;
+using OfficeOpenXml.DataValidation;
 using ProtoBuf;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
@@ -346,19 +347,21 @@ namespace ET
 
 
         #region 导出class
+        private static Dictionary<string, List<string>> keyDic = new Dictionary<string, List<string>>();
 
         static void ExportExcelClass(ExcelPackage p, string name, Table table)
         {
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
-                ExportSheetClass(worksheet, table);
+                ExportSheetClass(worksheet, table, name);
             }
         }
 
-        static void ExportSheetClass(ExcelWorksheet worksheet, Table table)
+        static void ExportSheetClass(ExcelWorksheet worksheet, Table table, string excelName)
         {
+            List<string> configKeys = new List<string>();
             const int row = 2;
-            for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
+            for (int col = 2; col <= worksheet.Dimension.End.Column; ++col)
             {
                 if (worksheet.Name.StartsWith("#"))
                 {
@@ -382,8 +385,13 @@ namespace ET
                     table.HeadInfos[fieldName] = null;
                     continue;
                 }
+                if (worksheet.Name.ToLower().Contains("key"))
+                {
+                    Log.Console($"find key: {excelName}: {fieldName}");
+                    configKeys.Add(fieldName);
+                }
                 
-                if (fieldCS == "")
+                if (fieldCS == "" || fieldCS.Contains("key"))
                 {
                     fieldCS = "cs";
                 }
@@ -403,6 +411,8 @@ namespace ET
 
                 table.HeadInfos[fieldName] = new HeadInfo(fieldCS, fieldDesc, fieldName, fieldType, ++table.Index);
             }
+
+            keyDic[excelName] = configKeys;
         }
 
         static void ExportClass(string protoName, Dictionary<string, HeadInfo> classField, ConfigType configType)
@@ -437,9 +447,61 @@ namespace ET
                 sb.Append($"\t\tpublic {fieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
 
+            
+            
             string content = template.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
+
+            //单Key的时候，用唯一key做索引
+            //多key情况后续处理，总key 64bit，拆分4个key， 32bit - 16bit - 8bit - 8bit
+            //合并：高32位-中16位-中8位-低8位
+            // return (long)a << 32 | ((long)b << 16) | ((long)c << 8) | (long)d;
+            //分解：此处注释
+            /*int x = (int)(testKey >> 32);
+	        int y = (int)(testKey & 0x00000000FFFF0000) >> 16;
+	        int z = (int)(testKey & 0x000000000000FF00) >> 8;
+	        int k = (int)(testKey & 0x00000000000000FF);*/
+
+            if (keyDic.TryGetValue(protoName, out List<string> configKeys) && configKeys.Count > 1)
+            {
+                Log.Console($"multiply key excel:{protoName}");
+                content.Replace(@"//GetByKeys", multiKeysStr);
+                string str = "";
+                string keyLog = "";
+                foreach (string key in configKeys)
+                {
+                    str += $"config.{key}, ";
+                    keyLog += $"{{config.{key}}}, ";
+                }
+                str = str.Substring(0, str.Length - 2);
+                content = content.Replace("config.Id", $"GetMultiKeyMerge({str})");
+                content = content.Replace("/*", "").Replace("*/", "");
+                content = content.Replace("{key}", keyLog);
+                // throw new Exception($"{protoName}:\n{content}");
+                Log.Console($"{content}");
+            }
+            else if (configKeys.Count == 1)
+            {
+                content = content.Replace("config.Id", $"config.{configKeys[0]}");
+            }
+            // content.Replace(@"//GetByKeys", @"//123");
+            // if(content.Contains(@"//GetByKeys"))
+            //     Log.Console($"{content}");
+
             sw.Write(content);
         }
+
+        [StaticField]
+        static string multiKeysStr = @"\t\tprivate long GetMultiKeyMerge(int a = 0, int b = 0, int c = 0, int d = 0)\n
+            \t\t{\n
+	            \t\t\t//合并：高32位-中16位-中8位-低8位\n
+	            \t\t\treturn (long)a << 32 | ((long)b << 16) | ((long)c << 8) | (long)d;\n
+            \t\t}\n
+
+            \t\tpublic HeroConfig GetByKeys(int key1 = 0, int key2 = 0, int key3 = 0, int key4 = 0)\n
+            \t\t{\n
+	            \t\t\tlong key = GetMultiKeyMerge(key1, key2, key3, key4);\n
+	            \t\t\treturn Get(key);\n
+            \t\t}\n";
 
         #endregion
 
