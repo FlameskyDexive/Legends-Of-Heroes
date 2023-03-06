@@ -1,5 +1,5 @@
 # Legends-Of-Heroes
-###English: please use your browser to translate to english
+English: please use your browser to translate to english
 
 一个LOL风格的球球大作战游戏，基于ET7.2，使用状态同步
 
@@ -12,7 +12,7 @@
 
 ## 运行步骤：
 - 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,然后点击BuildModelAndHotfix.
-- 2. 打开ET.sln，编译整个项目，运行DotNet.App.
+- 2. 打开ET.sln，编译整个项目，运行DotNet.App.(服务器、客户端拆分模式才需要单独运行，默认是Client-Server模式)
 - 3. Unity运行游戏即可看到登录页面,输入账号密码登录即可
 
 # TODO && Features
@@ -23,6 +23,7 @@
 - [x] 接入2D物理碰撞引擎[Box2dSharp](https://github.com/Zonciu/Box2DSharp)
 - [x] 摇杆控制角色移动，通过服务端广播位置同步
 - [ ] 配置表支持多Key
+- [ ] 房间大厅，匹配房友，每个房间最多20个玩家。
 - [ ] 一个Demo关卡流程：有限的2d地图，随机生成食物，吃食物会变大，碰到敌人会产生伤害（大吞小，小死亡）。
 - [ ] 一个比较基本的战斗技能框架设计，主动/被动技能释放。
 
@@ -30,4 +31,5 @@
 ###
 
 ## 鸣谢
-### [X-ET7, a branch of ET7](https://github.com/IcePower/X-ET7)
+### ET7的一个分支，集成FGUI+YooAsset+Luban [X-ET7](https://github.com/IcePower/X-ET7)
+### 烟雨的moba [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET)
