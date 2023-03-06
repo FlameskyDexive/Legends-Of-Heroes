@@ -2,7 +2,7 @@
 
 namespace ET
 {
-    public static partial class Define
+    public static partial class DefineCore
     {
 
 #if UNITY_EDITOR
