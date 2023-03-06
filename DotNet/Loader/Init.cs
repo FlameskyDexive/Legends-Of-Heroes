@@ -4,9 +4,11 @@ using CommandLine;
 namespace ET
 {
 	public static class Init
-	{
-        
-		public static void Start()
+    {
+		[StaticField]
+        private static FixedUpdate fixedUpdate;
+
+        public static void Start()
 		{
 			try
 			{	
@@ -34,6 +36,9 @@ namespace ET
 				ETTask.ExceptionHandler += Log.Error;
 				
 				Log.Console($"{Parser.Default.FormatCommandLine(Options.Instance)}");
+
+                fixedUpdate = new FixedUpdate();
+                fixedUpdate.UpdateCallback = () => { FixedUpdate(); };
 
 				Game.AddSingleton<CodeLoader>().Start();
 			}
