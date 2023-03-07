@@ -7,7 +7,7 @@ English: please use your browser to translate to english
 ![JoystickSyncPos20233801581](https://user-images.githubusercontent.com/8274346/223478402-8fade2b7-0941-4f1b-b369-b7208cf1909c.gif)
 
 ## Main
-#### 基于C#双端框架[ET7.2](https://github.com/egametang/ET) 注意：已经升级.Net7，请安装.net7 sdk.
+#### 基于C#双端框架[ET7.2](https://github.com/egametang/ET) 注意：已经升级.Net7，请安装[.Net7 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0).
 #### 此游戏为ET7.2的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
 ## 运行步骤：
