@@ -34,6 +34,14 @@ English: please use your browser to translate to english
       示例，读取技能等级表中技能id=1001，level=2的数据： 
     
       SkillLevelConfig skillLevel = SkillLevelConfigCategory.Instance.GetByKeys(1001, 2);
+	  
+
+## 特别鸣谢
+
+感谢JetBrains公司提供的使用许可证！
+
+<p><a href="https://www.jetbrains.com/?from=Legends-Of-Heroes">
+<img src="https://images.gitee.com/uploads/images/2020/0722/084147_cc1c0a4a_2253805.png" alt="JetBrains的Logo" width="20%" height="20%"></a></p>
 
 ## 友情链接/鸣谢
 ### [X-ET7](https://github.com/IcePower/X-ET7) ET7的一个分支，集成FGUI+YooAsset+Luban 
