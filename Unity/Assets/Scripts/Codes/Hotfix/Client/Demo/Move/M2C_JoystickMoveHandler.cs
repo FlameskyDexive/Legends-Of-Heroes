@@ -13,6 +13,7 @@ namespace ET.Client
             unit.Position = message.Position;
             unit.Forward = message.MoveForward;
             // await unit.GetComponent<MoveComponent>().MoveToAsync(message.Points, speed);
+            await ETTask.CompletedTask;
         }
 	}
 }
