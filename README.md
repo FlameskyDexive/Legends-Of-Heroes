@@ -6,7 +6,7 @@ English: please use your browser to translate to english
 ![demo](https://user-images.githubusercontent.com/8274346/223324272-16e928ac-a06a-4117-a5fb-2345bcdf6ecd.gif)
 
 ## Main
-#### 基于C#双端框架[ET7.2](https://github.com/egametang/ET)
+#### 基于C#双端框架[ET7.2](https://github.com/egametang/ET) 注意：已经升级.Net7，请安装.net7 sdk.
 #### 此游戏为ET7.2的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
 ## 运行步骤：
@@ -25,6 +25,7 @@ English: please use your browser to translate to english
 - [ ] 房间大厅，匹配房友，每个房间最多20个玩家。
 - [ ] 一个Demo关卡流程：有限的2d地图，随机生成食物，吃食物会变大，碰到敌人会产生伤害（大吞小，小死亡）。
 - [ ] 一个比较基本的战斗技能框架设计，主动/被动技能释放。
+- [ ] 额外（有空的话）：2d moba玩法。
 
 ## 补充说明
 1. 多key配置说明，表格配置多key如下，字段列头顶增加“key”标识即可，最多支持4个key，组合key最后会合并成一个long字段存储，4个key最大数值分别为：32位，16位，8位，8位。
