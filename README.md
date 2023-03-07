@@ -4,6 +4,7 @@ English: please use your browser to translate to english
 一个LOL风格的球球大作战游戏，基于ET7.2，使用状态同步
 
 ![demo](https://user-images.githubusercontent.com/8274346/223324272-16e928ac-a06a-4117-a5fb-2345bcdf6ecd.gif)
+![JoystickSyncPos20233801581](https://user-images.githubusercontent.com/8274346/223478402-8fade2b7-0941-4f1b-b369-b7208cf1909c.gif)
 
 ## Main
 #### 基于C#双端框架[ET7.2](https://github.com/egametang/ET) 注意：已经升级.Net7，请安装.net7 sdk.
