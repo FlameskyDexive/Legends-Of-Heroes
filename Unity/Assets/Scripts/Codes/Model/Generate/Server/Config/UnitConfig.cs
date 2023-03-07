@@ -35,8 +35,8 @@ namespace ET
                 }
                 catch (Exception e)
                 {
-                    Log.Console($"{config.Id} error:{e}");
-                    Log.Error($"{config.Id} error:{e}");
+                    //Log.Console($"{config.Id} error:{e}");
+                    Log.Error($"UnitConfig重复key：{config.Id} error:{e}");
                 }
                 
             }

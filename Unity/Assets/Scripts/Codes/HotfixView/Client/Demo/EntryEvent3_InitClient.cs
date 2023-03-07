@@ -19,6 +19,10 @@ namespace ET.Client
             
             Scene clientScene = await SceneFactory.CreateClientScene(1, "Game");
             
+            //测试加载多key表格数据
+            SkillLevelConfig skillLevel = SkillLevelConfigCategory.Instance.GetByKeys(1001, 2);
+            Log.Info($"测试加载多key, skillId {1001}, level{2}: {skillLevel.Name}");
+            
             // 热更流程
             await ResComponent.Instance.InitResourceAsync(clientScene);
 

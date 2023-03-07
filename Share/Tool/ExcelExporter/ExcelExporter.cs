@@ -54,6 +54,7 @@ namespace ET
     public static class ExcelExporter
     {
         private static string template;
+        private static string templateMultiKeys;
 
         private const string ClientClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Client/Config";
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
@@ -103,6 +104,7 @@ namespace ET
                 ProtoBuf.WireType.Fixed64.ToString();
                 
                 template = File.ReadAllText("Template.txt");
+                templateMultiKeys = File.ReadAllText("TemplateMultiKeys.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
                 if (Directory.Exists(ClientClassDir))
@@ -361,7 +363,7 @@ namespace ET
         {
             List<string> configKeys = new List<string>();
             const int row = 2;
-            for (int col = 2; col <= worksheet.Dimension.End.Column; ++col)
+            for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
             {
                 if (worksheet.Name.StartsWith("#"))
                 {
@@ -385,9 +387,9 @@ namespace ET
                     table.HeadInfos[fieldName] = null;
                     continue;
                 }
-                if (worksheet.Name.ToLower().Contains("key"))
+                if (fieldCS.Contains("key"))
                 {
-                    Log.Console($"find key: {excelName}: {fieldName}");
+                    // Log.Console($"find key: {excelName}: {fieldName}");
                     configKeys.Add(fieldName);
                 }
                 
@@ -447,8 +449,8 @@ namespace ET
                 sb.Append($"\t\tpublic {fieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
 
-            
-            
+
+
             string content = template.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
 
             //单Key的时候，用唯一key做索引
@@ -461,47 +463,33 @@ namespace ET
 	        int z = (int)(testKey & 0x000000000000FF00) >> 8;
 	        int k = (int)(testKey & 0x00000000000000FF);*/
 
-            if (keyDic.TryGetValue(protoName, out List<string> configKeys) && configKeys.Count > 1)
+            if (keyDic.TryGetValue(protoName, out List<string> configKeys))
             {
-                Log.Console($"multiply key excel:{protoName}");
-                content.Replace(@"//GetByKeys", multiKeysStr);
-                string str = "";
-                string keyLog = "";
-                foreach (string key in configKeys)
+                if (configKeys.Count > 1)
                 {
-                    str += $"config.{key}, ";
-                    keyLog += $"{{config.{key}}}, ";
+                    content = templateMultiKeys.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
+                    // Log.Console($"multiple key excel:{protoName}");
+                    string str = "";
+                    string keyLog = "";
+                    foreach (string key in configKeys)
+                    {
+                        str += $"config.{key}, ";
+                        keyLog += $"{{config.{key}}}, ";
+                    }
+                    str = str.Substring(0, str.Length - 2);
+                    content = content.Replace("config.Id", $"GetMultiKeyMerge({str})");
+                    content = content.Replace("{key}", keyLog);
+                    // Log.Console($"{content}");
                 }
-                str = str.Substring(0, str.Length - 2);
-                content = content.Replace("config.Id", $"GetMultiKeyMerge({str})");
-                content = content.Replace("/*", "").Replace("*/", "");
-                content = content.Replace("{key}", keyLog);
-                // throw new Exception($"{protoName}:\n{content}");
-                Log.Console($"{content}");
+                else if (configKeys.Count == 1)
+                {
+                    content = content.Replace("config.Id", $"config.{configKeys[0]}");
+                }
             }
-            else if (configKeys.Count == 1)
-            {
-                content = content.Replace("config.Id", $"config.{configKeys[0]}");
-            }
-            // content.Replace(@"//GetByKeys", @"//123");
-            // if(content.Contains(@"//GetByKeys"))
-            //     Log.Console($"{content}");
 
             sw.Write(content);
         }
-
-        [StaticField]
-        static string multiKeysStr = @"\t\tprivate long GetMultiKeyMerge(int a = 0, int b = 0, int c = 0, int d = 0)\n
-            \t\t{\n
-	            \t\t\t//合并：高32位-中16位-中8位-低8位\n
-	            \t\t\treturn (long)a << 32 | ((long)b << 16) | ((long)c << 8) | (long)d;\n
-            \t\t}\n
-
-            \t\tpublic HeroConfig GetByKeys(int key1 = 0, int key2 = 0, int key3 = 0, int key4 = 0)\n
-            \t\t{\n
-	            \t\t\tlong key = GetMultiKeyMerge(key1, key2, key3, key4);\n
-	            \t\t\treturn Get(key);\n
-            \t\t}\n";
+        
 
         #endregion
 

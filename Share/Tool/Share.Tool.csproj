@@ -49,6 +49,9 @@
     </ItemGroup>
     
     <ItemGroup>
+      <None Update="TemplateMultiKeys.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
       <None Update="Template.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
