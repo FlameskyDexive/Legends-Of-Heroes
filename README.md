@@ -21,8 +21,10 @@ English: please use your browser to translate to english
 - [x] 接入UGUI框架[EUI](https://github.com/FlameskyDexive/Debugger)
 - [x] 接入[YooAsset](https://github.com/tuyoogame/YooAsset)资源管理打包热更框架
 - [x] 接入2D物理碰撞引擎[Box2dSharp](https://github.com/Zonciu/Box2DSharp)
-- [x] 摇杆控制角色移动，通过服务端广播位置同步
+- [x] 摇杆控制角色移动，相机跟随，通过服务端广播位置同步
 - [x] 配置表支持多Key
+      示例，读取技能等级表中技能id=1001，level=2的数据：
+      SkillLevelConfig skillLevel = SkillLevelConfigCategory.Instance.GetByKeys(1001, 2);
 - [ ] 房间大厅，匹配房友，每个房间最多20个玩家。
 - [ ] 一个Demo关卡流程：有限的2d地图，随机生成食物，吃食物会变大，碰到敌人会产生伤害（大吞小，小死亡）。
 - [ ] 一个比较基本的战斗技能框架设计，主动/被动技能释放。
