@@ -41,7 +41,7 @@ English: please use your browser to translate to english
 感谢JetBrains公司提供的使用许可证！
 
 <p><a href="https://www.jetbrains.com/?from=Legends-Of-Heroes">
-<img src="https://images.gitee.com/uploads/images/2020/0722/084147_cc1c0a4a_2253805.png" alt="JetBrains的Logo" width="20%" height="20%"></a></p>
+<img src="https://user-images.githubusercontent.com/8274346/223466125-611c027a-61f3-4ea0-a96d-4052283da746.png" alt="JetBrains的Logo" width="20%" height="20%"></a></p>
 
 ## 友情链接/鸣谢
 ### [X-ET7](https://github.com/IcePower/X-ET7) ET7的一个分支，集成FGUI+YooAsset+Luban 
