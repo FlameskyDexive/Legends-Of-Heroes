@@ -230,7 +230,7 @@ namespace Debugger
                 m_WarningFilter = m_LastWarningFilter = true;
                 m_ErrorFilter = m_LastErrorFilter = true;
                 m_FatalFilter = m_LastFatalFilter = true;
-                m_saveLog = true;
+                m_saveLog = false;
 
                 if(!Directory.Exists(LogFilePath))
                 {

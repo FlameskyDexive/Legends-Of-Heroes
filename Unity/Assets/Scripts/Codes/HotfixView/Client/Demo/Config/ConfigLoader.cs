@@ -58,7 +58,7 @@ namespace ET.Client
             {
                 foreach (Type configType in configTypes)
                 {
-                    TextAsset v = ResComponent.Instance.LoadAsset<TextAsset>(configType.Name.ToLower()) as TextAsset;
+                    TextAsset v = ResComponent.Instance.LoadAsset<TextAsset>(configType.Name/*.ToLower()*/) as TextAsset;
                     // output[configType] = new ByteBuf(v.bytes);
                     output[configType] = v.bytes;
                 }
