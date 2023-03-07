@@ -34,6 +34,7 @@ namespace ET
 			Game.AddSingleton<EventSystem>();
 			Game.AddSingleton<TimerComponent>();
 			Game.AddSingleton<CoroutineLockComponent>();
+			Game.AddSingleton<ClientFixedUpdate>();
 			
 			ETTask.ExceptionHandler += Log.Error;
 
@@ -48,7 +49,8 @@ namespace ET
 		private void Update()
 		{
 			Game.Update();
-		}
+
+        }
 
 		private void LateUpdate()
 		{

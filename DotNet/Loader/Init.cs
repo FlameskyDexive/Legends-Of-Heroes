@@ -38,7 +38,7 @@ namespace ET
 				Log.Console($"{Parser.Default.FormatCommandLine(Options.Instance)}");
 
                 fixedUpdate = new FixedUpdate();
-                fixedUpdate.UpdateCallback = () => { FixedUpdate(); };
+                fixedUpdate.UpdateCallback = FixedUpdate;
 
 				Game.AddSingleton<CodeLoader>().Start();
 			}
@@ -51,6 +51,7 @@ namespace ET
 		public static void Update()
 		{
 			Game.Update();
+            fixedUpdate.Tick();
 		}
 
 		public static void LateUpdate()
@@ -58,8 +59,13 @@ namespace ET
 			Game.LateUpdate();
 		}
 
+		[StaticField]
+        private static long lastTime = 0;
 		public static void FixedUpdate()
-		{
+        {
+            long deltaTime = TimeHelper.GetTimeStamp() - lastTime;
+            //Log.Error($"{deltaTime} ms");
+            lastTime = TimeHelper.ServerNow();
 			Game.FixedUpdate();
 		}
 

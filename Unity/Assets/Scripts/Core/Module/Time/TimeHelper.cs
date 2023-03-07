@@ -41,5 +41,17 @@ namespace ET
         {
             return TimeInfo.Instance.ServerFrameTime();
         }
+        
+        public static long GetTimeStamp(bool seconds = false)
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            long ret = 0;
+            if (seconds)
+                ret = Convert.ToInt64(ts.TotalSeconds);
+            else
+                ret = Convert.ToInt64(ts.TotalMilliseconds);
+            return ret;
+        }
+
     }
 }
