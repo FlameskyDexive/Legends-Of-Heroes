@@ -22,7 +22,7 @@ English: please use your browser to translate to english
 - [x] 接入[YooAsset](https://github.com/tuyoogame/YooAsset)资源管理打包热更框架
 - [x] 接入2D物理碰撞引擎[Box2dSharp](https://github.com/Zonciu/Box2DSharp)
 - [x] 摇杆控制角色移动，通过服务端广播位置同步
-- [ ] 配置表支持多Key
+- [x] 配置表支持多Key
 - [ ] 房间大厅，匹配房友，每个房间最多20个玩家。
 - [ ] 一个Demo关卡流程：有限的2d地图，随机生成食物，吃食物会变大，碰到敌人会产生伤害（大吞小，小死亡）。
 - [ ] 一个比较基本的战斗技能框架设计，主动/被动技能释放。
@@ -31,5 +31,5 @@ English: please use your browser to translate to english
 ###
 
 ## 鸣谢
-### ET7的一个分支，集成FGUI+YooAsset+Luban [X-ET7](https://github.com/IcePower/X-ET7)
-### 烟雨的moba [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET)
+### [X-ET7](https://github.com/IcePower/X-ET7) ET7的一个分支，集成FGUI+YooAsset+Luban 
+### [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET) 烟雨的开源moba案例
