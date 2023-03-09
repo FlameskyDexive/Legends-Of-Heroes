@@ -73,7 +73,7 @@ public partial class UICodeSpawner
     static void SpawnCodeForDlg(GameObject gameObject)
     {
         string strDlgName  = gameObject.name;
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UI/" + strDlgName ;
+        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UI/" + strDlgName ;
         
         
         if ( !System.IO.Directory.Exists(strFilePath) )
@@ -81,7 +81,7 @@ public partial class UICodeSpawner
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
         
-	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UI/" + strDlgName + "/" + strDlgName + "System.cs";
+	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UI/" + strDlgName + "/" + strDlgName + "System.cs";
         if(System.IO.File.Exists(strFilePath))
         {
             Debug.LogError("已存在 " + strDlgName + "System.cs,将不会再次生成。");
@@ -133,7 +133,7 @@ public partial class UICodeSpawner
 	static void SpawnCodeForDlgEventHandle(GameObject gameObject)
     {
         string strDlgName = gameObject.name;
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UI/" + strDlgName + "/Event" ;
+        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UI/" + strDlgName + "/Event" ;
         
         
         if ( !System.IO.Directory.Exists(strFilePath) )
@@ -141,7 +141,7 @@ public partial class UICodeSpawner
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
         
-	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UI/" + strDlgName + "/Event/" + strDlgName + "EventHandler.cs";
+	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UI/" + strDlgName + "/Event/" + strDlgName + "EventHandler.cs";
         if(System.IO.File.Exists(strFilePath))
         {
 	        Debug.LogError("已存在 " + strDlgName + ".cs,将不会再次生成。");
@@ -219,7 +219,7 @@ public partial class UICodeSpawner
 	static void SpawnCodeForDlgModel(GameObject gameObject)
     {
         string strDlgName = gameObject.name;
-        string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UI/" + strDlgName  ;
+        string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UI/" + strDlgName  ;
         
         
         if ( !System.IO.Directory.Exists(strFilePath) )
@@ -227,7 +227,7 @@ public partial class UICodeSpawner
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
         
-	    strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UI/" + strDlgName  + "/" + strDlgName  + ".cs";
+	    strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UI/" + strDlgName  + "/" + strDlgName  + ".cs";
         if(System.IO.File.Exists(strFilePath))
         {
 	        Debug.LogError("已存在 " + strDlgName + ".cs,将不会再次生成。");
@@ -266,13 +266,13 @@ public partial class UICodeSpawner
         string strDlgName = gameObject.name ;
         string strDlgComponentName =  gameObject.name + "ViewComponent";
 
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIBehaviour/" + strDlgName;
+        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UIBehaviour/" + strDlgName;
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
-	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + "System.cs";
+	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + "System.cs";
 	    
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
@@ -318,12 +318,12 @@ public partial class UICodeSpawner
 	    string strDlgComponentName =  gameObject.name + "ViewComponent";
 
 
-	    string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIBehaviour/" + strDlgName;
+	    string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UIBehaviour/" + strDlgName;
 	    if ( !System.IO.Directory.Exists(strFilePath) )
 	    {
 		    System.IO.Directory.CreateDirectory(strFilePath);
 	    }
-	    strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + ".cs";
+	    strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + ".cs";
 	    StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 	    StringBuilder strBuilder = new StringBuilder();
 	    strBuilder.AppendLine()

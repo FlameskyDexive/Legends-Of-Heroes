@@ -26,14 +26,14 @@ public partial class UICodeSpawner
         }
         string strDlgName = objPanel.name;
 
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIBehaviour/CommonUI" +
+        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UIBehaviour/CommonUI" +
                              "";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath     = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIBehaviour/CommonUI/" + strDlgName + "ViewSystem.cs";
+        strFilePath     = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UIBehaviour/CommonUI/" + strDlgName + "ViewSystem.cs";
 	    
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
@@ -79,13 +79,13 @@ public partial class UICodeSpawner
         }
         string strDlgName = objPanel.name;
 
-        string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIBehaviour/CommonUI";
+        string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UIBehaviour/CommonUI";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIBehaviour/CommonUI/" + strDlgName + ".cs";
+        strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UIBehaviour/CommonUI/" + strDlgName + ".cs";
 	    
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 

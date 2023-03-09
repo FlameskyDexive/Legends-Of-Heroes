@@ -46,6 +46,7 @@ namespace ET
         {
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             long ret = 0;
+            // ts.TotalMicroseconds
             if (seconds)
                 ret = Convert.ToInt64(ts.TotalSeconds);
             else
