@@ -2,7 +2,7 @@
 {
 	
 	[ComponentOf(typeof(Scene))]
-	public class UnitComponent: Entity, IAwake, IDestroy
+    public class UnitComponent: Entity, IAwake, IDestroy
 	{
 	}
 }

@@ -5,6 +5,7 @@ namespace ET.Server
 {
 
     [FriendOf(typeof(RoomManagerComponent))]
+    [FriendOf(typeof(Room))]
     public static class RoomManagerComponentSystem 
     {
         [ObjectSystem]
@@ -58,16 +59,7 @@ namespace ET.Server
             self.Rooms.Add(room.Id, room);
             return room;
         }
-
-
-        public static Room CreateBattleRoom(this RoomManagerComponent self, long id)
-        {
-            Room room = self.AddChildWithId<Room>(id);
-
-            room.AddComponent<UnitComponent>();
-            self.Rooms.Add(room.Id, room);
-            return room;
-        }
+        
 
     }
 }
