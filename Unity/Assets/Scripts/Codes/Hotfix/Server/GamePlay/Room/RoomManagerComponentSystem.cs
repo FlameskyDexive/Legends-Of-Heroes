@@ -47,5 +47,27 @@ namespace ET.Server
         }
 
 
+        public static Room CreateLobbyRoom(this RoomManagerComponent self, long id, int maxPlayerNum)
+        {
+            Room room = self.AddChildWithId<Room>(id);
+            room.MaxPlayerNum = maxPlayerNum;
+            room.CurPlayerNum = 0;
+            room.AllPlayers.Clear();
+            room.CampPlayers.Clear();
+
+            self.Rooms.Add(room.Id, room);
+            return room;
+        }
+
+
+        public static Room CreateBattleRoom(this RoomManagerComponent self, long id)
+        {
+            Room room = self.AddChildWithId<Room>(id);
+
+            room.AddComponent<UnitComponent>();
+            self.Rooms.Add(room.Id, room);
+            return room;
+        }
+
     }
 }
