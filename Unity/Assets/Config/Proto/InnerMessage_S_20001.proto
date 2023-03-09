@@ -170,3 +170,61 @@ message M2M_UnitTransferResponse // IActorResponse
 	int32 Error = 2;
 	string Message = 3;
 }
+
+
+
+///////////////////////////////// 房间相关  START ///////////////////////////////////
+
+message L2G_GetRoomId // IActorResponse
+{
+  int32 RpcId = 90;
+  int32 Error = 91;
+  string Message = 92;
+
+  int64 RoomId = 1;
+}
+
+//ResponseType M2L_CreateHeroUnit
+message L2M_CreateHeroUnit // IActorRequest
+{
+  int32 RpcId = 90;
+  int64 ActorId = 93;
+  int64 PlayerId = 1;
+  int64 GateSessionId = 2;
+  int64 Roomid = 3;
+
+  PlayerBattleInfo PlayerBattleInfo = 4;
+}
+
+//ResponseType M2L_PreparedToEnterBattle
+message L2M_PreparedToEnterBattle // IActorRequest
+{
+  int32 RpcId = 90;
+  int64 ActorId = 93;
+  int64 Roomid = 2;
+}
+
+///////////////////////////////// 房间相关  END ///////////////////////////////////
+
+
+///////////////////////////////// 副本相关  START ///////////////////////////////////
+
+message M2L_CreateHeroUnit // IActorResponse
+{
+  int32 RpcId = 90;
+  int32 Error = 91;
+  string Message = 92;
+
+  // 自己的unit id
+  int64 UnitId = 1;
+  // 所有的unit
+  repeated UnitInfo Units = 2;
+}
+
+message M2L_PreparedToEnterBattle // IActorResponse
+{
+  int32 RpcId = 90;
+  int32 Error = 91;
+  string Message = 92;
+}
+///////////////////////////////// 副本相关  END ///////////////////////////////////

@@ -414,6 +414,9 @@ namespace ET
 		[ProtoMember(4)]
 		public long PlayerId { get; set; }
 
+		[ProtoMember(5)]
+		public string LobbyAddress { get; set; }
+
 	}
 
 	[Message(OuterMessage.G2C_TestHotfixMessage)]
@@ -506,6 +509,304 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(L2C_LoginLobby))]
+	[Message(OuterMessage.C2L_LoginLobby)]
+	[ProtoContract]
+	public partial class C2L_LoginLobby: ProtoObject, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long PlayerId { get; set; }
+
+	}
+
+	[Message(OuterMessage.L2C_LoginLobby)]
+	[ProtoContract]
+	public partial class L2C_LoginLobby: ProtoObject, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(5)]
+		public List<long> RoomHolderPlayerList { get; set; }
+
+		[ProtoMember(1)]
+		public List<long> RoomIdList { get; set; }
+
+		[ProtoMember(2)]
+		public List<string> RoomNameList { get; set; }
+
+		[ProtoMember(3)]
+		public List<int> RoomPlayerNum { get; set; }
+
+	}
+
+///////////////////////////////// 房间相关  START ///////////////////////////////////
+	[ResponseType(nameof(L2C_CreateNewRoomLobby))]
+	[Message(OuterMessage.C2L_CreateNewRoomLobby)]
+	[ProtoContract]
+	public partial class C2L_CreateNewRoomLobby: ProtoObject, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long PlayerId { get; set; }
+
+	}
+
+	[Message(OuterMessage.L2C_CreateNewRoomLobby)]
+	[ProtoContract]
+	public partial class L2C_CreateNewRoomLobby: ProtoObject, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public int RoomId { get; set; }
+
+		[ProtoMember(2)]
+		public int mode { get; set; }
+
+		[ProtoMember(3)]
+		public int camp { get; set; }
+
+	}
+
+	[ResponseType(nameof(L2C_JoinRoomLobby))]
+	[Message(OuterMessage.C2L_JoinRoomLobby)]
+	[ProtoContract]
+	public partial class C2L_JoinRoomLobby: ProtoObject, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long PlayerId { get; set; }
+
+		[ProtoMember(2)]
+		public long RoomId { get; set; }
+
+	}
+
+	[Message(OuterMessage.L2C_JoinRoomLobby)]
+	[ProtoContract]
+	public partial class L2C_JoinRoomLobby: ProtoObject, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public long RoomId { get; set; }
+
+		[ProtoMember(2)]
+		public int camp { get; set; }
+
+		[ProtoMember(3)]
+		public long RoomHolderId { get; set; }
+
+		[ProtoMember(4)]
+		public string RoomName { get; set; }
+
+		[ProtoMember(5)]
+		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
+
+	}
+
+	[Message(OuterMessage.PlayerInfoRoom)]
+	[ProtoContract]
+	public partial class PlayerInfoRoom: ProtoObject
+	{
+		[ProtoMember(1)]
+		public string Account { get; set; }
+
+		[ProtoMember(2)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(3)]
+		public long SessionId { get; set; }
+
+		[ProtoMember(4)]
+		public long RoomId { get; set; }
+
+		[ProtoMember(5)]
+		public int camp { get; set; }
+
+		[ProtoMember(6)]
+		public long playerid { get; set; }
+
+	}
+
+	[Message(OuterMessage.L2C_PlayerTriggerRoom)]
+	[ProtoContract]
+	public partial class L2C_PlayerTriggerRoom: ProtoObject, IActorMessage
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(93)]
+		public long ActorId { get; set; }
+
+		[ProtoMember(1)]
+		public PlayerInfoRoom playerInfoRoom { get; set; }
+
+		[ProtoMember(2)]
+		public bool JoinOrLeave { get; set; }
+
+	}
+
+	[ResponseType(nameof(L2C_LeaveRoomLobby))]
+	[Message(OuterMessage.C2L_LeaveRoomLobby)]
+	[ProtoContract]
+	public partial class C2L_LeaveRoomLobby: ProtoObject, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long PlayerId { get; set; }
+
+	}
+
+	[Message(OuterMessage.L2C_LeaveRoomLobby)]
+	[ProtoContract]
+	public partial class L2C_LeaveRoomLobby: ProtoObject, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public int camp { get; set; }
+
+		[ProtoMember(2)]
+		public long newRoomHolder { get; set; }
+
+		[ProtoMember(4)]
+		public long RoomId { get; set; }
+
+		[ProtoMember(5)]
+		public long PlayerId { get; set; }
+
+		[ProtoMember(3)]
+		public bool isDestory { get; set; }
+
+	}
+
+	[Message(OuterMessage.PlayerBattleInfo)]
+	[ProtoContract]
+	public partial class PlayerBattleInfo: ProtoObject
+	{
+		[ProtoMember(1)]
+		public long PlayerId { get; set; }
+
+		[ProtoMember(2)]
+		public int HeroConfig { get; set; }
+
+	}
+
+	[ResponseType(nameof(L2C_StartGameLobby))]
+	[Message(OuterMessage.C2L_StartGameLobby)]
+	[ProtoContract]
+	public partial class C2L_StartGameLobby: ProtoObject, IRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long PlayerId { get; set; }
+
+		[ProtoMember(2)]
+		public List<PlayerBattleInfo> PlayerBattleInfos { get; set; }
+
+	}
+
+	[Message(OuterMessage.L2C_StartGameLobby)]
+	[ProtoContract]
+	public partial class L2C_StartGameLobby: ProtoObject, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public List<long> list { get; set; }
+
+	}
+
+	[Message(OuterMessage.PlayerBattlePoint)]
+	[ProtoContract]
+	public partial class PlayerBattlePoint: ProtoObject
+	{
+		[ProtoMember(1)]
+		public long PlayerId { get; set; }
+
+		[ProtoMember(2)]
+		public int Point { get; set; }
+
+		[ProtoMember(3)]
+		public int SingleMatchCount { get; set; }
+
+		[ProtoMember(4)]
+		public string Account { get; set; }
+
+		[ProtoMember(5)]
+		public long UnitId { get; set; }
+
+	}
+
+	[Message(OuterMessage.L2C_PrepareToEnterBattle)]
+	[ProtoContract]
+	public partial class L2C_PrepareToEnterBattle: ProtoObject, IMessage
+	{
+	}
+
+	[Message(OuterMessage.C2L_PreparedToEnterBattle)]
+	[ProtoContract]
+	public partial class C2L_PreparedToEnterBattle: ProtoObject, IMessage
+	{
+		[ProtoMember(1)]
+		public long PlayerId { get; set; }
+
+	}
+
+	[Message(OuterMessage.L2C_AllowToEnterMap)]
+	[ProtoContract]
+	public partial class L2C_AllowToEnterMap: ProtoObject, IMessage
+	{
+	}
+
+///////////////////////////////// 房间相关  END ///////////////////////////////////
 	public static class OuterMessage
 	{
 		 public const ushort HttpGetRouterResponse = 10002;
@@ -544,5 +845,22 @@ namespace ET
 		 public const ushort M2C_TransferMap = 10035;
 		 public const ushort C2G_Benchmark = 10036;
 		 public const ushort G2C_Benchmark = 10037;
+		 public const ushort C2L_LoginLobby = 10038;
+		 public const ushort L2C_LoginLobby = 10039;
+		 public const ushort C2L_CreateNewRoomLobby = 10040;
+		 public const ushort L2C_CreateNewRoomLobby = 10041;
+		 public const ushort C2L_JoinRoomLobby = 10042;
+		 public const ushort L2C_JoinRoomLobby = 10043;
+		 public const ushort PlayerInfoRoom = 10044;
+		 public const ushort L2C_PlayerTriggerRoom = 10045;
+		 public const ushort C2L_LeaveRoomLobby = 10046;
+		 public const ushort L2C_LeaveRoomLobby = 10047;
+		 public const ushort PlayerBattleInfo = 10048;
+		 public const ushort C2L_StartGameLobby = 10049;
+		 public const ushort L2C_StartGameLobby = 10050;
+		 public const ushort PlayerBattlePoint = 10051;
+		 public const ushort L2C_PrepareToEnterBattle = 10052;
+		 public const ushort C2L_PreparedToEnterBattle = 10053;
+		 public const ushort L2C_AllowToEnterMap = 10054;
 	}
 }
