@@ -18,7 +18,7 @@ namespace ET.Server
         }
 
         [ObjectSystem]
-        public class NetKcpComponentDestroySystem: DestroySystem<NetServerComponent>
+        public class NetServerComponentDestroySystem : DestroySystem<NetServerComponent>
         {
             protected override void Destroy(NetServerComponent self)
             {

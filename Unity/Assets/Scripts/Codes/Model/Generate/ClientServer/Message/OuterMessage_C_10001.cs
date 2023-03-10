@@ -514,10 +514,10 @@ namespace ET
 	[ProtoContract]
 	public partial class C2L_LoginLobby: ProtoObject, IRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long PlayerId { get; set; }
 
 	}
@@ -526,25 +526,25 @@ namespace ET
 	[ProtoContract]
 	public partial class L2C_LoginLobby: ProtoObject, IResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
-		[ProtoMember(5)]
-		public List<long> RoomHolderPlayerList { get; set; }
+		[ProtoMember(4)]
+		public List<long> RoomOwnerPlayerList { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(5)]
 		public List<long> RoomIdList { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(6)]
 		public List<string> RoomNameList { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(7)]
 		public List<int> RoomPlayerNum { get; set; }
 
 	}
@@ -555,10 +555,10 @@ namespace ET
 	[ProtoContract]
 	public partial class C2L_CreateNewRoomLobby: ProtoObject, IRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long PlayerId { get; set; }
 
 	}
@@ -567,22 +567,22 @@ namespace ET
 	[ProtoContract]
 	public partial class L2C_CreateNewRoomLobby: ProtoObject, IResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(4)]
 		public int RoomId { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(5)]
 		public int mode { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(6)]
 		public int camp { get; set; }
 
 	}
@@ -592,13 +592,13 @@ namespace ET
 	[ProtoContract]
 	public partial class C2L_JoinRoomLobby: ProtoObject, IRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long PlayerId { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public long RoomId { get; set; }
 
 	}
@@ -607,28 +607,28 @@ namespace ET
 	[ProtoContract]
 	public partial class L2C_JoinRoomLobby: ProtoObject, IResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(4)]
 		public long RoomId { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(5)]
 		public int camp { get; set; }
 
-		[ProtoMember(3)]
-		public long RoomHolderId { get; set; }
+		[ProtoMember(6)]
+		public long RoomOwnerId { get; set; }
 
-		[ProtoMember(4)]
+		[ProtoMember(7)]
 		public string RoomName { get; set; }
 
-		[ProtoMember(5)]
+		[ProtoMember(8)]
 		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
 
 	}
@@ -661,16 +661,16 @@ namespace ET
 	[ProtoContract]
 	public partial class L2C_PlayerTriggerRoom: ProtoObject, IActorMessage
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(93)]
+		[ProtoMember(2)]
 		public long ActorId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(3)]
 		public PlayerInfoRoom playerInfoRoom { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(4)]
 		public bool JoinOrLeave { get; set; }
 
 	}
@@ -680,10 +680,10 @@ namespace ET
 	[ProtoContract]
 	public partial class C2L_LeaveRoomLobby: ProtoObject, IRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long PlayerId { get; set; }
 
 	}
@@ -692,28 +692,28 @@ namespace ET
 	[ProtoContract]
 	public partial class L2C_LeaveRoomLobby: ProtoObject, IResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(4)]
 		public int camp { get; set; }
 
-		[ProtoMember(2)]
-		public long newRoomHolder { get; set; }
+		[ProtoMember(5)]
+		public long newRoomOwner { get; set; }
 
-		[ProtoMember(4)]
+		[ProtoMember(6)]
 		public long RoomId { get; set; }
 
-		[ProtoMember(5)]
+		[ProtoMember(7)]
 		public long PlayerId { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(8)]
 		public bool isDestory { get; set; }
 
 	}
@@ -735,13 +735,13 @@ namespace ET
 	[ProtoContract]
 	public partial class C2L_StartGameLobby: ProtoObject, IRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(2)]
 		public long PlayerId { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public List<PlayerBattleInfo> PlayerBattleInfos { get; set; }
 
 	}
@@ -750,16 +750,16 @@ namespace ET
 	[ProtoContract]
 	public partial class L2C_StartGameLobby: ProtoObject, IResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(4)]
 		public List<long> list { get; set; }
 
 	}

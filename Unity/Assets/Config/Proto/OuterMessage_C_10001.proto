@@ -255,19 +255,19 @@ message G2C_Benchmark // IResponse
 //ResponseType L2C_LoginLobby
 message C2L_LoginLobby // IRequest
 {
-  int32 RpcId = 90;
-  int64 PlayerId = 1;  // 帐号
+  int32 RpcId = 1;
+  int64 PlayerId = 2;  // 帐号
 }
 
 message L2C_LoginLobby // IResponse
 {
-  int32 RpcId = 90;
-  int32 Error = 91;
-  string Message = 92;
-  repeated int64 RoomHolderPlayerList = 5;
-  repeated int64 RoomIdList = 1;
-  repeated string RoomNameList = 2;
-  repeated int32 RoomPlayerNum = 3;
+  int32 RpcId = 1;
+  int32 Error = 2;
+  string Message = 3;
+  repeated int64 RoomOwnerPlayerList = 4;
+  repeated int64 RoomIdList = 5;
+  repeated string RoomNameList = 6;
+  repeated int32 RoomPlayerNum = 7;
 }
 
 ///////////////////////////////// 房间相关  START ///////////////////////////////////
@@ -275,38 +275,38 @@ message L2C_LoginLobby // IResponse
 //ResponseType L2C_CreateNewRoomLobby
 message C2L_CreateNewRoomLobby // IRequest
 {
-  int32 RpcId = 90;
-  int64 PlayerId = 1;  // 帐号
+  int32 RpcId = 1;
+  int64 PlayerId = 2;  // 帐号
 }
 
 message L2C_CreateNewRoomLobby // IResponse
 {
-  int32 RpcId = 90;
-  int32 Error = 91;
-  string Message = 92;
-  int32 RoomId = 1;
-  int32 mode = 2;
-  int32 camp = 3; //阵营，房间位置
+  int32 RpcId = 1;
+  int32 Error = 2;
+  string Message = 3;
+  int32 RoomId = 4;
+  int32 mode = 5;
+  int32 camp = 6; //阵营，房间位置
 }
 
 //ResponseType L2C_JoinRoomLobby
 message C2L_JoinRoomLobby // IRequest
 {
-  int32 RpcId = 90;
-  int64 PlayerId = 1;  // 帐号
-  int64 RoomId = 2; //加入的房间Id
+  int32 RpcId = 1;
+  int64 PlayerId = 2;  // 帐号
+  int64 RoomId = 3; //加入的房间Id
 }
 
 message L2C_JoinRoomLobby // IResponse
 {
-  int32 RpcId = 90;
-  int32 Error = 91;
-  string Message = 92;
-  int64 RoomId = 1; //加入的房间Id
-  int32 camp = 2; //阵营，房间位置
-  int64 RoomHolderId = 3;
-  string RoomName = 4;
-  repeated PlayerInfoRoom playerInfoRoom = 5;
+  int32 RpcId = 1;
+  int32 Error = 2;
+  string Message = 3;
+  int64 RoomId = 4; //加入的房间Id
+  int32 camp = 5; //阵营，房间位置
+  int64 RoomOwnerId = 6;
+  string RoomName = 7;
+  repeated PlayerInfoRoom playerInfoRoom = 8;
 }
 
 message PlayerInfoRoom
@@ -321,29 +321,29 @@ message PlayerInfoRoom
 
 message L2C_PlayerTriggerRoom // IActorMessage
 {
-  int32 RpcId = 90;
-  int64 ActorId = 93;
-  PlayerInfoRoom playerInfoRoom = 1;
-  bool JoinOrLeave = 2;
+  int32 RpcId = 1;
+  int64 ActorId = 2;
+  PlayerInfoRoom playerInfoRoom = 3;
+  bool JoinOrLeave = 4;
 }
 
 //ResponseType L2C_LeaveRoomLobby
 message C2L_LeaveRoomLobby // IRequest
 {
-  int32 RpcId = 90;
-  int64 PlayerId = 1;  // 帐号
+  int32 RpcId = 1;
+  int64 PlayerId = 2;  // 帐号
 }
 
 message L2C_LeaveRoomLobby // IResponse
 {
-  int32 RpcId = 90;
-  int32 Error = 91;
-  string Message = 92;
-  int32 camp = 1; //阵营，房间位置
-  int64 newRoomHolder = 2; //更换房主的时候选的新房主
-  int64 RoomId = 4; // 离开的RoomId
-  int64 PlayerId = 5;
-  bool isDestory = 3;
+  int32 RpcId = 1;
+  int32 Error = 2;
+  string Message = 3;
+  int32 camp = 4; //阵营，房间位置
+  int64 newRoomOwner = 5; //更换房主的时候选的新房主
+  int64 RoomId = 6; // 离开的RoomId
+  int64 PlayerId = 7;
+  bool isDestory = 8;
 }
 
 message PlayerBattleInfo
@@ -355,17 +355,17 @@ message PlayerBattleInfo
 //ResponseType L2C_StartGameLobby
 message C2L_StartGameLobby // IRequest
 {
-  int32 RpcId = 90;
-  int64 PlayerId = 1;  // 帐号
-  repeated PlayerBattleInfo PlayerBattleInfos = 2;
+  int32 RpcId = 1;
+  int64 PlayerId = 2;  // 帐号
+  repeated PlayerBattleInfo PlayerBattleInfos = 3;
 }
 
 message L2C_StartGameLobby // IResponse
 {
-  int32 RpcId = 90;
-  int32 Error = 91;
-  string Message = 92;
-  repeated int64 list = 1;
+  int32 RpcId = 1;
+  int32 Error = 2;
+  string Message = 3;
+  repeated int64 list = 4;
 }
 
 message PlayerBattlePoint

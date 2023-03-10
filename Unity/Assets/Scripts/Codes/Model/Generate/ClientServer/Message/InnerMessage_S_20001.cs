@@ -365,16 +365,16 @@ namespace ET
 	[ProtoContract]
 	public partial class L2G_GetRoomId: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(4)]
 		public long RoomId { get; set; }
 
 	}
@@ -384,22 +384,22 @@ namespace ET
 	[ProtoContract]
 	public partial class L2M_CreateHeroUnit: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(93)]
+		[ProtoMember(2)]
 		public long ActorId { get; set; }
 
-		[ProtoMember(1)]
+		[ProtoMember(3)]
 		public long PlayerId { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(4)]
 		public long GateSessionId { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(5)]
 		public long Roomid { get; set; }
 
-		[ProtoMember(4)]
+		[ProtoMember(6)]
 		public PlayerBattleInfo PlayerBattleInfo { get; set; }
 
 	}
@@ -409,13 +409,13 @@ namespace ET
 	[ProtoContract]
 	public partial class L2M_PreparedToEnterBattle: ProtoObject, IActorRequest
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(93)]
+		[ProtoMember(2)]
 		public long ActorId { get; set; }
 
-		[ProtoMember(2)]
+		[ProtoMember(3)]
 		public long Roomid { get; set; }
 
 	}
@@ -426,21 +426,21 @@ namespace ET
 	[ProtoContract]
 	public partial class M2L_CreateHeroUnit: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
 // �Լ���unit id
-		[ProtoMember(1)]
+		[ProtoMember(4)]
 		public long UnitId { get; set; }
 
 // ���е�unit
-		[ProtoMember(2)]
+		[ProtoMember(5)]
 		public List<UnitInfo> Units { get; set; }
 
 	}
@@ -449,13 +449,13 @@ namespace ET
 	[ProtoContract]
 	public partial class M2L_PreparedToEnterBattle: ProtoObject, IActorResponse
 	{
-		[ProtoMember(90)]
+		[ProtoMember(1)]
 		public int RpcId { get; set; }
 
-		[ProtoMember(91)]
+		[ProtoMember(2)]
 		public int Error { get; set; }
 
-		[ProtoMember(92)]
+		[ProtoMember(3)]
 		public string Message { get; set; }
 
 	}
