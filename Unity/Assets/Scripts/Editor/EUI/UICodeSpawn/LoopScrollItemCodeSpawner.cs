@@ -12,22 +12,12 @@ public partial class UICodeSpawner
 {
     static public void SpawnLoopItemCode(GameObject gameObject)
     {
-        // Path2WidgetCachedDict?.Clear();
-        // Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
-        // var le = gameObject.GetComponent<LayoutElement>();
-        // if (le == null)
-        // {
-        //     le = gameObject.AddComponent<LayoutElement>();
-        //     var rect = gameObject.GetComponent<RectTransform>();
-        //     le.preferredHeight = rect.rect.height;
-        //     le.preferredWidth = rect.rect.width;
-        //     var path = PathHelper.GetUIItemPath(gameObject.name);
-        //     PrefabUtility.SaveAsPrefabAsset(gameObject, path);
-        // }
-        // FindAllWidgets(gameObject.transform, "");
-        // SpawnCodeForScrollLoopItemBehaviour(gameObject);
-        // SpawnCodeForScrollLoopItemViewSystem(gameObject);
-        // AssetDatabase.Refresh();
+        Path2WidgetCachedDict?.Clear();
+        Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
+        FindAllWidgets(gameObject.transform, "");
+        SpawnCodeForScrollLoopItemBehaviour(gameObject);
+        SpawnCodeForScrollLoopItemViewSystem(gameObject);
+        AssetDatabase.Refresh();
     }
     
     static void SpawnCodeForScrollLoopItemViewSystem(GameObject gameObject)

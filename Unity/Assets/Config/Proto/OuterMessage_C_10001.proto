@@ -203,6 +203,8 @@ message G2C_LoginGate // IResponse
 	string Message = 3;
 	int64 PlayerId = 4;
 	string LobbyAddress = 5;
+	string PlayerName = 6;
+	int AvatarIndex = 7;
 }
 
 message G2C_TestHotfixMessage // IMessage
@@ -289,15 +291,15 @@ message L2C_CreateNewRoomLobby // IResponse
   int32 camp = 6; //阵营，房间位置
 }
 
-//ResponseType L2C_JoinRoomLobby
-message C2L_JoinRoomLobby // IRequest
+//ResponseType L2C_JoinOrCreateRoomLobby
+message C2L_JoinOrCreateRoomLobby // IRequest
 {
   int32 RpcId = 1;
   int64 PlayerId = 2;  // 帐号
-  int64 RoomId = 3; //加入的房间Id
+  int64 RoomId = 3; //加入的房间Id,传0的时候则寻找已有房间，>0则进入对应的房间。
 }
 
-message L2C_JoinRoomLobby // IResponse
+message L2C_JoinOrCreateRoomLobby // IResponse
 {
   int32 RpcId = 1;
   int32 Error = 2;

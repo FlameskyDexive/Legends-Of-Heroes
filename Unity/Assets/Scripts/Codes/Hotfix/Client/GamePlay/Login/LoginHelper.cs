@@ -36,7 +36,16 @@ namespace ET.Client
                 G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(
                     new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId});
 
+                //此时缓存客户端全局的Player信息
                 Log.Debug("登陆gate成功!");
+                PlayerComponent playerComponent = clientScene.GetComponent<PlayerComponent>();
+
+                playerComponent.MyId = g2CLoginGate.PlayerId;
+
+                Player player = playerComponent.AddChild<Player, long>(playerComponent.MyId);
+                player.PlayerId = playerComponent.MyId;
+                player.PlayerName = g2CLoginGate.PlayerName;
+                player.AvatarIndex = g2CLoginGate.AvatarIndex;
 
                 await EventSystem.Instance.PublishAsync(clientScene, new EventType.LoginFinish());
             }

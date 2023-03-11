@@ -7,6 +7,7 @@
         WindowID_Login,             //登录界面
         WindowID_RedDot,            //红点测试界面
         WindowID_Helper,            //提示界面
-        WindowID_Battle,            //提示界面
+        WindowID_Battle,            //战斗界面
+        WindowID_Room,              //房间界面
     }
 }

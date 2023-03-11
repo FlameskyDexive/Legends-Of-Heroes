@@ -21,11 +21,16 @@ namespace ET.Server
 
 			PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
 			Player player = playerComponent.AddChild<Player, string>(account);
+            player.PlayerName = $"Player_{player.Id}";
+            //新用户随机分配一个头像，后续可以自己在个人信息里头修改名字、头像
+            player.AvatarIndex = RandomHelper.RandomNumber(0, 10);
 			playerComponent.Add(player);
 			session.AddComponent<SessionPlayerComponent>().PlayerId = player.Id;
 			session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
 
 			response.PlayerId = player.Id;
+            response.AvatarIndex = player.AvatarIndex;
+            response.PlayerName = player.PlayerName;
 			await ETTask.CompletedTask;
 		}
 	}

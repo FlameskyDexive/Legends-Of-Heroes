@@ -13,5 +13,8 @@
         
         public long RoomId { get; set; }
         public int CampId { get; set; }
+        
+        public string PlayerName { get; set; }
+        public int AvatarIndex { get; set; }
     }
 }

@@ -417,6 +417,12 @@ namespace ET
 		[ProtoMember(5)]
 		public string LobbyAddress { get; set; }
 
+		[ProtoMember(6)]
+		public string PlayerName { get; set; }
+
+		[ProtoMember(7)]
+		public int AvatarIndex { get; set; }
+
 	}
 
 	[Message(OuterMessage.G2C_TestHotfixMessage)]
@@ -587,10 +593,10 @@ namespace ET
 
 	}
 
-	[ResponseType(nameof(L2C_JoinRoomLobby))]
-	[Message(OuterMessage.C2L_JoinRoomLobby)]
+	[ResponseType(nameof(L2C_JoinOrCreateRoomLobby))]
+	[Message(OuterMessage.C2L_JoinOrCreateRoomLobby)]
 	[ProtoContract]
-	public partial class C2L_JoinRoomLobby: ProtoObject, IRequest
+	public partial class C2L_JoinOrCreateRoomLobby: ProtoObject, IRequest
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
@@ -603,9 +609,9 @@ namespace ET
 
 	}
 
-	[Message(OuterMessage.L2C_JoinRoomLobby)]
+	[Message(OuterMessage.L2C_JoinOrCreateRoomLobby)]
 	[ProtoContract]
-	public partial class L2C_JoinRoomLobby: ProtoObject, IResponse
+	public partial class L2C_JoinOrCreateRoomLobby: ProtoObject, IResponse
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
@@ -849,8 +855,8 @@ namespace ET
 		 public const ushort L2C_LoginLobby = 10039;
 		 public const ushort C2L_CreateNewRoomLobby = 10040;
 		 public const ushort L2C_CreateNewRoomLobby = 10041;
-		 public const ushort C2L_JoinRoomLobby = 10042;
-		 public const ushort L2C_JoinRoomLobby = 10043;
+		 public const ushort C2L_JoinOrCreateRoomLobby = 10042;
+		 public const ushort L2C_JoinOrCreateRoomLobby = 10043;
 		 public const ushort PlayerInfoRoom = 10044;
 		 public const ushort L2C_PlayerTriggerRoom = 10045;
 		 public const ushort C2L_LeaveRoomLobby = 10046;

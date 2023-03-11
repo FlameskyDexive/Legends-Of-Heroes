@@ -15,13 +15,27 @@ namespace ET.Client
 		  {
 			  self.OnEnterMapClickHandler().Coroutine();
 		  });
+		  self.View.E_SoloButton.AddListener(()=>
+		  {
+			  self.OnEnterMapClickHandler().Coroutine();
+		  });
+          
 		
 		}
 
 		public static void ShowWindow(this DlgLobby self, ShowWindowDataBase contextData = null)
-		{
-
-		}
+        {
+            PlayerComponent playerComponent = self.ClientScene().GetComponent<PlayerComponent>();
+            if (playerComponent != null)
+            {
+                Player player = playerComponent.GetChild<Player>(playerComponent.MyId + 1);
+                if (player != null)
+                {
+                    self.View.E_PlayerNameText.text = player.PlayerName;
+                    self.View.E_AvatarEUIImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{player.AvatarIndex}");
+                }
+            }
+        }
 		
 		public static async ETTask OnEnterMapClickHandler(this DlgLobby self)
         {
@@ -29,6 +43,16 @@ namespace ET.Client
             self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
             // self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Battle);
 			// await EnterMapHelper.EnterMapAsync(self.ClientScene());
+		}
+        
+        /// <summary>
+		/// 发起创建/加入房间请求
+		/// </summary>
+		/// <param name="self"></param>
+		/// <returns></returns>
+		public static async ETTask OnSoloClickHandler(this DlgLobby self)
+        {
+            
 		}
 	}
 }

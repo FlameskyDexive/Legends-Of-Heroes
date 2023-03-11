@@ -1,12 +1,12 @@
 fileFormatVersion: 2
-guid: c20eb36af18df974d87a1a6bd3989bb8
+guid: 0a8cf614a2835a2408c257dd51be4c7b
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
     mipMapMode: 0
-    enableMipMap: 0
+    enableMipMap: 1
     sRGBTexture: 1
     linearTexture: 0
     fadeOut: 0
@@ -34,7 +34,7 @@ TextureImporter:
   textureSettings:
     serializedVersion: 2
     filterMode: 1
-    aniso: 1
+    aniso: 16
     mipBias: 0
     wrapU: 1
     wrapV: 1
@@ -151,7 +151,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable: {}
-  spritePackingTag: 
+  spritePackingTag: City
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
