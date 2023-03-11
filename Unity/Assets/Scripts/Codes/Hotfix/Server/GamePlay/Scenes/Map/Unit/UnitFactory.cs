@@ -5,14 +5,14 @@ namespace ET.Server
 {
     public static class UnitFactory
     {
-        public static Unit Create(Scene scene, long id, UnitType unitType)
+        public static Unit Create(Scene scene, long id, UnitType unitType, int config = 0)
         {
             UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
             switch (unitType)
             {
                 case UnitType.Player:
                 {
-                    Unit unit = unitComponent.AddChildWithId<Unit, int>(id, 1002);
+                    Unit unit = unitComponent.AddChildWithId<Unit, int>(id, config);
                     unit.AddComponent<MoveComponent>();
                     unit.Position = new float3(0, 0, 0);
 			

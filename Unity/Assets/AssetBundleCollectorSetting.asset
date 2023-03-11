@@ -92,3 +92,15 @@ MonoBehaviour:
         PackRuleName: PackRawFile
         FilterRuleName: CollectAll
         AssetTags: 
+    - GroupName: UI
+      GroupDesc: 
+      AssetTags: 
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Assets/Res/UI/LOL/Avatar
+        CollectorGUID: db6016db347e19b41be87cd32d140337
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags: 

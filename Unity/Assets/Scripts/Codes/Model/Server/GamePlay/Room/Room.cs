@@ -14,6 +14,6 @@ namespace ET.Server
 
         public Dictionary<long, Player> AllPlayers = new Dictionary<long, Player>();
 
-        public Dictionary<int, long> CampPlayers = new Dictionary<int, long>();
+        public Dictionary<int, List<long>> CampPlayers = new Dictionary<int, List<long>>();
     }
 }

@@ -1,6 +1,14 @@
 {"list":[
-{"_t":"UnitConfig","_id":1001,"Type":1,"Name":"米克尔","Position":1,"ModelName":"Unit","Weight":68},
+{"_t":"UnitConfig","_id":1000,"Type":1,"Name":"米克尔","Position":1,"ModelName":"Player","Weight":68},
+{"_t":"UnitConfig","_id":1001,"Type":1,"Name":"米克尔","Position":1,"ModelName":"Player","Weight":68},
 {"_t":"UnitConfig","_id":1002,"Type":1,"Name":"米克尔2","Position":2,"ModelName":"Player","Weight":78},
-{"_t":"UnitConfig","_id":1003,"Type":1,"Name":"米克尔3","Position":1,"ModelName":"178","Weight":68},
-{"_t":"UnitConfig","_id":1004,"Type":1,"Name":"米克尔4","Position":2,"ModelName":"278","Weight":78},
+{"_t":"UnitConfig","_id":1003,"Type":1,"Name":"米克尔3","Position":1,"ModelName":"Player","Weight":68},
+{"_t":"UnitConfig","_id":1004,"Type":1,"Name":"米克尔4","Position":2,"ModelName":"Player","Weight":78},
+{"_t":"UnitConfig","_id":1005,"Type":1,"Name":"","Position":2,"ModelName":"Player","Weight":78},
+{"_t":"UnitConfig","_id":1006,"Type":1,"Name":"","Position":2,"ModelName":"Player","Weight":78},
+{"_t":"UnitConfig","_id":1007,"Type":1,"Name":"","Position":2,"ModelName":"Player","Weight":78},
+{"_t":"UnitConfig","_id":1008,"Type":1,"Name":"","Position":2,"ModelName":"Player","Weight":78},
+{"_t":"UnitConfig","_id":1009,"Type":1,"Name":"","Position":2,"ModelName":"Player","Weight":78},
+{"_t":"UnitConfig","_id":1010,"Type":1,"Name":"","Position":2,"ModelName":"Player","Weight":78},
+{"_t":"UnitConfig","_id":1011,"Type":1,"Name":"","Position":2,"ModelName":"Player","Weight":78},
 ]}
