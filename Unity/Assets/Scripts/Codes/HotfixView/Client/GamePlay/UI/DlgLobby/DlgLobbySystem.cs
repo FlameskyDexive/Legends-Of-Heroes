@@ -28,7 +28,7 @@ namespace ET.Client
             PlayerComponent playerComponent = self.ClientScene().GetComponent<PlayerComponent>();
             if (playerComponent != null)
             {
-                Player player = playerComponent.GetChild<Player>(playerComponent.MyId + 1);
+                Player player = playerComponent.MyPlayer;
                 if (player != null)
                 {
                     self.View.E_PlayerNameText.text = player.PlayerName;

@@ -42,10 +42,10 @@ namespace ET.Client
 
                 playerComponent.MyId = g2CLoginGate.PlayerId;
 
-                Player player = playerComponent.AddChild<Player, long>(playerComponent.MyId);
-                player.PlayerId = playerComponent.MyId;
-                player.PlayerName = g2CLoginGate.PlayerName;
-                player.AvatarIndex = g2CLoginGate.AvatarIndex;
+                playerComponent.MyPlayer = new Player();
+                playerComponent.MyPlayer.PlayerId = playerComponent.MyId;
+                playerComponent.MyPlayer.PlayerName = g2CLoginGate.PlayerName;
+                playerComponent.MyPlayer.AvatarIndex = g2CLoginGate.AvatarIndex;
 
                 await EventSystem.Instance.PublishAsync(clientScene, new EventType.LoginFinish());
             }

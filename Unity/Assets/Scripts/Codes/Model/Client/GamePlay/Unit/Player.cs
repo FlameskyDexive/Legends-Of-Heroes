@@ -1,7 +1,7 @@
 ﻿namespace ET.Client
 {
-    [ChildOf(typeof(PlayerComponent))]
-    public sealed class Player : Entity, IAwake<long>
+    // [ChildOf(typeof(PlayerComponent))]
+    public sealed class Player /*: Entity, IAwake<long>*/
     {
         public long PlayerId { get; set; }
         public string Account { get; set; }

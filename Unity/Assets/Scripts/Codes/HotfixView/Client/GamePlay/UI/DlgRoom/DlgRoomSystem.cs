@@ -31,7 +31,6 @@ namespace ET.Client
         public static void OnScrollItemRefreshHandler(this DlgRoom self, Transform transform, int index)
         {
             Scroll_Item_role itemRole = self.ScrollItemRoles[index].BindTrans(transform);
-            // RoleInfo info = self.DomainScene().GetComponent<RoleInfo>().RoleInfos[index];
             //
             // itemRole.E_RoleNameText.text = info.Name;
             // itemRole.E_AvatarImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{info.AvatarIndex}");

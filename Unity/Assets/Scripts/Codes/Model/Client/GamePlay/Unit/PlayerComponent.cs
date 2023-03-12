@@ -4,5 +4,7 @@
     public class PlayerComponent: Entity, IAwake
     {
         public long MyId { get; set; }
+        
+        public Player MyPlayer { get; set; }
     }
 }
