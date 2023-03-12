@@ -40,6 +40,15 @@ namespace ET.Client
                 Log.Debug("登陆gate成功!");
                 PlayerComponent playerComponent = clientScene.GetComponent<PlayerComponent>();
 
+
+                // 创建一个Lobby Session,并且保存到SessionComponent中
+                Session lobbySession = await RouterHelper.CreateRouterSession(clientScene, NetworkHelper.ToIPEndPoint(g2CLoginGate.LobbyAddress));
+                playerComponent.LobbySession = lobbySession;
+                playerComponent.GateSession = gateSession;
+
+                playerComponent.LobbySession = lobbySession;
+
+
                 playerComponent.MyId = g2CLoginGate.PlayerId;
 
                 playerComponent.MyPlayer = new Player();

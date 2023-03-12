@@ -59,7 +59,25 @@ namespace ET.Server
             self.Rooms.Add(room.Id, room);
             return room;
         }
-        
+
+        /// <summary>
+        /// 获取一个可用的房间
+        /// </summary>
+        /// <param name="self"></param>
+        /// <returns></returns>
+        public static Room GetAvalibleRoom(this RoomManagerComponent self, int maxPlayerNum)
+        {
+            if(self.Rooms.Count > 0)
+            {
+                foreach (Room room in self.Rooms.Values)
+                {
+                    if (room.MaxPlayerNum == maxPlayerNum && room.AllPlayers.Count < maxPlayerNum)
+                        return room;
+                }
+            }
+
+            return self.CreateLobbyRoom(self.RoomIdNum + 1, maxPlayerNum);
+        }
 
     }
 }

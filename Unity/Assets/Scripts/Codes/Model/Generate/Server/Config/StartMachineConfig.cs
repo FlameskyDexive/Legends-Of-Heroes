@@ -94,6 +94,9 @@ namespace ET
 		/// <summary>守护进程端口</summary>
 		[ProtoMember(4)]
 		public string WatcherPort { get; set; }
+		/// <summary>发往客户端的地址</summary>
+		[ProtoMember(5)]
+		public string OutPortForClient { get; set; }
 
 	}
 }

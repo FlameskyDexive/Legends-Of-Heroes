@@ -77,7 +77,7 @@ namespace ET.Server
                     }
 
                     ActorMessageDispatcherInfo actorMessageDispatcherInfo = new(actorMessageHandlerAttribute.SceneType, imHandler);
-
+                    Log.Info($"register handler:{messageType}");
                     self.RegisterHandler(messageType, actorMessageDispatcherInfo);
                 }
             }

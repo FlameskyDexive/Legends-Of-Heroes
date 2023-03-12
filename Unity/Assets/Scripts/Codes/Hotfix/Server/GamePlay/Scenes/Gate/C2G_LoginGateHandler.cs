@@ -28,7 +28,13 @@ namespace ET.Server
 			session.AddComponent<SessionPlayerComponent>().PlayerId = player.Id;
 			session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
 
-			response.PlayerId = player.Id;
+            // 随机分配一个Lobby
+            StartSceneConfig lobbyConfig = AddressHelper.GetLobby(session.DomainZone());
+
+            response.LobbyAddress = lobbyConfig.OuterIPPortForClient.ToString();
+            response.PlayerId = player.Id;
+
+            response.PlayerId = player.Id;
             response.AvatarIndex = player.AvatarIndex;
             response.PlayerName = player.PlayerName;
 			await ETTask.CompletedTask;

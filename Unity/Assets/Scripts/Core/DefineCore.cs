@@ -6,6 +6,8 @@ namespace ET
     {
         [StaticField]
         public static float FixedDeltaTime = 1f / LogicFrame;
+        [StaticField]
+        public static bool DevelopMode = true;
 
 #if UNITY_EDITOR
         // [StaticField]

@@ -16,16 +16,22 @@ namespace ET.Client
             {
                 self.OnEnterMapClickHandler().Coroutine();
             });
+            self.View.E_CancelButton.AddListener(() =>
+            {
+                self.OnCancelClickHandler().Coroutine();
+            });
 
             self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.AddItemRefreshListener((Transform transform, int index) =>
             {
-                self.OnEnterMapClickHandler().Coroutine();
+                
             });
 
         }
 
 		public static void ShowWindow(this DlgRoom self, ShowWindowDataBase contextData = null)
 		{
+            LobbyHelper.JoinOrCreateRoom(self.DomainScene()).Coroutine();
+
         }
 
         public static void OnScrollItemRefreshHandler(this DlgRoom self, Transform transform, int index)
@@ -44,6 +50,11 @@ namespace ET.Client
         {
             await EnterMapHelper.EnterMapAsync(self.DomainScene());
             self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
+        }
+
+        public static async ETTask OnCancelClickHandler(this DlgRoom self)
+        {
+            self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Room);
         }
 
     }
