@@ -32,7 +32,7 @@ namespace ET.Server
             response.RoomId = room.Id;
             response.CampId = campId;
             response.RoomOwnerId = room.RoomOwnerPlayerId;
-            response.playerInfoRoom.AddRange(room.AllPlayers.Values);
+            response.playerInfoRoom = new List<PlayerInfoRoom>(room.AllPlayers.Values);
             await ETTask.CompletedTask;
         }
 	}

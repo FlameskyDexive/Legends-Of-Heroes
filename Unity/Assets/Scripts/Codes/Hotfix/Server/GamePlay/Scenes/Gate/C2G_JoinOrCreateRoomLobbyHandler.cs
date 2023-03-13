@@ -9,7 +9,7 @@
             Scene scene = session.DomainScene();
 
             //gate与lobby进行内网通信，获取可用房间在返回给Client
-            StartSceneConfig config = StartSceneConfigCategory.Instance.GetBySceneName(scene.Zone, "ChatInfo");
+            StartSceneConfig config = StartSceneConfigCategory.Instance.GetBySceneName(scene.Zone, "Lobby");
             Lobby2G_JoinOrCreateRoom lobby2GJoinOrCreateRoom = (Lobby2G_JoinOrCreateRoom)await ActorMessageSenderComponent.Instance.Call(
                 config.InstanceId, new G2Lobby_JoinOrCreateRoom() {PlayerId = request.PlayerId, RoomId = request.RoomId});
 
