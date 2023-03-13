@@ -275,13 +275,13 @@ message L2C_LoginLobby // IResponse
 ///////////////////////////////// 房间相关  START ///////////////////////////////////
 
 //ResponseType L2C_CreateNewRoomLobby
-message C2L_CreateNewRoomLobby // IRequest
+message C2G_CreateNewRoomLobby // IRequest
 {
   int32 RpcId = 1;
   int64 PlayerId = 2;  // 帐号
 }
 
-message L2C_CreateNewRoomLobby // IResponse
+message G2C_CreateNewRoomLobby // IResponse
 {
   int32 RpcId = 1;
   int32 Error = 2;
@@ -292,14 +292,14 @@ message L2C_CreateNewRoomLobby // IResponse
 }
 
 //ResponseType L2C_JoinOrCreateRoomLobby
-message C2L_JoinOrCreateRoomLobby // IRequest
+message C2G_JoinOrCreateRoomLobby // IRequest
 {
   int32 RpcId = 1;
   int64 PlayerId = 2;  // 帐号
   int64 RoomId = 3; //加入的房间Id,传0的时候则寻找已有房间，>0则进入对应的房间。
 }
 
-message L2C_JoinOrCreateRoomLobby // IResponse
+message G2C_JoinOrCreateRoomLobby // IResponse
 {
   int32 RpcId = 1;
   int32 Error = 2;
@@ -330,13 +330,13 @@ message L2C_PlayerTriggerRoom // IActorMessage
 }
 
 //ResponseType L2C_LeaveRoomLobby
-message C2L_LeaveRoomLobby // IRequest
+message C2G_LeaveRoomLobby // IRequest
 {
   int32 RpcId = 1;
   int64 PlayerId = 2;  // 帐号
 }
 
-message L2C_LeaveRoomLobby // IResponse
+message G2C_LeaveRoomLobby // IResponse
 {
   int32 RpcId = 1;
   int32 Error = 2;

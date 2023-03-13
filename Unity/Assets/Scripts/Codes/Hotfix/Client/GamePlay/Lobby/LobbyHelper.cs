@@ -10,7 +10,7 @@ namespace ET.Client
         {
             try
             {
-                PlayerComponent playerComponent = clientScene.GetComponent<PlayerComponent>();
+                /*PlayerComponent playerComponent = clientScene.GetComponent<PlayerComponent>();
                 C2L_JoinOrCreateRoomLobby joinData = new C2L_JoinOrCreateRoomLobby() { PlayerId = playerComponent.MyId };
                 // L2C_JoinOrCreateRoomLobby l2CJoinOrCreateRoomLobby = await clientScene.GetComponent<SessionComponent>().Session.Call(joinData) as L2C_JoinOrCreateRoomLobby;
                 L2C_JoinOrCreateRoomLobby l2CJoinOrCreateRoomLobby = await playerComponent.LobbySession.Call(joinData) as L2C_JoinOrCreateRoomLobby;
@@ -20,7 +20,7 @@ namespace ET.Client
                     int curRoomPlayerCount = l2CJoinOrCreateRoomLobby.playerInfoRoom.Count;
                     
                     Log.Info($"room players:{l2CJoinOrCreateRoomLobby.playerInfoRoom.Count}");
-                }
+                }*/
                 
             }
             catch (Exception e)
