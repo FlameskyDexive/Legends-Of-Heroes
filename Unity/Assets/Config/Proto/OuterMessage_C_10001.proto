@@ -300,7 +300,8 @@ message PlayerInfoRoom
     int64 SessionId = 3;
     int64 RoomId = 4;
     int32 CampId = 5;
-    int64 playerId = 6;
+    int64 PlayerId = 6;
+    string PlayerName = 7;
 }
 
 message G2C_PlayerTriggerRoom // IActorMessage

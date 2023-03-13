@@ -19,7 +19,7 @@ namespace ET.Server
                 //玩家加入房间
                 PlayerInfoRoom PlayerInfoRoom = new PlayerInfoRoom()
                 {
-                    playerId = request.PlayerId,
+                    PlayerId = request.PlayerId,
                     RoomId = room.Id,
                     CampId = campId,
                 };

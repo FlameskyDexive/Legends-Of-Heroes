@@ -619,7 +619,10 @@ namespace ET
 		public int CampId { get; set; }
 
 		[ProtoMember(6)]
-		public long playerId { get; set; }
+		public long PlayerId { get; set; }
+
+		[ProtoMember(7)]
+		public string PlayerName { get; set; }
 
 	}
 
