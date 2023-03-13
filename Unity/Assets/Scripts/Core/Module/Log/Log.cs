@@ -34,14 +34,14 @@ namespace ET
             Logger.Instance.Error(msg);
         }
 
-        public static void Error(Exception e)
+        public static void Error(Exception msg)
         {
-            Logger.Instance.Error(e);
+            Logger.Instance.Error(msg);
         }
 
-        public static void Console(string message)
+        public static void Console(string msg)
         {
-            Logger.Instance.Console(message);
+            Logger.Instance.Console(msg);
         }
         
 #if DOTNET

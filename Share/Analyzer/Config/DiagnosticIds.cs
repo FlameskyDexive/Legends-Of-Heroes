@@ -32,5 +32,13 @@
 
         public const string StaticFieldDeclarationAnalyzerRule = "ET0015";
 
+        public const string ETCancellationTokenAnalyzerRuleId = "ET0016";
+
+        public const string AwaitExpressionCancelTokenParamAnalyzerRuleId = "ET0017";
+
+        public const string AsyncMethodWithCancelTokenParamAnalyzerRuleId = "ET0018";
+
+        public const string ExpressionWithCancelTokenParamAnalyzerRuleId = "ET0019";
+
     }
 }
