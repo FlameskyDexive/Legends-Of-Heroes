@@ -5,6 +5,5 @@
 {"_t":"StartSceneConfig","_id":4,"Process":1,"Zone":1,"SceneType":"Location","Name":"Location","OuterPort":0},
 {"_t":"StartSceneConfig","_id":5,"Process":1,"Zone":1,"SceneType":"Map","Name":"Dungeon01","OuterPort":0},
 {"_t":"StartSceneConfig","_id":6,"Process":1,"Zone":1,"SceneType":"Map","Name":"Map2","OuterPort":0},
-{"_t":"StartSceneConfig","_id":7,"Process":1,"Zone":1,"SceneType":"Lobby","Name":"Lobby","OuterPort":30008},
 {"_t":"StartSceneConfig","_id":200,"Process":1,"Zone":2,"SceneType":"Robot","Name":"Robot01","OuterPort":0},
 ]}

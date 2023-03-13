@@ -361,9 +361,25 @@ namespace ET
 	}
 
 ///////////////////////////////// �������  START ///////////////////////////////////
-	[Message(InnerMessage.L2G_GetRoomId)]
+	[ResponseType(nameof(Lobby2G_JoinOrCreateRoom))]
+	[Message(InnerMessage.G2Lobby_JoinOrCreateRoom)]
 	[ProtoContract]
-	public partial class L2G_GetRoomId: ProtoObject, IActorResponse
+	public partial class G2Lobby_JoinOrCreateRoom: ProtoObject, IActorRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long PlayerId { get; set; }
+
+		[ProtoMember(3)]
+		public long RoomId { get; set; }
+
+	}
+
+	[Message(InnerMessage.Lobby2G_JoinOrCreateRoom)]
+	[ProtoContract]
+	public partial class Lobby2G_JoinOrCreateRoom: ProtoObject, IActorResponse
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
@@ -377,89 +393,22 @@ namespace ET
 		[ProtoMember(4)]
 		public long RoomId { get; set; }
 
-	}
-
-	[ResponseType(nameof(M2L_CreateHeroUnit))]
-	[Message(InnerMessage.L2M_CreateHeroUnit)]
-	[ProtoContract]
-	public partial class L2M_CreateHeroUnit: ProtoObject, IActorRequest
-	{
-		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
-		public long ActorId { get; set; }
-
-		[ProtoMember(3)]
-		public long PlayerId { get; set; }
-
-		[ProtoMember(4)]
-		public long GateSessionId { get; set; }
-
 		[ProtoMember(5)]
-		public long Roomid { get; set; }
+		public int CampId { get; set; }
 
 		[ProtoMember(6)]
-		public PlayerBattleInfo PlayerBattleInfo { get; set; }
+		public long RoomOwnerId { get; set; }
 
-	}
+		[ProtoMember(7)]
+		public string RoomName { get; set; }
 
-	[ResponseType(nameof(M2L_PreparedToEnterBattle))]
-	[Message(InnerMessage.L2M_PreparedToEnterBattle)]
-	[ProtoContract]
-	public partial class L2M_PreparedToEnterBattle: ProtoObject, IActorRequest
-	{
-		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
-		public long ActorId { get; set; }
-
-		[ProtoMember(3)]
-		public long Roomid { get; set; }
+		[ProtoMember(8)]
+		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
 
 	}
 
 ///////////////////////////////// �������  END ///////////////////////////////////
 ///////////////////////////////// �������  START ///////////////////////////////////
-	[Message(InnerMessage.M2L_CreateHeroUnit)]
-	[ProtoContract]
-	public partial class M2L_CreateHeroUnit: ProtoObject, IActorResponse
-	{
-		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
-		public int Error { get; set; }
-
-		[ProtoMember(3)]
-		public string Message { get; set; }
-
-// �Լ���unit id
-		[ProtoMember(4)]
-		public long UnitId { get; set; }
-
-// ���е�unit
-		[ProtoMember(5)]
-		public List<UnitInfo> Units { get; set; }
-
-	}
-
-	[Message(InnerMessage.M2L_PreparedToEnterBattle)]
-	[ProtoContract]
-	public partial class M2L_PreparedToEnterBattle: ProtoObject, IActorResponse
-	{
-		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
-		public int Error { get; set; }
-
-		[ProtoMember(3)]
-		public string Message { get; set; }
-
-	}
-
 ///////////////////////////////// �������  END ///////////////////////////////////
 	public static class InnerMessage
 	{
@@ -486,10 +435,7 @@ namespace ET
 		 public const ushort ObjectQueryResponse = 20022;
 		 public const ushort M2M_UnitTransferRequest = 20023;
 		 public const ushort M2M_UnitTransferResponse = 20024;
-		 public const ushort L2G_GetRoomId = 20025;
-		 public const ushort L2M_CreateHeroUnit = 20026;
-		 public const ushort L2M_PreparedToEnterBattle = 20027;
-		 public const ushort M2L_CreateHeroUnit = 20028;
-		 public const ushort M2L_PreparedToEnterBattle = 20029;
+		 public const ushort G2Lobby_JoinOrCreateRoom = 20025;
+		 public const ushort Lobby2G_JoinOrCreateRoom = 20026;
 	}
 }

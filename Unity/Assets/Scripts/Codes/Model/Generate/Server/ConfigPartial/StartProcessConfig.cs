@@ -25,23 +25,7 @@ namespace ET
 
         public string OuterIP => this.StartMachineConfig.OuterIP;
 
-        public string OuterIPForClient => this.StartMachineConfig.OutPortForClient;
-
-        public StartMachineConfig StartMachineConfig
-        {
-            get
-            {
-                // 如果是开发模式，就加载开发模式的IP（本地IP）
-                if (DefineCore.DevelopMode)
-                {
-                    return StartMachineConfigCategory.Instance.Get(2);
-                }
-                else
-                {
-                    return StartMachineConfigCategory.Instance.Get(this.MachineId);
-                }
-            }
-        }
+        public StartMachineConfig StartMachineConfig => StartMachineConfigCategory.Instance.Get(this.MachineId);
 
         public override void AfterEndInit()
         {

@@ -48,9 +48,10 @@ namespace ET.Server
         }
 
 
-        public static Room CreateLobbyRoom(this RoomManagerComponent self, long id, int maxPlayerNum)
+        public static Room CreateLobbyRoom(this RoomManagerComponent self, long playerId, long roomId, int maxPlayerNum)
         {
-            Room room = self.AddChildWithId<Room>(id);
+            Room room = self.AddChildWithId<Room>(roomId);
+            room.RoomOwnerPlayerId = playerId;
             room.MaxPlayerNum = maxPlayerNum;
             room.CurPlayerNum = 0;
             room.AllPlayers.Clear();
@@ -65,7 +66,7 @@ namespace ET.Server
         /// </summary>
         /// <param name="self"></param>
         /// <returns></returns>
-        public static Room GetAvalibleRoom(this RoomManagerComponent self, int maxPlayerNum)
+        public static Room GetAvalibleRoom(this RoomManagerComponent self, long playerId, int maxPlayerNum)
         {
             if(self.Rooms.Count > 0)
             {
@@ -76,7 +77,7 @@ namespace ET.Server
                 }
             }
 
-            return self.CreateLobbyRoom(self.RoomIdNum + 1, maxPlayerNum);
+            return self.CreateLobbyRoom(playerId, self.RoomIdNum + 1, maxPlayerNum);
         }
 
     }

@@ -175,6 +175,25 @@ message M2M_UnitTransferResponse // IActorResponse
 
 ///////////////////////////////// 房间相关  START ///////////////////////////////////
 
+//ResponseType Lobby2G_JoinOrCreateRoom
+message G2Lobby_JoinOrCreateRoom // IActorRequest
+{
+	int32 RpcId = 1;
+	int64 PlayerId = 2;  // 帐号
+	int64 RoomId = 3; //加入的房间Id,传0的时候则寻找已有房间，>0则进入对应的房间。
+}
+
+message Lobby2G_JoinOrCreateRoom // IActorResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	int64 RoomId = 4; //加入的房间Id
+	int32 CampId = 5; //阵营，房间位置
+	int64 RoomOwnerId = 6;
+	string RoomName = 7;
+	repeated PlayerInfoRoom playerInfoRoom = 8;
+}
 
 
 ///////////////////////////////// 房间相关  END ///////////////////////////////////

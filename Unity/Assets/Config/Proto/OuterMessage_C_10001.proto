@@ -254,141 +254,123 @@ message G2C_Benchmark // IResponse
 }
 
 
-//ResponseType L2C_LoginLobby
-message C2L_LoginLobby // IRequest
-{
-  int32 RpcId = 1;
-  int64 PlayerId = 2;  // 帐号
-}
-
-message L2C_LoginLobby // IResponse
-{
-  int32 RpcId = 1;
-  int32 Error = 2;
-  string Message = 3;
-  repeated int64 RoomOwnerPlayerList = 4;
-  repeated int64 RoomIdList = 5;
-  repeated string RoomNameList = 6;
-  repeated int32 RoomPlayerNum = 7;
-}
-
 ///////////////////////////////// 房间相关  START ///////////////////////////////////
 
-//ResponseType L2C_CreateNewRoomLobby
-message C2G_CreateNewRoomLobby // IRequest
+//ResponseType G2C_CreateNewRoom
+message C2G_CreateNewRoom // IRequest
 {
-  int32 RpcId = 1;
-  int64 PlayerId = 2;  // 帐号
+	int32 RpcId = 1;
+	int64 PlayerId = 2;  // 帐号
 }
 
-message G2C_CreateNewRoomLobby // IResponse
+message G2C_CreateNewRoom // IResponse
 {
-  int32 RpcId = 1;
-  int32 Error = 2;
-  string Message = 3;
-  int32 RoomId = 4;
-  int32 mode = 5;
-  int32 camp = 6; //阵营，房间位置
+    int32 RpcId = 1;
+    int32 Error = 2;
+    string Message = 3;
+    int32 RoomId = 4;
+    int32 mode = 5;
+    int32 CampId = 6; //阵营，房间位置
 }
 
-//ResponseType L2C_JoinOrCreateRoomLobby
-message C2G_JoinOrCreateRoomLobby // IRequest
+//ResponseType G2C_JoinOrCreateRoom
+message C2G_JoinOrCreateRoom // IRequest
 {
-  int32 RpcId = 1;
-  int64 PlayerId = 2;  // 帐号
-  int64 RoomId = 3; //加入的房间Id,传0的时候则寻找已有房间，>0则进入对应的房间。
+    int32 RpcId = 1;
+    int64 PlayerId = 2;  // 帐号
+    int64 RoomId = 3; //加入的房间Id,传0的时候则寻找已有房间，>0则进入对应的房间。
 }
 
-message G2C_JoinOrCreateRoomLobby // IResponse
+message G2C_JoinOrCreateRoom // IResponse
 {
-  int32 RpcId = 1;
-  int32 Error = 2;
-  string Message = 3;
-  int64 RoomId = 4; //加入的房间Id
-  int32 camp = 5; //阵营，房间位置
-  int64 RoomOwnerId = 6;
-  string RoomName = 7;
-  repeated PlayerInfoRoom playerInfoRoom = 8;
+    int32 RpcId = 1;
+    int32 Error = 2;
+    string Message = 3;
+    int64 RoomId = 4; //加入的房间Id
+    int32 CampId = 5; //阵营，房间位置
+    int64 RoomOwnerId = 6;
+    string RoomName = 7;
+    repeated PlayerInfoRoom playerInfoRoom = 8;
 }
 
 message PlayerInfoRoom
 {
-  string Account = 1;
-  int64 UnitId = 2;
-  int64 SessionId = 3;
-  int64 RoomId = 4;
-  int32 camp = 5;
-  int64 playerid = 6;
+    string Account = 1;
+    int64 UnitId = 2;
+    int64 SessionId = 3;
+    int64 RoomId = 4;
+    int32 CampId = 5;
+    int64 playerId = 6;
 }
 
-message L2C_PlayerTriggerRoom // IActorMessage
+message G2C_PlayerTriggerRoom // IActorMessage
 {
-  int32 RpcId = 1;
-  int64 ActorId = 2;
-  PlayerInfoRoom playerInfoRoom = 3;
-  bool JoinOrLeave = 4;
+    int32 RpcId = 1;
+    int64 ActorId = 2;
+    PlayerInfoRoom playerInfoRoom = 3;
+    bool JoinOrLeave = 4;
 }
 
-//ResponseType L2C_LeaveRoomLobby
-message C2G_LeaveRoomLobby // IRequest
+//ResponseType G2C_LeaveRoom
+message C2G_LeaveRoom // IRequest
 {
-  int32 RpcId = 1;
-  int64 PlayerId = 2;  // 帐号
+    int32 RpcId = 1;
+    int64 PlayerId = 2;  // 帐号
 }
 
-message G2C_LeaveRoomLobby // IResponse
+message G2C_LeaveRoom // IResponse
 {
-  int32 RpcId = 1;
-  int32 Error = 2;
-  string Message = 3;
-  int32 camp = 4; //阵营，房间位置
-  int64 newRoomOwner = 5; //更换房主的时候选的新房主
-  int64 RoomId = 6; // 离开的RoomId
-  int64 PlayerId = 7;
-  bool isDestory = 8;
+    int32 RpcId = 1;
+    int32 Error = 2;
+    string Message = 3;
+    int32 CampId = 4; //阵营，房间位置
+    int64 newRoomOwner = 5; //更换房主的时候选的新房主
+    int64 RoomId = 6; // 离开的RoomId
+    int64 PlayerId = 7;
+    bool isDestory = 8;
 }
 
 message PlayerBattleInfo
 {
-  int64 PlayerId = 1;
-  int32 HeroConfig = 2;
+    int64 PlayerId = 1;
+    int32 HeroConfig = 2;
 }
 
-//ResponseType L2C_StartGameLobby
-message C2L_StartGameLobby // IRequest
+//ResponseType G2C_StartGame
+message C2G_StartGame // IRequest
 {
-  int32 RpcId = 1;
-  int64 PlayerId = 2;  // 帐号
-  repeated PlayerBattleInfo PlayerBattleInfos = 3;
+    int32 RpcId = 1;
+    int64 PlayerId = 2;  // 帐号
+    repeated PlayerBattleInfo PlayerBattleInfos = 3;
 }
 
-message L2C_StartGameLobby // IResponse
+message G2C_StartGame // IResponse
 {
-  int32 RpcId = 1;
-  int32 Error = 2;
-  string Message = 3;
-  repeated int64 list = 4;
+    int32 RpcId = 1;
+    int32 Error = 2;
+    string Message = 3;
+    repeated int64 list = 4;
 }
 
 message PlayerBattlePoint
 {
-  int64 PlayerId = 1;
-  int32 Point = 2;
-  int32 SingleMatchCount = 3;
-  string Account = 4;
-  int64 UnitId = 5;
+    int64 PlayerId = 1;
+    int32 Point = 2;
+    int32 SingleMatchCount = 3;
+    string Account = 4;
+    int64 UnitId = 5;
 }
 
-message L2C_PrepareToEnterBattle  // IMessage
+message G2C_PrepareToEnterBattle  // IMessage
 {
 }
 
-message C2L_PreparedToEnterBattle // IMessage
+message C2G_PreparedToEnterBattle // IMessage
 {
-  int64 PlayerId = 1;
+    int64 PlayerId = 1;
 }
 
-message L2C_AllowToEnterMap // IMessage
+message G2C_AllowToEnterMap // IMessage
 {
 
 }

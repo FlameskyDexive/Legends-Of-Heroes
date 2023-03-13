@@ -80,7 +80,7 @@ namespace ET
             {
                 self.Handlers.Add(opcode, new List<MessageDispatcherInfo>());
             }
-            Log.Info($"register msg:{opcode}");
+
             self.Handlers[opcode].Add(handler);
         }
 

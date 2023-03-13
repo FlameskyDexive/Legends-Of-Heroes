@@ -7,7 +7,6 @@ namespace ET
     public partial class StartSceneConfigCategory
     {
         public MultiMap<int, StartSceneConfig> Gates = new MultiMap<int, StartSceneConfig>();
-        public MultiMap<int, StartSceneConfig> Lobbys = new MultiMap<int, StartSceneConfig>();
         
         public MultiMap<int, StartSceneConfig> ProcessScenes = new MultiMap<int, StartSceneConfig>();
         
@@ -32,7 +31,6 @@ namespace ET
         {
             return this.ClientScenesByName[zone][name];
         }
-        
 
         public override void AfterEndInit()
         {
@@ -65,9 +63,6 @@ namespace ET
                         break;
                     case SceneType.BenchmarkServer:
                         this.BenchmarkServer = startSceneConfig;
-                        break;
-                    case SceneType.Lobby:
-                        this.Lobbys.Add(startSceneConfig.Zone, startSceneConfig);
                         break;
                 }
             }
@@ -125,23 +120,6 @@ namespace ET
                 }
 
                 return this.outerIPPort;
-            }
-        }
-        
-
-        private IPEndPoint outerIPPortForClient;
-        // 外网地址外网端口(专门给客户端准备)
-        public IPEndPoint OuterIPPortForClient
-        {
-            get
-            {
-                if (this.outerIPPortForClient == null)
-                {
-                    this.outerIPPortForClient =
-                            NetworkHelper.ToIPEndPoint($"{this.StartProcessConfig.OuterIPForClient}:{this.OuterPort}");
-                }
-
-                return this.outerIPPortForClient;
             }
         }
 

@@ -20,21 +20,7 @@ namespace ET
 			int n = RandomHelper.RandomNumber(0, zoneGates.Count);
 
 			return zoneGates[n];
-        }
-
-        /// <summary>
-        /// 随机分配一个大厅服
-        /// </summary>
-        /// <param name="zone"></param>
-        /// <returns></returns>
-        public static StartSceneConfig GetLobby(int zone)
-        {
-            List<StartSceneConfig> zoneGates = StartSceneConfigCategory.Instance.Lobbys[zone];
-
-            int n = RandomHelper.RandomNumber(0, zoneGates.Count);
-
-            return zoneGates[n];
-        }
-
-    }
+		}
+		
+	}
 }

@@ -30,7 +30,6 @@ namespace ET.Server
             
             response.PlayerId = player.Id;
 
-            response.PlayerId = player.Id;
             response.AvatarIndex = player.AvatarIndex;
             response.PlayerName = player.PlayerName;
 			await ETTask.CompletedTask;
