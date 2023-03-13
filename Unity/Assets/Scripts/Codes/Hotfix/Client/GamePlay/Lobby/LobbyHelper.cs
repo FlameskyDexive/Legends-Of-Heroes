@@ -21,6 +21,8 @@ namespace ET.Client
                     Log.Info($"room players:{l2CJoinOrCreateRoomLobby.playerInfoRoom.Count}");
                 }
                 
+                //≤‚ ‘actorœ˚œ¢°£
+                //clientScene.GetComponent<SessionComponent>().Session.Send(new C2L_JoinOrCreateRoom(){PlayerId = playerComponent.MyId});
             }
             catch (Exception e)
             {

@@ -516,10 +516,9 @@ namespace ET
 	}
 
 ///////////////////////////////// 房间相关  START ///////////////////////////////////
-	[ResponseType(nameof(G2C_CreateNewRoom))]
-	[Message(OuterMessage.C2G_CreateNewRoom)]
+	[Message(OuterMessage.C2L_JoinOrCreateRoom)]
 	[ProtoContract]
-	public partial class C2G_CreateNewRoom: ProtoObject, IRequest
+	public partial class C2L_JoinOrCreateRoom: ProtoObject, IActorLocationMessage
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
@@ -527,11 +526,14 @@ namespace ET
 		[ProtoMember(2)]
 		public long PlayerId { get; set; }
 
+		[ProtoMember(3)]
+		public long RoomId { get; set; }
+
 	}
 
-	[Message(OuterMessage.G2C_CreateNewRoom)]
+	[Message(OuterMessage.L2C_JoinOrCreateRoom)]
 	[ProtoContract]
-	public partial class G2C_CreateNewRoom: ProtoObject, IResponse
+	public partial class L2C_JoinOrCreateRoom: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
 		public int RpcId { get; set; }
@@ -543,13 +545,19 @@ namespace ET
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
-		public int RoomId { get; set; }
+		public long RoomId { get; set; }
 
 		[ProtoMember(5)]
-		public int mode { get; set; }
+		public int CampId { get; set; }
 
 		[ProtoMember(6)]
-		public int CampId { get; set; }
+		public long RoomOwnerId { get; set; }
+
+		[ProtoMember(7)]
+		public string RoomName { get; set; }
+
+		[ProtoMember(8)]
+		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
 
 	}
 
@@ -623,6 +631,43 @@ namespace ET
 
 		[ProtoMember(7)]
 		public string PlayerName { get; set; }
+
+	}
+
+	[ResponseType(nameof(G2C_CreateNewRoom))]
+	[Message(OuterMessage.C2G_CreateNewRoom)]
+	[ProtoContract]
+	public partial class C2G_CreateNewRoom: ProtoObject, IRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long PlayerId { get; set; }
+
+	}
+
+	[Message(OuterMessage.G2C_CreateNewRoom)]
+	[ProtoContract]
+	public partial class G2C_CreateNewRoom: ProtoObject, IResponse
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int Error { get; set; }
+
+		[ProtoMember(3)]
+		public string Message { get; set; }
+
+		[ProtoMember(4)]
+		public int RoomId { get; set; }
+
+		[ProtoMember(5)]
+		public int mode { get; set; }
+
+		[ProtoMember(6)]
+		public int CampId { get; set; }
 
 	}
 
@@ -814,20 +859,22 @@ namespace ET
 		 public const ushort M2C_TransferMap = 10035;
 		 public const ushort C2G_Benchmark = 10036;
 		 public const ushort G2C_Benchmark = 10037;
-		 public const ushort C2G_CreateNewRoom = 10038;
-		 public const ushort G2C_CreateNewRoom = 10039;
+		 public const ushort C2L_JoinOrCreateRoom = 10038;
+		 public const ushort L2C_JoinOrCreateRoom = 10039;
 		 public const ushort C2G_JoinOrCreateRoom = 10040;
 		 public const ushort G2C_JoinOrCreateRoom = 10041;
 		 public const ushort PlayerInfoRoom = 10042;
-		 public const ushort G2C_PlayerTriggerRoom = 10043;
-		 public const ushort C2G_LeaveRoom = 10044;
-		 public const ushort G2C_LeaveRoom = 10045;
-		 public const ushort PlayerBattleInfo = 10046;
-		 public const ushort C2G_StartGame = 10047;
-		 public const ushort G2C_StartGame = 10048;
-		 public const ushort PlayerBattlePoint = 10049;
-		 public const ushort G2C_PrepareToEnterBattle = 10050;
-		 public const ushort C2G_PreparedToEnterBattle = 10051;
-		 public const ushort G2C_AllowToEnterMap = 10052;
+		 public const ushort C2G_CreateNewRoom = 10043;
+		 public const ushort G2C_CreateNewRoom = 10044;
+		 public const ushort G2C_PlayerTriggerRoom = 10045;
+		 public const ushort C2G_LeaveRoom = 10046;
+		 public const ushort G2C_LeaveRoom = 10047;
+		 public const ushort PlayerBattleInfo = 10048;
+		 public const ushort C2G_StartGame = 10049;
+		 public const ushort G2C_StartGame = 10050;
+		 public const ushort PlayerBattlePoint = 10051;
+		 public const ushort G2C_PrepareToEnterBattle = 10052;
+		 public const ushort C2G_PreparedToEnterBattle = 10053;
+		 public const ushort G2C_AllowToEnterMap = 10054;
 	}
 }
