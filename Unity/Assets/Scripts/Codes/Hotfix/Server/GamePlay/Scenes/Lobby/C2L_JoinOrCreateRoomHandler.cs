@@ -4,9 +4,9 @@ using Unity.Mathematics;
 namespace ET.Server
 {
 	[ActorMessageHandler(SceneType.Lobby)]
-	public class C2L_JoinOrCreateRoomHandler : AMActorLocationHandler<Player, C2L_JoinOrCreateRoom>
+	public class C2L_JoinOrCreateRoomHandler : AMActorLocationHandler<Scene, C2L_JoinOrCreateRoom>
 	{
-		protected override async ETTask Run(Player player, C2L_JoinOrCreateRoom message)
+		protected override async ETTask Run(Scene scene, C2L_JoinOrCreateRoom message)
 		{
 			Log.Error($"actor msg, join room:{message.PlayerId}");
 

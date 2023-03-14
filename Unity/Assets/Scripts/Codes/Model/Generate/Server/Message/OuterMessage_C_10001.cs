@@ -423,6 +423,9 @@ namespace ET
 		[ProtoMember(7)]
 		public int AvatarIndex { get; set; }
 
+		[ProtoMember(8)]
+		public long LobbyActorId { get; set; }
+
 	}
 
 	[Message(OuterMessage.G2C_TestHotfixMessage)]

@@ -12,5 +12,7 @@
         
         public string PlayerName { get; set; }
         public int AvatarIndex { get; set; }
+        public long LobbyActorId { get; set; }
+        public Session GateSession { get; set; }
     }
 }

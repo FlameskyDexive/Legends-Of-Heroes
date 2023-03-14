@@ -205,6 +205,7 @@ message G2C_LoginGate // IResponse
 	string LobbyAddress = 5;
 	string PlayerName = 6;
 	int AvatarIndex = 7;
+	long LobbyActorId = 8;
 }
 
 message G2C_TestHotfixMessage // IMessage

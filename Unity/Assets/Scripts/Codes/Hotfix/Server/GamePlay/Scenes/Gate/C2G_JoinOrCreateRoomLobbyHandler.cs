@@ -25,7 +25,15 @@
                     playerInfoRoom.PlayerName = player.PlayerName;
                     Log.Info($"room player:{player.PlayerName}");
                 }
+
+                //广播给房间其他的玩家，通知消息房间信息变动
+                // foreach (PlayerInfoRoom playerInfoRoom in lobby2GJoinOrCreateRoom.playerInfoRoom)
+                {
+                    // MessageHelper.SendActor(playerInfoRoom.SessionId, );
+                }
             }
+
+            response.playerInfoRoom = lobby2GJoinOrCreateRoom.playerInfoRoom;
 
             await ETTask.CompletedTask;
         }

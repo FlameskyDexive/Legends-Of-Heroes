@@ -43,9 +43,11 @@ namespace ET.Client
                 playerComponent.MyId = g2CLoginGate.PlayerId;
 
                 playerComponent.MyPlayer = new Player();
+                playerComponent.MyPlayer.GateSession = gateSession;
                 playerComponent.MyPlayer.PlayerId = playerComponent.MyId;
                 playerComponent.MyPlayer.PlayerName = g2CLoginGate.PlayerName;
                 playerComponent.MyPlayer.AvatarIndex = g2CLoginGate.AvatarIndex;
+                playerComponent.MyPlayer.LobbyActorId = g2CLoginGate.LobbyActorId;
 
                 await EventSystem.Instance.PublishAsync(clientScene, new EventType.LoginFinish());
             }

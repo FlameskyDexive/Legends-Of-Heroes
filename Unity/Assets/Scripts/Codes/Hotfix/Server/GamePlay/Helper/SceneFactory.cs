@@ -49,7 +49,7 @@ namespace ET.Server
                     scene.AddComponent<BenchmarkClientComponent>();
                     break;
                 case SceneType.Lobby:
-                    scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.OuterIPPort);
+                    // scene.AddComponent<NetServerComponent, IPEndPoint>(startSceneConfig.OuterIPPort);
                     scene.AddComponent<RoomManagerComponent>();
                     break;
             }

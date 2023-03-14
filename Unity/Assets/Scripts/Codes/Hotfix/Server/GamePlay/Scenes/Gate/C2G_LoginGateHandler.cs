@@ -18,8 +18,9 @@ namespace ET.Server
 			}
 			
 			session.RemoveComponent<SessionAcceptTimeoutComponent>();
+            StartSceneConfig config = StartSceneConfigCategory.Instance.GetBySceneName(scene.Zone, "Lobby");
 
-			PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
+            PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
 			Player player = playerComponent.AddChild<Player, string>(account);
             player.PlayerName = $"Player_{player.Id}";
             //新用户随机分配一个头像，后续可以自己在个人信息里头修改名字、头像
@@ -32,6 +33,7 @@ namespace ET.Server
 
             response.AvatarIndex = player.AvatarIndex;
             response.PlayerName = player.PlayerName;
+            response.LobbyActorId = config.InstanceId;
 			await ETTask.CompletedTask;
 		}
 	}
