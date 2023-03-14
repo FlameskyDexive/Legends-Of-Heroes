@@ -610,6 +610,36 @@ namespace ET
 
 	}
 
+	[Message(OuterMessage.G2C_UpdateRoomPlayers)]
+	[ProtoContract]
+	public partial class G2C_UpdateRoomPlayers: ProtoObject, IActorMessage
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int Error { get; set; }
+
+		[ProtoMember(3)]
+		public string Message { get; set; }
+
+		[ProtoMember(4)]
+		public long RoomId { get; set; }
+
+		[ProtoMember(5)]
+		public int CampId { get; set; }
+
+		[ProtoMember(6)]
+		public long RoomOwnerId { get; set; }
+
+		[ProtoMember(7)]
+		public string RoomName { get; set; }
+
+		[ProtoMember(8)]
+		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
+
+	}
+
 	[Message(OuterMessage.PlayerInfoRoom)]
 	[ProtoContract]
 	public partial class PlayerInfoRoom: ProtoObject
@@ -866,18 +896,19 @@ namespace ET
 		 public const ushort L2C_JoinOrCreateRoom = 10039;
 		 public const ushort C2G_JoinOrCreateRoom = 10040;
 		 public const ushort G2C_JoinOrCreateRoom = 10041;
-		 public const ushort PlayerInfoRoom = 10042;
-		 public const ushort C2G_CreateNewRoom = 10043;
-		 public const ushort G2C_CreateNewRoom = 10044;
-		 public const ushort G2C_PlayerTriggerRoom = 10045;
-		 public const ushort C2G_LeaveRoom = 10046;
-		 public const ushort G2C_LeaveRoom = 10047;
-		 public const ushort PlayerBattleInfo = 10048;
-		 public const ushort C2G_StartGame = 10049;
-		 public const ushort G2C_StartGame = 10050;
-		 public const ushort PlayerBattlePoint = 10051;
-		 public const ushort G2C_PrepareToEnterBattle = 10052;
-		 public const ushort C2G_PreparedToEnterBattle = 10053;
-		 public const ushort G2C_AllowToEnterMap = 10054;
+		 public const ushort G2C_UpdateRoomPlayers = 10042;
+		 public const ushort PlayerInfoRoom = 10043;
+		 public const ushort C2G_CreateNewRoom = 10044;
+		 public const ushort G2C_CreateNewRoom = 10045;
+		 public const ushort G2C_PlayerTriggerRoom = 10046;
+		 public const ushort C2G_LeaveRoom = 10047;
+		 public const ushort G2C_LeaveRoom = 10048;
+		 public const ushort PlayerBattleInfo = 10049;
+		 public const ushort C2G_StartGame = 10050;
+		 public const ushort G2C_StartGame = 10051;
+		 public const ushort PlayerBattlePoint = 10052;
+		 public const ushort G2C_PrepareToEnterBattle = 10053;
+		 public const ushort C2G_PreparedToEnterBattle = 10054;
+		 public const ushort G2C_AllowToEnterMap = 10055;
 	}
 }

@@ -299,6 +299,18 @@ message G2C_JoinOrCreateRoom // IResponse
     repeated PlayerInfoRoom playerInfoRoom = 8;
 }
 
+message G2C_UpdateRoomPlayers // IActorMessage
+{
+    int32 RpcId = 1;
+    int32 Error = 2;
+    string Message = 3;
+    int64 RoomId = 4; //加入的房间Id
+    int32 CampId = 5; //阵营，房间位置
+    int64 RoomOwnerId = 6;
+    string RoomName = 7;
+    repeated PlayerInfoRoom playerInfoRoom = 8;
+}
+
 message PlayerInfoRoom
 {
     string Account = 1;

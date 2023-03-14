@@ -1,11 +1,12 @@
-﻿namespace ET.Server
+﻿using System.Collections.Generic;
+
+namespace ET.Server
 {
 	[MessageHandler(SceneType.Gate)]
 	public class C2G_JoinOrCreateRoomLobbyHandler : AMRpcHandler<C2G_JoinOrCreateRoom, G2C_JoinOrCreateRoom>
 	{
 		protected override async ETTask Run(Session session, C2G_JoinOrCreateRoom request, G2C_JoinOrCreateRoom response)
 		{
-			// Player player = session.GetComponent<SessionPlayerComponent>().GetMyPlayer();
             Scene scene = session.DomainScene();
             PlayerComponent playerComponent = scene.GetComponent<PlayerComponent>();
 
@@ -23,13 +24,25 @@
                     Player player = playerComponent.Get(playerInfoRoom.PlayerId);
                     playerInfoRoom.Account = player.Account;
                     playerInfoRoom.PlayerName = player.PlayerName;
+                    if (request.PlayerId == playerInfoRoom.PlayerId)
+                    {
+                        playerInfoRoom.SessionId = session.InstanceId;
+                    }
                     Log.Info($"room player:{player.PlayerName}");
                 }
 
                 //广播给房间其他的玩家，通知消息房间信息变动
-                // foreach (PlayerInfoRoom playerInfoRoom in lobby2GJoinOrCreateRoom.playerInfoRoom)
+                G2C_UpdateRoomPlayers updateRoomPlayers = new G2C_UpdateRoomPlayers()
                 {
-                    // MessageHelper.SendActor(playerInfoRoom.SessionId, );
+                    CampId = lobby2GJoinOrCreateRoom.CampId,
+                    playerInfoRoom = lobby2GJoinOrCreateRoom.playerInfoRoom,
+                    RoomId = lobby2GJoinOrCreateRoom.RoomId,
+                    RoomOwnerId = lobby2GJoinOrCreateRoom.RoomOwnerId,
+
+                };
+                foreach (PlayerInfoRoom playerInfoRoom in lobby2GJoinOrCreateRoom.playerInfoRoom)
+                {
+                    MessageHelper.SendActor(playerInfoRoom.SessionId, updateRoomPlayers);
                 }
             }
 

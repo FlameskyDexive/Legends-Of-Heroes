@@ -22,8 +22,8 @@ namespace ET.Client
                 }
 
                 //测试actor消息，当前有点问题，通信异常，暂时用网关转发。
-                // C2L_JoinOrCreateRoom c2LJoinOrCreateRoom = new C2L_JoinOrCreateRoom() { PlayerId = playerComponent.MyId };
-                // clientScene.GetComponent<SessionComponent>().Session.Send(playerComponent.MyPlayer.LobbyActorId, c2LJoinOrCreateRoom);
+                C2L_JoinOrCreateRoom c2LJoinOrCreateRoom = new C2L_JoinOrCreateRoom() { PlayerId = playerComponent.MyId };
+                clientScene.GetComponent<SessionComponent>().Session.Send(playerComponent.MyPlayer.LobbyActorId, c2LJoinOrCreateRoom);
             }
             catch (Exception e)
             {
