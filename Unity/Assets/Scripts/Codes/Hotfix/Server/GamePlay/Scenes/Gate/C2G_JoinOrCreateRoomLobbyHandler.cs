@@ -15,11 +15,11 @@ namespace ET.Server
             Lobby2G_JoinOrCreateRoom lobby2GJoinOrCreateRoom = (Lobby2G_JoinOrCreateRoom)await ActorMessageSenderComponent.Instance.Call(
                 config.InstanceId, new G2Lobby_JoinOrCreateRoom() {PlayerId = request.PlayerId, RoomId = request.RoomId});
 
-            Log.Info($"C2G_JoinOrCreateRoomLobbyHandler, {lobby2GJoinOrCreateRoom.playerInfoRoom?.Count}");
+            Log.Info($"C2G_JoinOrCreateRoomLobbyHandler, {lobby2GJoinOrCreateRoom.roomInfo.playerInfoRoom?.Count}");
             //此处根据返回来房间的playerId获取Player的信息，赋值，并返回给Client
-            if (lobby2GJoinOrCreateRoom.playerInfoRoom?.Count > 0)
+            if (lobby2GJoinOrCreateRoom.roomInfo?.playerInfoRoom?.Count > 0)
             {
-                foreach (PlayerInfoRoom playerInfoRoom in lobby2GJoinOrCreateRoom.playerInfoRoom)
+                foreach (PlayerInfoRoom playerInfoRoom in lobby2GJoinOrCreateRoom.roomInfo.playerInfoRoom)
                 {
                     Player player = playerComponent.Get(playerInfoRoom.PlayerId);
                     playerInfoRoom.Account = player.Account;
@@ -34,19 +34,16 @@ namespace ET.Server
                 //广播给房间其他的玩家，通知消息房间信息变动
                 G2C_UpdateRoomPlayers updateRoomPlayers = new G2C_UpdateRoomPlayers()
                 {
-                    CampId = lobby2GJoinOrCreateRoom.CampId,
-                    playerInfoRoom = lobby2GJoinOrCreateRoom.playerInfoRoom,
-                    RoomId = lobby2GJoinOrCreateRoom.RoomId,
-                    RoomOwnerId = lobby2GJoinOrCreateRoom.RoomOwnerId,
+                    roomInfo = lobby2GJoinOrCreateRoom.roomInfo
 
                 };
-                foreach (PlayerInfoRoom playerInfoRoom in lobby2GJoinOrCreateRoom.playerInfoRoom)
+                foreach (PlayerInfoRoom playerInfoRoom in lobby2GJoinOrCreateRoom.roomInfo.playerInfoRoom)
                 {
                     MessageHelper.SendActor(playerInfoRoom.SessionId, updateRoomPlayers);
                 }
             }
 
-            response.playerInfoRoom = lobby2GJoinOrCreateRoom.playerInfoRoom;
+            response.roomInfo = lobby2GJoinOrCreateRoom.roomInfo;
 
             await ETTask.CompletedTask;
         }

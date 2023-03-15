@@ -594,19 +594,7 @@ namespace ET
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
-		public long RoomId { get; set; }
-
-		[ProtoMember(5)]
-		public int CampId { get; set; }
-
-		[ProtoMember(6)]
-		public long RoomOwnerId { get; set; }
-
-		[ProtoMember(7)]
-		public string RoomName { get; set; }
-
-		[ProtoMember(8)]
-		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
+		public RoomInfoProto roomInfo { get; set; }
 
 	}
 
@@ -624,18 +612,27 @@ namespace ET
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
+		public RoomInfoProto roomInfo { get; set; }
+
+	}
+
+	[Message(OuterMessage.RoomInfoProto)]
+	[ProtoContract]
+	public partial class RoomInfoProto: ProtoObject
+	{
+		[ProtoMember(1)]
 		public long RoomId { get; set; }
 
-		[ProtoMember(5)]
+		[ProtoMember(2)]
 		public int CampId { get; set; }
 
-		[ProtoMember(6)]
+		[ProtoMember(3)]
 		public long RoomOwnerId { get; set; }
 
-		[ProtoMember(7)]
+		[ProtoMember(4)]
 		public string RoomName { get; set; }
 
-		[ProtoMember(8)]
+		[ProtoMember(5)]
 		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
 
 	}
@@ -897,18 +894,19 @@ namespace ET
 		 public const ushort C2G_JoinOrCreateRoom = 10040;
 		 public const ushort G2C_JoinOrCreateRoom = 10041;
 		 public const ushort G2C_UpdateRoomPlayers = 10042;
-		 public const ushort PlayerInfoRoom = 10043;
-		 public const ushort C2G_CreateNewRoom = 10044;
-		 public const ushort G2C_CreateNewRoom = 10045;
-		 public const ushort G2C_PlayerTriggerRoom = 10046;
-		 public const ushort C2G_LeaveRoom = 10047;
-		 public const ushort G2C_LeaveRoom = 10048;
-		 public const ushort PlayerBattleInfo = 10049;
-		 public const ushort C2G_StartGame = 10050;
-		 public const ushort G2C_StartGame = 10051;
-		 public const ushort PlayerBattlePoint = 10052;
-		 public const ushort G2C_PrepareToEnterBattle = 10053;
-		 public const ushort C2G_PreparedToEnterBattle = 10054;
-		 public const ushort G2C_AllowToEnterMap = 10055;
+		 public const ushort RoomInfoProto = 10043;
+		 public const ushort PlayerInfoRoom = 10044;
+		 public const ushort C2G_CreateNewRoom = 10045;
+		 public const ushort G2C_CreateNewRoom = 10046;
+		 public const ushort G2C_PlayerTriggerRoom = 10047;
+		 public const ushort C2G_LeaveRoom = 10048;
+		 public const ushort G2C_LeaveRoom = 10049;
+		 public const ushort PlayerBattleInfo = 10050;
+		 public const ushort C2G_StartGame = 10051;
+		 public const ushort G2C_StartGame = 10052;
+		 public const ushort PlayerBattlePoint = 10053;
+		 public const ushort G2C_PrepareToEnterBattle = 10054;
+		 public const ushort C2G_PreparedToEnterBattle = 10055;
+		 public const ushort G2C_AllowToEnterMap = 10056;
 	}
 }

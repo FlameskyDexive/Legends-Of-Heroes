@@ -1,0 +1,4 @@
+{"list":[
+{"_t":"PlayModeConfig","_id":1000,"PlayModeType":1,"Name":"限时模式","RoomMaxPlayer":20},
+{"_t":"PlayModeConfig","_id":1001,"PlayModeType":2,"Name":"米克尔","RoomMaxPlayer":2},
+]}

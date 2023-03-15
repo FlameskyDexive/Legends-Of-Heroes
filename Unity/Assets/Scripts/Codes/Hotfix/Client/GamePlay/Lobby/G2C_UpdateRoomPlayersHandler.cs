@@ -5,7 +5,7 @@
     {
         protected override async ETTask Run(Session session, G2C_UpdateRoomPlayers message)
         {
-            Log.Info($"receive broadcast room players update, {message?.playerInfoRoom?.Count}");
+            Log.Info($"receive broadcast room players update, {message?.roomInfo?.playerInfoRoom?.Count}");
             await ETTask.CompletedTask;
         }
     }

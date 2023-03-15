@@ -29,10 +29,11 @@ namespace ET.Server
                 // Log.Info($"player count:{room.AllPlayers.Count}, {player?.PlayerName}");
             }
 
-            response.RoomId = room.Id;
-            response.CampId = campId;
-            response.RoomOwnerId = room.RoomOwnerPlayerId;
-            response.playerInfoRoom = new List<PlayerInfoRoom>(room.AllPlayers.Values);
+            response.roomInfo = new RoomInfoProto();
+            response.roomInfo.RoomId = room.Id;
+            response.roomInfo.CampId = campId;
+            response.roomInfo.RoomOwnerId = room.RoomOwnerPlayerId;
+            response.roomInfo.playerInfoRoom = new List<PlayerInfoRoom>(room.AllPlayers.Values);
             await ETTask.CompletedTask;
         }
 	}

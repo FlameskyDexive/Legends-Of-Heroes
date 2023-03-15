@@ -391,19 +391,7 @@ namespace ET
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
-		public long RoomId { get; set; }
-
-		[ProtoMember(5)]
-		public int CampId { get; set; }
-
-		[ProtoMember(6)]
-		public long RoomOwnerId { get; set; }
-
-		[ProtoMember(7)]
-		public string RoomName { get; set; }
-
-		[ProtoMember(8)]
-		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
+		public RoomInfoProto roomInfo { get; set; }
 
 	}
 

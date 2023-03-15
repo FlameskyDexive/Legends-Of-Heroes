@@ -290,25 +290,26 @@ message C2G_JoinOrCreateRoom // IRequest
 message G2C_JoinOrCreateRoom // IResponse
 {
     int32 RpcId = 1;
-    int32 Error = 2;
+	int32 Error = 2;
     string Message = 3;
-    int64 RoomId = 4; //加入的房间Id
-    int32 CampId = 5; //阵营，房间位置
-    int64 RoomOwnerId = 6;
-    string RoomName = 7;
-    repeated PlayerInfoRoom playerInfoRoom = 8;
+    RoomInfoProto roomInfo = 4;
 }
 
 message G2C_UpdateRoomPlayers // IActorMessage
 {
     int32 RpcId = 1;
-    int32 Error = 2;
+	int32 Error = 2;
     string Message = 3;
-    int64 RoomId = 4; //加入的房间Id
-    int32 CampId = 5; //阵营，房间位置
-    int64 RoomOwnerId = 6;
-    string RoomName = 7;
-    repeated PlayerInfoRoom playerInfoRoom = 8;
+    RoomInfoProto roomInfo = 4;
+}
+
+message RoomInfoProto
+{
+    int64 RoomId = 1; //加入的房间Id
+    int32 CampId = 2; //阵营，房间位置
+    int64 RoomOwnerId = 3;
+    string RoomName = 4;
+    repeated PlayerInfoRoom playerInfoRoom = 5;
 }
 
 message PlayerInfoRoom

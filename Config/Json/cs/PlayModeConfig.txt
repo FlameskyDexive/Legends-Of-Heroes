@@ -1,0 +1,4 @@
+{"list":[
+{"_t":"PlayModeConfig","_id":1000,"PlayModeType":1,"Name":"限时模式","Desc":"多个玩家限时抢积分排名","RoomMaxPlayer":20},
+{"_t":"PlayModeConfig","_id":1001,"PlayModeType":2,"Name":"米克尔","Desc":"两个玩家单挑模式，胜者赢取积分奖励","RoomMaxPlayer":2},
+]}

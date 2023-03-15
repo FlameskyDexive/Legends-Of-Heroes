@@ -14,11 +14,11 @@ namespace ET.Client
                 C2G_JoinOrCreateRoom joinData = new C2G_JoinOrCreateRoom() { PlayerId = playerComponent.MyId };
                 G2C_JoinOrCreateRoom l2CJoinOrCreateRoomLobby = await clientScene.GetComponent<SessionComponent>().Session.Call(joinData) as G2C_JoinOrCreateRoom;
                 
-                if (l2CJoinOrCreateRoomLobby.playerInfoRoom?.Count > 0)
+                if (l2CJoinOrCreateRoomLobby.roomInfo?.playerInfoRoom?.Count > 0)
                 {
-                    int curRoomPlayerCount = l2CJoinOrCreateRoomLobby.playerInfoRoom.Count;
+                    int curRoomPlayerCount = l2CJoinOrCreateRoomLobby.roomInfo.playerInfoRoom.Count;
                     
-                    Log.Info($"room players:{l2CJoinOrCreateRoomLobby.playerInfoRoom.Count}");
+                    Log.Info($"room players:{l2CJoinOrCreateRoomLobby.roomInfo.playerInfoRoom.Count}");
                 }
 
                 //测试actor消息，当前有点问题，通信异常，暂时用网关转发。
