@@ -2,6 +2,7 @@
 
 namespace ET.Server
 {
+    [FriendOf(typeof(Room))]
 	[ActorMessageHandler(SceneType.Lobby)]
     public class G2Lobby_JoinOrCreateRoomHandler : AMActorRpcHandler<Scene, G2Lobby_JoinOrCreateRoom, Lobby2G_JoinOrCreateRoom>
     {

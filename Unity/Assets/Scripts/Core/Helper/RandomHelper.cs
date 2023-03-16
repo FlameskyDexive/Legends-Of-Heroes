@@ -34,6 +34,7 @@ namespace ET
     
     public static class RandomHelper
     {
+        [StaticField]
         public static Random random = new Random(Guid.NewGuid().GetHashCode());
         
         public static ulong RandUInt64()

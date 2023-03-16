@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ET.Client
 {
-    public class LobbyHelper
+    public static class LobbyHelper
     {
         public static async ETTask JoinOrCreateRoom(Scene clientScene)
         {
