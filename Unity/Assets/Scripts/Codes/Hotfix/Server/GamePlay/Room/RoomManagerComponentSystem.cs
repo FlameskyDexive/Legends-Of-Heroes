@@ -72,7 +72,7 @@ namespace ET.Server
             {
                 foreach (Room room in self.Rooms.Values)
                 {
-                    if (room.MaxPlayerNum == maxPlayerNum && room.AllPlayers.Count < maxPlayerNum)
+                    if (room.MaxPlayerNum == maxPlayerNum && room.AllPlayers.Count <= maxPlayerNum)
                         return room;
                 }
             }

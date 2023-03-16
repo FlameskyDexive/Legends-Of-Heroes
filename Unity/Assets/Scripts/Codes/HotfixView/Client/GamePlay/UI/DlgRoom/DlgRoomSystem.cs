@@ -41,7 +41,7 @@ namespace ET.Client
             PlayerInfoRoom playerInfo = self.ClientScene().GetComponent<RoomComponent>().PlayerInfos[index];
             //
             itemRole.E_RoleNameText.text = playerInfo.PlayerName;
-            // itemRole.E_AvatarImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{playerInfo.}");
+            itemRole.E_AvatarImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{playerInfo.AvatarIndex}");
 
         }
         

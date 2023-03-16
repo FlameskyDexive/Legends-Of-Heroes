@@ -662,6 +662,9 @@ namespace ET
 		[ProtoMember(7)]
 		public string PlayerName { get; set; }
 
+		[ProtoMember(8)]
+		public int AvatarIndex { get; set; }
+
 	}
 
 	[ResponseType(nameof(G2C_CreateNewRoom))]

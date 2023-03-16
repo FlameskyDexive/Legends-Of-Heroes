@@ -321,6 +321,7 @@ message PlayerInfoRoom
     int32 CampId = 5;
     int64 PlayerId = 6;
     string PlayerName = 7;
+	int32 AvatarIndex = 8;
 }
 
 //ResponseType G2C_CreateNewRoom

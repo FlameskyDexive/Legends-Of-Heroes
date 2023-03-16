@@ -24,6 +24,7 @@ namespace ET.Server
                     Player player = playerComponent.Get(playerInfoRoom.PlayerId);
                     playerInfoRoom.Account = player.Account;
                     playerInfoRoom.PlayerName = player.PlayerName;
+                    playerInfoRoom.AvatarIndex = player.AvatarIndex;
                     if (request.PlayerId == playerInfoRoom.PlayerId)
                     {
                         playerInfoRoom.SessionId = session.InstanceId;
