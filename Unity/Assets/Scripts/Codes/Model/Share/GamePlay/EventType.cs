@@ -35,5 +35,11 @@
         {
             public Unit Unit;
         }
+
+        public struct UpdateRoomPlayers
+        {
+            public G2C_UpdateRoomPlayers roomPlayersProto;
+        }
+
     }
 }

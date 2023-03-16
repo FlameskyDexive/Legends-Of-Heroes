@@ -1,0 +1,7 @@
+﻿namespace ET
+{
+    namespace EventType
+    {
+        
+    }
+}

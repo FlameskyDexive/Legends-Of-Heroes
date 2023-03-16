@@ -23,7 +23,7 @@ namespace ET.Client
 
             self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.AddItemRefreshListener((Transform transform, int index) =>
             {
-                
+                self.OnScrollItemRefreshHandler(transform, index);
             });
 
         }
@@ -32,14 +32,18 @@ namespace ET.Client
 		{
             LobbyHelper.JoinOrCreateRoom(self.DomainScene()).Coroutine();
 
+            int count = self.ClientScene().GetComponent<RoomComponent>().PlayerInfos.Count;
+            self.AddUIScrollItems(ref self.ScrollItemRoles, count);
+            self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.SetVisible(true, count);
         }
 
         public static void OnScrollItemRefreshHandler(this DlgRoom self, Transform transform, int index)
         {
             Scroll_Item_role itemRole = self.ScrollItemRoles[index].BindTrans(transform);
+            PlayerInfoRoom playerInfo = self.ClientScene().GetComponent<RoomComponent>().PlayerInfos[index];
             //
-            // itemRole.E_RoleNameText.text = info.Name;
-            // itemRole.E_AvatarImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{info.AvatarIndex}");
+            itemRole.E_RoleNameText.text = playerInfo.PlayerName;
+            // itemRole.E_AvatarImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{playerInfo.}");
 
         }
         
@@ -55,6 +59,11 @@ namespace ET.Client
         public static async ETTask OnCancelClickHandler(this DlgRoom self)
         {
             self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Room);
+        }
+
+        public static void RefreshRoomInfo(this DlgRoom self)
+        {
+            
         }
 
     }
