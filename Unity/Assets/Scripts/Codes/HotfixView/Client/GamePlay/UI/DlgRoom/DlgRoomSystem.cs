@@ -32,9 +32,7 @@ namespace ET.Client
 		{
             LobbyHelper.JoinOrCreateRoom(self.DomainScene()).Coroutine();
 
-            int count = self.ClientScene().GetComponent<RoomComponent>().PlayerInfos.Count;
-            self.AddUIScrollItems(ref self.ScrollItemRoles, count);
-            self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.SetVisible(true, count);
+            self.RefreshRoomInfo();
         }
 
         public static void OnScrollItemRefreshHandler(this DlgRoom self, Transform transform, int index)
@@ -63,7 +61,13 @@ namespace ET.Client
 
         public static void RefreshRoomInfo(this DlgRoom self)
         {
-            
+            List<PlayerInfoRoom> playerInfos = self.ClientScene().GetComponent<RoomComponent>().PlayerInfos;
+            if (playerInfos == null || playerInfos.Count == 0)
+                return;
+            int count = playerInfos.Count;
+            self.RemoveUIScrollItems(ref self.ScrollItemRoles);
+            self.AddUIScrollItems(ref self.ScrollItemRoles, count);
+            self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.SetVisible(true, count);
         }
 
     }

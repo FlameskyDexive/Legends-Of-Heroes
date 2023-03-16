@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using YooAsset;
 
 namespace ET
 {
@@ -148,12 +149,11 @@ namespace ET
         public static GameObject GetGameObjectByResType( string poolName)
         {
             GameObject pb = null;
-            Dictionary<string, UnityEngine.Object>  assetDict = AssetsBundleHelper.LoadBundle(poolName + ".unity3d");
-            pb = assetDict[poolName] as GameObject;
-            return pb;
-
-            // string path = PathHelper.GetUIItemPath(poolName);
-            // return XAssetLoader.LoadAsset<GameObject>(path);
+            // Dictionary<string, UnityEngine.Object>  assetDict = AssetsBundleHelper.LoadBundle(poolName + ".unity3d");
+            // pb = assetDict[poolName] as GameObject;
+            pb = YooAssets.LoadAssetSync<GameObject>($"{poolName}").AssetObject as GameObject;
+            return /*UnityEngine.Object.Instantiate*/(pb);
+            
         }
     }
 }
