@@ -30,6 +30,7 @@ namespace ET.Client
 
         public static void UpdateRoomPlayersInfo(this RoomComponent self, G2C_UpdateRoomPlayers roomPlayers)
         {
+            self.RoomInfo = roomPlayers.roomInfo;
             self.PlayerInfos = roomPlayers.roomInfo.playerInfoRoom;
             Log.Info($"refresh room info, {self.PlayerInfos.Count}");
         }

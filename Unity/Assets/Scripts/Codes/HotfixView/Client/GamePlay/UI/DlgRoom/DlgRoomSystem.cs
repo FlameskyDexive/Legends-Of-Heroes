@@ -90,7 +90,8 @@ namespace ET.Client
 
         public static void RefreshRoomInfo(this DlgRoom self)
         {
-            List<PlayerInfoRoom> playerInfos = self.ClientScene().GetComponent<RoomComponent>().PlayerInfos;
+            RoomComponent roomComponent = self.ClientScene().GetComponent<RoomComponent>();
+            List<PlayerInfoRoom> playerInfos = roomComponent.PlayerInfos;
             if (playerInfos == null || playerInfos.Count == 0)
                 return;
             int count = playerInfos.Count;
@@ -98,7 +99,7 @@ namespace ET.Client
             self.AddUIScrollItems(ref self.ScrollItemRoles, count);
             self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.SetVisible(true, count);
             //判断是否准备好（房间满人），UI倒计时5s，随后跳转进入战斗。
-            if (count == 2)
+            if (roomComponent.RoomInfo.IsReady)
             {
                 self.StartCountDown().Coroutine();
             }
@@ -114,6 +115,7 @@ namespace ET.Client
             }
             await TimerComponent.Instance.WaitAsync(500);
             self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Room);
+            self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Battle);
         }
 
     }

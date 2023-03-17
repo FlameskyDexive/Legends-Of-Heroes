@@ -7,6 +7,6 @@ namespace ET.Client
     {
         public List<PlayerInfoRoom> PlayerInfos = new List<PlayerInfoRoom>();
         
-        
+        public RoomInfoProto RoomInfo { get; set; }
     }
 }
