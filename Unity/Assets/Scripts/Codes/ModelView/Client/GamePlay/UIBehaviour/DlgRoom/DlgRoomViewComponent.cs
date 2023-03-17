@@ -92,6 +92,40 @@ namespace ET.Client
      		}
      	}
 
+		public UnityEngine.UI.Text ECountDownText
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_ECountDownText == null )
+     			{
+		    		this.m_ECountDownText = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"BackGround/ECountDown");
+     			}
+     			return this.m_ECountDownText;
+     		}
+     	}
+
+		public UnityEngine.UI.Text ETitleText
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_ETitleText == null )
+     			{
+		    		this.m_ETitleText = UIFindHelper.FindDeepChild<UnityEngine.UI.Text>(this.uiTransform.gameObject,"BackGround/ETitle");
+     			}
+     			return this.m_ETitleText;
+     		}
+     	}
+
 		public void DestroyWidget()
 		{
 			this.m_E_ConfirmButton = null;
@@ -99,6 +133,8 @@ namespace ET.Client
 			this.m_ELoopScrollList_RolesLoopHorizontalScrollRect = null;
 			this.m_E_CancelButton = null;
 			this.m_E_CancelImage = null;
+			this.m_ECountDownText = null;
+			this.m_ETitleText = null;
 			this.uiTransform = null;
 		}
 
@@ -107,6 +143,8 @@ namespace ET.Client
 		private UnityEngine.UI.LoopHorizontalScrollRect m_ELoopScrollList_RolesLoopHorizontalScrollRect = null;
 		private UnityEngine.UI.Button m_E_CancelButton = null;
 		private UnityEngine.UI.Image m_E_CancelImage = null;
+		private UnityEngine.UI.Text m_ECountDownText = null;
+		private UnityEngine.UI.Text m_ETitleText = null;
 		public Transform uiTransform = null;
 	}
 }

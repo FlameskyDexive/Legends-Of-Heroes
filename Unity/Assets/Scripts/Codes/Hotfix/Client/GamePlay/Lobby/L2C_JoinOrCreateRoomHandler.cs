@@ -7,7 +7,7 @@ namespace ET.Client
 	{
 		protected override async ETTask Run(Session session, L2C_JoinOrCreateRoom message)
 		{
-			Log.Info($"L2C_JoinOrCreateRoom, {message.playerInfoRoom?.Count}");
+			// Log.Info($"L2C_JoinOrCreateRoom, {message.playerInfoRoom?.Count}");
             await ETTask.CompletedTask;
         }
 	}

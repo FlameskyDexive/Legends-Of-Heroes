@@ -548,19 +548,7 @@ namespace ET
 		public string Message { get; set; }
 
 		[ProtoMember(4)]
-		public long RoomId { get; set; }
-
-		[ProtoMember(5)]
-		public int CampId { get; set; }
-
-		[ProtoMember(6)]
-		public long RoomOwnerId { get; set; }
-
-		[ProtoMember(7)]
-		public string RoomName { get; set; }
-
-		[ProtoMember(8)]
-		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
+		public RoomInfoProto roomInfo { get; set; }
 
 	}
 
@@ -577,6 +565,9 @@ namespace ET
 
 		[ProtoMember(3)]
 		public long RoomId { get; set; }
+
+		[ProtoMember(4)]
+		public int PlayMode { get; set; }
 
 	}
 
@@ -596,6 +587,9 @@ namespace ET
 		[ProtoMember(4)]
 		public RoomInfoProto roomInfo { get; set; }
 
+		[ProtoMember(5)]
+		public int PlayMode { get; set; }
+
 	}
 
 	[Message(OuterMessage.G2C_UpdateRoomPlayers)]
@@ -613,6 +607,9 @@ namespace ET
 
 		[ProtoMember(4)]
 		public RoomInfoProto roomInfo { get; set; }
+
+		[ProtoMember(5)]
+		public int PlayMode { get; set; }
 
 	}
 
@@ -634,6 +631,12 @@ namespace ET
 
 		[ProtoMember(5)]
 		public List<PlayerInfoRoom> playerInfoRoom { get; set; }
+
+		[ProtoMember(6)]
+		public int PlayMode { get; set; }
+
+		[ProtoMember(7)]
+		public bool IsReady { get; set; }
 
 	}
 
@@ -678,6 +681,9 @@ namespace ET
 		[ProtoMember(2)]
 		public long PlayerId { get; set; }
 
+		[ProtoMember(3)]
+		public int PlayMode { get; set; }
+
 	}
 
 	[Message(OuterMessage.G2C_CreateNewRoom)]
@@ -697,7 +703,7 @@ namespace ET
 		public int RoomId { get; set; }
 
 		[ProtoMember(5)]
-		public int mode { get; set; }
+		public int PlayMode { get; set; }
 
 		[ProtoMember(6)]
 		public int CampId { get; set; }
@@ -761,7 +767,7 @@ namespace ET
 		public long PlayerId { get; set; }
 
 		[ProtoMember(8)]
-		public bool isDestory { get; set; }
+		public bool IsDestory { get; set; }
 
 	}
 
@@ -774,6 +780,25 @@ namespace ET
 
 		[ProtoMember(2)]
 		public int HeroConfig { get; set; }
+
+	}
+
+	[Message(OuterMessage.G2C_StartEnterMap)]
+	[ProtoContract]
+	public partial class G2C_StartEnterMap: ProtoObject, IActorMessage
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int Error { get; set; }
+
+		[ProtoMember(3)]
+		public string Message { get; set; }
+
+// 自己unitId
+		[ProtoMember(4)]
+		public long MyId { get; set; }
 
 	}
 
@@ -905,11 +930,12 @@ namespace ET
 		 public const ushort C2G_LeaveRoom = 10048;
 		 public const ushort G2C_LeaveRoom = 10049;
 		 public const ushort PlayerBattleInfo = 10050;
-		 public const ushort C2G_StartGame = 10051;
-		 public const ushort G2C_StartGame = 10052;
-		 public const ushort PlayerBattlePoint = 10053;
-		 public const ushort G2C_PrepareToEnterBattle = 10054;
-		 public const ushort C2G_PreparedToEnterBattle = 10055;
-		 public const ushort G2C_AllowToEnterMap = 10056;
+		 public const ushort G2C_StartEnterMap = 10051;
+		 public const ushort C2G_StartGame = 10052;
+		 public const ushort G2C_StartGame = 10053;
+		 public const ushort PlayerBattlePoint = 10054;
+		 public const ushort G2C_PrepareToEnterBattle = 10055;
+		 public const ushort C2G_PreparedToEnterBattle = 10056;
+		 public const ushort G2C_AllowToEnterMap = 10057;
 	}
 }

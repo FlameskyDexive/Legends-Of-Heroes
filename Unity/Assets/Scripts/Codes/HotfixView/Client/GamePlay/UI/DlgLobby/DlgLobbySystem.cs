@@ -17,7 +17,7 @@ namespace ET.Client
 		  });
 		  self.View.E_SoloButton.AddListener(()=>
 		  {
-			  self.OnEnterMapClickHandler().Coroutine();
+			  self.OnSoloClickHandler().Coroutine();
 		  });
           
 		
@@ -39,10 +39,9 @@ namespace ET.Client
 		
 		public static async ETTask OnEnterMapClickHandler(this DlgLobby self)
         {
-            //await EnterMapHelper.EnterMapAsync(self.DomainScene());
-            //self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
-            self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Room);
-			// await EnterMapHelper.EnterMapAsync(self.ClientScene());
+            // await EnterMapHelper.EnterMapAsync(self.DomainScene());
+            self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
+            await EnterMapHelper.EnterMapAsync(self.ClientScene());
 		}
         
         /// <summary>
@@ -52,7 +51,7 @@ namespace ET.Client
 		/// <returns></returns>
 		public static async ETTask OnSoloClickHandler(this DlgLobby self)
         {
-            
-		}
+            self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Room);
+        }
 	}
 }

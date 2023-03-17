@@ -377,6 +377,15 @@ message PlayerBattleInfo
     int32 HeroConfig = 2;
 }
 
+message G2C_StartEnterMap // IActorMessage
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	// 自己unitId
+	int64 MyId = 4;
+}
+
 //ResponseType G2C_StartGame
 message C2G_StartGame // IRequest
 {

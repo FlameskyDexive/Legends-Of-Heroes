@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using ET.EventType;
+using System.Collections.Generic;
 
 namespace ET.Server
 {
@@ -46,8 +47,24 @@ namespace ET.Server
             
             response.roomInfo = lobby2GJoinOrCreateRoom.roomInfo;
             response.roomInfo.IsReady = lobby2GJoinOrCreateRoom.roomInfo.playerInfoRoom.Count == 2;
+            if(response.roomInfo.IsReady)
+                StartToEnterMap(response.roomInfo.playerInfoRoom).Coroutine();
 
             await ETTask.CompletedTask;
+        }
+
+        /// <summary>
+        /// 广播进入地图
+        /// </summary>
+        /// <param name="playerInfos"></param>
+        /// <returns></returns>
+        private async ETTask StartToEnterMap(List<PlayerInfoRoom> playerInfos)
+        {
+            await TimerComponent.Instance.WaitAsync(6000);
+            foreach (PlayerInfoRoom playerInfoRoom in playerInfos)
+            {
+                MessageHelper.SendActor(playerInfoRoom.SessionId, new G2C_StartEnterMap(){MyId = playerInfoRoom.PlayerId});
+            }
         }
 	}
 }

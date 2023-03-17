@@ -8,9 +8,35 @@ namespace ET.Client
 {
 	[FriendOf(typeof(DlgRoom))]
 	public static  class DlgRoomSystem
-	{
+    {
 
-		public static void RegisterUIEvent(this DlgRoom self)
+        public class DlgRoomAwakeSystem : AwakeSystem<DlgRoom>
+        {
+            protected override void Awake(DlgRoom self)
+            {
+                // self.Awake();
+            }
+        }
+        public class DlgRoomUpdateSystem : UpdateSystem<DlgRoom>
+        {
+            protected override void Update(DlgRoom self)
+            {
+                // if (Time.frameCount % 3 == 0)
+                // self.Tick();
+
+                self.Update();
+            }
+        }
+
+        public class DlgRoomDestroySystem : DestroySystem<DlgRoom>
+        {
+            protected override void Destroy(DlgRoom self)
+            {
+
+            }
+        }
+
+        public static void RegisterUIEvent(this DlgRoom self)
         {
             self.View.E_ConfirmButton.AddListener(() =>
             {
@@ -44,8 +70,11 @@ namespace ET.Client
             itemRole.E_AvatarImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{playerInfo.AvatarIndex}");
 
         }
-        
-        // private static void RefreshRoleInfo(this DlgRoom, RoleInfo roleInfo, )
+
+        private static void Update(this DlgRoom self)
+        {
+            
+        }
 
 
         public static async ETTask OnEnterMapClickHandler(this DlgRoom self)
@@ -68,6 +97,23 @@ namespace ET.Client
             self.RemoveUIScrollItems(ref self.ScrollItemRoles);
             self.AddUIScrollItems(ref self.ScrollItemRoles, count);
             self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.SetVisible(true, count);
+            //判断是否准备好（房间满人），UI倒计时5s，随后跳转进入战斗。
+            if (count == 2)
+            {
+                self.StartCountDown().Coroutine();
+            }
+        }
+
+        public static async ETTask StartCountDown(this DlgRoom self)
+        {
+            //临时方便写法，正式写法换成开一个计时器或者Update里头更新倒计时。
+            for (int i = 5; i > 0; i--)
+            {
+                self.View.ECountDownText.text = i.ToString();
+                await TimerComponent.Instance.WaitAsync(1000);
+            }
+            await TimerComponent.Instance.WaitAsync(500);
+            self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Room);
         }
 
     }
