@@ -43,8 +43,9 @@ namespace ET.Server
                     MessageHelper.SendActor(playerInfoRoom.SessionId, updateRoomPlayers);
                 }
             }
-
+            
             response.roomInfo = lobby2GJoinOrCreateRoom.roomInfo;
+            response.roomInfo.IsReady = lobby2GJoinOrCreateRoom.roomInfo.playerInfoRoom.Count == 2;
 
             await ETTask.CompletedTask;
         }

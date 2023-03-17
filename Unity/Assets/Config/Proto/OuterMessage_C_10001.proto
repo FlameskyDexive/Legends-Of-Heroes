@@ -272,11 +272,7 @@ message L2C_JoinOrCreateRoom // IActorMessage
     int32 RpcId = 1;
     int32 Error = 2;
     string Message = 3;
-    int64 RoomId = 4; //加入的房间Id
-    int32 CampId = 5; //阵营，房间位置
-    int64 RoomOwnerId = 6;
-    string RoomName = 7;
-    repeated PlayerInfoRoom playerInfoRoom = 8;
+    RoomInfoProto roomInfo = 4;
 }
 
 //ResponseType G2C_JoinOrCreateRoom
@@ -285,6 +281,7 @@ message C2G_JoinOrCreateRoom // IRequest
     int32 RpcId = 1;
     int64 PlayerId = 2;  // 帐号
     int64 RoomId = 3; //加入的房间Id,传0的时候则寻找已有房间，>0则进入对应的房间。
+	int32 PlayMode = 4;
 }
 
 message G2C_JoinOrCreateRoom // IResponse
@@ -293,6 +290,7 @@ message G2C_JoinOrCreateRoom // IResponse
 	int32 Error = 2;
     string Message = 3;
     RoomInfoProto roomInfo = 4;
+	int32 PlayMode = 5;
 }
 
 message G2C_UpdateRoomPlayers // IActorMessage
@@ -301,6 +299,7 @@ message G2C_UpdateRoomPlayers // IActorMessage
 	int32 Error = 2;
     string Message = 3;
     RoomInfoProto roomInfo = 4;
+	int32 PlayMode = 5;
 }
 
 message RoomInfoProto
@@ -310,6 +309,9 @@ message RoomInfoProto
     int64 RoomOwnerId = 3;
     string RoomName = 4;
     repeated PlayerInfoRoom playerInfoRoom = 5;
+	int32 PlayMode = 6;
+	bool IsReady = 7;//是否满人，满人开始倒计时进入战场
+	
 }
 
 message PlayerInfoRoom
@@ -329,6 +331,7 @@ message C2G_CreateNewRoom // IRequest
 {
 	int32 RpcId = 1;
 	int64 PlayerId = 2;  // 帐号
+	int32 PlayMode = 3;
 }
 
 message G2C_CreateNewRoom // IResponse
@@ -337,7 +340,7 @@ message G2C_CreateNewRoom // IResponse
     int32 Error = 2;
     string Message = 3;
     int32 RoomId = 4;
-    int32 mode = 5;
+    int32 PlayMode = 5;
     int32 CampId = 6; //阵营，房间位置
 }
 
@@ -365,7 +368,7 @@ message G2C_LeaveRoom // IResponse
     int64 newRoomOwner = 5; //更换房主的时候选的新房主
     int64 RoomId = 6; // 离开的RoomId
     int64 PlayerId = 7;
-    bool isDestory = 8;
+    bool IsDestory = 8;
 }
 
 message PlayerBattleInfo
