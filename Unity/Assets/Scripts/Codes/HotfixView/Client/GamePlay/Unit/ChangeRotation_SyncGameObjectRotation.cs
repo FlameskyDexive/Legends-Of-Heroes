@@ -13,6 +13,16 @@ namespace ET.Client
             {
                 return;
             }
+
+            if (unit.Type == UnitType.Player)
+            {
+                Transform dirTrans = gameObjectComponent.GameObject.transform.Find("RootDir");
+                if (dirTrans != null)
+                {
+                    dirTrans.rotation = unit.Rotation;
+                    return;
+                }
+            }
             Transform transform = gameObjectComponent.GameObject.transform;
             transform.rotation = unit.Rotation;
             await ETTask.CompletedTask;
