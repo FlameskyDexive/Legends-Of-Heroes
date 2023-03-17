@@ -115,7 +115,7 @@ namespace ET.Client
             }
             await TimerComponent.Instance.WaitAsync(500);
             self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Room);
-            self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Battle);
+            self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
         }
 
     }
