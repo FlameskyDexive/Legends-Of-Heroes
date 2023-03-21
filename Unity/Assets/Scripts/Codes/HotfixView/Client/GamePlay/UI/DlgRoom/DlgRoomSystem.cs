@@ -7,6 +7,7 @@ using UnityEngine.UI;
 namespace ET.Client
 {
 	[FriendOf(typeof(DlgRoom))]
+	[FriendOf(typeof(RoomComponent))]
 	public static  class DlgRoomSystem
     {
 
