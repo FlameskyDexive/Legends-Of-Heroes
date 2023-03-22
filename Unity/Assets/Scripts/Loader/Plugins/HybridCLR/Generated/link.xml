@@ -31,11 +31,8 @@
     <type fullname="System.Console" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
-    <type fullname="System.Diagnostics.DebuggerBrowsableAttribute" preserve="all" />
-    <type fullname="System.Diagnostics.DebuggerBrowsableState" preserve="all" />
     <type fullname="System.Diagnostics.DebuggerDisplayAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggerHiddenAttribute" preserve="all" />
-    <type fullname="System.Diagnostics.DebuggerStepThroughAttribute" preserve="all" />
     <type fullname="System.Enum" preserve="all" />
     <type fullname="System.Exception" preserve="all" />
     <type fullname="System.Func`1" preserve="all" />
@@ -47,6 +44,7 @@
     <type fullname="System.IO.TextReader" preserve="all" />
     <type fullname="System.Math" preserve="all" />
     <type fullname="System.NotImplementedException" preserve="all" />
+    <type fullname="System.Nullable`1" preserve="all" />
     <type fullname="System.Object" preserve="all" />
     <type fullname="System.Reflection.DefaultMemberAttribute" preserve="all" />
     <type fullname="System.Reflection.MemberInfo" preserve="all" />
@@ -185,11 +183,15 @@
     <type fullname="ET.CodeMode" preserve="all" />
     <type fullname="ET.Define" preserve="all" />
     <type fullname="ET.EUIButton" preserve="all" />
+    <type fullname="ET.EUIImage" preserve="all" />
     <type fullname="ET.GameObjectPoolHelper" preserve="all" />
     <type fullname="ET.GlobalConfig" preserve="all" />
     <type fullname="ET.YooAssetHelper" preserve="all" />
     <type fullname="RedDotMonoView" preserve="all" />
     <type fullname="ReferenceCollector" preserve="all" />
+    <type fullname="UnityEngine.UI.Joystick" preserve="all" />
+    <type fullname="UnityEngine.UI.Joystick/JoystickEvent" preserve="all" />
+    <type fullname="UnityEngine.UI.LoopHorizontalScrollRect" preserve="all" />
     <type fullname="UnityEngine.UI.LoopScrollRect" preserve="all" />
     <type fullname="UnityEngine.UI.LoopScrollRectBase" preserve="all" />
   </assembly>
@@ -255,7 +257,9 @@
     <type fullname="UnityEngine.SceneManagement.Scene" preserve="all" />
     <type fullname="UnityEngine.Shader" preserve="all" />
     <type fullname="UnityEngine.Sprite" preserve="all" />
+    <type fullname="UnityEngine.SpriteRenderer" preserve="all" />
     <type fullname="UnityEngine.TextAsset" preserve="all" />
+    <type fullname="UnityEngine.Time" preserve="all" />
     <type fullname="UnityEngine.Transform" preserve="all" />
     <type fullname="UnityEngine.Vector2" preserve="all" />
     <type fullname="UnityEngine.Vector3" preserve="all" />

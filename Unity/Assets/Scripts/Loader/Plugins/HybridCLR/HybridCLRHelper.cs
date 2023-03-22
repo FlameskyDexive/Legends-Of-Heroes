@@ -8,11 +8,15 @@ namespace ET
     {
         public static void Load()
         {
-            Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("aotdlls.unity3d");
-            foreach (var kv in dictionary)
+            // Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("aotdlls.unity3d");
+            string json = Resources.Load<TextAsset>("AotDlls").text;
+            string[] aotDlls = JsonUtility.FromJson<string[]>(json);
+            foreach (var dll in aotDlls)
             {
-                byte[] bytes = (kv.Value as TextAsset).bytes;
-                RuntimeApi.LoadMetadataForAOTAssembly(bytes, HomologousImageMode.Consistent);
+                // byte[] bytes = (kv.Value as TextAsset).bytes;
+                Log.Info($"load aot meta data dll: {dll}");
+                byte[] bytes = MonoResComponent.Instance.LoadRawFile($"{dll}");
+                RuntimeApi.LoadMetadataForAOTAssembly(bytes, HomologousImageMode.SuperSet);
             }
         }
     }
