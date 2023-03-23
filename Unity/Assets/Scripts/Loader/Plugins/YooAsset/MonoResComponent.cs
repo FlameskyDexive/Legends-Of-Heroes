@@ -69,6 +69,12 @@ namespace ET
             return handle.GetRawFileData();
         }
 
+        public byte[] LoadFile(string path)
+        {
+            AssetOperationHandle handle = YooAssets.LoadAssetSync<TextAsset>(path);
+            return handle.GetAssetObject<TextAsset>().bytes;
+        }
+
         public string[] GetAddressesByTag(string tag)
         {
             AssetInfo[] assetInfos = YooAssets.GetAssetInfos(tag);

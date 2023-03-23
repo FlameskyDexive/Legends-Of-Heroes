@@ -68,7 +68,7 @@ MonoBehaviour:
         PackRuleName: PackSeparately
         FilterRuleName: CollectScene
         AssetTags: 
-    - GroupName: AotCode
+    - GroupName: AotDlls
       GroupDesc: 
       AssetTags: aotdlls
       ActiveRuleName: EnableGroup

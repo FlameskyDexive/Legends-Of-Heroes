@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using HybridCLR.Editor;
+using LitJson;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,7 +29,7 @@ namespace ET
                 File.Copy(Path.Combine(fromDir, aotDll), Path.Combine(toDir, $"{aotDll}.bytes"), true);
             }
 
-            string json = JsonUtility.ToJson(HybridCLRSettings.Instance.patchAOTAssemblies.ToList());
+            string json = JsonMapper.ToJson(HybridCLRSettings.Instance.patchAOTAssemblies.ToList());
             File.WriteAllText(aotDllsPath, json);
 
             /*foreach (string aotDll in HybridCLRSettings.Instance.patchAOTAssemblies)
