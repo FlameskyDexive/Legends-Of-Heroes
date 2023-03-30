@@ -100,6 +100,7 @@ namespace ET
         {
             try
             {
+                keyDic = new Dictionary<string, List<string>>();
                 //防止编译时裁剪掉protobuf
                 ProtoBuf.WireType.Fixed64.ToString();
                 
@@ -355,6 +356,8 @@ namespace ET
         {
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
+                if (worksheet.Name.Contains("#"))
+                    continue;
                 ExportSheetClass(worksheet, table, name);
             }
         }
@@ -415,6 +418,7 @@ namespace ET
             }
 
             keyDic[excelName] = configKeys;
+            // Log.Console($"000 :{excelName}, key count:{keyDic[excelName].Count}");
         }
 
         static void ExportClass(string protoName, Dictionary<string, HeadInfo> classField, ConfigType configType)
@@ -463,6 +467,7 @@ namespace ET
 	        int z = (int)(testKey & 0x000000000000FF00) >> 8;
 	        int k = (int)(testKey & 0x00000000000000FF);*/
 
+            // Log.Console($"excel:{protoName}, key count:{keyDic[protoName].Count}");
             if (keyDic.TryGetValue(protoName, out List<string> configKeys))
             {
                 if (configKeys.Count > 1)

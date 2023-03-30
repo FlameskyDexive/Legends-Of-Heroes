@@ -1,6 +1,0 @@
-{"list":[
-{"_t":"SkillLevelConfig","_id":1001,"Level":1,"Name":"扩散吞噬1级"},
-{"_t":"SkillLevelConfig","_id":1001,"Level":2,"Name":"扩散吞噬2级"},
-{"_t":"SkillLevelConfig","_id":1001,"Level":3,"Name":"扩散吞噬3级"},
-{"_t":"SkillLevelConfig","_id":1001,"Level":4,"Name":"扩散吞噬4级"},
-]}

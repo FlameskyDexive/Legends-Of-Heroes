@@ -97,6 +97,9 @@ namespace ET
 		/// <summary>体重</summary>
 		[ProtoMember(6)]
 		public int Weight { get; set; }
+		/// <summary>初始携带技能</summary>
+		[ProtoMember(8)]
+		public int[] BornSkills { get; set; }
 
 	}
 }

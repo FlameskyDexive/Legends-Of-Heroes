@@ -97,6 +97,12 @@ namespace ET
 		/// <summary>模型</summary>
 		[ProtoMember(5)]
 		public string ModelName { get; set; }
+		/// <summary>模型</summary>
+		[ProtoMember(7)]
+		public string IconName { get; set; }
+		/// <summary>初始携带技能</summary>
+		[ProtoMember(8)]
+		public int[] BornSkills { get; set; }
 
 	}
 }
