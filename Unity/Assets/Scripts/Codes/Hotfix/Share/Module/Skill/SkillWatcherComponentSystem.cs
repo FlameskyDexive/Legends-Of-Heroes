@@ -38,7 +38,6 @@ namespace ET
                 {
                     SkillWatcherAttribute SkillWatcherAttribute = (SkillWatcherAttribute)attr;
                     ISkillWatcher obj = (ISkillWatcher)Activator.CreateInstance(type);
-                    // ISkillWatcher SkillWatcherInfo = new ISkillWatcher(SkillWatcherAttribute.SceneType, obj);
                     if (!self.allWatchers.ContainsKey(SkillWatcherAttribute.SkillType))
                     {
                         self.allWatchers.Add(SkillWatcherAttribute.SkillType, new List<ISkillWatcher>());
@@ -48,6 +47,12 @@ namespace ET
             }
         }
 
+        /// <summary>
+        /// 技能时间轴执行到对应技能事件调用此分发，传入参数，去执行相对应事件逻辑
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="unit"></param>
+        /// <param name="args"></param>
         public static void Run(this SkillWatcherComponent self, Unit unit, EventType.SkillEvent args)
         {
             List<ISkillWatcher> list;
