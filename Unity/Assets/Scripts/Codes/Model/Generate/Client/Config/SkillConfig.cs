@@ -106,11 +106,14 @@ namespace ET
 		/// <summary>描述</summary>
 		[ProtoMember(4)]
 		public string Desc { get; set; }
-		/// <summary>冷却时间毫秒</summary>
+		/// <summary>技能持续时间毫秒</summary>
 		[ProtoMember(5)]
+		public int Life { get; set; }
+		/// <summary>冷却时间毫秒</summary>
+		[ProtoMember(6)]
 		public int CD { get; set; }
 		/// <summary>技能参数</summary>
-		[ProtoMember(6)]
+		[ProtoMember(7)]
 		public int[] Params { get; set; }
 
 	}
