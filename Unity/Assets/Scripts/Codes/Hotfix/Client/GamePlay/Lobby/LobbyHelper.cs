@@ -21,7 +21,7 @@ namespace ET.Client
                     Log.Info($"room players:{l2CJoinOrCreateRoomLobby.roomInfo.playerInfoRoom.Count}");
                 }
 
-                //²âÊÔactorÏûÏ¢£¬µ±Ç°ÓĞµãÎÊÌâ£¬Í¨ĞÅÒì³££¬ÔİÊ±ÓÃÍø¹Ø×ª·¢¡£
+                //æµ‹è¯•actoræ¶ˆæ¯ï¼Œå½“å‰æœ‰ç‚¹é—®é¢˜ï¼Œé€šä¿¡å¼‚å¸¸ï¼Œæš‚æ—¶ç”¨ç½‘å…³è½¬å‘ã€‚
                 C2L_JoinOrCreateRoom c2LJoinOrCreateRoom = new C2L_JoinOrCreateRoom() { PlayerId = playerComponent.MyId };
                 clientScene.GetComponent<SessionComponent>().Session.Send(playerComponent.MyPlayer.LobbyActorId, c2LJoinOrCreateRoom);
             }

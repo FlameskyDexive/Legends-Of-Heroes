@@ -114,10 +114,16 @@ namespace ET
 			
 			GUILayout.Label("");
 			GUILayout.Label("Code Compile：");
-			
-			this.globalConfig.CodeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
-			
-			if (GUILayout.Button("BuildModelAndHotfix"))
+
+            var codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
+            if (codeMode != this.globalConfig.CodeMode)
+            {
+                this.globalConfig.CodeMode = codeMode;
+                EditorUtility.SetDirty(this.globalConfig);
+                AssetDatabase.SaveAssets();
+            }
+
+            if (GUILayout.Button("BuildModelAndHotfix"))
 			{
 				if (Define.EnableCodes)
 				{
