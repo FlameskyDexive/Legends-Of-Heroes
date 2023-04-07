@@ -25,10 +25,13 @@ namespace ET.Server
             player.PlayerName = $"Player_{player.Id}";
             //新用户随机分配一个头像，后续可以自己在个人信息里头修改名字、头像
             player.AvatarIndex = RandomGenerator.RandomNumber(0, 10);
-			playerComponent.Add(player);
-			session.AddComponent<SessionPlayerComponent>().PlayerId = player.Id;
-			session.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
-            
+
+            player.AddComponent<SessionInfoComponent>().Session = session;
+            player.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
+            await player.AddLocation(LocationType.Player);
+
+            session.AddComponent<SessionPlayerComponent>().Player = player;
+
             response.PlayerId = player.Id;
 
             response.AvatarIndex = player.AvatarIndex;
