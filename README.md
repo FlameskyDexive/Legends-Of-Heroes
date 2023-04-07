@@ -48,4 +48,4 @@ English: please use your browser to translate to english
 ### [X-ET7](https://github.com/IcePower/X-ET7) ET7的一个分支，集成FGUI+YooAsset+Luban 
 ### [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET) 烟雨的开源moba案例
 ### [XAsset](https://github.com/xasset/xasset) 一个很高效易用强大的资源打包/加载/热更框架
-### [ETPro](https://github.com/526077247/ETPro) ET加强版，自带技能系统、UI框架、镜像版无缝大世界。
+### [ETPro](https://github.com/526077247/ETPro) ET加强版，基于ET6.0，自带技能系统、UI框架、镜像版无缝大世界。
