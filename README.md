@@ -17,8 +17,8 @@ English: please use your browser to translate to english
 
 # TODO && Features
 
-- [x] 接入Unity运行时可视化Log查看组件[Debugger](https://github.com/FlameskyDexive/Debugger)
-- [x] 接入UGUI框架[EUI](https://github.com/FlameskyDexive/Debugger)
+- [x] 接入Unity运行时可视化Log调试组件[Debugger](https://github.com/FlameskyDexive/Debugger)
+- [x] 接入基于UGUI适配ET的UI框架[EUI](https://github.com/zzjfengqing/ET-EUI)
 - [x] 接入[YooAsset](https://github.com/tuyoogame/YooAsset)资源管理打包热更框架
 - [x] 接入2D物理碰撞引擎[Box2dSharp](https://github.com/Zonciu/Box2DSharp)
 - [x] 摇杆控制角色移动，相机跟随，通过服务端广播位置同步
@@ -35,7 +35,7 @@ English: please use your browser to translate to english
       示例，读取技能等级表中技能id=1001，level=2的数据： 
     
       SkillLevelConfig skillLevel = SkillLevelConfigCategory.Instance.GetByKeys(1001, 2);
-	  
+	              
 
 ## 特别鸣谢
 
@@ -46,6 +46,6 @@ English: please use your browser to translate to english
 
 ## 友情链接/鸣谢
 ### [X-ET7](https://github.com/IcePower/X-ET7) ET7的一个分支，集成FGUI+YooAsset+Luban 
-### [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET) 烟雨的开源moba案例
-### [XAsset](https://github.com/xasset/xasset) 一个很高效易用强大的资源打包/加载/热更框架
+### [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET) 烟雨的开源moba案例，基于ET5.X魔改
+### [XAsset](https://github.com/xasset/xasset) 一个很高效易用强大的资源管理系统（打包/加载/热更）
 ### [ETPro](https://github.com/526077247/ETPro) ET加强版，基于ET6.0，自带技能系统、UI框架、镜像版无缝大世界。
