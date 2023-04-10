@@ -47,6 +47,6 @@ namespace ET.Client
         
         public WindowID m_windowID           = WindowID.WindowID_Invaild;
         public GameObject UIPrefabGameObject = null;
-        public WindowCoreData WindowData     = null;
+        public UIWindowType windowType = UIWindowType.Normal;
     }
 }

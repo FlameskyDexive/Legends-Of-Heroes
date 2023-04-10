@@ -8,7 +8,6 @@ namespace ET.Client
     {
         protected override void Awake(UIBaseWindow self)
         {
-            self.WindowData = self.AddChild<WindowCoreData>();
             self.IsInStackQueue = false;
         }
     }
@@ -18,7 +17,6 @@ namespace ET.Client
     {
         protected override void Destroy(UIBaseWindow self)
         {
-            self.WindowData?.Dispose();
             self.WindowID = WindowID.WindowID_Invaild;
             self.IsInStackQueue = false;
             if (self.UIPrefabGameObject != null)

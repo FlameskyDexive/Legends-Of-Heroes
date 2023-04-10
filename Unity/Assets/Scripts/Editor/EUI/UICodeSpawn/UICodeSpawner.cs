@@ -194,7 +194,6 @@ public partial class UICodeSpawner
         
         strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
-        strBuilder.AppendLine("\t[FriendOf(typeof(WindowCoreData))]");
         strBuilder.AppendLine("\t[FriendOf(typeof(UIBaseWindow))]");
         strBuilder.AppendFormat("\t[AUIEvent(WindowID.WindowID_{0})]\n",strDlgName.Substring(3));
         strBuilder.AppendFormat("\tpublic  class {0}EventHandler : IAUIEventHandler\r\n", strDlgName);
@@ -205,7 +204,7 @@ public partial class UICodeSpawner
           strBuilder.AppendLine("\t\tpublic void OnInitWindowCoreData(UIBaseWindow uiBaseWindow)")
 	          .AppendLine("\t\t{");
 
-          strBuilder.AppendFormat("\t\t  uiBaseWindow.WindowData.windowType = UIWindowType.Normal; \r\n");
+          strBuilder.AppendFormat("\t\t  uiBaseWindow.windowType = UIWindowType.Normal; \r\n");
           
           strBuilder.AppendLine("\t\t}")
 	          .AppendLine();

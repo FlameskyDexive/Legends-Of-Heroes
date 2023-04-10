@@ -23,7 +23,6 @@ namespace ET.Client
     }
 
     [FriendOf(typeof(ShowWindowData))]
-    [FriendOf(typeof(WindowCoreData))]
     [FriendOf(typeof(UIPathComponent))]
     [FriendOf(typeof(UIBaseWindow))]
     [FriendOf(typeof(UIComponent))]
@@ -353,9 +352,9 @@ namespace ET.Client
         }
         
         
-        private static void RealShowWindow(this UIComponent self,UIBaseWindow baseWindow, WindowID id, ShowWindowData showData = null)
+        private static void RealShowWindow(this UIComponent self,UIBaseWindow baseWindow, WindowID id, Entity showData = null)
         {
-            Entity contextData = showData == null ? null : showData.contextData;
+            Entity contextData = showData == null ? null : showData;
             baseWindow.UIPrefabGameObject?.SetActive(true);
             UIEventComponent.Instance.GetUIEventHandler(id).OnShowWindow(baseWindow,contextData);
             
@@ -450,7 +449,7 @@ namespace ET.Client
             self.UIBaseWindowlistCached.Clear();
             foreach (KeyValuePair<int, UIBaseWindow> window in self.VisibleWindowsDic)
             {
-                if (window.Value.WindowData.windowType == UIWindowType.Fixed && !includeFixed)
+                if (window.Value.windowType == UIWindowType.Fixed && !includeFixed)
                     continue;
                 if (window.Value.IsDisposed)
                 {
@@ -489,7 +488,7 @@ namespace ET.Client
             
             UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
             
-            baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.WindowData.windowType));
+            baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.windowType));
             baseWindow.uiTransform.SetAsLastSibling();
             
             UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
@@ -516,7 +515,7 @@ namespace ET.Client
             
             UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
             
-            baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.WindowData.windowType));
+            baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(baseWindow.windowType));
             baseWindow.uiTransform.SetAsLastSibling();
             
             UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);

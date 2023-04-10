@@ -1,6 +1,5 @@
 ﻿namespace ET.Client
 {
-	[FriendOf(typeof(WindowCoreData))]
 	[FriendOf(typeof(UIBaseWindow))]
 	[AUIEvent(WindowID.WindowID_Helper)]
 	public  class DlgHelperEventHandler : IAUIEventHandler
@@ -8,7 +7,7 @@
 
 		public void OnInitWindowCoreData(UIBaseWindow uiBaseWindow)
 		{
-		  uiBaseWindow.WindowData.windowType = UIWindowType.Normal; 
+		  uiBaseWindow.windowType = UIWindowType.Normal; 
 		}
 
 		public void OnInitComponent(UIBaseWindow uiBaseWindow)
