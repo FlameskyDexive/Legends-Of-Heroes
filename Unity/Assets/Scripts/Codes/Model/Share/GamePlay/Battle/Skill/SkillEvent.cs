@@ -7,10 +7,10 @@ namespace ET
     /// <summary>
     /// 技能事件实体，作为技能事件时间轴组件的child
     /// </summary>
-    [ChildOf(typeof(SkillTimeLineComponent))]
+    [ChildOf(typeof(SkillTimelineComponent))]
     public class SkillEvent : Entity,IAwake<SkillConfig>,IDestroy,ITransfer
     {
-        
+        public ESkillEventType SkillEventType;
         /// <summary>
         /// 技能事件出发的时间戳，拿当前事件对比，每次释放技能会重置时间戳
         /// </summary>

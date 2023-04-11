@@ -6,9 +6,12 @@ namespace ET
 {
 
     [ComponentOf(typeof (Skill))]
-    public class SkillTimeLineComponent: Entity, IAwake<int, int>, ITransfer, IFixedUpdate
+    public class SkillTimelineComponent: Entity, IAwake<int, int>, ITransfer, IFixedUpdate
     {
-        
-
+        public SkillConfig Skillconfig;
+        /// <summary>
+        /// 技能开始释放时的时间戳
+        /// </summary>
+        public long StartSpellTime;
     }
 }

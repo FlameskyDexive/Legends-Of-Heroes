@@ -6,7 +6,7 @@
 	[SkillWatcher(ESkillEventType.RangeDamage)]
 	public class SkillWatcher_RangeDamage : ISkillWatcher
 	{
-		public void Run(Unit unit, EventType.SkillEventType args)
+		public void Run(Entity entity, EventType.SkillEventType args)
 		{
             
 		}

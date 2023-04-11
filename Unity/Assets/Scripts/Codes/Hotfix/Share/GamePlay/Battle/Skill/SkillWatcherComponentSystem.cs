@@ -51,9 +51,9 @@ namespace ET
         /// 技能时间轴执行到对应技能事件调用此分发，传入参数，去执行相对应事件逻辑
         /// </summary>
         /// <param name="self"></param>
-        /// <param name="unit"></param>
+        /// <param name="entity"></param>
         /// <param name="args"></param>
-        public static void Run(this SkillWatcherComponent self, Unit unit, EventType.SkillEventType args)
+        public static void Run(this SkillWatcherComponent self, Entity entity, EventType.SkillEventType args)
         {
             List<ISkillWatcher> list;
             if (!self.allWatchers.TryGetValue(args.skillEventType, out list))
@@ -63,7 +63,7 @@ namespace ET
 
             foreach (ISkillWatcher SkillWatcher in list)
             {
-                SkillWatcher.Run(unit, args);
+                SkillWatcher.Run(entity, args);
             }
         }
     }

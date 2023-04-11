@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using ET.EventType;
 
 namespace ET
 {
     [FriendOf(typeof(SkillComponent))]
-    public static class SkillTimeLineComponentSystem
+    [FriendOf(typeof(SkillTimelineComponent))]
+    [FriendOf(typeof(SkillEvent))]
+    public static class SkillTimelineComponentSystem
     {
         [ObjectSystem]
-        public class SkillTimeLineComponentAwakeSystem : AwakeSystem<SkillTimeLineComponent, int, int>
+        public class SkillTimelineComponentAwakeSystem : AwakeSystem<SkillTimelineComponent, int, int>
         {
-            protected override void Awake(SkillTimeLineComponent self, int skillId, int skillLevel)
+            protected override void Awake(SkillTimelineComponent self, int skillId, int skillLevel)
             {
                 self.Awake(skillId, skillLevel);
             }
         }
         [ObjectSystem]
-        public class SkillTimeLineComponentFixedUpdateSystem : FixedUpdateSystem<SkillTimeLineComponent>
+        public class SkillTimelineComponentFixedUpdateSystem : FixedUpdateSystem<SkillTimelineComponent>
         {
-            protected override void FixedUpdate(SkillTimeLineComponent self)
+            protected override void FixedUpdate(SkillTimelineComponent self)
             {
                 self.FixedUpdate();
             }
@@ -25,23 +28,62 @@ namespace ET
 
 	
 
-        private static void Awake(this SkillTimeLineComponent self, int skillId, int skillLevel)
+        private static void Awake(this SkillTimelineComponent self, int skillId, int skillLevel)
         {
             //当前测试，一个事件一个字段，可以自己换成二维数组一个字段存多条事件数据
-            SkillConfig skillconfig = SkillConfigCategory.Instance.GetByKeys(skillId, skillLevel);
-            if (skillconfig?.Params.Length > 0)
-            {
-                self.AddChild<SkillEvent, SkillConfig>(skillconfig);
-            }
+            self.Skillconfig = SkillConfigCategory.Instance.GetByKeys(skillId, skillLevel);
+            
         }
         
         /// <summary>
         /// 固定帧驱动
         /// </summary>
         /// <param name="self"></param>
-        public static void FixedUpdate(this SkillTimeLineComponent self)
+        public static void FixedUpdate(this SkillTimelineComponent self)
         {
-            
+            using (ListComponent<long> list = ListComponent<long>.Create())
+            {
+                long timeNow = TimeHelper.ServerNow();
+                foreach ((long key, Entity value) in self.Children)
+                {
+                    SkillEvent skillEvent = (SkillEvent)value;
+
+                    if (timeNow > skillEvent.EventTriggerTime)
+                    {
+                        SkillWatcherComponent.Instance.Run(skillEvent, new SkillEventType(){});
+                        list.Add(key);
+                    }
+                }
+
+                foreach (long id in list)
+                {
+                    self.Remove(id);
+                }
+            }
+        }
+        
+        public static void StartPlay(this SkillTimelineComponent self)
+        {
+            self.StartSpellTime = TimeHelper.ServerNow();
+            self.InitEvents();
+        }
+        
+        public static void InitEvents(this SkillTimelineComponent self)
+        {
+            if (self.Skillconfig?.Params.Length > 0)
+            {
+                self.AddChild<SkillEvent, SkillConfig>(self.Skillconfig);
+            }
+        }
+
+        private static void Remove(this SkillTimelineComponent self, long id)
+        {
+            if (!self.Children.TryGetValue(id, out Entity skillEvent))
+            {
+                return;
+            }
+
+            skillEvent.Dispose();
         }
     }
 
