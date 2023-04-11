@@ -11,6 +11,6 @@ namespace ET
     {
         public static SkillWatcherComponent Instance { get; set; }
 		
-        public Dictionary<ESkillType, List<ISkillWatcher>> allWatchers;
+        public Dictionary<ESkillEventType, List<ISkillWatcher>> allWatchers;
     }
 }

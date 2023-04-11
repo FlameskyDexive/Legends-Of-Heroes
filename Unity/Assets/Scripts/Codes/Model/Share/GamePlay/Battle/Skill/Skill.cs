@@ -29,9 +29,6 @@ namespace ET
         /// 当前冷却时间
         /// </summary>
         public int CurrentCD;
-
-
-        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        public Dictionary<string, long> Groups { get; set; }
+        
     }
 }

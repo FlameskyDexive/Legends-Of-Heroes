@@ -5,11 +5,10 @@ using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
 
-    [ComponentOf(typeof (Unit))]
-    public class SkillTimeLineComponent: Entity, IAwake, ITransfer, IUpdate
+    [ComponentOf(typeof (Skill))]
+    public class SkillTimeLineComponent: Entity, IAwake<int, int>, ITransfer, IFixedUpdate
     {
-        [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        public Dictionary<int, long> SkillEventDict = new Dictionary<int, long>();
+        
 
     }
 }

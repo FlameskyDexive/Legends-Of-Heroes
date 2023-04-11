@@ -1,7 +1,7 @@
 ﻿namespace ET
 {
 	// 这个可弄个配置表生成
-    public enum ESkillType
+    public enum ESkillEventType
     {
         /// <summary>
 		/// 范围伤害

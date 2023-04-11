@@ -27,7 +27,7 @@ namespace ET
 
         private static void Init(this SkillWatcherComponent self)
         {
-            self.allWatchers = new Dictionary<ESkillType, List<ISkillWatcher>>();
+            self.allWatchers = new Dictionary<ESkillEventType, List<ISkillWatcher>>();
 
             HashSet<Type> types = EventSystem.Instance.GetTypes(typeof(SkillWatcherAttribute));
             foreach (Type type in types)
@@ -38,11 +38,11 @@ namespace ET
                 {
                     SkillWatcherAttribute SkillWatcherAttribute = (SkillWatcherAttribute)attr;
                     ISkillWatcher obj = (ISkillWatcher)Activator.CreateInstance(type);
-                    if (!self.allWatchers.ContainsKey(SkillWatcherAttribute.SkillType))
+                    if (!self.allWatchers.ContainsKey(SkillWatcherAttribute.SkillEventType))
                     {
-                        self.allWatchers.Add(SkillWatcherAttribute.SkillType, new List<ISkillWatcher>());
+                        self.allWatchers.Add(SkillWatcherAttribute.SkillEventType, new List<ISkillWatcher>());
                     }
-                    self.allWatchers[SkillWatcherAttribute.SkillType].Add(obj);
+                    self.allWatchers[SkillWatcherAttribute.SkillEventType].Add(obj);
                 }
             }
         }
@@ -53,10 +53,10 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="unit"></param>
         /// <param name="args"></param>
-        public static void Run(this SkillWatcherComponent self, Unit unit, EventType.SkillEvent args)
+        public static void Run(this SkillWatcherComponent self, Unit unit, EventType.SkillEventType args)
         {
             List<ISkillWatcher> list;
-            if (!self.allWatchers.TryGetValue(args.skillType, out list))
+            if (!self.allWatchers.TryGetValue(args.skillEventType, out list))
             {
                 return;
             }

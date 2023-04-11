@@ -3,11 +3,11 @@
 	public class SkillWatcherAttribute : BaseAttribute
 	{
 		
-		public ESkillType SkillType { get; }
+		public ESkillEventType SkillEventType { get; }
 
-		public SkillWatcherAttribute(ESkillType type)
+		public SkillWatcherAttribute(ESkillEventType eventType)
 		{
-			this.SkillType = type;
+			this.SkillEventType = eventType;
 		}
 	}
 }

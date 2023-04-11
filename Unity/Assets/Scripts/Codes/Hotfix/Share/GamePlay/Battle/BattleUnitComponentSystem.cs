@@ -9,14 +9,7 @@ namespace ET
             
         }
     }
-    [ObjectSystem]
-    public class BattleUnitAwakeSystem1 : AwakeSystem<BattleUnitComponent>
-    {
-        protected override void Awake(BattleUnitComponent self)
-        {
-            
-        }
-    }
+    
     [ObjectSystem]
     public class BattleUnitDestroySystem : DestroySystem<BattleUnitComponent>
     {
@@ -28,6 +21,14 @@ namespace ET
     [FriendOf(typeof(BattleUnitComponent))]
     public static class BattleUnitComponentSystem
     {
+        public static void Awake(this BattleUnitComponent self, List<int> skillIds)
+        {
+            foreach (int skillId in skillIds)
+            {
+                //测试先默认都0级技能，后续再做等级切换，同一个技能id高等级覆盖低等级。
+                self.AddSkill(skillId);
+            }
+        }
         /// <summary>
         /// 添加技能
         /// </summary>
@@ -36,9 +37,9 @@ namespace ET
         /// <returns></returns>
         public static Skill AddSkill(this BattleUnitComponent self,int configId, int skillLevel = 0)
         {
-            if (!self.IdSkillMap.ContainsKey(configId))
+            if (!self.IdSkillMap.TryGetValue(configId, out long skillId))
             {
-                var skill = self.AddChild<Skill, int, int>(configId, skillLevel);
+                Skill skill = self.AddChild<Skill, int, int>(configId, skillLevel);
                 self.IdSkillMap.Add(configId, skill.Id);
             }
             return self.GetChild<Skill>(self.IdSkillMap[configId]);
@@ -46,7 +47,7 @@ namespace ET
 
         public static bool TryGetSkill(this BattleUnitComponent self, int configId,out Skill skill)
         {
-            if (self.IdSkillMap.ContainsKey(configId))
+            if (self.IdSkillMap.TryGetValue(configId, out long skillId))
             {
                 skill = self.GetChild<Skill>(self.IdSkillMap[configId]);
                 return true;
