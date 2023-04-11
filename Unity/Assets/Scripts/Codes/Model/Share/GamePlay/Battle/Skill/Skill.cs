@@ -5,7 +5,7 @@ using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
     [ChildOf(typeof(BattleUnitComponent))]
-    public class SkillEntity:Entity,IAwake<int, int>,IDestroy,ITransfer
+    public class Skill:Entity,IAwake<int, int>,IDestroy,ITransfer
     {
         public int SkillId;
         public int SkillLevel;
