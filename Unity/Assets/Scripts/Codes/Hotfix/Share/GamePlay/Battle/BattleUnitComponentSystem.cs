@@ -6,6 +6,14 @@ namespace ET
     {
         protected override void Awake(BattleUnitComponent self,List<int> skills)
         {
+            self.Awake(skills);
+        }
+    }
+    [ObjectSystem]
+    public class BattleUnitAwakeSystem2 : AwakeSystem<BattleUnitComponent>
+    {
+        protected override void Awake(BattleUnitComponent self)
+        {
             
         }
     }
@@ -23,11 +31,13 @@ namespace ET
     {
         public static void Awake(this BattleUnitComponent self, List<int> skillIds)
         {
+            // int activeSkillIndex = 0;
             foreach (int skillId in skillIds)
             {
-                //测试先默认都0级技能，后续再做等级切换，同一个技能id高等级覆盖低等级。
-                self.AddSkill(skillId);
+                //测试先默认都1级技能，后续再做等级切换，同一个技能id高等级覆盖低等级。
+                Skill skill = self.AddSkill(skillId);
             }
+            self.AddComponent<SkillComponent>();
         }
         /// <summary>
         /// 添加技能
@@ -35,7 +45,7 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="configId"></param>
         /// <returns></returns>
-        public static Skill AddSkill(this BattleUnitComponent self,int configId, int skillLevel = 0)
+        public static Skill AddSkill(this BattleUnitComponent self,int configId, int skillLevel = 1)
         {
             if (!self.IdSkillMap.TryGetValue(configId, out long skillId))
             {

@@ -100,20 +100,23 @@ namespace ET
 		/// <summary>技能等级</summary>
 		[ProtoMember(2)]
 		public int Level { get; set; }
-		/// <summary>名字</summary>
+		/// <summary>技能抽象类型</summary>
 		[ProtoMember(3)]
+		public int AbstractType { get; set; }
+		/// <summary>名字</summary>
+		[ProtoMember(4)]
 		public string Name { get; set; }
 		/// <summary>描述</summary>
-		[ProtoMember(4)]
+		[ProtoMember(5)]
 		public string Desc { get; set; }
 		/// <summary>技能持续时间毫秒</summary>
-		[ProtoMember(5)]
+		[ProtoMember(6)]
 		public int Life { get; set; }
 		/// <summary>冷却时间毫秒</summary>
-		[ProtoMember(6)]
+		[ProtoMember(7)]
 		public int CD { get; set; }
 		/// <summary>技能参数</summary>
-		[ProtoMember(7)]
+		[ProtoMember(8)]
 		public int[] Params { get; set; }
 
 	}

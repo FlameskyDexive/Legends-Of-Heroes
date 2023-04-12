@@ -9,6 +9,8 @@ namespace ET
     {
         public int SkillId;
         public int SkillLevel;
+        // public int AbstractIndex;
+        public ESkillAbstractType AbstractType => (ESkillAbstractType)this.SkillConfig.AbstractType;
         
         [BsonIgnore]
         public SkillConfig SkillConfig => SkillConfigCategory.Instance.GetByKeys(this.SkillId, this.SkillLevel);

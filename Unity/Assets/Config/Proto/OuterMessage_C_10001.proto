@@ -258,7 +258,9 @@ message G2C_Benchmark // IResponse
 	string Message = 3;
 }
 
+///////////////////////////////// Map Start ///////////////////////////////////
 
+//ResponseType M2C_JoystickMove
 message C2M_JoystickMove // IActorLocationMessage
 {
 	int32 RpcId = 1;
@@ -272,6 +274,35 @@ message M2C_JoystickMove // IActorLocationMessage
 	Unity.Mathematics.float3 Position = 3;
 	Unity.Mathematics.float3 MoveForward = 4;
 }
+
+
+//ResponseType M2C_Operation
+message C2M_Operation // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	int64 Id = 2;
+	repeated OperateInfo OperateInfos = 3;
+	
+}
+
+message M2C_Operation // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	int64 Id = 2;
+	int32 Status = 3;
+}
+
+message OperateInfo
+{
+    int32 OperateType = 1; //操作类型
+    int32 InputType = 2; //输入类型，按下/抬起
+	Unity.Mathematics.float3 Vec3 = 3; //v3参数
+	int64 Value1 = 4;
+	int64 Value2 = 5;
+	
+}
+
+///////////////////////////////// Map End ///////////////////////////////////
 
 
 ///////////////////////////////// 房间相关  START ///////////////////////////////////

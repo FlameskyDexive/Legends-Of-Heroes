@@ -12,7 +12,7 @@ namespace ET.Server
 			Unit unit = MongoHelper.Deserialize<Unit>(request.Unit);
 			
 			unitComponent.AddChild(unit);
-			// unitComponent.Add(unit);
+			unitComponent.Add(unit);
 
 			foreach (byte[] bytes in request.Entitys)
 			{

@@ -533,6 +533,8 @@ namespace ET
 
 	}
 
+///////////////////////////////// Map Start ///////////////////////////////////
+	[ResponseType(nameof(M2C_JoystickMove))]
 	[Message(OuterMessage.C2M_JoystickMove)]
 	[ProtoContract]
 	public partial class C2M_JoystickMove: ProtoObject, IActorLocationMessage
@@ -563,6 +565,59 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(M2C_Operation))]
+	[Message(OuterMessage.C2M_Operation)]
+	[ProtoContract]
+	public partial class C2M_Operation: ProtoObject, IActorLocationMessage
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long Id { get; set; }
+
+		[ProtoMember(3)]
+		public List<OperateInfo> OperateInfos { get; set; }
+
+	}
+
+	[Message(OuterMessage.M2C_Operation)]
+	[ProtoContract]
+	public partial class M2C_Operation: ProtoObject, IActorLocationMessage
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public long Id { get; set; }
+
+		[ProtoMember(3)]
+		public int Status { get; set; }
+
+	}
+
+	[Message(OuterMessage.OperateInfo)]
+	[ProtoContract]
+	public partial class OperateInfo: ProtoObject
+	{
+		[ProtoMember(1)]
+		public int OperateType { get; set; }
+
+		[ProtoMember(2)]
+		public int InputType { get; set; }
+
+		[ProtoMember(3)]
+		public Unity.Mathematics.float3 Vec3 { get; set; }
+
+		[ProtoMember(4)]
+		public long Value1 { get; set; }
+
+		[ProtoMember(5)]
+		public long Value2 { get; set; }
+
+	}
+
+///////////////////////////////// Map End ///////////////////////////////////
 ///////////////////////////////// 房间相关  START ///////////////////////////////////
 	[Message(OuterMessage.C2L_JoinOrCreateRoom)]
 	[ProtoContract]
@@ -964,25 +1019,28 @@ namespace ET
 		 public const ushort G2C_Benchmark = 10037;
 		 public const ushort C2M_JoystickMove = 10038;
 		 public const ushort M2C_JoystickMove = 10039;
-		 public const ushort C2L_JoinOrCreateRoom = 10040;
-		 public const ushort L2C_JoinOrCreateRoom = 10041;
-		 public const ushort C2G_JoinOrCreateRoom = 10042;
-		 public const ushort G2C_JoinOrCreateRoom = 10043;
-		 public const ushort G2C_UpdateRoomPlayers = 10044;
-		 public const ushort RoomInfoProto = 10045;
-		 public const ushort PlayerInfoRoom = 10046;
-		 public const ushort C2G_CreateNewRoom = 10047;
-		 public const ushort G2C_CreateNewRoom = 10048;
-		 public const ushort G2C_PlayerTriggerRoom = 10049;
-		 public const ushort C2G_LeaveRoom = 10050;
-		 public const ushort G2C_LeaveRoom = 10051;
-		 public const ushort PlayerBattleInfo = 10052;
-		 public const ushort G2C_StartEnterMap = 10053;
-		 public const ushort C2G_StartGame = 10054;
-		 public const ushort G2C_StartGame = 10055;
-		 public const ushort PlayerBattlePoint = 10056;
-		 public const ushort G2C_PrepareToEnterBattle = 10057;
-		 public const ushort C2G_PreparedToEnterBattle = 10058;
-		 public const ushort G2C_AllowToEnterMap = 10059;
+		 public const ushort C2M_Operation = 10040;
+		 public const ushort M2C_Operation = 10041;
+		 public const ushort OperateInfo = 10042;
+		 public const ushort C2L_JoinOrCreateRoom = 10043;
+		 public const ushort L2C_JoinOrCreateRoom = 10044;
+		 public const ushort C2G_JoinOrCreateRoom = 10045;
+		 public const ushort G2C_JoinOrCreateRoom = 10046;
+		 public const ushort G2C_UpdateRoomPlayers = 10047;
+		 public const ushort RoomInfoProto = 10048;
+		 public const ushort PlayerInfoRoom = 10049;
+		 public const ushort C2G_CreateNewRoom = 10050;
+		 public const ushort G2C_CreateNewRoom = 10051;
+		 public const ushort G2C_PlayerTriggerRoom = 10052;
+		 public const ushort C2G_LeaveRoom = 10053;
+		 public const ushort G2C_LeaveRoom = 10054;
+		 public const ushort PlayerBattleInfo = 10055;
+		 public const ushort G2C_StartEnterMap = 10056;
+		 public const ushort C2G_StartGame = 10057;
+		 public const ushort G2C_StartGame = 10058;
+		 public const ushort PlayerBattlePoint = 10059;
+		 public const ushort G2C_PrepareToEnterBattle = 10060;
+		 public const ushort C2G_PreparedToEnterBattle = 10061;
+		 public const ushort G2C_AllowToEnterMap = 10062;
 	}
 }
