@@ -7,6 +7,8 @@ namespace ET.Server
     {
         protected override async ETTask Run(Unit unit, C2M_Operation message)
         {
+            if (message.OperateInfos == null)
+                Log.Error($"reveice null operate info");
             foreach (OperateInfo operateInfo in message.OperateInfos)
             {
                 EOperateType operateType = (EOperateType)operateInfo.OperateType;

@@ -69,7 +69,9 @@ namespace ET.Client
             //每帧把当前帧收集的操作发送给服务端，随后清除
             if (self.OperateInfos.Count == 0)
                 return;
-            C2M_Operation c2MOperation = new C2M_Operation() { OperateInfos = self.OperateInfos };
+            self.OperateInfosTemp.Clear();
+            self.OperateInfosTemp.AddRange(self.OperateInfos);
+            C2M_Operation c2MOperation = new C2M_Operation() { OperateInfos = self.OperateInfosTemp };
             self.ClientScene().GetComponent<SessionComponent>().Session.Send(c2MOperation);
             self.OperateInfos.Clear();
         }

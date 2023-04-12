@@ -12,5 +12,6 @@ namespace ET.Client
 	    public int mapMask;
 
         public List<OperateInfo> OperateInfos = new List<OperateInfo>();
+        public List<OperateInfo> OperateInfosTemp = new List<OperateInfo>();
     }
 }

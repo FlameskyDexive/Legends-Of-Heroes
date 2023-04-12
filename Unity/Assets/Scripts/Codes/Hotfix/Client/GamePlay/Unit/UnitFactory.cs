@@ -8,7 +8,7 @@ namespace ET.Client
         {
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
-	        unitComponent.Add(unit);
+	        // unitComponent.Add(unit);
 	        
 	        unit.Position = unitInfo.Position;
 	        unit.Forward = unitInfo.Forward;
