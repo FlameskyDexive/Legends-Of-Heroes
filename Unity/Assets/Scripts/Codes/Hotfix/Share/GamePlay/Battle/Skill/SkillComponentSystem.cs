@@ -31,7 +31,12 @@ namespace ET
         /// <param name="index"></param>
         public static void SpellSkill(this SkillComponent self, ESkillAbstractType absType, int index = 0)
         {
-            
+            //
+            Skill skill = null;
+            self.GetParent<BattleUnitComponent>()?.TryGetSkill(absType, index, out skill);
+            if (skill == null || skill.IsInCd())
+                return;
+            skill.StartSpell();
         }
     }
 

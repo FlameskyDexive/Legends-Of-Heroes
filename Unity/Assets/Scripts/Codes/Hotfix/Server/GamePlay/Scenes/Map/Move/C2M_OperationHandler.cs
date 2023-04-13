@@ -35,7 +35,8 @@ namespace ET.Server
                     }
                     case EOperateType.Skill1:
                     {
-                        
+                        //
+                        unit?.GetComponent<BattleUnitComponent>()?.GetComponent<SkillComponent>()?.SpellSkill(ESkillAbstractType.ActiveSkill);
                         
                         break;
                     }

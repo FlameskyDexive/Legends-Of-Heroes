@@ -15,7 +15,7 @@ namespace ET.Server
             switch (scene.SceneType)
             {
                 case SceneType.Router:
-                    scene.AddComponent<RouterComponent, IPEndPoint, string>(startSceneConfig.OuterIPPort,
+                    scene.AddComponent<RouterComponent, IPEndPoint, string>(startSceneConfig.InnerIPOutPort,
                         startSceneConfig.StartProcessConfig.InnerIP
                     );
                     break;

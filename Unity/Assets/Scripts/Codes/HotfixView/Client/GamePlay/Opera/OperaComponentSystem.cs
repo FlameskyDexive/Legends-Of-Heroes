@@ -61,6 +61,13 @@ namespace ET.Client
                 C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
                 self.ClientScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
             }
+            if (Input.GetKeyDown(KeyCode.J))
+            {
+                //可在此处检测技能是否可释放（蓝量、CD、僵直等判定）
+                Log.Info($"press skill1");
+                OperateInfo operateInfo = new OperateInfo() { OperateType = (int)EOperateType.Skill1, InputType = (int)EInputType.KeyDown };
+                self.OperateInfos.Add(operateInfo);
+            }
         
         }
         
@@ -72,7 +79,7 @@ namespace ET.Client
             self.OperateInfosTemp.Clear();
             self.OperateInfosTemp.AddRange(self.OperateInfos);
             C2M_Operation c2MOperation = new C2M_Operation() { OperateInfos = self.OperateInfosTemp };
-            self.ClientScene().GetComponent<SessionComponent>().Session.Send(c2MOperation);
+            self.ClientScene().GetComponent<SessionComponent>()?.Session?.Send(c2MOperation);
             self.OperateInfos.Clear();
         }
 

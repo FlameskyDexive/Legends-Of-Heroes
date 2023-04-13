@@ -24,6 +24,7 @@ namespace ET
         protected override void Destroy(BattleUnitComponent self)
         {
             self.IdSkillMap.Clear();
+            self.AbstractTypeSkills.Clear();
         }
     }
     [FriendOf(typeof(BattleUnitComponent))]
@@ -51,6 +52,15 @@ namespace ET
             {
                 Skill skill = self.AddChild<Skill, int, int>(configId, skillLevel);
                 self.IdSkillMap.Add(configId, skill.Id);
+                SkillConfig skillConfig = SkillConfigCategory.Instance.GetByKeys(configId, skillLevel);
+                ESkillAbstractType abstractType = (ESkillAbstractType)skillConfig.AbstractType;
+                if (!self.AbstractTypeSkills.TryGetValue(abstractType, out List<long> skills))
+                {
+                    skills = new List<long>();
+                    self.AbstractTypeSkills[abstractType] = skills;
+                }
+                self.AbstractTypeSkills[abstractType].Add(skill.Id);
+                
             }
             return self.GetChild<Skill>(self.IdSkillMap[configId]);
         }
@@ -61,6 +71,28 @@ namespace ET
             {
                 skill = self.GetChild<Skill>(self.IdSkillMap[configId]);
                 return true;
+            }
+            skill = null;
+            return false;
+        }
+
+        /// <summary>
+        /// 通过技能类型获取技能
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="abstractType"></param>
+        /// <param name="index"></param>
+        /// <param name="skill"></param>
+        /// <returns></returns>
+        public static bool TryGetSkill(this BattleUnitComponent self, ESkillAbstractType abstractType, int index,out Skill skill)
+        {
+            if (self.AbstractTypeSkills.TryGetValue(abstractType, out List<long> skillIds))
+            {
+                if (skillIds?.Count > index)
+                {
+                    skill = self.GetChild<Skill>(skillIds[index]);
+                    return true;
+                }
             }
             skill = null;
             return false;

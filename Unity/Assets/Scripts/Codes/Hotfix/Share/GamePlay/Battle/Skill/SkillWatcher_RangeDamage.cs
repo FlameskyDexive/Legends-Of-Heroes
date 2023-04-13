@@ -8,7 +8,7 @@
 	{
 		public void Run(Entity entity, EventType.SkillEventType args)
 		{
-            
+            Log.Info($"enter range damage");
 		}
 	}
 }
