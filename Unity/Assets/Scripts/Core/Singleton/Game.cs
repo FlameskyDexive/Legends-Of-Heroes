@@ -48,6 +48,11 @@ namespace ET
                 updates.Enqueue(singleton);
             }
             
+            if (singleton is ISingletonFixedUpdate)
+            {
+                fixedUpdates.Enqueue(singleton);
+            }
+            
             if (singleton is ISingletonLateUpdate)
             {
                 lateUpdates.Enqueue(singleton);

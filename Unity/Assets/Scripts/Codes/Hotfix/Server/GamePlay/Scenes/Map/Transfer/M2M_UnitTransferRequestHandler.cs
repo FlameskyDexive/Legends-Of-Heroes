@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.Mathematics;
 
 namespace ET.Server
@@ -39,9 +41,10 @@ namespace ET.Server
 			
 			// 加入aoi
 			unit.AddComponent<AOIEntity, int, float3>(9 * 1000, unit.Position);
-			
-			// 解锁location，可以接收发给Unit的消息
-			await LocationProxyComponent.Instance.UnLock(LocationType.Unit, unit.Id, request.OldInstanceId, unit.InstanceId);
+            unit.AddComponent<BattleUnitComponent, List<int>>(unit.Config.BornSkills.ToList());
+
+            // 解锁location，可以接收发给Unit的消息
+            await LocationProxyComponent.Instance.UnLock(LocationType.Unit, unit.Id, request.OldInstanceId, unit.InstanceId);
 		}
 	}
 }

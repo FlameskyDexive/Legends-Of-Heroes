@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ET.EventType;
 
 namespace ET
 {
@@ -53,17 +54,17 @@ namespace ET
         /// <param name="self"></param>
         /// <param name="entity"></param>
         /// <param name="args"></param>
-        public static void Run(this SkillWatcherComponent self, Entity entity, EventType.SkillEventType args)
+        public static void Run(this SkillWatcherComponent self, SkillEvent skillEvent, SkillEventType args)
         {
             List<ISkillWatcher> list;
-            if (!self.allWatchers.TryGetValue(args.skillEventType, out list))
+            if (!self.allWatchers.TryGetValue(skillEvent.SkillEventType, out list))
             {
                 return;
             }
 
             foreach (ISkillWatcher SkillWatcher in list)
             {
-                SkillWatcher.Run(entity, args);
+                SkillWatcher.Run(skillEvent, args);
             }
         }
     }

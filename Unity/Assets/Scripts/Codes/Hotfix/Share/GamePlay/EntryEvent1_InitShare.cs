@@ -9,6 +9,7 @@ namespace ET
             Root.Instance.Scene.AddComponent<OpcodeTypeComponent>();
             Root.Instance.Scene.AddComponent<MessageDispatcherComponent>();
             Root.Instance.Scene.AddComponent<NumericWatcherComponent>();
+            Root.Instance.Scene.AddComponent<SkillWatcherComponent>();
             Root.Instance.Scene.AddComponent<AIDispatcherComponent>();
             Root.Instance.Scene.AddComponent<ClientSceneManagerComponent>();
 
