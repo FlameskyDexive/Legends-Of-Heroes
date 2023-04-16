@@ -12,7 +12,7 @@ namespace ET
     public class CollisionComponent : Entity,IAwake, IFixedUpdate,IDestroy,ITransfer
     {
         [BsonIgnore]
-        public Unit Battle => this.GetParent<Unit>();
+        public Unit Unit => this.GetParent<Unit>();
 
         // public UnitConfig UnitConfig => this.Unit?.Config;
 

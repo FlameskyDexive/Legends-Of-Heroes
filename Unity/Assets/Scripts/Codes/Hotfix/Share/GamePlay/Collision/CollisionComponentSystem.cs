@@ -54,11 +54,11 @@ namespace ET
             switch (colliderType)
             {
                 case EColliderType.Circle:
-                    self.Body.CreateCircleFixture(vec2.X, offset, isSensor, self.BattleUnit.Unit);
+                    self.Body.CreateCircleFixture(vec2.X, offset, isSensor, self.Unit);
 
                     break;
                 case EColliderType.Box:
-                    self.Body.CreateBoxFixture(vec2.X, vec2.Y, offset, angle, isSensor, self.BattleUnit.Unit);
+                    self.Body.CreateBoxFixture(vec2.X, vec2.Y, offset, angle, isSensor, self.Unit);
 
                     break;
             }
