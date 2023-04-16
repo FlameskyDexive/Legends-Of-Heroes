@@ -8,13 +8,13 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
-    [ComponentOf(typeof(BattleUnitComponent))]
+    [ComponentOf(typeof(Unit))]
     public class CollisionComponent : Entity,IAwake, IFixedUpdate,IDestroy,ITransfer
     {
         [BsonIgnore]
-        public BattleUnitComponent BattleUnit => this.GetParent<BattleUnitComponent>();
+        public Unit Battle => this.GetParent<Unit>();
 
-        // public UnitConfig UnitConfig => this.BattleUnit.Unit?.Config;
+        // public UnitConfig UnitConfig => this.Unit?.Config;
 
         public CollisionWorldComponent WorldComponent { get; set; }
         

@@ -32,5 +32,7 @@ namespace ET
         /// </summary>
         public int CurrentCD;
         
+
+
     }
 }

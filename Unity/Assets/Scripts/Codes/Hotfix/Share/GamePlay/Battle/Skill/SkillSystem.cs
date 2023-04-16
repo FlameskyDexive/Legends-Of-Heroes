@@ -17,6 +17,10 @@ namespace ET
             }
         }
 
+        public static Unit GetOwnerUnit(this Skill self)
+        {
+            return self.GetParent<BattleUnitComponent>().Unit;
+        }
         
         public static bool IsInCd(this Skill self)
         {
