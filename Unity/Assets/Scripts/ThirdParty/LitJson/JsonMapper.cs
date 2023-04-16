@@ -16,6 +16,7 @@ using System.Globalization;
 using System.IO;
 using System.Reflection;
 using LitJson.Extensions;
+using NLog.Fluent;
 #if UNITY_EDITOR
 using UnityEngine;
 #endif
@@ -1053,9 +1054,10 @@ namespace LitJson
             }
             catch (Exception e)
             {
-#if UNITY_EDITOR
-                Debug.LogError($"解析json异常，json：{json} \n{e}");
-#endif
+                Log.Error($"解析json异常，json：{json} \n{e}");
+// #if UNITY_EDITOR
+                // Debug.LogError($"解析json异常，json：{json} \n{e}");
+// #endif
             }
 
             return default(T);

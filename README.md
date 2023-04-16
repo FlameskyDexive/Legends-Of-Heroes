@@ -20,12 +20,13 @@ English: please use your browser to translate to english
 - [x] 接入Unity运行时可视化Log调试组件[Debugger](https://github.com/FlameskyDexive/Debugger)
 - [x] 接入基于UGUI适配ET的UI框架[EUI](https://github.com/zzjfengqing/ET-EUI)
 - [x] 接入[YooAsset](https://github.com/tuyoogame/YooAsset)资源管理打包热更框架
-- [x] 接入2D物理碰撞引擎[Box2dSharp](https://github.com/Zonciu/Box2DSharp)
 - [x] 摇杆控制角色移动，相机跟随，通过服务端广播位置同步
-- [x] 配置表支持多Key。
+- [x] 配置表支持多Key（也可自行接入强大的多平台配置方案，当前Demo用不到那么复杂excel就不进行接入了 [Luban](https://github.com/focus-creative-games/luban)）。
 - [ ] 房间大厅，匹配房友，每个房间最多20个玩家。
 - [ ] 一个Demo关卡流程：有限的2d地图，随机生成食物，吃食物会变大，碰到敌人会产生伤害（大吞小，小死亡）。
 - [ ] 一个比较基本的战斗技能框架设计，主动/被动技能释放。
+--   [x] 时间线技能事件系统
+--   [x] 子弹碰撞系统（碰撞检测使用[Box2dSharp](https://github.com/Zonciu/Box2DSharp)）
 - [ ] 额外（有空的话）：2d moba玩法。
 
 ## 补充说明

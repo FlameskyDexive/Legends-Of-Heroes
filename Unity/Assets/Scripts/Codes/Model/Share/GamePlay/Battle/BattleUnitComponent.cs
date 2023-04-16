@@ -8,7 +8,7 @@ namespace ET
     public class BattleUnitComponent:Entity,IAwake,IAwake<List<int>>,IDestroy,ITransfer
     {
         [BsonIgnore]
-        public Unit unit => this.GetParent<Unit>();
+        public Unit Unit => this.GetParent<Unit>();
         
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
         public Dictionary<int, long> IdSkillMap = new Dictionary<int, long>();

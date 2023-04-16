@@ -11,4 +11,5 @@
 {"_t":"UnitConfig","_id":1009,"Type":1,"Name":"武器大师","Position":2,"ModelName":"Player","Weight":78,"IconName":"Avatar9","BornSkills":[1001,1002]},
 {"_t":"UnitConfig","_id":1010,"Type":1,"Name":"盲僧","Position":2,"ModelName":"Player","Weight":78,"IconName":"Avatar10","BornSkills":[1001,1002]},
 {"_t":"UnitConfig","_id":1011,"Type":1,"Name":"阿木木","Position":2,"ModelName":"Player","Weight":78,"IconName":"Avatar11","BornSkills":[1001,1002]},
+{"_t":"UnitConfig","_id":-1000,"Type":4,"Name":"常规子弹","Position":1,"ModelName":"Bullet_001","Weight":0,"IconName":"","BornSkills":[]},
 ]}

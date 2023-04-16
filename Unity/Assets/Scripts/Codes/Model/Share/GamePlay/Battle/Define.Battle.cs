@@ -3,7 +3,7 @@
     /// <summary>
 	/// 技能事件类型
 	/// </summary>
-    public enum ESkillEventType
+    public enum ESkillEventType : byte
     {
         /// <summary>
 		/// 范围伤害
@@ -30,7 +30,7 @@
     /// <summary>
     /// 技能抽象类型
     /// </summary>
-    public enum ESkillAbstractType
+    public enum ESkillAbstractType : byte
     {
         /// <summary>
         /// 普攻
@@ -57,14 +57,14 @@
     /// <summary>
     /// 输入操作类型
     /// </summary>
-    public enum EInputType
+    public enum EInputType : byte
     {
         Key,
         KeyDown,
         KeyUp,
     }
     
-    public enum EOperateType
+    public enum EOperateType : byte
     {
         Move = 0,
         Jump = 1,
@@ -74,5 +74,12 @@
         Skill3,
         Skill4,
     }
-    
+
+    public enum EColliderType: byte
+    {
+        Circle,
+        Box,
+    }
+
+
 }

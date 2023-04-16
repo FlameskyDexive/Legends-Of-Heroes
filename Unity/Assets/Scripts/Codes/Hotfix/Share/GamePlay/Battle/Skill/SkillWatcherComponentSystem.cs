@@ -5,6 +5,7 @@ using ET.EventType;
 namespace ET
 {
     [FriendOf(typeof(SkillWatcherComponent))]
+    [FriendOf(typeof(SkillEvent))]
     public static class SkillWatcherComponentSystem
     {
         [ObjectSystem]

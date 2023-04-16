@@ -14,5 +14,7 @@ namespace ET
         // [StaticField]
         public const int LogicFrame = 30;
 #endif
+        
+        
     }
 }
