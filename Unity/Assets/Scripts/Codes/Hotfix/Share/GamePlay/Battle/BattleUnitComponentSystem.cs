@@ -97,5 +97,11 @@ namespace ET
             skill = null;
             return false;
         }
+
+
+        public static bool IsDead(this BattleUnitComponent self)
+        {
+            return self.Unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0;
+        }
     }
 }

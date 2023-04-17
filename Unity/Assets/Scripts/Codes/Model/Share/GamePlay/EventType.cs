@@ -48,5 +48,11 @@ namespace ET
             public Contact contact;
         }
 
+
+        public struct HitResult
+        {
+            public EHitResultType hitResultType;
+            public int value;
+        }
     }
 }

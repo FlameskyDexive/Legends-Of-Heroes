@@ -7,6 +7,8 @@ namespace ET
     [ChildOf(typeof(BattleUnitComponent))]
     public class Skill:Entity,IAwake<int, int>,IDestroy,ITransfer
     {
+        [BsonIgnore]
+        public Unit Unit => this.GetParent<BattleUnitComponent>().Unit;
         public int SkillId;
         public int SkillLevel;
         // public int AbstractIndex;

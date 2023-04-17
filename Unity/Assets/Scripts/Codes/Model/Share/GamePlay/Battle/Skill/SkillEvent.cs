@@ -10,6 +10,9 @@ namespace ET
     [ChildOf(typeof(SkillTimelineComponent))]
     public class SkillEvent : Entity,IAwake<SkillConfig>,IDestroy,ITransfer
     {
+        [BsonIgnore]
+        public Unit Unit => this.GetParent<SkillTimelineComponent>().Unit;
+        
         public ESkillEventType SkillEventType;
         /// <summary>
         /// 技能事件出发的时间戳，拿当前事件对比，每次释放技能会重置时间戳
@@ -21,6 +24,7 @@ namespace ET
         public bool HasTrigger;
 
         public int[] EventData;
+        
 
     }
 }

@@ -82,4 +82,40 @@
     }
 
 
+    public enum EHitFromType: byte
+    {
+        /// <summary>
+        /// 普通技能命中（范围伤害等等）
+        /// </summary>
+        Skill_Normal,
+        /// <summary>
+        /// 子弹技能命中
+        /// </summary>
+        Skill_Bullet,
+        /// <summary>
+        /// buff伤害
+        /// </summary>
+        Buff,
+    }
+
+    public enum EHitResultType: byte
+    {
+        /// <summary>
+        /// 伤害扣血
+        /// </summary>
+        Damage,
+        /// <summary>
+        /// 回血
+        /// </summary>
+        RecoverBlood,
+        /// <summary>
+        /// 闪避
+        /// </summary>
+        Doge,
+        /// <summary>
+        /// 暴击
+        /// </summary>
+        Crit,
+    }
+
 }

@@ -50,7 +50,7 @@ namespace ET
 
                     if (timeNow > skillEvent.EventTriggerTime)
                     {
-                        SkillWatcherComponent.Instance.Run(skillEvent, new SkillEventType(){skillEventType = skillEvent.SkillEventType, owner = self.Domain as Unit});
+                        SkillWatcherComponent.Instance.Run(skillEvent, new SkillEventType(){skillEventType = skillEvent.SkillEventType, owner = skillEvent.Unit});
                         list.Add(key);
                     }
                 }

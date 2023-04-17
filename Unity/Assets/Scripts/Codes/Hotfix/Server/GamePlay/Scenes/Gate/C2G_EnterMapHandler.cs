@@ -18,6 +18,10 @@
 			
 			StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "Dungeon01");
 			response.MyId = player.Id;
+            
+            //为了方便临时测试的机器人，正常启动服务器要走正常机器人创建逻辑
+			//Unit robot = UnitFactory.Create(scene, 1000, UnitType.Player, 1000);
+			//TransferHelper.TransferAtFrameFinish(robot, startSceneConfig.InstanceId, startSceneConfig.Name).Coroutine();
 
 			// 等到一帧的最后面再传送，先让G2C_EnterMap返回，否则传送消息可能比G2C_EnterMap还早
 			TransferHelper.TransferAtFrameFinish(unit, startSceneConfig.InstanceId, startSceneConfig.Name).Coroutine();
