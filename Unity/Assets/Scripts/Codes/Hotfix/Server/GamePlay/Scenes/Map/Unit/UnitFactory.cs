@@ -38,15 +38,22 @@ namespace ET.Server
         public static Unit CreateBullet(Scene scene, long id, Skill ownerSkill, int config, int[] bulletData)
         {
             UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
-            Unit unit = unitComponent.AddChildWithId<Unit, int>(id, config);
-            unit.AddComponent<MoveComponent>();
-            unit.Position = new float3(0, 0, 0);
+            Unit owner = ownerSkill.Unit;
+            Unit bullet = unitComponent.AddChildWithId<Unit, int>(id, config);
+            MoveComponent moveComponent = bullet.AddComponent<MoveComponent>();
+            bullet.Position = owner.Position;
+            bullet.Forward = owner.Forward;
 			
-            NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
+            NumericComponent numericComponent = bullet.AddComponent<NumericComponent>();
             numericComponent.Set(NumericType.Speed, 8f); // 速度是3米每秒
             numericComponent.Set(NumericType.AOI, 15000); // 视野15米
-            
-            return unit;
+
+            float3 targetPoint = bullet.Position + bullet.Forward * numericComponent.GetAsFloat(NumericType.Speed);
+            List<float3> paths = new List<float3>();
+            paths.Add(targetPoint);
+            moveComponent.MoveToAsync(paths, numericComponent.GetAsFloat(NumericType.Speed)).Coroutine();
+
+            return bullet;
         }
     }
 }

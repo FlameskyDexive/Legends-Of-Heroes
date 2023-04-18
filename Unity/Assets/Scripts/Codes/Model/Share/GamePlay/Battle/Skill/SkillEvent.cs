@@ -12,7 +12,12 @@ namespace ET
     {
         [BsonIgnore]
         public Unit Unit => this.GetParent<SkillTimelineComponent>().Unit;
-        
+
+        public Skill Skill => this.GetParent<SkillTimelineComponent>().GetParent<Skill>();
+
+        public SkillConfig SkillConfig => this.Skill.SkillConfig;
+
+
         public ESkillEventType SkillEventType;
         /// <summary>
         /// 技能事件出发的时间戳，拿当前事件对比，每次释放技能会重置时间戳
