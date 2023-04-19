@@ -47,6 +47,8 @@ namespace ET.Server
             NumericComponent numericComponent = bullet.AddComponent<NumericComponent>();
             numericComponent.Set(NumericType.Speed, 8f); // 速度是3米每秒
             numericComponent.Set(NumericType.AOI, 15000); // 视野15米
+            numericComponent.SetNoEvent(NumericType.MaxHp, 1);
+            numericComponent.SetNoEvent(NumericType.Hp, 1);
 
             float3 targetPoint = bullet.Position + bullet.Forward * numericComponent.GetAsFloat(NumericType.Speed);
             List<float3> paths = new List<float3>();

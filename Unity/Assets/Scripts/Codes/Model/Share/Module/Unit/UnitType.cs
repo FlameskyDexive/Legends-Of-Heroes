@@ -6,5 +6,6 @@
         Monster = 2,
         NPC = 3,
         Bullet = 4,
+        Foot = 5,
     }
 }

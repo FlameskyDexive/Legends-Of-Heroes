@@ -14,7 +14,12 @@
             if (owner == null)
                 return;
 #if DOTNET
-            Server.UnitFactory.CreateBullet(skillEvent.DomainScene(), IdGenerater.Instance.GenerateUnitId(skillEvent.DomainZone()), skillEvent.Skill, -1000, skillEvent.EventData);
+            Unit bullet = Server.UnitFactory.CreateBullet(skillEvent.DomainScene(), IdGenerater.Instance.GenerateUnitId(skillEvent.DomainZone()), skillEvent.Skill, -1000, skillEvent.EventData);
+
+            // 通知客户端创建子弹Unit
+            M2C_CreateMyUnit m2CCreateUnits = new M2C_CreateMyUnit();
+            m2CCreateUnits.Unit = Server.UnitHelper.CreateUnitInfo(bullet);
+            Server.MessageHelper.SendToClient(bullet, m2CCreateUnits);
 #endif
         }
 	}

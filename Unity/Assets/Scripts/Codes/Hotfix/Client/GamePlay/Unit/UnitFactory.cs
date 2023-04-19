@@ -9,7 +9,17 @@ namespace ET.Client
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
 	        // unitComponent.Add(unit);
-	        
+            UnitType unitType = (UnitType)unitInfo.Type;
+            /*switch (unitType)
+            {
+				case UnitType.Player:
+				case UnitType.Bullet:
+				case UnitType.Monster:
+                    
+                    break;
+                
+            }*/
+            
 	        unit.Position = unitInfo.Position;
 	        unit.Forward = unitInfo.Forward;
 	        
@@ -19,8 +29,8 @@ namespace ET.Client
 			{
 				numericComponent.Set(kv.Key, kv.Value);
 			}
-	        
-	        unit.AddComponent<MoveComponent>();
+	        //客户端的角色位移来自服务端定期同步之后做插值
+	        /*unit.AddComponent<MoveComponent>();
 	        if (unitInfo.MoveInfo != null)
 	        {
 		        if (unitInfo.MoveInfo.Points.Count > 0)
@@ -28,11 +38,11 @@ namespace ET.Client
 					unitInfo.MoveInfo.Points[0] = unit.Position;
 					unit.MoveToAsync(unitInfo.MoveInfo.Points).Coroutine();
 				}
-	        }
+	        }*/
 
 	        unit.AddComponent<ObjectWait>();
 
-	        unit.AddComponent<XunLuoPathComponent>();
+	        // unit.AddComponent<XunLuoPathComponent>();
 	        
 	        EventSystem.Instance.Publish(unit.DomainScene(), new EventType.AfterUnitCreate() {Unit = unit});
             return unit;

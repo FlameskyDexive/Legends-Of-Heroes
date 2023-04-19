@@ -40,5 +40,10 @@
         public const int AttackPct = Attack * 10 + 3;
         public const int AttackFinalAdd = Attack * 10 + 4;
         public const int AttackFinalPct = Attack * 10 + 5;
+        
+        
+        //////////子弹属性相关//////////////
+        public const int BulletRadius = 1101;	//子弹半径
+        public const int BulletLife = 1101;	//子弹周期
     }
 }
