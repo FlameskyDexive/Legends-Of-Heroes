@@ -35,8 +35,15 @@ namespace ET.Server
                     }
                     case EOperateType.Skill1:
                     {
-                        //
+                        //主动技能1
                         unit?.GetComponent<BattleUnitComponent>()?.GetComponent<SkillComponent>()?.SpellSkill(ESkillAbstractType.ActiveSkill);
+                        
+                        break;
+                    }
+                    case EOperateType.Skill2:
+                    {
+                        //主动技能2
+                        unit?.GetComponent<BattleUnitComponent>()?.GetComponent<SkillComponent>()?.SpellSkill(ESkillAbstractType.ActiveSkill, 1);
                         
                         break;
                     }

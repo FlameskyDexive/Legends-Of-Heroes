@@ -2,6 +2,7 @@
 using Box2DSharp.Dynamics.Contacts;
 using System.Collections.Generic;
 using System.Numerics;
+using Unity.Mathematics;
 
 namespace ET
 {
@@ -10,7 +11,7 @@ namespace ET
     {
         protected override void Awake(CollisionComponent self)
         {
-            
+            self.Awake();
         }
     }
     [ObjectSystem]
@@ -35,7 +36,7 @@ namespace ET
     {
         public static void Awake(this CollisionComponent self)
         {
-            
+            self.WorldComponent = self.DomainScene().GetComponent<CollisionWorldComponent>();
         }
         
         /// <summary>
@@ -70,9 +71,19 @@ namespace ET
         /// <param name="self"></param>
         public static void FixedUpdate(this CollisionComponent self)
         {
-            
+            self.SyncColliderBody();
+        }
+        
+        public static void SyncColliderBody(this CollisionComponent self)
+        {
+            Unit unit = self.GetParent<Unit>();
+            self.Body.SetTransform(new Vector2(unit.Position.x, unit.Position.z), MathHelper.Angle(new float3(0, 0, 1), unit.Forward));
         }
 
 
+        public static void SetColliderBodyState(this CollisionComponent self, bool state)
+        {
+            self.Body.IsEnabled = state;
+        }
     }
 }

@@ -68,7 +68,13 @@ namespace ET.Client
                 OperateInfo operateInfo = new OperateInfo() { OperateType = (int)EOperateType.Skill1, InputType = (int)EInputType.KeyDown };
                 self.OperateInfos.Add(operateInfo);
             }
-        
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                //可在此处检测技能是否可释放（蓝量、CD、僵直等判定）
+                Log.Info($"press skill2");
+                OperateInfo operateInfo = new OperateInfo() { OperateType = (int)EOperateType.Skill2, InputType = (int)EInputType.KeyDown };
+                self.OperateInfos.Add(operateInfo);
+            }
         }
         
         private static void LateUpdate(this OperaComponent self)
