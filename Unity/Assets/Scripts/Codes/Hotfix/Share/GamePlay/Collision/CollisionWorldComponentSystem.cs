@@ -37,6 +37,7 @@ namespace ET
         public static void Awake(this CollisionWorldComponent self)
         {
             self.World = CollisionHelper.CreateWorld(new Vector2(0, 0));
+            self.World.SetContactListener(self.GetParent<Scene>().GetComponent<CollisionListenerComponent>());
         }
         
         public static Body CreateDynamicBody(this CollisionWorldComponent self)

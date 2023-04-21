@@ -1,4 +1,7 @@
 ﻿using Box2DSharp.Collision.Collider;
+using Box2DSharp.Collision.Shapes;
+using Box2DSharp.Common;
+using Box2DSharp.Dynamics;
 using Box2DSharp.Dynamics.Contacts;
 using System.Collections.Generic;
 using System.Numerics;
@@ -73,7 +76,23 @@ namespace ET
         {
             self.SyncColliderBody();
         }
-        
+
+        /// <summary>
+        /// 血量变化的时候，动态更新角色碰撞框的大小
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="radius"></param>
+        public static void SetBodyCircleRadius(this CollisionComponent self, float radius)
+        {
+            if (self.Body.FixtureList.Count > 0)
+            {
+                Shape shape = self.Body.FixtureList[0].Shape;
+                if (shape is CircleShape circle)
+                {
+                    circle.Radius = radius;
+                }
+            }
+        }
         public static void SyncColliderBody(this CollisionComponent self)
         {
             Unit unit = self.GetParent<Unit>();

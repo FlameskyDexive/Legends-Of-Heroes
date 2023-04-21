@@ -46,6 +46,7 @@ namespace ET
         public struct OnCollisionContact
         {
             public Contact contact;
+            public bool isEnd;
         }
 
 

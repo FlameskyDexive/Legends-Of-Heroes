@@ -43,7 +43,7 @@ namespace ET
 
         public static float Angle(float3 a, float3 b)
         {
-            float angle = math.acos(Dot(a, b)) * Rad2Deg;
+            float angle = math.acos(math.dot(a, b)) * Rad2Deg;
             return angle;
         }
 
