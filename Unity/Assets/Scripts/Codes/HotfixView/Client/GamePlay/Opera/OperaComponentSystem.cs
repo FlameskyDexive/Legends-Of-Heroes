@@ -63,14 +63,14 @@ namespace ET.Client
             }
             if (Input.GetKeyDown(KeyCode.J))
             {
-                //¿ÉÔÚ´Ë´¦¼ì²â¼¼ÄÜÊÇ·ñ¿ÉÊÍ·Å£¨À¶Á¿¡¢CD¡¢½©Ö±µÈÅĞ¶¨£©
+                //å¯åœ¨æ­¤å¤„æ£€æµ‹æŠ€èƒ½æ˜¯å¦å¯é‡Šæ”¾ï¼ˆè“é‡ã€CDã€åƒµç›´ç­‰åˆ¤å®šï¼‰
                 Log.Info($"press skill1");
                 OperateInfo operateInfo = new OperateInfo() { OperateType = (int)EOperateType.Skill1, InputType = (int)EInputType.KeyDown };
                 self.OperateInfos.Add(operateInfo);
             }
             if (Input.GetKeyDown(KeyCode.K))
             {
-                //¿ÉÔÚ´Ë´¦¼ì²â¼¼ÄÜÊÇ·ñ¿ÉÊÍ·Å£¨À¶Á¿¡¢CD¡¢½©Ö±µÈÅĞ¶¨£©
+                //å¯åœ¨æ­¤å¤„æ£€æµ‹æŠ€èƒ½æ˜¯å¦å¯é‡Šæ”¾ï¼ˆè“é‡ã€CDã€åƒµç›´ç­‰åˆ¤å®šï¼‰
                 Log.Info($"press skill2");
                 OperateInfo operateInfo = new OperateInfo() { OperateType = (int)EOperateType.Skill2, InputType = (int)EInputType.KeyDown };
                 self.OperateInfos.Add(operateInfo);
@@ -79,7 +79,7 @@ namespace ET.Client
         
         private static void LateUpdate(this OperaComponent self)
         {
-            //Ã¿Ö¡°Ñµ±Ç°Ö¡ÊÕ¼¯µÄ²Ù×÷·¢ËÍ¸ø·şÎñ¶Ë£¬ËæºóÇå³ı
+            //æ¯å¸§æŠŠå½“å‰å¸§æ”¶é›†çš„æ“ä½œå‘é€ç»™æœåŠ¡ç«¯ï¼Œéšåæ¸…é™¤
             if (self.OperateInfos.Count == 0)
                 return;
             self.OperateInfosTemp.Clear();

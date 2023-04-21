@@ -19,7 +19,7 @@ namespace ET
         void Start()
         {
             body = manager.CreateDynamicBody();
-            body.CreateCircleFixture(1, Vector2.Zero, true, this);
+            // body.CreateCircleFixture(1, Vector2.Zero, true, this);
         }
 
         // Update is called once per frame

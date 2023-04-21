@@ -57,6 +57,7 @@ namespace ET.Server
 
             float3 targetPoint = bullet.Position + bullet.Forward * numericComponent.GetAsFloat(NumericType.Speed);
             List<float3> paths = new List<float3>();
+            paths.Add(bullet.Position);
             paths.Add(targetPoint);
             moveComponent.MoveToAsync(paths, numericComponent.GetAsFloat(NumericType.Speed)).Coroutine();
 

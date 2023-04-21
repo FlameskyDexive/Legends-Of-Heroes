@@ -54,6 +54,7 @@ namespace ET
         /// <param name="angle"></param>
         public static void AddCollider(this CollisionComponent self, EColliderType colliderType, Vector2 vec2, Vector2 offset, bool isSensor, object userData, float angle = 0)
         {
+            Log.Info($"{self.GetParent<Unit>()?.Config?.Name} add collider:{vec2.X}");
             self.Body = self.WorldComponent.CreateDynamicBody();
             switch (colliderType)
             {

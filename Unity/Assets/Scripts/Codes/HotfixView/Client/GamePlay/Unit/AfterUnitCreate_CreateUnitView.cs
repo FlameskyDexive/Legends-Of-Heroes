@@ -8,22 +8,35 @@ namespace ET.Client
         protected override async ETTask Run(Scene scene, EventType.AfterUnitCreate args)
         {
             Unit unit = args.Unit;
+            GameObject go = null;
             // Unit View层
             // 这里可以改成异步加载，demo就不搞了
             // GameObject bundleGameObject = (GameObject)ResourcesComponent.Instance.GetAsset("Unit.unity3d", "Unit");
             // GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
-
-            GameObject prefab = await ResComponent.Instance.LoadAssetAsync<GameObject>("Player");
-
-            GameObject go = UnityEngine.Object.Instantiate(prefab, GlobalComponent.Instance.Unit, true);
-            Transform iconTrans = go.transform.Find("Root/Sprite");
-            if(iconTrans != null)
+            switch (unit.Type)
             {
-                SpriteRenderer spriteRenderer = iconTrans.GetComponent<SpriteRenderer>();
-                if (spriteRenderer != null)
+                case UnitType.Player:
                 {
-                    spriteRenderer.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{unit.Config.Id - 1000}");
-                }
+                    GameObject prefab = await ResComponent.Instance.LoadAssetAsync<GameObject>("Player");
+
+                    go = UnityEngine.Object.Instantiate(prefab, GlobalComponent.Instance.Unit, true);
+                    Transform iconTrans = go.transform.Find("Root/Sprite");
+                    if(iconTrans != null)
+                    {
+                        SpriteRenderer spriteRenderer = iconTrans.GetComponent<SpriteRenderer>();
+                        if (spriteRenderer != null)
+                        {
+                            spriteRenderer.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{unit.Config.Id - 1000}");
+                        }
+                    }
+                    break;
+                } 
+                case UnitType.Bullet:
+                {
+                    GameObject prefab = await ResComponent.Instance.LoadAssetAsync<GameObject>("Bullet_001");
+                    go = UnityEngine.Object.Instantiate(prefab, GlobalComponent.Instance.Unit, true);
+                    break;
+                } 
             }
             
             go.transform.position = unit.Position;

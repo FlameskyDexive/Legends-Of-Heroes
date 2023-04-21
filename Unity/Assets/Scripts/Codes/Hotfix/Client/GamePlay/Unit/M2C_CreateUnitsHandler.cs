@@ -7,7 +7,7 @@
 		{
 			Scene currentScene = session.DomainScene().CurrentScene();
 			UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
-			
+			Log.Info($"create units:{message?.Units?.Count}");
 			foreach (UnitInfo unitInfo in message.Units)
 			{
 				if (unitComponent.Get(unitInfo.UnitId) != null)

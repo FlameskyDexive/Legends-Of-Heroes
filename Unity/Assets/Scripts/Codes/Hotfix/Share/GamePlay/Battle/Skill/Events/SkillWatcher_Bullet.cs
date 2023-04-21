@@ -1,4 +1,6 @@
-﻿namespace ET
+﻿using System.Collections.Generic;
+
+namespace ET
 {
 	/// <summary>
 	/// 技能发射子弹
@@ -17,9 +19,10 @@
             Unit bullet = Server.UnitFactory.CreateBullet(skillEvent.DomainScene(), IdGenerater.Instance.GenerateUnitId(skillEvent.DomainZone()), skillEvent.Skill, -1000, skillEvent.EventData);
 
             // 通知客户端创建子弹Unit
-            M2C_CreateMyUnit m2CCreateUnits = new M2C_CreateMyUnit();
-            m2CCreateUnits.Unit = Server.UnitHelper.CreateUnitInfo(bullet);
-            Server.MessageHelper.SendToClient(bullet, m2CCreateUnits);
+            M2C_CreateUnits m2CCreateUnits = new M2C_CreateUnits(){ Units = new List<UnitInfo>()};
+            UnitInfo info = Server.UnitHelper.CreateUnitInfo(bullet);
+            m2CCreateUnits.Units.Add(info);
+            Server.MessageHelper.SendToClient(owner, m2CCreateUnits);
 #endif
         }
 	}
