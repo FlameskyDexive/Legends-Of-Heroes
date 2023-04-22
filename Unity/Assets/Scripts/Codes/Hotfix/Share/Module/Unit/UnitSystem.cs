@@ -1,11 +1,21 @@
 namespace ET
 {
-    [ObjectSystem]
-    public class UnitSystem: AwakeSystem<Unit, int>
+    [FriendOf(typeof(Unit))]
+    public static class UnitSystem
     {
-        protected override void Awake(Unit self, int configId)
+        [ObjectSystem]
+        public class UnitAwakeSystem : AwakeSystem<Unit, int>
         {
-            self.ConfigId = configId;
+            protected override void Awake(Unit self, int configId)
+            {
+                self.ConfigId = configId;
+            }
+        }
+        
+        public static void SyncInfo(this Unit self, UnitInfo unitInfo)
+        {
+            self.Position = unitInfo.Position;
+            self.Forward = unitInfo.Forward;
         }
     }
 }

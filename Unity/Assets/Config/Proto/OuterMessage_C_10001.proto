@@ -303,6 +303,12 @@ message OperateInfo
 	
 }
 
+message M2C_SyncUnits // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	repeated UnitInfo Units = 2;
+}
+
 
 ///////////////////////////////// Map End ///////////////////////////////////
 

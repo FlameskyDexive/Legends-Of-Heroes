@@ -32,7 +32,7 @@ namespace ET
         /// <summary>
         /// 当前冷却时间
         /// </summary>
-        public int CurrentCD;
+        // public int CurrentCD;
         
 
 

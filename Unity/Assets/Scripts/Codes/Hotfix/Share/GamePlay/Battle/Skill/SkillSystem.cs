@@ -13,6 +13,7 @@ namespace ET
             {
                 self.SkillId = skillId;
                 self.SkillLevel = skillLevel;
+                self.CD = 3000;
                 self.AddComponent<SkillTimelineComponent,int, int>(skillId, skillLevel);
             }
         }
@@ -24,6 +25,8 @@ namespace ET
         
         public static bool IsInCd(this Skill self)
         {
+            if (self.SpellStartTime + self.CD > TimeHelper.ServerNow())
+                return true;
             return false;
         }
 
@@ -33,6 +36,7 @@ namespace ET
         /// <param name="self"></param>
         public static void StartSpell(this Skill self)
         {
+            self.SpellStartTime = TimeHelper.ServerNow();
             self.GetComponent<SkillTimelineComponent>().StartPlay();
         }
     }
