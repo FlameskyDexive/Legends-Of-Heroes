@@ -92,23 +92,6 @@ namespace ET.Client
      		}
      	}
 
-		public UnityEngine.UI.Button EIconSkill1Button
-     	{
-     		get
-     		{
-     			if (this.uiTransform == null)
-     			{
-     				Log.Error("uiTransform is null.");
-     				return null;
-     			}
-     			if( this.m_EIconSkill1Button == null )
-     			{
-		    		this.m_EIconSkill1Button = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"Bottom/Skill/EBtnSkill1/EIconSkill1");
-     			}
-     			return this.m_EIconSkill1Button;
-     		}
-     	}
-
 		public UnityEngine.UI.Image EIconSkill1Image
      	{
      		get
@@ -194,23 +177,6 @@ namespace ET.Client
      		}
      	}
 
-		public UnityEngine.UI.Button EIconSkill2Button
-     	{
-     		get
-     		{
-     			if (this.uiTransform == null)
-     			{
-     				Log.Error("uiTransform is null.");
-     				return null;
-     			}
-     			if( this.m_EIconSkill2Button == null )
-     			{
-		    		this.m_EIconSkill2Button = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"Bottom/Skill/EBtnSkill2/EIconSkill2");
-     			}
-     			return this.m_EIconSkill2Button;
-     		}
-     	}
-
 		public UnityEngine.UI.Image EIconSkill2Image
      	{
      		get
@@ -269,13 +235,11 @@ namespace ET.Client
 			this.m_E_JoystickImage = null;
 			this.m_EBtnSkill1Button = null;
 			this.m_ETextSkill1Text = null;
-			this.m_EIconSkill1Button = null;
 			this.m_EIconSkill1Image = null;
 			this.m_EIMgCD1Image = null;
 			this.m_EImgMask1Image = null;
 			this.m_EBtnSkill2Button = null;
 			this.m_ETextSkill2Text = null;
-			this.m_EIconSkill2Button = null;
 			this.m_EIconSkill2Image = null;
 			this.m_EIMgCD2Image = null;
 			this.m_EImgMask2Image = null;
@@ -287,13 +251,11 @@ namespace ET.Client
 		private UnityEngine.UI.Image m_E_JoystickImage = null;
 		private UnityEngine.UI.Button m_EBtnSkill1Button = null;
 		private UnityEngine.UI.Text m_ETextSkill1Text = null;
-		private UnityEngine.UI.Button m_EIconSkill1Button = null;
 		private UnityEngine.UI.Image m_EIconSkill1Image = null;
 		private UnityEngine.UI.Image m_EIMgCD1Image = null;
 		private UnityEngine.UI.Image m_EImgMask1Image = null;
 		private UnityEngine.UI.Button m_EBtnSkill2Button = null;
 		private UnityEngine.UI.Text m_ETextSkill2Text = null;
-		private UnityEngine.UI.Button m_EIconSkill2Button = null;
 		private UnityEngine.UI.Image m_EIconSkill2Image = null;
 		private UnityEngine.UI.Image m_EIMgCD2Image = null;
 		private UnityEngine.UI.Image m_EImgMask2Image = null;

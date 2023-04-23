@@ -41,10 +41,16 @@ namespace ET.Client
         
         public static void RegisterUIEvent(this DlgBattle self)
         {
+            self.View.EBtnSkill1Button.AddListener(() =>
+            {
+                self.OnClickSkill1();
+            });
+            self.View.EBtnSkill2Button.AddListener(() =>
+            {
+                self.OnClickSkill2();
+            });
             self.View.E_JoystickJoystick.OnValueChanged.AddListener(self.OnPressJoystick);
             // self.View.E_JoystickJoystick.OnSwipeEvent.AddListener(self.OnSwipeJoystick);
-            self.View.EBtnSkill1Button.onClick.AddListener(self.OnClickSkill1);
-            self.View.EBtnSkill2Button.onClick.AddListener(self.OnClickSkill2);
 
         }
 
@@ -97,17 +103,19 @@ namespace ET.Client
 
         }
         
-        private static void OnClickSkill1(this DlgBattle self)
+        public static void OnClickSkill1(this DlgBattle self)
         {
+            Log.Info($"click skil1, {self.Skill1 == null}");
             if (self.Skill1 == null || self.Skill1.IsInCd())
                 return;
             self.DomainScene().GetComponent<OperaComponent>()?.OnClickSkill1();
         }
-        private static void OnClickSkill2(this DlgBattle self)
+        public static void OnClickSkill2(this DlgBattle self)
         {
+            Log.Info($"click skil2, {self.Skill2 == null}");
             if (self.Skill2 == null || self.Skill2.IsInCd())
                 return;
-            self.DomainScene().GetComponent<OperaComponent>()?.OnClickSkill1();
+            self.DomainScene().GetComponent<OperaComponent>()?.OnClickSkill2();
         }
 
         public static void Update(this DlgBattle self)

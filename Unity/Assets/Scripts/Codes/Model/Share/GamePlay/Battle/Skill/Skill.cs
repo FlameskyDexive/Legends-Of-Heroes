@@ -28,7 +28,11 @@ namespace ET
         /// <summary>
         /// 冷却时间
         /// </summary>
-        public int CD;
+        public int CD
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// 当前冷却时间
