@@ -158,6 +158,9 @@ namespace ET
 		[ProtoMember(8)]
 		public long OwnerId { get; set; }
 
+		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
+		[ProtoMember(9)]
+		public Dictionary<int, int> Skills { get; set; }
 	}
 
 	[Message(OuterMessage.M2C_CreateUnits)]

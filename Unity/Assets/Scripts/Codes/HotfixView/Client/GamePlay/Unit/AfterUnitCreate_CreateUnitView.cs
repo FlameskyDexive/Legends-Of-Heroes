@@ -29,6 +29,10 @@ namespace ET.Client
                             spriteRenderer.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{unit.Config.Id - 1000}");
                         }
                     }
+
+                    int hp = unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp);
+                    if(hp > 10)
+                        go.transform.localScale = Vector3.one * hp / 100f;
                     break;
                 } 
                 case UnitType.Bullet:

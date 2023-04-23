@@ -1,4 +1,6 @@
-﻿using Unity.Mathematics;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
 
 namespace ET.Client
 {
@@ -8,7 +10,6 @@ namespace ET.Client
         {
 	        UnitComponent unitComponent = currentScene.GetComponent<UnitComponent>();
 	        Unit unit = unitComponent.AddChildWithId<Unit, int>(unitInfo.UnitId, unitInfo.ConfigId);
-	        // unitComponent.Add(unit);
             UnitType unitType = (UnitType)unitInfo.Type;
             /*switch (unitType)
             {
@@ -43,7 +44,14 @@ namespace ET.Client
 	        }*/
 
 	        unit.AddComponent<ObjectWait>();
-
+            if (unitInfo.Skills?.Count > 0)
+            {
+                unit.AddComponent<BattleUnitComponent, List<int>>(unitInfo.Skills.Keys.ToList());
+            }
+            else
+            {
+                unit.AddComponent<BattleUnitComponent>();
+            }
 	        // unit.AddComponent<XunLuoPathComponent>();
 	        
 	        EventSystem.Instance.Publish(unit.DomainScene(), new EventType.AfterUnitCreate() {Unit = unit});
