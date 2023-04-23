@@ -63,6 +63,12 @@
         KeyDown,
         KeyUp,
     }
+
+    public enum EOperateStatus: byte
+    {
+        Success = 0,
+        Error = 1,
+    }
     
     public enum EOperateType : byte
     {

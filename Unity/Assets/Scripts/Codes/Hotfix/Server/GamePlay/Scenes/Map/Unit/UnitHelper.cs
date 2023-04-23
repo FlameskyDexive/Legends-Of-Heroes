@@ -36,12 +36,22 @@ namespace ET.Server
                 }
             }
 
-            unitInfo.KV = new Dictionary<int, long>();
             if (nc != null)
             {
+                unitInfo.KV = new Dictionary<int, long>();
                 foreach ((int key, long value) in nc.NumericDic)
                 {
                     unitInfo.KV.Add(key, value);
+                }
+            }
+
+            if (unit.Config?.BornSkills?.Length > 0)
+            {
+                unitInfo.Skills = new Dictionary<int, int>();
+                //测试技能等级为1
+                foreach (int bornSkill in unit.Config.BornSkills)
+                {
+                    unitInfo.Skills[bornSkill] = 1;
                 }
             }
 

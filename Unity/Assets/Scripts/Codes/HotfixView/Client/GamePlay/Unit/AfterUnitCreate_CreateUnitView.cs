@@ -32,7 +32,7 @@ namespace ET.Client
 
                     int hp = unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp);
                     if(hp > 10)
-                        go.transform.localScale = Vector3.one * hp / 100f;
+                        go.transform.localScale = Vector3.one * hp / 50f;
                     break;
                 } 
                 case UnitType.Bullet:

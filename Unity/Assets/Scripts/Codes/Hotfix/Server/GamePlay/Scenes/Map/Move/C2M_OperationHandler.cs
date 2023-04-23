@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using System.Collections.Generic;
+using Unity.Mathematics;
 
 namespace ET.Server
 {
@@ -7,8 +8,13 @@ namespace ET.Server
     {
         protected override async ETTask Run(Unit unit, C2M_Operation message)
         {
-            if (message.OperateInfos == null)
+            if (message.OperateInfos == null || message.OperateInfos.Count == 0)
+            {
                 Log.Error($"reveice null operate info");
+                return;
+            }
+            M2C_Operation m2COperation = new M2C_Operation(){OperateInfos = new List<OperateReplyInfo>()};
+            
             foreach (OperateInfo operateInfo in message.OperateInfos)
             {
                 EOperateType operateType = (EOperateType)operateInfo.OperateType;
@@ -36,20 +42,27 @@ namespace ET.Server
                     case EOperateType.Skill1:
                     {
                         //主动技能1
-                        unit?.GetComponent<BattleUnitComponent>()?.GetComponent<SkillComponent>()?.SpellSkill(ESkillAbstractType.ActiveSkill);
-                        
+                        if (unit?.GetComponent<BattleUnitComponent>()?.GetComponent<SkillComponent>()?.SpellSkill(ESkillAbstractType.ActiveSkill) == true)
+                        {
+                            OperateReplyInfo info = new OperateReplyInfo() { OperateType = (int)operateType, Status = 0 };
+                            m2COperation.OperateInfos.Add(info);
+                        }
                         break;
                     }
                     case EOperateType.Skill2:
                     {
                         //主动技能2
-                        unit?.GetComponent<BattleUnitComponent>()?.GetComponent<SkillComponent>()?.SpellSkill(ESkillAbstractType.ActiveSkill, 1);
-                        
+                        if (unit?.GetComponent<BattleUnitComponent>()?.GetComponent<SkillComponent>()?.SpellSkill(ESkillAbstractType.ActiveSkill, 1) == true)
+                        {
+                            OperateReplyInfo info = new OperateReplyInfo() { OperateType = (int)operateType, Status = 0 };
+                            m2COperation.OperateInfos.Add(info);
+                        }
                         break;
                     }
                 }
             }
-
+            if(m2COperation.OperateInfos?.Count > 0)
+                MessageHelper.SendToClient(unit, m2COperation);
 
             await ETTask.CompletedTask;
         }

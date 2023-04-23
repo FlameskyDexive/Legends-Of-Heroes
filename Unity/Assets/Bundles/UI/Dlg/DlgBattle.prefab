@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 17565397}
   - component: {fileID: 17565396}
   m_Layer: 5
-  m_Name: EImgMask1
+  m_Name: EIMgCD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -183,7 +183,7 @@ GameObject:
   - component: {fileID: 92996748}
   - component: {fileID: 92996747}
   m_Layer: 5
-  m_Name: EImgMask2
+  m_Name: EIMgCD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -555,7 +555,7 @@ GameObject:
   - component: {fileID: 802859238}
   - component: {fileID: 802859237}
   m_Layer: 5
-  m_Name: Mask
+  m_Name: EImgMask2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -971,7 +971,7 @@ GameObject:
   - component: {fileID: 1847070879}
   - component: {fileID: 1847070878}
   m_Layer: 5
-  m_Name: Mask
+  m_Name: EImgMask1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

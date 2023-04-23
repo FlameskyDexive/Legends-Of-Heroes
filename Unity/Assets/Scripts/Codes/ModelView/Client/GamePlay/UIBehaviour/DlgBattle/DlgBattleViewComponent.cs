@@ -126,6 +126,23 @@ namespace ET.Client
      		}
      	}
 
+		public UnityEngine.UI.Image EIMgCD1Image
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_EIMgCD1Image == null )
+     			{
+		    		this.m_EIMgCD1Image = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"Bottom/Skill/EBtnSkill1/EIMgCD1");
+     			}
+     			return this.m_EIMgCD1Image;
+     		}
+     	}
+
 		public UnityEngine.UI.Image EImgMask1Image
      	{
      		get
@@ -211,6 +228,23 @@ namespace ET.Client
      		}
      	}
 
+		public UnityEngine.UI.Image EIMgCD2Image
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_EIMgCD2Image == null )
+     			{
+		    		this.m_EIMgCD2Image = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"Bottom/Skill/EBtnSkill2/EIMgCD2");
+     			}
+     			return this.m_EIMgCD2Image;
+     		}
+     	}
+
 		public UnityEngine.UI.Image EImgMask2Image
      	{
      		get
@@ -237,11 +271,13 @@ namespace ET.Client
 			this.m_ETextSkill1Text = null;
 			this.m_EIconSkill1Button = null;
 			this.m_EIconSkill1Image = null;
+			this.m_EIMgCD1Image = null;
 			this.m_EImgMask1Image = null;
 			this.m_EBtnSkill2Button = null;
 			this.m_ETextSkill2Text = null;
 			this.m_EIconSkill2Button = null;
 			this.m_EIconSkill2Image = null;
+			this.m_EIMgCD2Image = null;
 			this.m_EImgMask2Image = null;
 			this.uiTransform = null;
 		}
@@ -253,11 +289,13 @@ namespace ET.Client
 		private UnityEngine.UI.Text m_ETextSkill1Text = null;
 		private UnityEngine.UI.Button m_EIconSkill1Button = null;
 		private UnityEngine.UI.Image m_EIconSkill1Image = null;
+		private UnityEngine.UI.Image m_EIMgCD1Image = null;
 		private UnityEngine.UI.Image m_EImgMask1Image = null;
 		private UnityEngine.UI.Button m_EBtnSkill2Button = null;
 		private UnityEngine.UI.Text m_ETextSkill2Text = null;
 		private UnityEngine.UI.Button m_EIconSkill2Button = null;
 		private UnityEngine.UI.Image m_EIconSkill2Image = null;
+		private UnityEngine.UI.Image m_EIMgCD2Image = null;
 		private UnityEngine.UI.Image m_EImgMask2Image = null;
 		public Transform uiTransform = null;
 	}

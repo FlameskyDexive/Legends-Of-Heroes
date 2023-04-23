@@ -291,7 +291,7 @@ message M2C_Operation // IActorLocationMessage
 {
 	int32 RpcId = 1;
 	int64 Id = 2;
-	int32 Status = 3;
+	repeated OperateReplyInfo OperateInfos = 3;
 }
 
 message OperateInfo
@@ -301,7 +301,11 @@ message OperateInfo
 	Unity.Mathematics.float3 Vec3 = 3; //v3参数
 	int64 Value1 = 4;
 	int64 Value2 = 5;
-	
+}
+message OperateReplyInfo
+{
+    int32 OperateType = 1; //操作类型
+	int32 Status = 2;
 }
 
 message M2C_SyncUnits // IActorLocationMessage

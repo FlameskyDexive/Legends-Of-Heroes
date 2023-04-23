@@ -29,11 +29,12 @@ namespace ET
         /// 冷却时间
         /// </summary>
         public int CD;
+
         /// <summary>
         /// 当前冷却时间
         /// </summary>
-        // public int CurrentCD;
-        
+        public int CurrentCD => (int)(this.SpellStartTime + this.CD - TimeHelper.ServerNow());
+
 
 
     }

@@ -18,9 +18,6 @@ namespace ET.Client
     {
         protected override void Update(DlgBattle self)
         {
-            // if (Time.frameCount % 3 == 0)
-                // self.Tick();
-
             self.Update();
         }
     }
@@ -38,13 +35,27 @@ namespace ET.Client
 	{
         public static void Awake(this DlgBattle self)
         {
-            self.RefreshSkillView();
+            // self.RefreshSkillView();
         }
 
+        
+        public static void RegisterUIEvent(this DlgBattle self)
+        {
+            self.View.E_JoystickJoystick.OnValueChanged.AddListener(self.OnPressJoystick);
+            // self.View.E_JoystickJoystick.OnSwipeEvent.AddListener(self.OnSwipeJoystick);
+            self.View.EBtnSkill1Button.onClick.AddListener(self.OnClickSkill1);
+            self.View.EBtnSkill2Button.onClick.AddListener(self.OnClickSkill2);
+
+        }
+
+		public static void ShowWindow(this DlgBattle self, ShowWindowDataBase contextData = null)
+		{
+            
+		}
         public static void RefreshSkillView(this DlgBattle self)
         {
             //刷新技能显示
-            self.MyUnit = UnitHelper.GetMyUnitFromCurrentScene(self.DomainScene().CurrentScene());
+            self.MyUnit = UnitHelper.GetMyUnitFromCurrentScene(self.DomainScene());
             Skill skill1 = null;
             if (self.MyUnit.GetComponent<BattleUnitComponent>().TryGetSkill(ESkillAbstractType.ActiveSkill, 0, out skill1))
             {
@@ -64,21 +75,19 @@ namespace ET.Client
                 return;
             //初始化设置技能icon等数据
         }
-        
-        public static void RegisterUIEvent(this DlgBattle self)
+
+        private static void SetSkillCD(this DlgBattle self, Skill skill, Button btn, Image imgCD, Text cdText, Image imgCover)
         {
-            self.View.E_JoystickJoystick.OnValueChanged.AddListener(self.OnPressJoystick);
-            // self.View.E_JoystickJoystick.OnSwipeEvent.AddListener(self.OnSwipeJoystick);
-            self.View.EBtnSkill1Button.AddListener(self.OnClickSkill1);
-            self.View.EBtnSkill2Button.AddListener(self.OnClickSkill2);
-
+            bool isInCd = skill.IsInCd();
+            imgCD.gameObject.SetActive(isInCd);
+            imgCover.gameObject.SetActive(isInCd);
+            cdText.gameObject.SetActive(isInCd);
+            if (isInCd)
+            {
+                cdText.text = $"{(skill.CurrentCD / 1000f).ToString("f1")}";
+                imgCD.fillAmount = skill.CurrentCD / (float)skill.CD;
+            }
         }
-
-		public static void ShowWindow(this DlgBattle self, ShowWindowDataBase contextData = null)
-		{
-            
-		}
-
 
         public static void OnPressJoystick(this DlgBattle self, Vector2 v)
         {
@@ -90,16 +99,28 @@ namespace ET.Client
         
         private static void OnClickSkill1(this DlgBattle self)
         {
-            
+            if (self.Skill1 == null || self.Skill1.IsInCd())
+                return;
+            self.DomainScene().GetComponent<OperaComponent>()?.OnClickSkill1();
         }
         private static void OnClickSkill2(this DlgBattle self)
         {
-            
+            if (self.Skill2 == null || self.Skill2.IsInCd())
+                return;
+            self.DomainScene().GetComponent<OperaComponent>()?.OnClickSkill1();
         }
 
         public static void Update(this DlgBattle self)
         {
-            
+            if (self.Skill1 != null)
+            {
+                self.SetSkillCD(self.Skill1, self.View.EBtnSkill1Button, self.View.EIMgCD1Image, self.View.ETextSkill1Text, self.View.EImgMask1Image);
+            }
+            if (self.Skill2 != null)
+            {
+                self.SetSkillCD(self.Skill2, self.View.EBtnSkill2Button, self.View.EIMgCD2Image, self.View.ETextSkill2Text, self.View.EImgMask2Image);
+            }
+
         }
     }
 }
