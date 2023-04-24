@@ -23,6 +23,17 @@ namespace ET.Client
         }
 
 
+        public static void RefreshScale(this GameObjectComponent self)
+        {
+            if (self.GameObject == null)
+                return;
+
+            Unit unit = self.GetParent<Unit>();
+            int hp = unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp);
+            if (hp > 10)
+                self.GameObject.transform.localScale = Vector3.one * hp / 50f;
+        }
+        
         public static void Update(this GameObjectComponent self)
         {
             if (self.GameObject != null)

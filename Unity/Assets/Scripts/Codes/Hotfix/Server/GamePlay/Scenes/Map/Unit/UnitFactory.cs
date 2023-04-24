@@ -48,7 +48,7 @@ namespace ET.Server
             bullet.Forward = owner.Forward;
             bullet.AddComponent<AOIEntity, int, float3>(15 * 1000, bullet.Position);
             bullet.AddComponent<CollisionComponent>().AddCollider(EColliderType.Circle, Vector2.One * 0.2f, Vector2.Zero, true, bullet);
-            bullet.AddComponent<BulletComponent>();
+            bullet.AddComponent<BulletComponent>().Init(ownerSkill, owner);
             NumericComponent numericComponent = bullet.AddComponent<NumericComponent>();
             numericComponent.Set(NumericType.Speed, 12f); // 速度是3米每秒
             numericComponent.Set(NumericType.AOI, 15000); // 视野15米

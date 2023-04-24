@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace ET.Server
 {
     [ChildOf(typeof(RoomManagerComponent))]
-    public class Room : Entity, IAwake
+    public class Room : Entity, IAwake, IDestroy
     {
         public long RoomOwnerPlayerId;
         

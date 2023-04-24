@@ -15,5 +15,14 @@ namespace ET.Server
                 
             }
         }
+        [ObjectSystem]
+        public class RoomDestroySystem : DestroySystem<Room>
+        {
+            protected override void Destroy(Room self)
+            {
+                self.AllPlayers.Clear();
+                self.CampPlayers.Clear();
+            }
+        }
     }
 }

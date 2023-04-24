@@ -69,7 +69,7 @@ namespace ET.Client
                 self.InitSkill(self.Skill1, self.View.EIconSkill1Image);
             }
             Skill skill2 = null;
-            if (self.MyUnit.GetComponent<BattleUnitComponent>().TryGetSkill(ESkillAbstractType.ActiveSkill, 0, out skill2))
+            if (self.MyUnit.GetComponent<BattleUnitComponent>().TryGetSkill(ESkillAbstractType.ActiveSkill, 1, out skill2))
             {
                 self.Skill2 = skill2;
                 self.InitSkill(self.Skill2, self.View.EIconSkill2Image);

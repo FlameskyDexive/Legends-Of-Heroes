@@ -57,7 +57,12 @@ namespace ET
             self.Timer = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + 700, TimerInvokeType.BulletLifeTimeout, self);
 
         }
-        
+
+        public static void Init(this BulletComponent self, Skill skill, Unit owner)
+        {
+            self.OwnerSkill = skill;
+            self.OwnerUnit = owner;
+        }
 
         /// <summary>
         /// 每帧更新

@@ -30,6 +30,18 @@ namespace ET
                     EventSystem.Instance.Publish(from.DomainScene(), new HitResult(){hitResultType = EHitResultType.Damage, value = dmg});
                     break;
                 }
+                case EHitFromType.Skill_Bullet:
+                {
+                    int dmg = from.GetComponent<NumericComponent>().GetAsInt(NumericType.Attack);
+                    int finalHp = to.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) - dmg;
+                    if (finalHp <= 0)
+                    {
+                        //死亡发事件通知
+                    }
+                    Log.Info($"hit settle, from:{from?.Id}, to:{to?.Id}, value:{dmg}");
+                    EventSystem.Instance.Publish(from.DomainScene(), new HitResult(){hitResultType = EHitResultType.Damage, value = dmg});
+                    break;
+                }
                     
             }
         }
