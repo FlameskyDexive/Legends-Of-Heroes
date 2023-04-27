@@ -20,6 +20,10 @@ namespace ET
             if (unitA.Type == UnitType.Bullet && unitB.Type == UnitType.Player)
             {
                 BattleHelper.HitSettle(unitA.GetComponent<BulletComponent>().OwnerUnit, unitB, EHitFromType.Skill_Bullet, unitA);
+            }//由于box2d没有双向碰撞响应，处理不同类型的时候判断各自类型
+            else if (unitA.Type == UnitType.Player && unitB.Type == UnitType.Bullet)
+            {
+                BattleHelper.HitSettle(unitA, unitB.GetComponent<BulletComponent>().OwnerUnit, EHitFromType.Skill_Bullet, unitB);
             }//玩家跟玩家碰撞，判定玩家重量大小，大吃小
             else if(unitA.Type == UnitType.Player && unitB.Type == UnitType.Player)
             {

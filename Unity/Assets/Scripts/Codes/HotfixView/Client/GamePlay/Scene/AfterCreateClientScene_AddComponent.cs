@@ -11,7 +11,6 @@ namespace ET.Client
             scene.AddComponent<UIComponent>();
             scene.AddComponent<UIPathComponent>();
             // scene.AddComponent<ResourcesLoaderComponent>();
-            scene.GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Login);
             await ETTask.CompletedTask;
         }
     }

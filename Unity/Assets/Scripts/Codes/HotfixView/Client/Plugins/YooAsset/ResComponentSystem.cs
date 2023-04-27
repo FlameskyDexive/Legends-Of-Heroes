@@ -4,26 +4,26 @@ using YooAsset;
 
 namespace ET.Client
 {
-   public class ResComponentAwakeSystem: AwakeSystem<ResComponent>
+    public class ResComponentAwakeSystem : AwakeSystem<ResComponent>
     {
         protected override void Awake(ResComponent self)
         {
             self.Awake();
         }
     }
-    
-    public class ResComponentDestroySystem: DestroySystem<ResComponent>
+
+    public class ResComponentDestroySystem : DestroySystem<ResComponent>
     {
         protected override void Destroy(ResComponent self)
         {
-            self.Destroy(); 
+            self.Destroy();
         }
     }
-    
-    public class ResComponentUpdateSystem: UpdateSystem<ResComponent>
+
+    public class ResComponentUpdateSystem : UpdateSystem<ResComponent>
     {
         protected override void Update(ResComponent self)
-        { 
+        {
             self.Update();
         }
     }
@@ -36,39 +36,21 @@ namespace ET.Client
         {
             ResComponent.Instance = self;
         }
-        
-        public static ETTask InitResourceAsync(this ResComponent self, Scene clientScene)
-        {
-            ETTask task = ETTask.Create(true); 
-            FsmComponent fsmComponent = clientScene.AddComponent<FsmComponent, ETTask>(task);
-            
-            fsmComponent.AddNodeHandler(nameof(FsmResourceInit));
-            fsmComponent.AddNodeHandler(nameof(FsmUpdateStaticVersion));
-            fsmComponent.AddNodeHandler(nameof(FsmUpdateManifest));
-            fsmComponent.AddNodeHandler(nameof(FsmCreateDownloader));
-            fsmComponent.AddNodeHandler(nameof(FsmDonwloadWebFiles));
-            fsmComponent.AddNodeHandler(nameof(FsmPatchDone));
-            
-            fsmComponent.Run(nameof(FsmResourceInit));
-
-            return task;
-        }
 
         public static void Destroy(this ResComponent self)
         {
+            self.ForceUnloadAllAssets();
+
             ResComponent.Instance = null;
             self.PackageVersion = string.Empty;
             self.Downloader = null;
 
-            foreach (var handle in self.AssetsOperationHandles.Values)
-            {
-                handle.Release();
-            }
-
-            foreach (var handle in self.SubAssetsOperationHandles.Values)
-            {
-                handle.Release();
-            }
+            self.AssetsOperationHandles.Clear();
+            self.SubAssetsOperationHandles.Clear();
+            self.SceneOperationHandles.Clear();
+            self.RawFileOperationHandles.Clear();
+            self.HandleProgresses.Clear();
+            self.DoneHandleQueue.Clear();
         }
 
         public static void Update(this ResComponent self)
@@ -106,9 +88,9 @@ namespace ET.Client
 
         public static async ETTask<int> UpdateVersionAsync(this ResComponent self, int timeout = 30)
         {
-            var package = YooAssets.GetAssetsPackage("DefaultPackage");
+            var package = YooAssets.GetPackage("DefaultPackage");
             var operation = package.UpdatePackageVersionAsync();
-            
+
             await operation.GetAwaiter();
 
             if (operation.Status != EOperationStatus.Succeed)
@@ -122,9 +104,9 @@ namespace ET.Client
 
         public static async ETTask<int> UpdateManifestAsync(this ResComponent self)
         {
-             var package = YooAssets.GetAssetsPackage("DefaultPackage");
+            var package = YooAssets.GetPackage("DefaultPackage");
             var operation = package.UpdatePackageManifestAsync(self.PackageVersion);
-                        
+
             await operation.GetAwaiter();
 
             if (operation.Status != EOperationStatus.Succeed)
@@ -139,7 +121,7 @@ namespace ET.Client
         {
             int downloadingMaxNum = 10;
             int failedTryAgain = 3;
-            PatchDownloaderOperation downloader = YooAssets.CreatePatchDownloader(downloadingMaxNum, failedTryAgain);
+            ResourceDownloaderOperation downloader = YooAssets.CreateResourceDownloader(downloadingMaxNum, failedTryAgain);
             if (downloader.TotalDownloadCount == 0)
             {
                 Log.Info("没有发现需要下载的资源");
@@ -153,7 +135,11 @@ namespace ET.Client
             return ErrorCode.ERR_Success;
         }
 
-        public static async ETTask<int> DonwloadWebFilesAsync(this ResComponent self, DownloaderOperation.OnDownloadProgress onDownloadProgress = null, DownloaderOperation.OnDownloadError onDownloadError = null)
+        public static async ETTask<int> DonwloadWebFilesAsync(this ResComponent self,
+        DownloaderOperation.OnStartDownloadFile onStartDownloadFileCallback = null,
+        DownloaderOperation.OnDownloadProgress onDownloadProgress = null,
+        DownloaderOperation.OnDownloadError onDownloadError = null,
+        DownloaderOperation.OnDownloadOver onDownloadOver = null)
         {
             if (self.Downloader == null)
             {
@@ -161,8 +147,10 @@ namespace ET.Client
             }
 
             // 注册下载回调
+            self.Downloader.OnStartDownloadFileCallback = onStartDownloadFileCallback;
             self.Downloader.OnDownloadProgressCallback = onDownloadProgress;
             self.Downloader.OnDownloadErrorCallback = onDownloadError;
+            self.Downloader.OnDownloadOverCallback = onDownloadOver;
             self.Downloader.BeginDownload();
             await self.Downloader.GetAwaiter();
 
@@ -181,27 +169,44 @@ namespace ET.Client
 
         public static void UnloadUnusedAssets(this ResComponent self)
         {
-            AssetsPackage package = YooAssets.GetAssetsPackage("DefaultPackage");
+            ResourcePackage package = YooAssets.GetPackage("DefaultPackage");
             package.UnloadUnusedAssets();
         }
 
         public static void ForceUnloadAllAssets(this ResComponent self)
         {
-            AssetsPackage package = YooAssets.GetAssetsPackage("DefaultPackage");
+            ResourcePackage package = YooAssets.GetPackage("DefaultPackage");
             package.ForceUnloadAllAssets();
         }
 
         public static void UnloadAsset(this ResComponent self, string location)
         {
-            self.AssetsOperationHandles.TryGetValue(location, out AssetOperationHandle handle);
-            handle.Release();
+            if (self.AssetsOperationHandles.TryGetValue(location, out AssetOperationHandle assetOperationHandle))
+            {
+                assetOperationHandle.Release();
+                self.AssetsOperationHandles.Remove(location);
+            }
+            else if (self.RawFileOperationHandles.TryGetValue(location, out RawFileOperationHandle rawFileOperationHandle))
+            {
+                rawFileOperationHandle.Release();
+                self.RawFileOperationHandles.Remove(location);
+            }
+            else if (self.SubAssetsOperationHandles.TryGetValue(location, out SubAssetsOperationHandle subAssetsOperationHandle))
+            {
+                subAssetsOperationHandle.Release();
+                self.SubAssetsOperationHandles.Remove(location);
+            }
+            else
+            {
+                Log.Error($"资源{location}不存在");
+            }
         }
 
         #endregion
 
         #region 异步加载
 
-        public static async ETTask<T> LoadAssetAsync<T>(this ResComponent self, string location) where T: UnityEngine.Object
+        public static async ETTask<T> LoadAssetAsync<T>(this ResComponent self, string location) where T : UnityEngine.Object
         {
             self.AssetsOperationHandles.TryGetValue(location, out AssetOperationHandle handle);
 
@@ -254,9 +259,9 @@ namespace ET.Client
                 handle = YooAssets.LoadRawFileAsync(location);
                 self.RawFileOperationHandles[location] = handle;
             }
-            
+
             await handle;
-            
+
             return handle.GetRawFileData();
         }
 
@@ -267,9 +272,9 @@ namespace ET.Client
                 handle = YooAssets.LoadRawFileAsync(location);
                 self.RawFileOperationHandles[location] = handle;
             }
-            
+
             await handle;
-            
+
             return handle.GetRawFileText();
         }
 
@@ -277,7 +282,7 @@ namespace ET.Client
 
         #region 同步加载
 
-        public static T LoadAsset<T>(this ResComponent self, string location)where T: UnityEngine.Object
+        public static T LoadAsset<T>(this ResComponent self, string location) where T : UnityEngine.Object
         {
             self.AssetsOperationHandles.TryGetValue(location, out AssetOperationHandle handle);
 
@@ -289,7 +294,7 @@ namespace ET.Client
 
             return handle.AssetObject as T;
         }
-        
+
         public static UnityEngine.Object LoadAsset(this ResComponent self, string location, Type type)
         {
             self.AssetsOperationHandles.TryGetValue(location, out AssetOperationHandle handle);
@@ -305,5 +310,5 @@ namespace ET.Client
 
         #endregion
 
-    } 
+    }
 }

@@ -378,7 +378,7 @@ namespace ET.Client
             UIEventComponent.Instance.GetUIEventHandler(id).OnShowWindow(baseWindow, showData);
             
             self.VisibleWindowsDic[(int)id] = baseWindow;
-            Debug.Log("<color=magenta>### current Navigation window </color>" + baseWindow.WindowID.ToString());
+            Debug.Log("<color=magenta>### 11 current Navigation window </color>" + baseWindow.WindowID.ToString());
         }
         
         public static void Destroy(this UIComponent self)

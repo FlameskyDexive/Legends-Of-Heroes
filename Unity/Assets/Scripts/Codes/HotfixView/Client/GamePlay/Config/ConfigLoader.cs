@@ -17,8 +17,7 @@ namespace ET.Client
             if (Define.IsEditor)
             {
                 string ct = "cs";
-                GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-                CodeMode codeMode = globalConfig.CodeMode;
+                CodeMode codeMode = GlobalConfig.Instance.CodeMode;
                 switch (codeMode)
                 {
                     case CodeMode.Client:

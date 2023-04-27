@@ -4,8 +4,7 @@
     "references": [
         "Unity.ThirdParty",
         "Unity.ScriptableBuildPipeline",
-        "Unity.ScriptableBuildPipeline.Editor",
-        "Unity.ThirdPartyClient"
+        "Unity.ScriptableBuildPipeline.Editor"
     ],
     "includePlatforms": [
         "Editor"

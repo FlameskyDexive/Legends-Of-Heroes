@@ -1,36 +1,49 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using YooAsset;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 namespace ET
 {
-    public class MonoResComponent: Singleton<MonoResComponent>
+    public class MonoResComponent
     {
-        public IEnumerator InitAsync(EPlayMode playMode)
-        {
-            // 初始化BetterStreaming
-            BetterStreamingAssets.Initialize();
+        public static MonoResComponent Instance { get; private set; } = new MonoResComponent();
 
+        private ResourcePackage defaultPackage;
+        private EPlayMode playMode;
+
+        public IEnumerator InitAsync(EPlayMode mode)
+        {
+            this.playMode = mode;
             // 初始化资源系统
             YooAssets.Initialize();
             YooAssets.SetOperationSystemMaxTimeSlice(30);
 
-            yield return InitPackage(playMode);
+            yield return InitPackage();
+
+            yield return this.LoadGlobalConfig();
         }
 
-        private IEnumerator InitPackage(EPlayMode playMode)
+        public async ETTask RestartAsync()
         {
-            // EPlayMode playMode = isUseEditorMode ? YooAsset.EPlayMode.EditorSimulateMode : YooAsset.EPlayMode.HostPlayMode;
+            await this.LoadGlobalConfigAsync();
+        }
+
+        private IEnumerator InitPackage()
+        {
+
             // 创建默认的资源包
             string packageName = "DefaultPackage";
-            var package = YooAssets.TryGetAssetsPackage(packageName);
-            if (package == null)
+            defaultPackage = YooAssets.TryGetPackage(packageName);
+            if (defaultPackage == null)
             {
-                package = YooAssets.CreateAssetsPackage(packageName);
-                YooAssets.SetDefaultAssetsPackage(package);
+                defaultPackage = YooAssets.CreatePackage(packageName);
+                YooAssets.SetDefaultPackage(defaultPackage);
             }
 
             // 编辑器下的模拟模式
@@ -38,29 +51,48 @@ namespace ET
             if (playMode == EPlayMode.EditorSimulateMode)
             {
                 var createParameters = new EditorSimulateModeParameters();
-                createParameters.SimulatePatchManifestPath = EditorSimulateModeHelper.SimulateBuild(packageName);
-                initializationOperation = package.InitializeAsync(createParameters);
+                createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild(packageName);
+                initializationOperation = defaultPackage.InitializeAsync(createParameters);
             }
-            else if (playMode == EPlayMode.OfflinePlayMode){
+            else if (playMode == EPlayMode.OfflinePlayMode)
+            {
                 var createParameters = new OfflinePlayModeParameters();
-                initializationOperation = package.InitializeAsync(createParameters);
+                initializationOperation = defaultPackage.InitializeAsync(createParameters);
             }
             else if (playMode == EPlayMode.HostPlayMode)
             {
                 var createParameters = new HostPlayModeParameters();
-                createParameters.DecryptionServices = new GameDecryptionServices(); 
+                createParameters.DecryptionServices = new GameDecryptionServices();
                 createParameters.QueryServices = new GameQueryServices();
                 createParameters.DefaultHostServer = GetHostServerURL();
                 createParameters.FallbackHostServer = GetHostServerURL();
-                initializationOperation = package.InitializeAsync(createParameters);
+                initializationOperation = defaultPackage.InitializeAsync(createParameters);
             }
 
             yield return initializationOperation;
-            
-            if (package.InitializeStatus != EOperationStatus.Succeed)
+
+            if (defaultPackage.InitializeStatus != EOperationStatus.Succeed)
             {
                 Debug.LogError($"{initializationOperation.Error}");
             }
+        }
+
+        private IEnumerator LoadGlobalConfig()
+        {
+            AssetOperationHandle handler = YooAssets.LoadAssetAsync<GlobalConfig>("GlobalConfig");
+            yield return handler;
+            GlobalConfig.Instance = handler.AssetObject as GlobalConfig;
+            handler.Release();
+            defaultPackage.UnloadUnusedAssets();
+        }
+
+        private async ETTask LoadGlobalConfigAsync()
+        {
+            AssetOperationHandle handler = YooAssets.LoadAssetAsync<GlobalConfig>("GlobalConfig");
+            await handler;
+            GlobalConfig.Instance = handler.AssetObject as GlobalConfig;
+            handler.Release();
+            defaultPackage.UnloadUnusedAssets();
         }
 
         public byte[] LoadRawFile(string location)
@@ -69,24 +101,30 @@ namespace ET
             return handle.GetRawFileData();
         }
 
-        public byte[] LoadFile(string path)
+        public async ETTask<byte[]> LoadRawFileAsync(string location)
         {
-            AssetOperationHandle handle = YooAssets.LoadAssetSync<TextAsset>(path);
-            return handle.GetAssetObject<TextAsset>().bytes;
+            RawFileOperationHandle handle = YooAssets.LoadRawFileAsync(location);
+            await handle;
+            return handle.GetRawFileData();
+        }
+
+        public AssetOperationHandle LoadAssetAsync<T>(string location) where T : UnityEngine.Object
+        {
+            return YooAssets.LoadAssetAsync<T>(location);
         }
 
         public string[] GetAddressesByTag(string tag)
         {
             AssetInfo[] assetInfos = YooAssets.GetAssetInfos(tag);
             string[] addresses = new string[assetInfos.Length];
-            for(int i = 0; i < assetInfos.Length; i++)
+            for (int i = 0; i < assetInfos.Length; i++)
             {
                 addresses[i] = assetInfos[i].Address;
             }
 
             return addresses;
         }
-        
+
         /// <summary>
         /// 获取资源服务器地址
         /// </summary>
@@ -116,7 +154,7 @@ namespace ET
 			return $"{hostServerIP}/CDN/PC/{gameVersion}";
 #endif
         }
-        
+
         /// <summary>
         /// 内置文件查询服务类
         /// </summary>
@@ -126,10 +164,10 @@ namespace ET
             {
                 // 注意：使用了BetterStreamingAssets插件，使用前需要初始化该插件！
                 string buildinFolderName = YooAssets.GetStreamingAssetBuildinFolderName();
-                return BetterStreamingAssets.FileExists($"{buildinFolderName}/{fileName}");
+                return StreamingAssetsHelper.FileExists($"{buildinFolderName}/{fileName}");
             }
         }
-        
+
         /// <summary>
         /// 资源文件解密服务类
         /// </summary>
@@ -145,7 +183,7 @@ namespace ET
                 throw new NotImplementedException();
             }
 
-            public FileStream LoadFromStream(DecryptFileInfo fileInfo)
+            public Stream LoadFromStream(DecryptFileInfo fileInfo)
             {
                 BundleStream bundleStream = new BundleStream(fileInfo.FilePath, FileMode.Open);
                 return bundleStream;

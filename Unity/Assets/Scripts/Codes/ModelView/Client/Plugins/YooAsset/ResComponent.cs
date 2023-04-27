@@ -12,7 +12,7 @@ namespace ET.Client
 
         public string PackageVersion { get; set; }
 
-        public PatchDownloaderOperation Downloader { get; set; }
+        public ResourceDownloaderOperation Downloader { get; set; }
         
         public Dictionary<string, AssetOperationHandle> AssetsOperationHandles = new Dictionary<string, AssetOperationHandle>(100);
         

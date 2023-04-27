@@ -68,12 +68,22 @@ namespace YooAsset.Editor
 
 
 		/// <summary>
+		/// 是否显示普通日志
+		/// </summary>
+		public bool EnableLog = true;
+		
+		/// <summary>
 		/// 验证构建结果
 		/// </summary>
 		public bool VerifyBuildingResult = false;
-		
+
 		/// <summary>
-		/// 加密类
+		/// 共享资源的打包规则
+		/// </summary>
+		public IShareAssetPackRule ShareAssetPackRule = null;
+
+		/// <summary>
+		/// 资源的加密接口
 		/// </summary>
 		public IEncryptionServices EncryptionServices = null;
 
