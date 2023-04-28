@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 7744778932085017243}
   - component: {fileID: 309125567558803647}
   m_Layer: 0
-  m_Name: E_TxtLoaidng
+  m_Name: E_TxtLoading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 1233275116573708756}
   - component: {fileID: 7521064129185719135}
   m_Layer: 0
-  m_Name: E_ImgLoaidng
+  m_Name: E_ImgLoading
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

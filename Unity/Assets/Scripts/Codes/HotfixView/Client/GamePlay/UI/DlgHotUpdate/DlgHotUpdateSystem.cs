@@ -46,8 +46,8 @@ namespace ET.Client
 
         public static void OnPatchDownloadProgress(this DlgHotUpdate self, int totalDownloadCount, int currentDownloadCount, long totalDownloadBytes, long currentDownloadBytes)
         {
-            self.View.E_TxtLoaidngText.text = $"{totalDownloadBytes}/{currentDownloadBytes}";
-            self.View.E_ImgLoaidngImage.fillAmount = 100.0f * currentDownloadBytes / totalDownloadBytes;
+            self.View.E_TxtLoadingText.text = $"{totalDownloadBytes}/{currentDownloadBytes}";
+            self.View.E_ImgLoadingImage.fillAmount = 100.0f * currentDownloadBytes / totalDownloadBytes;
         }
 
     }
