@@ -13,7 +13,7 @@ namespace ET
             {
                 self.SkillId = skillId;
                 self.SkillLevel = skillLevel;
-                self.CD = 3000;
+                self.CD = 1000;
                 self.AddComponent<SkillTimelineComponent,int, int>(skillId, skillLevel);
             }
         }

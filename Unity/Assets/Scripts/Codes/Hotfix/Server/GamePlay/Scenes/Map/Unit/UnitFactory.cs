@@ -50,7 +50,7 @@ namespace ET.Server
             bullet.AddComponent<CollisionComponent>().AddCollider(EColliderType.Circle, Vector2.One * 0.2f, Vector2.Zero, true, bullet);
             bullet.AddComponent<BulletComponent>().Init(ownerSkill, owner);
             NumericComponent numericComponent = bullet.AddComponent<NumericComponent>();
-            numericComponent.Set(NumericType.Speed, 12f); // 速度是3米每秒
+            numericComponent.Set(NumericType.Speed, 10f); // 速度是10米每秒
             numericComponent.Set(NumericType.AOI, 15000); // 视野15米
             //子弹暂时1血量，击中穿透
             numericComponent.SetNoEvent(NumericType.MaxHp, 1);

@@ -42,9 +42,11 @@ namespace ET.Client
                     break;
                 } 
             }
-            
+
             go.transform.position = unit.Position;
-            unit.AddComponent<GameObjectComponent>().GameObject = go;
+            GameObjectComponent gameObjectComponent = unit.AddComponent<GameObjectComponent>();
+            gameObjectComponent.Init(go);
+            
             unit.AddComponent<AnimatorComponent>();
             await ETTask.CompletedTask;
         }
