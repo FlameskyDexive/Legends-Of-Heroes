@@ -850,12 +850,13 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: NETSTANDARD2_0;UNITY
+    Android: NETSTANDARD2_0;UNITY;SINGLE_THREAD
     Server: NETSTANDARD2_0;UNITY
-    Standalone: NETSTANDARD2_0;UNITY
+    Standalone: NETSTANDARD2_0;UNITY;SINGLE_THREAD
     WebGL: NETSTANDARD2_0;UNITY
     iPhone: NETSTANDARD2_0;UNITY
-  additionalCompilerArguments: {}
+  additionalCompilerArguments:
+    Standalone: []
   platformArchitecture:
     iPhone: 1
   scriptingBackend:
