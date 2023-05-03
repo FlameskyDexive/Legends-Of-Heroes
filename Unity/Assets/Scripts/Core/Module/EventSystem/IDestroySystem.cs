@@ -2,38 +2,38 @@
 
 namespace ET
 {
-	public interface IDestroy
-	{
-	}
-	
-	public interface IDestroySystem: ISystemType
-	{
-		void Run(Entity o);
-	}
+    public interface IDestroy
+    {
+    }
 
-	[ObjectSystem]
-	public abstract class DestroySystem<T> : IDestroySystem where T: Entity, IDestroy
-	{
-		void IDestroySystem.Run(Entity o)
-		{
-			this.Destroy((T)o);
-		}
+    public interface IDestroySystem : ISystemType
+    {
+        void Run(Entity o);
+    }
 
-		Type ISystemType.SystemType()
-		{
-			return typeof(IDestroySystem);
-		}
+    [ObjectSystem]
+    public abstract class DestroySystem<T> : IDestroySystem where T : Entity, IDestroy
+    {
+        void IDestroySystem.Run(Entity o)
+        {
+            this.Destroy((T)o);
+        }
 
-		InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
-		{
-			return InstanceQueueIndex.None;
-		}
+        Type ISystemType.SystemType()
+        {
+            return typeof(IDestroySystem);
+        }
 
-		Type ISystemType.Type()
-		{
-			return typeof(T);
-		}
+        int ISystemType.GetInstanceQueueIndex()
+        {
+            return InstanceQueueIndex.None;
+        }
 
-		protected abstract void Destroy(T self);
-	}
+        Type ISystemType.Type()
+        {
+            return typeof(T);
+        }
+
+        protected abstract void Destroy(T self);
+    }
 }

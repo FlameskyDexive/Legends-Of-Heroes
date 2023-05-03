@@ -1,7 +1,7 @@
 ﻿namespace ET.Client
 {
     [Event(SceneType.Client)]
-    public class UpdateRoomPlayersView : AEvent<EventType.UpdateRoomPlayers>
+    public class UpdateRoomPlayersView : AEvent<Scene, EventType.UpdateRoomPlayers>
     {
         protected override async ETTask Run(Scene scene, EventType.UpdateRoomPlayers args)
         {

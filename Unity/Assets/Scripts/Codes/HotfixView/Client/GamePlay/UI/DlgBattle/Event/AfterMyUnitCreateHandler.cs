@@ -3,7 +3,7 @@ using ET.EventType;
 namespace ET.Client
 {
     [Event(SceneType.Current)]
-    public class AfterMyUnitCreateHandler : AEvent<EventType.AfterMyUnitCreate>
+    public class AfterMyUnitCreateHandler : AEvent<Scene, EventType.AfterMyUnitCreate>
     {
         protected override async ETTask Run(Scene scene, AfterMyUnitCreate a)
         {

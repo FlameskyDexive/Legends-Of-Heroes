@@ -10,7 +10,7 @@ namespace ET
     public static class MessageDispatcherComponentHelper
     {
         [ObjectSystem]
-        public class MessageDispatcherComponentAwakeSystem: AwakeSystem<MessageDispatcherComponent>
+        public class MessageDispatcherComponentAwakeSystem : AwakeSystem<MessageDispatcherComponent>
         {
             protected override void Awake(MessageDispatcherComponent self)
             {
@@ -20,7 +20,7 @@ namespace ET
         }
 
         [ObjectSystem]
-        public class MessageDispatcherComponentLoadSystem: LoadSystem<MessageDispatcherComponent>
+        public class MessageDispatcherComponentLoadSystem : LoadSystem<MessageDispatcherComponent>
         {
             protected override void Load(MessageDispatcherComponent self)
             {
@@ -29,7 +29,7 @@ namespace ET
         }
 
         [ObjectSystem]
-        public class MessageDispatcherComponentDestroySystem: DestroySystem<MessageDispatcherComponent>
+        public class MessageDispatcherComponentDestroySystem : DestroySystem<MessageDispatcherComponent>
         {
             protected override void Destroy(MessageDispatcherComponent self)
             {
@@ -42,7 +42,7 @@ namespace ET
         {
             self.Handlers.Clear();
 
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageHandlerAttribute));
+            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof(MessageHandlerAttribute));
 
             foreach (Type type in types)
             {
@@ -54,13 +54,13 @@ namespace ET
                 }
 
                 object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
-                
+
                 foreach (object attr in attrs)
                 {
                     MessageHandlerAttribute messageHandlerAttribute = attr as MessageHandlerAttribute;
-                    
+
                     Type messageType = iMHandler.GetMessageType();
-                    
+
                     ushort opcode = NetServices.Instance.GetOpcode(messageType);
                     if (opcode == 0)
                     {
@@ -68,7 +68,7 @@ namespace ET
                         continue;
                     }
 
-                    MessageDispatcherInfo messageDispatcherInfo = new (messageHandlerAttribute.SceneType, iMHandler);
+                    MessageDispatcherInfo messageDispatcherInfo = new(messageHandlerAttribute.SceneType, iMHandler);
                     self.RegisterHandler(opcode, messageDispatcherInfo);
                 }
             }
@@ -94,14 +94,14 @@ namespace ET
                 return;
             }
 
-            SceneType sceneType = session.DomainScene().SceneType;
+            SceneType sceneType = session.Domain.SceneType;
             foreach (MessageDispatcherInfo ev in actions)
             {
-                if (ev.SceneType != sceneType)
+                if (!ev.SceneType.HasSameFlag(sceneType))
                 {
                     continue;
                 }
-                
+
                 try
                 {
                     ev.IMHandler.Handle(session, message);

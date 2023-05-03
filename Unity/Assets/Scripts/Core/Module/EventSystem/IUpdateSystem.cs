@@ -2,38 +2,38 @@
 
 namespace ET
 {
-	public interface IUpdate
-	{
-	}
-	
-	public interface IUpdateSystem: ISystemType
-	{
-		void Run(Entity o);
-	}
+    public interface IUpdate
+    {
+    }
 
-	[ObjectSystem]
-	public abstract class UpdateSystem<T> : IUpdateSystem where T: Entity, IUpdate
-	{
-		void IUpdateSystem.Run(Entity o)
-		{
-			this.Update((T)o);
-		}
+    public interface IUpdateSystem : ISystemType
+    {
+        void Run(Entity o);
+    }
 
-		Type ISystemType.Type()
-		{
-			return typeof(T);
-		}
+    [ObjectSystem]
+    public abstract class UpdateSystem<T> : IUpdateSystem where T : Entity, IUpdate
+    {
+        void IUpdateSystem.Run(Entity o)
+        {
+            this.Update((T)o);
+        }
 
-		Type ISystemType.SystemType()
-		{
-			return typeof(IUpdateSystem);
-		}
+        Type ISystemType.Type()
+        {
+            return typeof(T);
+        }
 
-		InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
-		{
-			return InstanceQueueIndex.Update;
-		}
+        Type ISystemType.SystemType()
+        {
+            return typeof(IUpdateSystem);
+        }
 
-		protected abstract void Update(T self);
-	}
+        int ISystemType.GetInstanceQueueIndex()
+        {
+            return InstanceQueueIndex.Update;
+        }
+
+        protected abstract void Update(T self);
+    }
 }

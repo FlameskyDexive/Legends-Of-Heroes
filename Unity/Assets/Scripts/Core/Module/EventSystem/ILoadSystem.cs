@@ -2,38 +2,38 @@
 
 namespace ET
 {
-	public interface ILoad
-	{
-	}
-	
-	public interface ILoadSystem: ISystemType
-	{
-		void Run(Entity o);
-	}
+    public interface ILoad
+    {
+    }
 
-	[ObjectSystem]
-	public abstract class LoadSystem<T> : ILoadSystem where T: Entity, ILoad
-	{
-		void ILoadSystem.Run(Entity o)
-		{
-			this.Load((T)o);
-		}
+    public interface ILoadSystem : ISystemType
+    {
+        void Run(Entity o);
+    }
 
-		Type ISystemType.Type()
-		{
-			return typeof(T);
-		}
+    [ObjectSystem]
+    public abstract class LoadSystem<T> : ILoadSystem where T : Entity, ILoad
+    {
+        void ILoadSystem.Run(Entity o)
+        {
+            this.Load((T)o);
+        }
 
-		Type ISystemType.SystemType()
-		{
-			return typeof(ILoadSystem);
-		}
+        Type ISystemType.Type()
+        {
+            return typeof(T);
+        }
 
-		InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
-		{
-			return InstanceQueueIndex.Load;
-		}
+        Type ISystemType.SystemType()
+        {
+            return typeof(ILoadSystem);
+        }
 
-		protected abstract void Load(T self);
-	}
+        int ISystemType.GetInstanceQueueIndex()
+        {
+            return InstanceQueueIndex.Load;
+        }
+
+        protected abstract void Load(T self);
+    }
 }

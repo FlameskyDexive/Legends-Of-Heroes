@@ -14,7 +14,7 @@ namespace ET.Server
                 try
                 {
                     self.Load();
-                
+
                     self.Listener = new HttpListener();
 
                     foreach (string s in address.Split(';'))
@@ -38,7 +38,7 @@ namespace ET.Server
         }
 
         [ObjectSystem]
-        public class HttpComponentLoadSystem: LoadSystem<HttpComponent>
+        public class HttpComponentLoadSystem : LoadSystem<HttpComponent>
         {
             protected override void Load(HttpComponent self)
             {
@@ -47,7 +47,7 @@ namespace ET.Server
         }
 
         [ObjectSystem]
-        public class HttpComponentDestroySystem: DestroySystem<HttpComponent>
+        public class HttpComponentDestroySystem : DestroySystem<HttpComponent>
         {
             protected override void Destroy(HttpComponent self)
             {
@@ -55,14 +55,14 @@ namespace ET.Server
                 self.Listener.Close();
             }
         }
-        
+
         public static void Load(this HttpComponent self)
         {
             self.dispatcher = new Dictionary<string, IHttpHandler>();
 
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (HttpHandlerAttribute));
+            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof(HttpHandlerAttribute));
 
-            SceneType sceneType = self.GetParent<Scene>().SceneType;
+            SceneType sceneType = (self.Parent as IScene).SceneType;
 
             foreach (Type type in types)
             {
@@ -89,7 +89,7 @@ namespace ET.Server
                 self.dispatcher.Add(httpHandlerAttribute.Path, ihttpHandler);
             }
         }
-        
+
         public static async ETTask Accept(this HttpComponent self)
         {
             long instanceId = self.InstanceId;
@@ -117,7 +117,7 @@ namespace ET.Server
                 IHttpHandler handler;
                 if (self.dispatcher.TryGetValue(context.Request.Url.AbsolutePath, out handler))
                 {
-                    await handler.Handle(self.Domain, context);
+                    await handler.Handle(self.DomainScene(), context);
                 }
             }
             catch (Exception e)

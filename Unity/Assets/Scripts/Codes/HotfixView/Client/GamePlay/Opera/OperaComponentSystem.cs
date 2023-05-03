@@ -45,7 +45,7 @@ namespace ET.Client
                 {
                     C2M_PathfindingResult c2MPathfindingResult = new C2M_PathfindingResult();
                     c2MPathfindingResult.Position = hit.point;
-                    self.ClientScene().GetComponent<SessionComponent>().Session.Send(c2MPathfindingResult);
+                    self.ClientScene().GetComponent<PlayerSessionComponent>().Session.Send(c2MPathfindingResult);
                 }
             }
 
@@ -59,7 +59,7 @@ namespace ET.Client
             if (Input.GetKeyDown(KeyCode.T))
             {
                 C2M_TransferMap c2MTransferMap = new C2M_TransferMap();
-                self.ClientScene().GetComponent<SessionComponent>().Session.Call(c2MTransferMap).Coroutine();
+                self.ClientScene().GetComponent<PlayerSessionComponent>().Session.Call(c2MTransferMap).Coroutine();
             }
             if (Input.GetKeyDown(KeyCode.J))
             {
@@ -79,7 +79,7 @@ namespace ET.Client
             self.OperateInfosTemp.Clear();
             self.OperateInfosTemp.AddRange(self.OperateInfos);
             C2M_Operation c2MOperation = new C2M_Operation() { OperateInfos = self.OperateInfosTemp };
-            self.ClientScene().GetComponent<SessionComponent>()?.Session?.Send(c2MOperation);
+            self.ClientScene().GetComponent<PlayerSessionComponent>()?.Session?.Send(c2MOperation);
             self.OperateInfos.Clear();
         }
 
@@ -103,7 +103,7 @@ namespace ET.Client
         {
             Log.Info($"press joystick: {v2}");
             // C2M_JoystickMove c2mJoystickMove = new C2M_JoystickMove() { MoveForward = new float3(v2.x, 0, v2.y) };
-            // self.ClientScene().GetComponent<SessionComponent>().Session.Send(c2mJoystickMove);
+            // self.ClientScene().GetComponent<PlayerSessionComponent>().Session.Send(c2mJoystickMove);
             OperateInfo operateInfo = new OperateInfo(){OperateType = (int)EOperateType.Move, InputType = (int)EInputType.KeyDown, Vec3 = new float3(v2.x, 0, v2.y) };
             self.OperateInfos.Add(operateInfo);
         }

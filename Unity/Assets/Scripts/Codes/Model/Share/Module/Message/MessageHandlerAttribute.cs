@@ -1,6 +1,9 @@
-﻿namespace ET
+﻿using System;
+
+namespace ET
 {
-    public class MessageHandlerAttribute: BaseAttribute
+    [AttributeUsage(AttributeTargets.Class)]
+    public class MessageHandlerAttribute : BaseAttribute
     {
         public SceneType SceneType { get; }
 

@@ -2,42 +2,42 @@
 
 namespace ET
 {
-	public interface IDeserialize
-	{
-	}
-	
-	public interface IDeserializeSystem: ISystemType
-	{
-		void Run(Entity o);
-	}
+    public interface IDeserialize
+    {
+    }
 
-	/// <summary>
-	/// 反序列化后执行的System
-	/// </summary>
-	/// <typeparam name="T"></typeparam>
-	[ObjectSystem]
-	public abstract class DeserializeSystem<T> : IDeserializeSystem where T: Entity, IDeserialize
-	{
-		void IDeserializeSystem.Run(Entity o)
-		{
-			this.Deserialize((T)o);
-		}
+    public interface IDeserializeSystem : ISystemType
+    {
+        void Run(Entity o);
+    }
 
-		Type ISystemType.SystemType()
-		{
-			return typeof(IDeserializeSystem);
-		}
+    /// <summary>
+    /// 反序列化后执行的System
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    [ObjectSystem]
+    public abstract class DeserializeSystem<T> : IDeserializeSystem where T : Entity, IDeserialize
+    {
+        void IDeserializeSystem.Run(Entity o)
+        {
+            this.Deserialize((T)o);
+        }
 
-		InstanceQueueIndex ISystemType.GetInstanceQueueIndex()
-		{
-			return InstanceQueueIndex.None;
-		}
+        Type ISystemType.SystemType()
+        {
+            return typeof(IDeserializeSystem);
+        }
 
-		Type ISystemType.Type()
-		{
-			return typeof(T);
-		}
+        int ISystemType.GetInstanceQueueIndex()
+        {
+            return InstanceQueueIndex.None;
+        }
 
-		protected abstract void Deserialize(T self);
-	}
+        Type ISystemType.Type()
+        {
+            return typeof(T);
+        }
+
+        protected abstract void Deserialize(T self);
+    }
 }

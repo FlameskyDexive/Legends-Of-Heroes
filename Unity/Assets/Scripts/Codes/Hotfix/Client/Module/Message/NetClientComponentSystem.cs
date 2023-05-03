@@ -7,7 +7,7 @@ namespace ET.Client
     public static class NetClientComponentSystem
     {
         [ObjectSystem]
-        public class AwakeSystem: AwakeSystem<NetClientComponent, AddressFamily>
+        public class AwakeSystem : AwakeSystem<NetClientComponent, AddressFamily>
         {
             protected override void Awake(NetClientComponent self, AddressFamily addressFamily)
             {
@@ -18,7 +18,7 @@ namespace ET.Client
         }
 
         [ObjectSystem]
-        public class DestroySystem: DestroySystem<NetClientComponent>
+        public class DestroySystem : DestroySystem<NetClientComponent>
         {
             protected override void Destroy(NetClientComponent self)
             {
@@ -35,10 +35,10 @@ namespace ET.Client
             }
 
             session.LastRecvTime = TimeHelper.ClientNow();
-            
+
             OpcodeHelper.LogMsg(self.DomainZone(), message);
-            
-            EventSystem.Instance.Publish(Root.Instance.Scene, new NetClientComponentOnRead() {Session = session, Message = message});
+
+            EventSystem.Instance.Publish(Root.Instance.Scene, new NetClientComponentOnRead() { Session = session, Message = message });
         }
 
         private static void OnError(this NetClientComponent self, long channelId, int error)
@@ -58,7 +58,7 @@ namespace ET.Client
             long channelId = NetServices.Instance.CreateConnectChannelId();
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
             session.RemoteAddress = realIPEndPoint;
-            if (self.DomainScene().SceneType != SceneType.Benchmark)
+            if (self.Domain.SceneType != SceneType.Benchmark)
             {
                 session.AddComponent<SessionIdleCheckerComponent>();
             }
@@ -66,13 +66,13 @@ namespace ET.Client
 
             return session;
         }
-        
+
         public static Session Create(this NetClientComponent self, IPEndPoint routerIPEndPoint, IPEndPoint realIPEndPoint, uint localConn)
         {
             long channelId = localConn;
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
             session.RemoteAddress = realIPEndPoint;
-            if (self.DomainScene().SceneType != SceneType.Benchmark)
+            if (self.Domain.SceneType != SceneType.Benchmark)
             {
                 session.AddComponent<SessionIdleCheckerComponent>();
             }

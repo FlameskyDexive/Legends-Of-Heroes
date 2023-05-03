@@ -3,7 +3,7 @@
 namespace ET.Server
 {
     [Event(SceneType.Map)]
-    public class ChangePosition_SyncUnit: AEvent<ET.EventType.ChangePosition>
+    public class ChangePosition_SyncUnit: AEvent<Scene, ET.EventType.ChangePosition>
     {
         protected override async ETTask Run(Scene scene, ET.EventType.ChangePosition args)
         {

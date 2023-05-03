@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ET.Client
 {
     [Event(SceneType.Process)]
-    public class EntryEvent3_InitClient: AEvent<ET.EventType.EntryEvent3>
+    public class EntryEvent3_InitClient: AEvent<Scene, ET.EventType.EntryEvent3>
     {
         protected override async ETTask Run(Scene scene, ET.EventType.EntryEvent3 args)
         {

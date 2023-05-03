@@ -23,7 +23,7 @@ namespace ET.Client
             }
 
             // 停在当前位置
-            clientScene.GetComponent<SessionComponent>().Session.Send(new C2M_Stop());
+            clientScene.GetComponent<PlayerSessionComponent>().Session.Send(new C2M_Stop());
             
             Log.Debug("开始攻击");
 

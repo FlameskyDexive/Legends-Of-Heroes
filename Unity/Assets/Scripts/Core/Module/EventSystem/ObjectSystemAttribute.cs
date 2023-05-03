@@ -2,8 +2,8 @@
 
 namespace ET
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class ObjectSystemAttribute: BaseAttribute
-	{
-	}
+    [AttributeUsage(AttributeTargets.Class)]
+    public class ObjectSystemAttribute : BaseAttribute
+    {
+    }
 }

@@ -6,7 +6,7 @@ namespace ET.Server
     public static class NetServerComponentSystem
     {
         [ObjectSystem]
-        public class AwakeSystem: AwakeSystem<NetServerComponent, IPEndPoint>
+        public class AwakeSystem : AwakeSystem<NetServerComponent, IPEndPoint>
         {
             protected override void Awake(NetServerComponent self, IPEndPoint address)
             {
@@ -18,7 +18,7 @@ namespace ET.Server
         }
 
         [ObjectSystem]
-        public class NetServerComponentDestroySystem : DestroySystem<NetServerComponent>
+        public class NetKcpComponentDestroySystem : DestroySystem<NetServerComponent>
         {
             protected override void Destroy(NetServerComponent self)
             {
@@ -44,7 +44,7 @@ namespace ET.Server
             Session session = self.AddChildWithId<Session, int>(channelId, self.ServiceId);
             session.RemoteAddress = ipEndPoint;
 
-            if (self.DomainScene().SceneType != SceneType.BenchmarkServer)
+            if (self.Domain.SceneType != SceneType.BenchmarkServer)
             {
                 // 挂上这个组件，5秒就会删除session，所以客户端验证完成要删除这个组件。该组件的作用就是防止外挂一直连接不发消息也不进行权限验证
                 session.AddComponent<SessionAcceptTimeoutComponent>();
@@ -52,7 +52,7 @@ namespace ET.Server
                 session.AddComponent<SessionIdleCheckerComponent>();
             }
         }
-        
+
         private static void OnRead(this NetServerComponent self, long channelId, long actorId, object message)
         {
             Session session = self.GetChild<Session>(channelId);
@@ -61,10 +61,10 @@ namespace ET.Server
                 return;
             }
             session.LastRecvTime = TimeHelper.ClientNow();
-            
+
             OpcodeHelper.LogMsg(self.DomainZone(), message);
-			
-            EventSystem.Instance.Publish(Root.Instance.Scene, new NetServerComponentOnRead() {Session = session, Message = message});
+
+            EventSystem.Instance.Publish(Root.Instance.Scene, new NetServerComponentOnRead() { Session = session, Message = message });
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace ET.Client
 {
-	public class SessionComponentDestroySystem: DestroySystem<SessionComponent>
+	public class SessionComponentDestroySystem: DestroySystem<PlayerSessionComponent>
 	{
-		protected override void Destroy(SessionComponent self)
+		protected override void Destroy(PlayerSessionComponent self)
 		{
 			self.Session?.Dispose();
 		}

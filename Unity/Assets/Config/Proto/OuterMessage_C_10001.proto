@@ -216,6 +216,18 @@ message M2C_TestRobotCase // IActorLocationResponse
 	int32 N = 4;
 }
 
+message C2M_TestRobotCase2 // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	int32 N = 2;
+}
+
+message M2C_TestRobotCase2 // IActorLocationMessage
+{
+	int32 RpcId = 1;
+	int32 N = 2;
+}
+
 //ResponseType M2C_TransferMap
 message C2M_TransferMap // IActorLocationRequest
 {
@@ -251,12 +263,11 @@ message C2M_JoystickMove // IActorLocationMessage
 	Unity.Mathematics.float3 MoveForward = 2;
 }
 
-message M2C_JoystickMove // IActorLocationMessage
+message M2C_JoystickMove // IActorMessage
 {
-	int32 RpcId = 1;
-	int64 Id = 2;
-	Unity.Mathematics.float3 Position = 3;
-	Unity.Mathematics.float3 MoveForward = 4;
+	int64 Id = 1;
+	Unity.Mathematics.float3 Position = 2;
+	Unity.Mathematics.float3 MoveForward = 3;
 }
 
 
@@ -269,11 +280,10 @@ message C2M_Operation // IActorLocationMessage
 	
 }
 
-message M2C_Operation // IActorLocationMessage
+message M2C_Operation // IActorMessage
 {
-	int32 RpcId = 1;
-	int64 Id = 2;
-	repeated OperateReplyInfo OperateInfos = 3;
+	int64 Id = 1;
+	repeated OperateReplyInfo OperateInfos = 2;
 }
 
 message OperateInfo
@@ -290,10 +300,9 @@ message OperateReplyInfo
 	int32 Status = 2;
 }
 
-message M2C_SyncUnits // IActorLocationMessage
+message M2C_SyncUnits // IActorMessage
 {
-	int32 RpcId = 1;
-	repeated UnitInfo Units = 2;
+	repeated UnitInfo Units = 1;
 }
 
 

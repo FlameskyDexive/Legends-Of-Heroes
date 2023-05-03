@@ -447,6 +447,30 @@ namespace ET
 
 	}
 
+	[Message(OuterMessage.C2M_TestRobotCase2)]
+	[ProtoContract]
+	public partial class C2M_TestRobotCase2: ProtoObject, IActorLocationMessage
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int N { get; set; }
+
+	}
+
+	[Message(OuterMessage.M2C_TestRobotCase2)]
+	[ProtoContract]
+	public partial class M2C_TestRobotCase2: ProtoObject, IActorLocationMessage
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(2)]
+		public int N { get; set; }
+
+	}
+
 	[ResponseType(nameof(M2C_TransferMap))]
 	[Message(OuterMessage.C2M_TransferMap)]
 	[ProtoContract]
@@ -513,18 +537,15 @@ namespace ET
 
 	[Message(OuterMessage.M2C_JoystickMove)]
 	[ProtoContract]
-	public partial class M2C_JoystickMove: ProtoObject, IActorLocationMessage
+	public partial class M2C_JoystickMove: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
 		public long Id { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(2)]
 		public Unity.Mathematics.float3 Position { get; set; }
 
-		[ProtoMember(4)]
+		[ProtoMember(3)]
 		public Unity.Mathematics.float3 MoveForward { get; set; }
 
 	}
@@ -547,15 +568,12 @@ namespace ET
 
 	[Message(OuterMessage.M2C_Operation)]
 	[ProtoContract]
-	public partial class M2C_Operation: ProtoObject, IActorLocationMessage
+	public partial class M2C_Operation: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
 		public long Id { get; set; }
 
-		[ProtoMember(3)]
+		[ProtoMember(2)]
 		public List<OperateReplyInfo> OperateInfos { get; set; }
 
 	}
@@ -595,12 +613,9 @@ namespace ET
 
 	[Message(OuterMessage.M2C_SyncUnits)]
 	[ProtoContract]
-	public partial class M2C_SyncUnits: ProtoObject, IActorLocationMessage
+	public partial class M2C_SyncUnits: ProtoObject, IActorMessage
 	{
 		[ProtoMember(1)]
-		public int RpcId { get; set; }
-
-		[ProtoMember(2)]
 		public List<UnitInfo> Units { get; set; }
 
 	}
@@ -999,36 +1014,38 @@ namespace ET
 		 public const ushort G2C_TestHotfixMessage = 10029;
 		 public const ushort C2M_TestRobotCase = 10030;
 		 public const ushort M2C_TestRobotCase = 10031;
-		 public const ushort C2M_TransferMap = 10032;
-		 public const ushort M2C_TransferMap = 10033;
-		 public const ushort C2G_Benchmark = 10034;
-		 public const ushort G2C_Benchmark = 10035;
-		 public const ushort C2M_JoystickMove = 10036;
-		 public const ushort M2C_JoystickMove = 10037;
-		 public const ushort C2M_Operation = 10038;
-		 public const ushort M2C_Operation = 10039;
-		 public const ushort OperateInfo = 10040;
-		 public const ushort OperateReplyInfo = 10041;
-		 public const ushort M2C_SyncUnits = 10042;
-		 public const ushort C2L_JoinOrCreateRoom = 10043;
-		 public const ushort L2C_JoinOrCreateRoom = 10044;
-		 public const ushort C2G_JoinOrCreateRoom = 10045;
-		 public const ushort G2C_JoinOrCreateRoom = 10046;
-		 public const ushort G2C_UpdateRoomPlayers = 10047;
-		 public const ushort RoomInfoProto = 10048;
-		 public const ushort PlayerInfoRoom = 10049;
-		 public const ushort C2G_CreateNewRoom = 10050;
-		 public const ushort G2C_CreateNewRoom = 10051;
-		 public const ushort G2C_PlayerTriggerRoom = 10052;
-		 public const ushort C2G_LeaveRoom = 10053;
-		 public const ushort G2C_LeaveRoom = 10054;
-		 public const ushort PlayerBattleInfo = 10055;
-		 public const ushort G2C_StartEnterMap = 10056;
-		 public const ushort C2G_StartGame = 10057;
-		 public const ushort G2C_StartGame = 10058;
-		 public const ushort PlayerBattlePoint = 10059;
-		 public const ushort G2C_PrepareToEnterBattle = 10060;
-		 public const ushort C2G_PreparedToEnterBattle = 10061;
-		 public const ushort G2C_AllowToEnterMap = 10062;
+		 public const ushort C2M_TestRobotCase2 = 10032;
+		 public const ushort M2C_TestRobotCase2 = 10033;
+		 public const ushort C2M_TransferMap = 10034;
+		 public const ushort M2C_TransferMap = 10035;
+		 public const ushort C2G_Benchmark = 10036;
+		 public const ushort G2C_Benchmark = 10037;
+		 public const ushort C2M_JoystickMove = 10038;
+		 public const ushort M2C_JoystickMove = 10039;
+		 public const ushort C2M_Operation = 10040;
+		 public const ushort M2C_Operation = 10041;
+		 public const ushort OperateInfo = 10042;
+		 public const ushort OperateReplyInfo = 10043;
+		 public const ushort M2C_SyncUnits = 10044;
+		 public const ushort C2L_JoinOrCreateRoom = 10045;
+		 public const ushort L2C_JoinOrCreateRoom = 10046;
+		 public const ushort C2G_JoinOrCreateRoom = 10047;
+		 public const ushort G2C_JoinOrCreateRoom = 10048;
+		 public const ushort G2C_UpdateRoomPlayers = 10049;
+		 public const ushort RoomInfoProto = 10050;
+		 public const ushort PlayerInfoRoom = 10051;
+		 public const ushort C2G_CreateNewRoom = 10052;
+		 public const ushort G2C_CreateNewRoom = 10053;
+		 public const ushort G2C_PlayerTriggerRoom = 10054;
+		 public const ushort C2G_LeaveRoom = 10055;
+		 public const ushort G2C_LeaveRoom = 10056;
+		 public const ushort PlayerBattleInfo = 10057;
+		 public const ushort G2C_StartEnterMap = 10058;
+		 public const ushort C2G_StartGame = 10059;
+		 public const ushort G2C_StartGame = 10060;
+		 public const ushort PlayerBattlePoint = 10061;
+		 public const ushort G2C_PrepareToEnterBattle = 10062;
+		 public const ushort C2G_PreparedToEnterBattle = 10063;
+		 public const ushort G2C_AllowToEnterMap = 10064;
 	}
 }
