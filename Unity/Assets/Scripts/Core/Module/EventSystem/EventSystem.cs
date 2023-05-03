@@ -637,7 +637,7 @@ namespace ET
             
             foreach (EventInfo eventInfo in iEvents)
             {
-                if (scene.SceneType != eventInfo.SceneType && eventInfo.SceneType != SceneType.None)
+                if (((ulong)scene.SceneType & (ulong)eventInfo.SceneType) == 0)
                 {
                     continue;
                 }
@@ -672,7 +672,7 @@ namespace ET
             SceneType sceneType = scene.SceneType;
             foreach (EventInfo eventInfo in iEvents)
             {
-                if (sceneType != eventInfo.SceneType && eventInfo.SceneType != SceneType.None)
+                if (((ulong)scene.SceneType & (ulong)eventInfo.SceneType) == 0)
                 {
                     continue;
                 }

@@ -45,7 +45,7 @@ namespace ET.Server
             }
         }
 
-        public static void Check(this ActorLocationSenderOneType self)
+        private static void Check(this ActorLocationSenderOneType self)
         {
             using (ListComponent<long> list = ListComponent<long>.Create())
             {

@@ -91,6 +91,8 @@ namespace ET
             foreach (Unit unit in self.NeedSyncUnits)
             {
                 UnitInfo info = Server.UnitHelper.CreateUnitInfo(unit);
+                if(unit.IsDisposed || unit.Type != UnitType.Bullet)
+	                continue;
                 infos.Add(info);
             }
 

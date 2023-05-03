@@ -2,14 +2,14 @@
 
 namespace ET
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-	public class EventAttribute: BaseAttribute
-	{
-		public SceneType SceneType { get; }
+    [AttributeUsage(AttributeTargets.Class)]
+    public class EventAttribute : BaseAttribute
+    {
+        public SceneType SceneType { get; }
 
-		public EventAttribute(SceneType sceneType)
-		{
-			this.SceneType = sceneType;
-		}
-	}
+        public EventAttribute(SceneType sceneType)
+        {
+            this.SceneType = sceneType;
+        }
+    }
 }

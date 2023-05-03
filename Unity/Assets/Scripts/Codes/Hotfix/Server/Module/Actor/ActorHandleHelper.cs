@@ -8,20 +8,24 @@ namespace ET.Server
         {
             if (fromProcess == Options.Instance.Process) // 返回消息是同一个进程
             {
-                // NetInnerComponent.Instance.HandleMessage(realActorId, response); 等同于直接调用下面这句
-                ActorMessageSenderComponent.Instance.HandleIActorResponse(response);
+                async ETTask HandleMessageInNextFrame()
+                {
+                    await TimerComponent.Instance.WaitFrameAsync();
+                    NetInnerComponent.Instance.HandleMessage(0, response);
+                }
+                HandleMessageInNextFrame().Coroutine();
                 return;
             }
 
             Session replySession = NetInnerComponent.Instance.Get(fromProcess);
             replySession.Send(response);
         }
-        
+
         public static void HandleIActorResponse(IActorResponse response)
         {
             ActorMessageSenderComponent.Instance.HandleIActorResponse(response);
         }
-        
+
         /// <summary>
         /// 分发actor消息
         /// </summary>
@@ -49,43 +53,33 @@ namespace ET.Server
                 Reply(fromProcess, response);
                 return;
             }
-            
+
             switch (mailBoxComponent.MailboxType)
             {
                 case MailboxType.MessageDispatcher:
-                {
-                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
                     {
-                        if (entity.InstanceId != realActorId)
+                        using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
                         {
-                            IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
-                            Reply(fromProcess, response);
-                            break;
+                            if (entity.InstanceId != realActorId)
+                            {
+                                IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
+                                Reply(fromProcess, response);
+                                break;
+                            }
+                            await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorRequest);
                         }
-                        await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorRequest);
+                        break;
                     }
-                    break;
-                }
                 case MailboxType.UnOrderMessageDispatcher:
-                {
-                    await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorRequest);
-                    break;
-                }
-                case MailboxType.GateSession:
-                {
-                    if (entity is Player player)
                     {
-                        player.GetComponent<SessionInfoComponent>()?.Session?.Send(iActorRequest);
+                        await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorRequest);
+                        break;
                     }
-                    IActorResponse response = ActorHelper.CreateResponse(iActorRequest, 0);
-                    Reply(fromProcess, response);
-                    break;
-                }
                 default:
                     throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorRequest}");
             }
         }
-        
+
         /// <summary>
         /// 分发actor消息
         /// </summary>
@@ -96,14 +90,14 @@ namespace ET.Server
             int fromProcess = instanceIdStruct.Process;
             instanceIdStruct.Process = Options.Instance.Process;
             long realActorId = instanceIdStruct.ToLong();
-            
+
             Entity entity = Root.Instance.Get(realActorId);
             if (entity == null)
             {
                 Log.Error($"not found actor: {realActorId} {iActorMessage}");
                 return;
             }
-            
+
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
             {
@@ -114,31 +108,30 @@ namespace ET.Server
             switch (mailBoxComponent.MailboxType)
             {
                 case MailboxType.MessageDispatcher:
-                {
-                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
                     {
-                        if (entity.InstanceId != realActorId)
+                        using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
                         {
-                            break;
+                            if (entity.InstanceId != realActorId)
+                            {
+                                break;
+                            }
+                            await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorMessage);
                         }
-                        await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorMessage);
+                        break;
                     }
-                    break;
-                }
                 case MailboxType.UnOrderMessageDispatcher:
-                {
-                    await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorMessage);
-                    break;
-                }
-                case MailboxType.GateSession:
-                {
-                    if (entity is Session gateSession)
                     {
-                        // 发送给客户端
-                        gateSession.Send(iActorMessage);
+                        await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorMessage);
+                        break;
                     }
-                    break;
-                }
+                case MailboxType.GateSession:
+                    {
+                        if (entity is Player player)
+                        {
+                            player.GetComponent<SessionInfoComponent>()?.Session?.Send(iActorMessage);
+                        }
+                        break;
+                    }
                 default:
                     throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorMessage}");
             }
