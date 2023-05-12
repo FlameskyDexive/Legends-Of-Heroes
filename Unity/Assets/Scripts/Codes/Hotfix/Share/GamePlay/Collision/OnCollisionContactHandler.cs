@@ -29,7 +29,7 @@ namespace ET
             {
                 
             }//玩家吃到食物
-            else if(unitA.Type == UnitType.Player && unitB.Type == UnitType.Foot)
+            else if(unitA.Type == UnitType.Player && unitB.Type == UnitType.Food)
             {
                 //获取食物的分量，添加给玩家，同时销毁食物单位
             }
