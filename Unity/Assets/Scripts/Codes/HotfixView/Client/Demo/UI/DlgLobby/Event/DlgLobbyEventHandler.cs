@@ -1,6 +1,5 @@
 ﻿namespace ET.Client
 {
-
 	[FriendOf(typeof(UIBaseWindow))]
 	[AUIEvent(WindowID.WindowID_Lobby)]
 	public  class DlgLobbyEventHandler : IAUIEventHandler
@@ -13,7 +12,7 @@
 
 		public void OnInitComponent(UIBaseWindow uiBaseWindow)
 		{
-			uiBaseWindow.AddComponent<DlgLobby>().AddComponent<DlgLobbyViewComponent>(); 
+		  uiBaseWindow.AddComponent<DlgLobby>().AddComponent<DlgLobbyViewComponent>();
 		}
 
 		public void OnRegisterUIEvent(UIBaseWindow uiBaseWindow)

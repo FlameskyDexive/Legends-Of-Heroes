@@ -1,35 +1,8 @@
-# English: please use your browser to translate to english
+# English: please use your browser to translate to english  
+
+# 熊猫的课程：网络游戏架构设计上线啦，有需要请加QQ:80081771
 
 # __讨论QQ群 : 474643097__  
-
-# 熊猫的课程：《网络游戏架构设计》已经完结，有需要请加QQ:80081771 课程详细介绍了ET框架的设计思路跟细节，以下是课程目录:
-01. 代码结构
-02. All In one-01
-03. All In one-02
-04. 单间管理器
-05. 多线程单线程跟task await async的关系
-06. ETTask-01
-07. ETTask-02
-08. 计时器
-09. 协程锁
-10. 协程同步
-11. Id-Time-ObjectPool
-12. 日志 Options ConfigComponent
-13. why not 继承，多态，组合?
-14. 实体组件系统
-15. EventSystem
-16. 序列化反序列化
-17. Network
-18. TCP
-19. KCP
-20. NetComponent跟Session
-21. 软路由
-22. Actor
-23. ActorLocation
-24. 机器人框架测试用例框架
-25. AI框架
-26. 架构设计细节
-27. 分析器
 
 # [ET论坛](https://et-framework.cn)  
 
@@ -73,7 +46,7 @@ Unity Menu->ServerTools select Benchmark, Start Watcher。然后在Logs目录，
 5. 增加软路由，可以防各种网络攻击而不影响正常玩家，网游必备！-- 已实现  
 6. 各种事件跟网络消息订阅带上DomainSceneType，更精确，更不容易出错 -- 已实现  
 7. sj兄弟添加了各种分析器，分析器保证了写出的代码必须符合ET规范，否则编译不通过！（这点ET6也增加上了） -- 已实现  
-8. ET7集成了huatuo热更新库。 注意！(不要混淆客户端热更新跟服务端热更新，服务端热更新，ET一直都有)  
+8. ET7已经去除客户端热更新，请大家自己选择接入,接入huatuo或者ILRuntime都非常简单, 注意！(不要混淆客户端热更新跟服务端热更新，服务端热更新，ET一直都有)  
 9. 网络改成独立线程，序列化反序列化都在网络线程处理，主线程压力大大减轻。并且重新整理了网络层代码，更优美了  
 10. 集成Unity.Mathematic数学库，逻辑层客户端跟服务端都使用这一套数学库，这样服务端跟客户端完全统一了  
 11. ENABLE_CODES模式下拆分成4个程序集，解决分析器失效的问题  
@@ -184,12 +157,11 @@ ET框架是一个强大灵活的分布式服务端架构，完全可以满足绝
 
 商业项目:  
 1. [千古风流](https://www.qiangu.com/)  
-2. [神选誓约](https://www.taptap.cn/app/248095)  
-3. [魔法点点2](https://www.taptap.com/app/227804)  
-4. [养不大](https://www.taptap.com/app/71064)  
-5. 天天躲猫猫2（ios2019春节下载排行19）  
-6. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
-7. [五星麻将](https://github.com/wufanjoin/fivestar)  
+2. [魔法点点2](https://www.taptap.com/app/227804)  
+3. [养不大](https://www.taptap.com/app/71064)  
+4. 天天躲猫猫2（ios2019春节下载排行19）  
+5. [牛虎棋牌](https://gitee.com/ECPS_admin/PlanB)  
+6. [五星麻将](https://github.com/wufanjoin/fivestar)  
 
 群友demo：  
 1. [斗地主（客户端服务端）](https://github.com/Viagi/LandlordsCore)  

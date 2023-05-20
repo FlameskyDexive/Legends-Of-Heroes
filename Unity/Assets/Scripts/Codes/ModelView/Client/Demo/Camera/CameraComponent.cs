@@ -7,19 +7,7 @@ namespace ET.Client
 		// 战斗摄像机
 		public Camera mainCamera;
 
-		private long unitInstanceId;
-
-		public Unit Unit
-		{
-			get
-			{
-				return Root.Instance.Get(this.unitInstanceId) as Unit;
-			}
-			set
-			{
-				this.unitInstanceId = value.InstanceId;
-			}
-		}
+		public Unit Unit;
 
 		public Camera MainCamera
 		{

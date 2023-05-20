@@ -296,7 +296,7 @@ namespace ET
 #if DOTNET
             if (time < 100)
             {
-                throw new System.Exception($"repeated timer < 100, timerType: time: {time}");
+                throw new Exception($"repeated timer < 100, timerType: time: {time}");
             }
 #endif
             

@@ -10,19 +10,7 @@ namespace ET.Server
 
         public int ViewDistance;
 
-        private long cellInstanceId;
-
-        public Cell Cell
-        {
-            get
-            {
-                return Root.Instance.Get(this.cellInstanceId) as Cell;
-            }
-            set
-            {
-                this.cellInstanceId = value.InstanceId;
-            }
-        }
+        public Cell Cell;
 
         // 观察进入视野的Cell
         public HashSet<long> SubEnterCells = new HashSet<long>();

@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -30,66 +30,82 @@ namespace ET
             Debug.Log("ReGenerateProjectFiles finished.");
         }
 
-              
+        
 #if ENABLE_CODES
         [MenuItem("ET/ChangeDefine/Remove ENABLE_CODES")]
         public static void RemoveEnableCodes()
         {
-            EnableDefineSymbols("ENABLE_CODES", false);
+            EnableCodes(false);
         }
 #else
         [MenuItem("ET/ChangeDefine/Add ENABLE_CODES")]
         public static void AddEnableCodes()
         {
-            EnableDefineSymbols("ENABLE_CODES", true);
+            EnableCodes(true);
         }
 #endif
-
+        private static void EnableCodes(bool enable)
+        {
+            string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
+            var ss = defines.Split(';').ToList();
+            if (enable)
+            {
+                if (ss.Contains("ENABLE_CODES"))
+                {
+                    return;
+                }
+                ss.Add("ENABLE_CODES");
+            }
+            else
+            {
+                if (!ss.Contains("ENABLE_CODES"))
+                {
+                    return;
+                }
+                ss.Remove("ENABLE_CODES");
+            }
+            defines = string.Join(";", ss);
+            PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, defines);
+            AssetDatabase.SaveAssets();
+        }
+        
 #if ENABLE_VIEW
         [MenuItem("ET/ChangeDefine/Remove ENABLE_VIEW")]
         public static void RemoveEnableView()
         {
-            EnableDefineSymbols("ENABLE_VIEW", false);
+            EnableView(false);
         }
 #else
         [MenuItem("ET/ChangeDefine/Add ENABLE_VIEW")]
         public static void AddEnableView()
         {
-            EnableDefineSymbols("ENABLE_VIEW", true);
+            EnableView(true);
         }
 #endif
-        public static void EnableDefineSymbols(string symbols, bool enable)
+        private static void EnableView(bool enable)
         {
-            Log.Debug($"EnableDefineSymbols {symbols} {enable}");
             string defines = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
             var ss = defines.Split(';').ToList();
             if (enable)
             {
-                if (ss.Contains(symbols))
+                if (ss.Contains("ENABLE_VIEW"))
                 {
                     return;
                 }
-                ss.Add(symbols);
+                ss.Add("ENABLE_VIEW");
             }
             else
             {
-                if (!ss.Contains(symbols))
+                if (!ss.Contains("ENABLE_VIEW"))
                 {
                     return;
                 }
-                ss.Remove(symbols);
+                ss.Remove("ENABLE_VIEW");
             }
-            BuildHelper.ShowNotification($"EnableDefineSymbols {symbols} {enable}");
+            
             defines = string.Join(";", ss);
             PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, defines);
             AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-        }
-        
-        public static void ShowNotification(string tips)
-        {
-            EditorWindow game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
-            game?.ShowNotification(new GUIContent($"{tips}"));
         }
 
         public static void Build(PlatformType type, BuildAssetBundleOptions buildAssetBundleOptions, BuildOptions buildOptions, bool isBuildExe, bool isContainAB, bool clearFolder)

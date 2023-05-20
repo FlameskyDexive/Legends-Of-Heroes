@@ -12,7 +12,7 @@
 
 		public void OnInitComponent(UIBaseWindow uiBaseWindow)
 		{
-			uiBaseWindow.AddComponent<DlgLogin>().AddComponent<DlgLoginViewComponent>(); 
+		  uiBaseWindow.AddComponent<DlgLogin>().AddComponent<DlgLoginViewComponent>();
 		}
 
 		public void OnRegisterUIEvent(UIBaseWindow uiBaseWindow)
