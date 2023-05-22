@@ -20,12 +20,12 @@ namespace ET.Server
             Session replySession = NetInnerComponent.Instance.Get(fromProcess);
             replySession.Send(response);
         }
-
+        
         public static void HandleIActorResponse(IActorResponse response)
         {
             ActorMessageSenderComponent.Instance.HandleIActorResponse(response);
         }
-
+        
         /// <summary>
         /// 分发actor消息
         /// </summary>
@@ -48,38 +48,38 @@ namespace ET.Server
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
             {
-                Log.Warning($"actor not found mailbox: {entity.GetType().Name} {realActorId} {iActorRequest}");
+                Log.Warning($"actor not found mailbox: {entity.GetType().FullName} {realActorId} {iActorRequest}");
                 IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
                 Reply(fromProcess, response);
                 return;
             }
-
+            
             switch (mailBoxComponent.MailboxType)
             {
                 case MailboxType.MessageDispatcher:
+                {
+                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
                     {
-                        using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
+                        if (entity.InstanceId != realActorId)
                         {
-                            if (entity.InstanceId != realActorId)
-                            {
-                                IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
-                                Reply(fromProcess, response);
-                                break;
-                            }
-                            await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorRequest);
+                            IActorResponse response = ActorHelper.CreateResponse(iActorRequest, ErrorCore.ERR_NotFoundActor);
+                            Reply(fromProcess, response);
+                            break;
                         }
-                        break;
-                    }
-                case MailboxType.UnOrderMessageDispatcher:
-                    {
                         await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorRequest);
-                        break;
                     }
+                    break;
+                }
+                case MailboxType.UnOrderMessageDispatcher:
+                {
+                    await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorRequest);
+                    break;
+                }
                 default:
                     throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorRequest}");
             }
         }
-
+        
         /// <summary>
         /// 分发actor消息
         /// </summary>
@@ -90,48 +90,48 @@ namespace ET.Server
             int fromProcess = instanceIdStruct.Process;
             instanceIdStruct.Process = Options.Instance.Process;
             long realActorId = instanceIdStruct.ToLong();
-
+            
             Entity entity = Root.Instance.Get(realActorId);
             if (entity == null)
             {
                 Log.Error($"not found actor: {realActorId} {iActorMessage}");
                 return;
             }
-
+            
             MailBoxComponent mailBoxComponent = entity.GetComponent<MailBoxComponent>();
             if (mailBoxComponent == null)
             {
-                Log.Error($"actor not found mailbox: {entity.GetType().Name} {realActorId} {iActorMessage}");
+                Log.Error($"actor not found mailbox: {entity.GetType().FullName} {realActorId} {iActorMessage}");
                 return;
             }
 
             switch (mailBoxComponent.MailboxType)
             {
                 case MailboxType.MessageDispatcher:
+                {
+                    using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
                     {
-                        using (await CoroutineLockComponent.Instance.Wait(CoroutineLockType.Mailbox, realActorId))
+                        if (entity.InstanceId != realActorId)
                         {
-                            if (entity.InstanceId != realActorId)
-                            {
-                                break;
-                            }
-                            await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorMessage);
+                            break;
                         }
-                        break;
-                    }
-                case MailboxType.UnOrderMessageDispatcher:
-                    {
                         await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorMessage);
-                        break;
                     }
+                    break;
+                }
+                case MailboxType.UnOrderMessageDispatcher:
+                {
+                    await ActorMessageDispatcherComponent.Instance.Handle(entity, fromProcess, iActorMessage);
+                    break;
+                }
                 case MailboxType.GateSession:
+                {
+                    if (entity is Player player)
                     {
-                        if (entity is Player player)
-                        {
-                            player.GetComponent<SessionInfoComponent>()?.Session?.Send(iActorMessage);
-                        }
-                        break;
+                        player.GetComponent<PlayerSessionComponent>()?.Session?.Send(iActorMessage);
                     }
+                    break;
+                }
                 default:
                     throw new Exception($"no mailboxtype: {mailBoxComponent.MailboxType} {iActorMessage}");
             }

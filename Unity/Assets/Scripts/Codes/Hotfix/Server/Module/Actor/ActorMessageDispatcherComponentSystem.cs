@@ -10,7 +10,7 @@ namespace ET.Server
     public static class ActorMessageDispatcherComponentHelper
     {
         [ObjectSystem]
-        public class ActorMessageDispatcherComponentAwakeSystem : AwakeSystem<ActorMessageDispatcherComponent>
+        public class ActorMessageDispatcherComponentAwakeSystem: AwakeSystem<ActorMessageDispatcherComponent>
         {
             protected override void Awake(ActorMessageDispatcherComponent self)
             {
@@ -20,7 +20,7 @@ namespace ET.Server
         }
 
         [ObjectSystem]
-        public class ActorMessageDispatcherComponentLoadSystem : LoadSystem<ActorMessageDispatcherComponent>
+        public class ActorMessageDispatcherComponentLoadSystem: LoadSystem<ActorMessageDispatcherComponent>
         {
             protected override void Load(ActorMessageDispatcherComponent self)
             {
@@ -29,7 +29,7 @@ namespace ET.Server
         }
 
         [ObjectSystem]
-        public class ActorMessageDispatcherComponentDestroySystem : DestroySystem<ActorMessageDispatcherComponent>
+        public class ActorMessageDispatcherComponentDestroySystem: DestroySystem<ActorMessageDispatcherComponent>
         {
             protected override void Destroy(ActorMessageDispatcherComponent self)
             {
@@ -37,7 +37,7 @@ namespace ET.Server
                 ActorMessageDispatcherComponent.Instance = null;
             }
         }
-
+        
         private static void Awake(this ActorMessageDispatcherComponent self)
         {
             self.Load();
@@ -47,7 +47,7 @@ namespace ET.Server
         {
             self.ActorMessageHandlers.Clear();
 
-            var types = EventSystem.Instance.GetTypes(typeof(ActorMessageHandlerAttribute));
+            var types = EventSystem.Instance.GetTypes(typeof (ActorMessageHandlerAttribute));
             foreach (Type type in types)
             {
                 object obj = Activator.CreateInstance(type);
@@ -57,7 +57,7 @@ namespace ET.Server
                 {
                     throw new Exception($"message handler not inherit IMActorHandler abstract class: {obj.GetType().FullName}");
                 }
-
+                
                 object[] attrs = type.GetCustomAttributes(typeof(ActorMessageHandlerAttribute), false);
 
                 foreach (object attr in attrs)
@@ -82,7 +82,7 @@ namespace ET.Server
                 }
             }
         }
-
+        
         private static void RegisterHandler(this ActorMessageDispatcherComponent self, Type type, ActorMessageDispatcherInfo handler)
         {
             if (!self.ActorMessageHandlers.ContainsKey(type))
@@ -98,7 +98,7 @@ namespace ET.Server
             List<ActorMessageDispatcherInfo> list;
             if (!self.ActorMessageHandlers.TryGetValue(message.GetType(), out list))
             {
-                throw new Exception($"not found message handler: {message} {entity.GetType().Name}");
+                throw new Exception($"not found message handler: {message} {entity.GetType().FullName}");
             }
 
             SceneType sceneType = entity.Domain.SceneType;
@@ -108,7 +108,7 @@ namespace ET.Server
                 {
                     continue;
                 }
-                await actorMessageDispatcherInfo.IMActorHandler.Handle(entity, fromProcess, message);
+                await actorMessageDispatcherInfo.IMActorHandler.Handle(entity, fromProcess, message);   
             }
         }
     }

@@ -13,13 +13,13 @@ namespace ET.Server
             {
                 if (actorMessage is not Request request)
                 {
-                    Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Request).Name}");
+                    Log.Error($"消息类型转换错误: {actorMessage.GetType().FullName} to {typeof (Request).FullName}");
                     return;
                 }
 
                 if (entity is not E ee)
                 {
-                    Log.Error($"Actor类型转换错误: {entity.GetType().Name} to {typeof (E).Name} --{typeof (Request).Name}");
+                    Log.Error($"Actor类型转换错误: {entity.GetType().FullName} to {typeof (E).FullName} --{typeof (Request).FullName}");
                     return;
                 }
 

@@ -26,7 +26,7 @@ namespace ET.Server
             Scene robotScene = await robotCase.NewRobot(1);
 
             ObjectWait objectWait = robotScene.GetComponent<ObjectWait>();
-            robotScene.GetComponent<Client.PlayerSessionComponent>().Session.Send(new C2M_TestRobotCase2() {N = robotScene.Zone});
+            robotScene.GetComponent<Client.SessionComponent>().Session.Send(new C2M_TestRobotCase2() {N = robotScene.Zone});
             RobotCase_SecondCaseWait robotCaseSecondCaseWait = await objectWait.Wait<RobotCase_SecondCaseWait>();
             if (robotCaseSecondCaseWait.M2CTestRobotCase2.N != robotScene.Zone)
             {

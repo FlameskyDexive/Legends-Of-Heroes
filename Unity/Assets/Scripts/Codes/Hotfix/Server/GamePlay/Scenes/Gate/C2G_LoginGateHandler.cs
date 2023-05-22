@@ -26,7 +26,7 @@ namespace ET.Server
             //新用户随机分配一个头像，后续可以自己在个人信息里头修改名字、头像
             player.AvatarIndex = RandomGenerator.RandomNumber(0, 10);
 
-            player.AddComponent<SessionInfoComponent>().Session = session;
+            player.AddComponent<PlayerSessionComponent>().Session = session;
             player.AddComponent<MailBoxComponent, MailboxType>(MailboxType.GateSession);
             await player.AddLocation(LocationType.Player);
 
