@@ -15,6 +15,8 @@ namespace ET.Client
             Root.Instance.Scene.AddComponent<FsmDispatcherComponent>();
             
             Scene clientScene = await SceneFactory.CreateClientScene(1, "Game");
+            clientScene.AddComponent<ReconnectComponent>();
+            clientScene.AddComponent<NetworkCheckComponent>();
             
             //测试加载多key表格数据
             SkillConfig skillConfig = SkillConfigCategory.Instance.GetByKeys(1001, 2);

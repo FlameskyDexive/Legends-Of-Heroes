@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace ET.Client
 {
+    [FriendOf(typeof(GlobalComponent))]
 	public static  class DlgLobbySystem
 	{
 
@@ -18,6 +20,10 @@ namespace ET.Client
 		  self.View.E_SoloButton.AddListener(()=>
 		  {
 			  self.OnSoloClickHandler().Coroutine();
+		  });
+		  self.View.E_BackToLoginButton.AddListener(()=>
+		  {
+			  self.OnBackToLoginHandler().Coroutine();
 		  });
           
 		
@@ -53,5 +59,15 @@ namespace ET.Client
         {
             self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Room);
         }
-	}
+		public static async ETTask OnBackToLoginHandler(this DlgLobby self)
+        {
+
+            Transform trans = GlobalComponent.Instance.Global;
+            Game.Close();
+            MonoResComponent.Instance.Destroy();
+            trans.gameObject.SetActive(false);
+            UnityEngine.Object.DestroyImmediate(trans.gameObject);
+            SceneManager.LoadSceneAsync($"Init");
+        }
+    }
 }

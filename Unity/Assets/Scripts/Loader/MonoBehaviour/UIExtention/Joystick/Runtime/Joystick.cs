@@ -8,17 +8,17 @@ namespace UnityEngine.UI
     public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
     {
         private const float DRAG_TIME = 0.15f;
-        
+
         public int offsetY = -380;
         public float maxRadius = 38; //摇杆移动最大半径
         public Direction activatedAxis = Direction.Both; //选择激活的轴向
         [SerializeField] bool dynamic = true; // 是否为动态摇杆
         [SerializeField] bool showDirectionArrow = true; // 是否展示指向器
-        [SerializeField] 
+        [SerializeField]
         bool hideWhenUndrag = true; // 摇杆不拖拽的时候隐藏
 
         private CanvasGroup canvasGroup;
-        
+
         [Space(8)]
         public JoystickEvent OnValueChanged = new JoystickEvent(); //事件 ： 摇杆被 拖拽时
         [Space(8)]
@@ -54,9 +54,9 @@ namespace UnityEngine.UI
 
         void Update()
         {
-            if(this.IsDraging && this.dragTime > DRAG_TIME)
+            if (this.IsDraging && this.dragTime > DRAG_TIME)
                 OnValueChanged?.Invoke(knob.localPosition / maxRadius); //fixedupdate 为物理更新，摇杆操作放在常规 update 就好
-        } 
+        }
         void OnDisable()
         {
             RestJoystick(); //意外被 Disable 各单位需要被重置
@@ -67,7 +67,7 @@ namespace UnityEngine.UI
         #region The implement of pointer event Interface
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
-            if (eventData.pointerId < -1 || IsDraging) 
+            if (eventData.pointerId < -1 || IsDraging)
                 return; //适配 Touch：只响应一个Touch；适配鼠标：只响应左键
             fingerId = eventData.pointerId;
             pointerDownPosition = eventData.position;
@@ -82,12 +82,12 @@ namespace UnityEngine.UI
 
         void IDragHandler.OnDrag(PointerEventData eventData)
         {
-            if (fingerId != eventData.pointerId) 
+            if (fingerId != eventData.pointerId)
                 return;
             this.dragTime = Time.realtimeSinceStartup - this.pointDownTime;
             if (this.dragTime > DRAG_TIME && this.hideWhenUndrag && this.canvasGroup != null)
             {
-                if(this.canvasGroup.alpha != 1)
+                if ( 1 - this.canvasGroup.alpha > float.Epsilon)
                     this.canvasGroup.alpha = 1;
             }
             Vector2 direction = eventData.position - (Vector2)pointerDownPosition; //得到BackGround 指向 Handle 的向量
@@ -107,7 +107,7 @@ namespace UnityEngine.UI
 
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
-            if (fingerId != eventData.pointerId) 
+            if (fingerId != eventData.pointerId)
                 return;//正确的手指抬起时才会重置摇杆；
             //处理滑动技能
             if (this.dragTime < DRAG_TIME)

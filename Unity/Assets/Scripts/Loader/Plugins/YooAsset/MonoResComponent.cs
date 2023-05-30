@@ -155,6 +155,11 @@ namespace ET
 #endif
         }
 
+        public void Destroy()
+        {
+            YooAssets.Destroy();
+        }
+
         /// <summary>
         /// 内置文件查询服务类
         /// </summary>

@@ -6,5 +6,8 @@
         public long MyId { get; set; }
         
         public Player MyPlayer { get; set; }
+        
+        public string Account { get; set; }
+        public string Password { get; set; }
     }
 }

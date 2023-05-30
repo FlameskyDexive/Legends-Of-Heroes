@@ -143,6 +143,40 @@ namespace ET.Client
      		}
      	}
 
+		public UnityEngine.UI.Button E_BackToLoginButton
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_E_BackToLoginButton == null )
+     			{
+		    		this.m_E_BackToLoginButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"EGBackGround/E_BackToLogin");
+     			}
+     			return this.m_E_BackToLoginButton;
+     		}
+     	}
+
+		public UnityEngine.UI.Image E_BackToLoginImage
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_E_BackToLoginImage == null )
+     			{
+		    		this.m_E_BackToLoginImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"EGBackGround/E_BackToLogin");
+     			}
+     			return this.m_E_BackToLoginImage;
+     		}
+     	}
+
 		public void DestroyWidget()
 		{
 			this.m_EGBackGroundRectTransform = null;
@@ -153,6 +187,8 @@ namespace ET.Client
 			this.m_E_PlayerNameText = null;
 			this.m_E_SoloButton = null;
 			this.m_E_SoloImage = null;
+			this.m_E_BackToLoginButton = null;
+			this.m_E_BackToLoginImage = null;
 			this.uiTransform = null;
 		}
 
@@ -164,6 +200,8 @@ namespace ET.Client
 		private UnityEngine.UI.Text m_E_PlayerNameText = null;
 		private UnityEngine.UI.Button m_E_SoloButton = null;
 		private UnityEngine.UI.Image m_E_SoloImage = null;
+		private UnityEngine.UI.Button m_E_BackToLoginButton = null;
+		private UnityEngine.UI.Image m_E_BackToLoginImage = null;
 		public Transform uiTransform = null;
 	}
 }
