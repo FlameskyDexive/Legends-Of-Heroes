@@ -11,6 +11,7 @@ namespace ET
     public class CodeLoader : Singleton<CodeLoader>
     {
         private Assembly model;
+        private Assembly hotfixAssembly;
 
         public void Start()
         {
@@ -35,19 +36,56 @@ namespace ET
             }
             else
             {
-                byte[] assBytes = MonoResComponent.Instance.LoadRawFile($"Model_{GlobalConfig.Instance.ModelVersion}.dll");
-                byte[] pdbBytes = MonoResComponent.Instance.LoadRawFile($"Model_{GlobalConfig.Instance.ModelVersion}.pdb");
-
-                if (!Define.IsEditor)
+                bool modelDllExist = false;
+                bool hotfixDllExist = false;
+                Assembly[] asss = AppDomain.CurrentDomain.GetAssemblies();
+                foreach (Assembly ass in asss)
                 {
-                    if (Define.EnableIL2CPP)
+                    string name = ass.GetName().Name;
+                    if (name == $"Model_{GlobalConfig.Instance.ModelVersion}")
                     {
-                        HybridCLRHelper.Load();
+                        modelDllExist = true;
+                        this.model = ass;
+                    }
+                    if (name == $"Hotfix_{GlobalConfig.Instance.HotFixVersion}")
+                    {
+                        hotfixDllExist = true;
+                        this.hotfixAssembly = ass;
                     }
                 }
 
-                this.model = Assembly.Load(assBytes, pdbBytes);
-                this.LoadHotfix();
+                if (modelDllExist && hotfixDllExist)
+                {
+                    Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof(Game).Assembly, typeof(Init).Assembly, this.model, hotfixAssembly);
+                    EventSystem.Instance.Add(types);
+                }
+                else
+                {
+
+                    if (!Define.IsEditor)
+                    {
+                        if (Define.EnableIL2CPP)
+                        {
+                            HybridCLRHelper.Load();
+                        }
+                    }
+
+                    if (!modelDllExist)
+                    {
+                        byte[] assBytes = MonoResComponent.Instance.LoadRawFile($"Model_{GlobalConfig.Instance.ModelVersion}.dll");
+                        byte[] pdbBytes = MonoResComponent.Instance.LoadRawFile($"Model_{GlobalConfig.Instance.ModelVersion}.pdb");
+                        this.model = Assembly.Load(assBytes, pdbBytes);
+                    }
+
+                    if (!hotfixDllExist)
+                    {
+                        this.LoadHotfix();
+                    }
+                    Dictionary<string, Type> types2 = AssemblyHelper.GetAssemblyTypes(typeof(Game).Assembly, typeof(Init).Assembly, this.model, hotfixAssembly);
+
+                    EventSystem.Instance.Add(types2);
+                }
+
             }
 
             IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
@@ -60,11 +98,8 @@ namespace ET
             byte[] assBytes = MonoResComponent.Instance.LoadRawFile($"Hotfix_{GlobalConfig.Instance.HotFixVersion}.dll");
             byte[] pdbBytes = MonoResComponent.Instance.LoadRawFile($"Hotfix_{GlobalConfig.Instance.HotFixVersion}.pdb");
 
-            Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
+            hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
 
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof(Game).Assembly, typeof(Init).Assembly, this.model, hotfixAssembly);
-
-            EventSystem.Instance.Add(types);
         }
     }
 }
