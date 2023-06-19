@@ -18,12 +18,16 @@
     <type fullname="System.AttributeTargets" preserve="all" />
     <type fullname="System.AttributeUsageAttribute" preserve="all" />
     <type fullname="System.BitConverter" preserve="all" />
+    <type fullname="System.Boolean" preserve="all" />
     <type fullname="System.Byte" preserve="all" />
     <type fullname="System.Collections.Generic.Dictionary`2" preserve="all" />
     <type fullname="System.Collections.Generic.Dictionary`2/Enumerator" preserve="all" />
+    <type fullname="System.Collections.Generic.Dictionary`2/KeyCollection" preserve="all" />
     <type fullname="System.Collections.Generic.Dictionary`2/ValueCollection" preserve="all" />
     <type fullname="System.Collections.Generic.Dictionary`2/ValueCollection/Enumerator" preserve="all" />
     <type fullname="System.Collections.Generic.IEnumerable`1" preserve="all" />
+    <type fullname="System.Collections.Generic.IReadOnlyCollection`1" preserve="all" />
+    <type fullname="System.Collections.Generic.IReadOnlyList`1" preserve="all" />
     <type fullname="System.Collections.Generic.KeyValuePair`2" preserve="all" />
     <type fullname="System.Collections.Generic.List`1" preserve="all" />
     <type fullname="System.Collections.Generic.List`1/Enumerator" preserve="all" />
@@ -31,8 +35,11 @@
     <type fullname="System.Console" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggableAttribute/DebuggingModes" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggerBrowsableAttribute" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggerBrowsableState" preserve="all" />
     <type fullname="System.Diagnostics.DebuggerDisplayAttribute" preserve="all" />
     <type fullname="System.Diagnostics.DebuggerHiddenAttribute" preserve="all" />
+    <type fullname="System.Diagnostics.DebuggerStepThroughAttribute" preserve="all" />
     <type fullname="System.Enum" preserve="all" />
     <type fullname="System.Exception" preserve="all" />
     <type fullname="System.Func`1" preserve="all" />
@@ -57,6 +64,7 @@
     <type fullname="System.Runtime.CompilerServices.RuntimeCompatibilityAttribute" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.RuntimeHelpers" preserve="all" />
     <type fullname="System.Runtime.CompilerServices.TaskAwaiter`1" preserve="all" />
+    <type fullname="System.Runtime.InteropServices.InAttribute" preserve="all" />
     <type fullname="System.RuntimeFieldHandle" preserve="all" />
     <type fullname="System.RuntimeTypeHandle" preserve="all" />
     <type fullname="System.Security.Permissions.SecurityAction" preserve="all" />
@@ -70,8 +78,6 @@
     <type fullname="System.Threading.Tasks.Task" preserve="all" />
     <type fullname="System.Threading.Tasks.Task`1" preserve="all" />
     <type fullname="System.Threading.Tasks.TaskFactory" preserve="all" />
-    <type fullname="System.Threading.Thread" preserve="all" />
-    <type fullname="System.Threading.ThreadStart" preserve="all" />
     <type fullname="System.Type" preserve="all" />
     <type fullname="System.UInt16" preserve="all" />
     <type fullname="System.UInt32" preserve="all" />
@@ -79,10 +85,14 @@
     <type fullname="System.ValueType" preserve="all" />
   </assembly>
   <assembly fullname="System">
+    <type fullname="System.CodeDom.Compiler.GeneratedCodeAttribute" preserve="all" />
     <type fullname="System.Collections.Generic.Queue`1" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2" preserve="all" />
+    <type fullname="System.Collections.Generic.SortedDictionary`2/Enumerator" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2/ValueCollection" preserve="all" />
     <type fullname="System.Collections.Generic.SortedDictionary`2/ValueCollection/Enumerator" preserve="all" />
+    <type fullname="System.ComponentModel.EditorBrowsableAttribute" preserve="all" />
+    <type fullname="System.ComponentModel.EditorBrowsableState" preserve="all" />
     <type fullname="System.Net.EndPoint" preserve="all" />
     <type fullname="System.Net.IPAddress" preserve="all" />
     <type fullname="System.Net.IPEndPoint" preserve="all" />
@@ -102,8 +112,11 @@
     <type fullname="System.Net.Http.HttpContent" preserve="all" />
     <type fullname="System.Net.Http.HttpResponseMessage" preserve="all" />
   </assembly>
+  <assembly fullname="System.Numerics">
+    <type fullname="System.Numerics.Vector2" preserve="all" />
+  </assembly>
   <assembly fullname="Unity.Core">
-    <type fullname="ET.AEvent`1" preserve="all" />
+    <type fullname="ET.AEvent`2" preserve="all" />
     <type fullname="ET.AInvokeHandler`2" preserve="all" />
     <type fullname="ET.AService" preserve="all" />
     <type fullname="ET.ATimer`1" preserve="all" />
@@ -121,14 +134,17 @@
     <type fullname="ET.ConfigSingleton`1" preserve="all" />
     <type fullname="ET.CoroutineLock" preserve="all" />
     <type fullname="ET.CoroutineLockComponent" preserve="all" />
+    <type fullname="ET.DefineCore" preserve="all" />
     <type fullname="ET.DestroySystem`1" preserve="all" />
     <type fullname="ET.DisposeObject" preserve="all" />
     <type fullname="ET.EnableMethodAttribute" preserve="all" />
     <type fullname="ET.Entity" preserve="all" />
+    <type fullname="ET.EntityRef`1" preserve="all" />
     <type fullname="ET.EntitySceneFactory" preserve="all" />
     <type fullname="ET.ErrorCore" preserve="all" />
     <type fullname="ET.EventAttribute" preserve="all" />
     <type fullname="ET.EventSystem" preserve="all" />
+    <type fullname="ET.FixedUpdateSystem`1" preserve="all" />
     <type fullname="ET.FriendOfAttribute" preserve="all" />
     <type fullname="ET.Game" preserve="all" />
     <type fullname="ET.IAwake" preserve="all" />
@@ -137,10 +153,12 @@
     <type fullname="ET.IConfig" preserve="all" />
     <type fullname="ET.IDestroy" preserve="all" />
     <type fullname="ET.IdGenerater" preserve="all" />
+    <type fullname="ET.IFixedUpdate" preserve="all" />
     <type fullname="ET.ILateUpdate" preserve="all" />
     <type fullname="ET.ILoad" preserve="all" />
     <type fullname="ET.IMerge" preserve="all" />
     <type fullname="ET.InvokeAttribute" preserve="all" />
+    <type fullname="ET.IScene" preserve="all" />
     <type fullname="ET.ITransfer" preserve="all" />
     <type fullname="ET.IUpdate" preserve="all" />
     <type fullname="ET.JsonHelper" preserve="all" />
@@ -164,6 +182,7 @@
     <type fullname="ET.Scene" preserve="all" />
     <type fullname="ET.SceneHelper" preserve="all" />
     <type fullname="ET.SceneType" preserve="all" />
+    <type fullname="ET.SceneTypeHelper" preserve="all" />
     <type fullname="ET.ServiceType" preserve="all" />
     <type fullname="ET.Singleton`1" preserve="all" />
     <type fullname="ET.StaticFieldAttribute" preserve="all" />
@@ -186,6 +205,8 @@
     <type fullname="ET.EUIImage" preserve="all" />
     <type fullname="ET.GameObjectPoolHelper" preserve="all" />
     <type fullname="ET.GlobalConfig" preserve="all" />
+    <type fullname="ET.Init" preserve="all" />
+    <type fullname="ET.MonoResComponent" preserve="all" />
     <type fullname="ET.YooAssetHelper" preserve="all" />
     <type fullname="RedDotMonoView" preserve="all" />
     <type fullname="ReferenceCollector" preserve="all" />
@@ -201,6 +222,19 @@
     <type fullname="Unity.Mathematics.quaternion" preserve="all" />
   </assembly>
   <assembly fullname="Unity.ThirdParty">
+    <type fullname="Box2DSharp.Collision.Collider.Manifold" preserve="all" />
+    <type fullname="Box2DSharp.Collision.Shapes.CircleShape" preserve="all" />
+    <type fullname="Box2DSharp.Collision.Shapes.PolygonShape" preserve="all" />
+    <type fullname="Box2DSharp.Collision.Shapes.Shape" preserve="all" />
+    <type fullname="Box2DSharp.Dynamics.Body" preserve="all" />
+    <type fullname="Box2DSharp.Dynamics.BodyDef" preserve="all" />
+    <type fullname="Box2DSharp.Dynamics.BodyType" preserve="all" />
+    <type fullname="Box2DSharp.Dynamics.Contacts.Contact" preserve="all" />
+    <type fullname="Box2DSharp.Dynamics.Contacts.ContactImpulse" preserve="all" />
+    <type fullname="Box2DSharp.Dynamics.Fixture" preserve="all" />
+    <type fullname="Box2DSharp.Dynamics.FixtureDef" preserve="all" />
+    <type fullname="Box2DSharp.Dynamics.IContactListener" preserve="all" />
+    <type fullname="Box2DSharp.Dynamics.World" preserve="all" />
     <type fullname="ET.ETAsyncTaskMethodBuilder" preserve="all" />
     <type fullname="ET.ETAsyncTaskMethodBuilder`1" preserve="all" />
     <type fullname="ET.ETCancellationToken" preserve="all" />
@@ -209,20 +243,23 @@
     <type fullname="ET.ETTaskCompleted" preserve="all" />
     <type fullname="ET.ETTaskHelper" preserve="all" />
     <type fullname="ET.Recast" preserve="all" />
+    <type fullname="LitJson.JsonMapper" preserve="all" />
     <type fullname="ProtoBuf.ProtoAfterDeserializationAttribute" preserve="all" />
     <type fullname="ProtoBuf.ProtoContractAttribute" preserve="all" />
     <type fullname="ProtoBuf.ProtoIgnoreAttribute" preserve="all" />
     <type fullname="ProtoBuf.ProtoMemberAttribute" preserve="all" />
     <type fullname="YooAsset.AssetOperationHandle" preserve="all" />
-    <type fullname="YooAsset.AssetsPackage" preserve="all" />
     <type fullname="YooAsset.AsyncOperationBase" preserve="all" />
     <type fullname="YooAsset.DownloaderOperation" preserve="all" />
     <type fullname="YooAsset.DownloaderOperation/OnDownloadError" preserve="all" />
+    <type fullname="YooAsset.DownloaderOperation/OnDownloadOver" preserve="all" />
     <type fullname="YooAsset.DownloaderOperation/OnDownloadProgress" preserve="all" />
+    <type fullname="YooAsset.DownloaderOperation/OnStartDownloadFile" preserve="all" />
     <type fullname="YooAsset.EOperationStatus" preserve="all" />
     <type fullname="YooAsset.OperationHandleBase" preserve="all" />
-    <type fullname="YooAsset.PatchDownloaderOperation" preserve="all" />
     <type fullname="YooAsset.RawFileOperationHandle" preserve="all" />
+    <type fullname="YooAsset.ResourceDownloaderOperation" preserve="all" />
+    <type fullname="YooAsset.ResourcePackage" preserve="all" />
     <type fullname="YooAsset.SceneOperationHandle" preserve="all" />
     <type fullname="YooAsset.SubAssetsOperationHandle" preserve="all" />
     <type fullname="YooAsset.UpdatePackageManifestOperation" preserve="all" />
@@ -236,6 +273,8 @@
     <type fullname="UnityEngine.RuntimeAnimatorController" preserve="all" />
   </assembly>
   <assembly fullname="UnityEngine.CoreModule">
+    <type fullname="UnityEngine.Application" preserve="all" />
+    <type fullname="UnityEngine.AsyncOperation" preserve="all" />
     <type fullname="UnityEngine.Camera" preserve="all" />
     <type fullname="UnityEngine.Component" preserve="all" />
     <type fullname="UnityEngine.Debug" preserve="all" />
@@ -248,13 +287,14 @@
     <type fullname="UnityEngine.KeyCode" preserve="all" />
     <type fullname="UnityEngine.LayerMask" preserve="all" />
     <type fullname="UnityEngine.Material" preserve="all" />
+    <type fullname="UnityEngine.NetworkReachability" preserve="all" />
     <type fullname="UnityEngine.Object" preserve="all" />
     <type fullname="UnityEngine.Quaternion" preserve="all" />
     <type fullname="UnityEngine.Ray" preserve="all" />
     <type fullname="UnityEngine.RectTransform" preserve="all" />
-    <type fullname="UnityEngine.Resources" preserve="all" />
     <type fullname="UnityEngine.SceneManagement.LoadSceneMode" preserve="all" />
     <type fullname="UnityEngine.SceneManagement.Scene" preserve="all" />
+    <type fullname="UnityEngine.SceneManagement.SceneManager" preserve="all" />
     <type fullname="UnityEngine.Shader" preserve="all" />
     <type fullname="UnityEngine.Sprite" preserve="all" />
     <type fullname="UnityEngine.SpriteRenderer" preserve="all" />
