@@ -5,7 +5,7 @@ English: please use your browser to translate to english
 ![loh22023532242551](https://user-images.githubusercontent.com/8274346/235951176-f96efa8f-d3e5-4089-a1c9-56643859b487.gif)
 
 ## Main
-#### 基于C#双端框架[ET7.2 Master](https://github.com/egametang/ET) ，同步到ET主干详情请看日志。注意：已经升级.Net7，请安装.
+#### 基于C#双端框架[ET7.2 Master](https://github.com/egametang/ET) ，同步到ET主干详情请看日志。注意：已经升级.Net7，请安装，觉得不错的话右上角给个star哈.
 #### 此游戏为ET7.2的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
 ## 环境：
@@ -17,11 +17,12 @@ English: please use your browser to translate to english
 - 3. Unity运行游戏即可看到登录页面,输入账号密码登录即可
 
 # TODO && Features
-
+- [x] 接入UnityC#热更新框架[HybridCLR](https://github.com/focus-creative-games/hybridclr)
 - [x] 接入Unity运行时可视化Log调试组件[Debugger](https://github.com/FlameskyDexive/Debugger)
 - [x] 接入基于UGUI适配ET的UI框架[EUI](https://github.com/zzjfengqing/ET-EUI)
-- [x] 接入[YooAsset](https://github.com/tuyoogame/YooAsset)资源管理打包热更框架
+- [x] 接入[YooAsset](https://github.com/tuyoogame/YooAsset)资源管理打包热更框架，实现热更下载重载逻辑。
 - [x] 摇杆控制角色移动，相机跟随，通过服务端广播位置同步
+- [x] 实现一个比较基础版本的断线重连，返回登陆等操作。
 - [x] 配置表支持多Key（也可自行接入强大的多平台配置方案 [Luban](https://github.com/focus-creative-games/luban)，当前Demo用不到那么复杂excel就不进行接入了）。
 - [ ] 房间大厅，匹配房友，每个房间最多20个玩家。
 - [ ] 一个Demo关卡流程：有限的2d地图，随机生成食物，吃食物会变大，碰到敌人会产生伤害（大吞小，小死亡）。
@@ -38,6 +39,9 @@ English: please use your browser to translate to english
     
       SkillLevelConfig skillLevel = SkillLevelConfigCategory.Instance.GetByKeys(1001, 2);
 	              
+
+## 支付宝二维码捐赠（如果觉得还不错的话，扫码请我喝杯咖啡继续维护更新增加更多功能哈）
+![QQ图片20230619181842](https://github.com/FlameskyDexive/Legends-Of-Heroes/assets/8274346/e1b851e8-044e-483d-82a2-47f19559b3e8)
 
 ## 特别鸣谢
 
