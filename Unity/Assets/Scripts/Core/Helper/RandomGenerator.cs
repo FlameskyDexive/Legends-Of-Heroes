@@ -92,7 +92,5 @@ namespace ET
             int a = RandomNumber(0, 1000000);
             return a / 1000000f;
         }
-        
-        
     }
 }

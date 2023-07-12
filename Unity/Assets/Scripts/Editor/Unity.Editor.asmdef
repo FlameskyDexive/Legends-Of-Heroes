@@ -7,8 +7,8 @@
         "Unity.Loader",
         "HybridCLR.Runtime",
         "HybridCLR.Editor",
-        "Unity.ScriptableBuildPipeline",
-        "Unity.ScriptableBuildPipeline.Editor"
+        "Unity.Model",
+        "Unity.Hotfix"
     ],
     "includePlatforms": [
         "Editor"

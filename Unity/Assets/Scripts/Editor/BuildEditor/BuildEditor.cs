@@ -1,62 +1,48 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
-using YooAsset;
+using Debug = UnityEngine.Debug;
+#pragma warning disable CS0162
 
 namespace ET
 {
-    public enum PlatformType
-    {
-        None,
-        Android,
-        IOS,
-        Windows,
-        MacOS,
-        Linux
-    }
+	public enum PlatformType
+	{
+		None,
+		Android,
+		IOS,
+		Windows,
+		MacOS,
+		Linux
+	}
 
-    public enum ConfigFolder
-    {
-        Localhost,
-        Release,
-        RouterTest,
-        Benchmark
-    }
+	public class BuildEditor : EditorWindow
+	{
+		private PlatformType activePlatform;
+		private PlatformType platformType;
+		private bool clearFolder;
+		private bool isBuildExe;
+		private bool isContainAB;
+		private BuildOptions buildOptions;
+		private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
 
-    public enum BuildType
-    {
-        Development,
-        Release,
-    }
+		private GlobalConfig globalConfig;
 
-    public class BuildEditor : EditorWindow
-    {
-        private PlatformType activePlatform;
-        private PlatformType platformType;
-        private ConfigFolder configFolder;
-        private bool clearFolder;
-        private bool isBuildExe;
-        private bool isContainAB;
-        private bool isExportFUIMultiLang;
-        private string fairyGUIXMLPath;
-        private CodeOptimization codeOptimization = CodeOptimization.Debug;
-        private BuildOptions buildOptions;
-        private BuildAssetBundleOptions buildAssetBundleOptions = BuildAssetBundleOptions.None;
-
-        private GlobalConfig globalConfig;
-
-        [MenuItem("ET/Build Tool")]
-        public static void ShowWindow()
-        {
-            GetWindow<BuildEditor>(DockDefine.Types);
-        }
+		[MenuItem("ET/Build Tool")]
+		public static void ShowWindow()
+		{
+			GetWindow<BuildEditor>(DockDefine.Types);
+		}
 
         private void OnEnable()
-        {
-            globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig/GlobalConfig.asset");
-
+		{
+			globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+			
 #if UNITY_ANDROID
 			activePlatform = PlatformType.Android;
 #elif UNITY_IOS
@@ -68,122 +54,100 @@ namespace ET
 #elif UNITY_STANDALONE_LINUX
 			activePlatform = PlatformType.Linux;
 #else
-            activePlatform = PlatformType.None;
+			activePlatform = PlatformType.None;
 #endif
             platformType = activePlatform;
         }
 
-        private void OnGUI()
-        {
-            // this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
-            // this.clearFolder = EditorGUILayout.Toggle("clean folder? ", clearFolder);
-            // this.isBuildExe = EditorGUILayout.Toggle("build exe?", this.isBuildExe);
-            // this.isContainAB = EditorGUILayout.Toggle("contain assetsbundle?", this.isContainAB);
-            this.codeOptimization = (CodeOptimization)EditorGUILayout.EnumPopup("CodeOptimization ", this.codeOptimization);
-            // EditorGUILayout.LabelField("BuildAssetBundleOptions ");
-            // this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
+        private void OnGUI() 
+		{
+			this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
+			this.clearFolder = EditorGUILayout.Toggle("clean folder? ", clearFolder);
+			this.isBuildExe = EditorGUILayout.Toggle("build exe?", this.isBuildExe);
+			this.isContainAB = EditorGUILayout.Toggle("contain assetsbundle?", this.isContainAB);
+			BuildType codeOptimization = (BuildType)EditorGUILayout.EnumPopup("BuildType ", this.globalConfig.BuildType);
+			
+			if (codeOptimization != this.globalConfig.BuildType)
+			{
+				this.globalConfig.BuildType = codeOptimization;
+				EditorUtility.SetDirty(this.globalConfig);
+				AssetDatabase.SaveAssets();
+			}
+			
+			EditorGUILayout.LabelField("BuildAssetBundleOptions ");
+			this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
+			
+			switch (this.globalConfig.BuildType)
+			{
+				case BuildType.None:
+				case BuildType.Debug:
+					this.buildOptions = BuildOptions.BuildScriptsOnly;
+					break;
+				case BuildType.Release:
+					this.buildOptions = BuildOptions.BuildScriptsOnly;
+					break;
+			}
 
-            switch (this.codeOptimization)
-            {
-                case CodeOptimization.None:
-                case CodeOptimization.Debug:
-                    this.buildOptions = BuildOptions.Development | BuildOptions.ConnectWithProfiler;
-                    break;
-                case CodeOptimization.Release:
-                    this.buildOptions = BuildOptions.None;
-                    break;
-            }
+			GUILayout.Space(5);
+			
+			if (GUILayout.Button("BuildPackage"))
+			{
+				if (this.platformType == PlatformType.None)
+				{
+					ShowNotification(new GUIContent("please select platform!"));
+					return;
+				}
+				if (platformType != activePlatform)
+				{
+					switch (EditorUtility.DisplayDialogComplex("Warning!", $"current platform is {activePlatform}, if change to {platformType}, may be take a long time", "change", "cancel", "no change"))
+					{
+						case 0:
+							activePlatform = platformType;
+							break;
+						case 1:
+							return;
+						case 2:
+							platformType = activePlatform;
+							break;
+					}
+				}
+				BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe, this.isContainAB, this.clearFolder);
+			}
+			
+			GUILayout.Label("");
+			GUILayout.Label("Code Compile：");
+			
+			var codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
+			if (codeMode != this.globalConfig.CodeMode)
+			{
+				this.globalConfig.CodeMode = codeMode;
+				EditorUtility.SetDirty(this.globalConfig);
+				AssetDatabase.SaveAssets();
+			}
 
-            GUILayout.Space(5);
+			if (GUILayout.Button("ReGenerateProjectFiles"))
+			{
+				BuildHelper.ReGenerateProjectFiles();
+			}
+			
+			if (GUILayout.Button("ExcelExporter"))
+			{
+				//Directory.Delete("Assets/Bundles/Config", true);
+				ToolsEditor.ExcelExporter();
+				
+				// 设置ab包
+				AssetImporter assetImporter = AssetImporter.GetAtPath($"Assets/Bundles/Config");
+				assetImporter.assetBundleName = "Config.unity3d";
+				AssetDatabase.SaveAssets();
+				AssetDatabase.Refresh();
+			}
+			
+			if (GUILayout.Button("Proto2CS"))
+			{
+				ToolsEditor.Proto2CS();
+			}
 
-            /*if (GUILayout.Button("BuildPackage"))
-            {
-                if (this.platformType == PlatformType.None)
-                {
-                    ShowNotification(new GUIContent("please select platform!"));
-                    return;
-                }
-                if (platformType != activePlatform)
-                {
-                    switch (EditorUtility.DisplayDialogComplex("Warning!", $"current platform is {activePlatform}, if change to {platformType}, may be take a long time", "change", "cancel", "no change"))
-                    {
-                        case 0:
-                            activePlatform = platformType;
-                            break;
-                        case 1:
-                            return;
-                        case 2:
-                            platformType = activePlatform;
-                            break;
-                    }
-                }
-                BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.isBuildExe, this.isContainAB, this.clearFolder);
-            }
-
-            GUILayout.Label("");
-            GUILayout.Label("Code Compile：");*/
-
-            var codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
-            if (codeMode != this.globalConfig.CodeMode)
-            {
-                this.globalConfig.CodeMode = codeMode;
-                EditorUtility.SetDirty(this.globalConfig);
-                AssetDatabase.SaveAssets();
-            }
-
-            if (GUILayout.Button("BuildModelAndHotfix"))
-            {
-                if (Define.EnableCodes)
-                {
-                    throw new Exception("now in ENABLE_CODES mode, do not need Build!");
-                }
-                globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig/GlobalConfig.asset");
-                BuildAssembliesHelper.BuildModel(this.codeOptimization, globalConfig);
-                BuildAssembliesHelper.BuildHotfix(this.codeOptimization, globalConfig);
-
-                AfterCompiling();
-
-                ShowNotification("Build Model And Hotfix Success!");
-            }
-            
-            GUILayout.Space(5);
-            if (GUILayout.Button("ExcelExporter"))
-            {
-                //Directory.Delete("Assets/Bundles/Config", true);
-                ToolsEditor.ExcelExporter();
-
-                // 设置ab包
-                AssetImporter assetImporter = AssetImporter.GetAtPath($"Assets/Bundles/Config");
-                assetImporter.assetBundleName = "Config.unity3d";
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-            }
-
-            if (GUILayout.Button("Proto2CS"))
-            {
-                ToolsEditor.Proto2CS();
-            }
-
-            GUILayout.Space(5);
-        }
-
-        private static void AfterCompiling()
-        {
-            Directory.CreateDirectory(BuildAssembliesHelper.CodeDir);
-
-            // 设置ab包
-            AssetImporter assetImporter = AssetImporter.GetAtPath("Assets/Bundles/Code");
-            assetImporter.assetBundleName = "Code.unity3d";
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-
-            Debug.Log("build success!");
-        }
-
-        public static void ShowNotification(string tips)
-        {
-            EditorWindow game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
-            game?.ShowNotification(new GUIContent($"{tips}"));
-        }
-    }
+			GUILayout.Space(5);
+		}
+	}
 }

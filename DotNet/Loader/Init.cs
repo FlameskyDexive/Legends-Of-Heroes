@@ -1,46 +1,27 @@
 ﻿using System;
+using System.Threading;
 using CommandLine;
 
 namespace ET
 {
-	public static class Init
-    {
-		[StaticField]
-        private static FixedUpdate fixedUpdate;
-
-        public static void Start()
+	public class Init
+	{
+		public void Start()
 		{
 			try
-			{	
+			{
 				AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 				{
 					Log.Error(e.ExceptionObject.ToString());
 				};
 				
-				// 异步方法全部会回掉到主线程
-				Game.AddSingleton<MainThreadSynchronizationContext>();
-
 				// 命令行参数
 				Parser.Default.ParseArguments<Options>(System.Environment.GetCommandLineArgs())
-					.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-					.WithParsed(Game.AddSingleton);
-				
-				Game.AddSingleton<TimeInfo>();
-				Game.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
-				Game.AddSingleton<ObjectPool>();
-				Game.AddSingleton<IdGenerater>();
-				Game.AddSingleton<EventSystem>();
-				Game.AddSingleton<TimerComponent>();
-				Game.AddSingleton<CoroutineLockComponent>();
-				
+						.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
+						.WithParsed((o)=>World.Instance.AddSingleton(o));
+				World.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
 				ETTask.ExceptionHandler += Log.Error;
-				
-				Log.Console($"{Parser.Default.FormatCommandLine(Options.Instance)}");
-
-                fixedUpdate = new FixedUpdate();
-                fixedUpdate.UpdateCallback = FixedUpdate;
-
-				Game.AddSingleton<CodeLoader>().Start();
+				World.Instance.AddSingleton<CodeLoader>();
 			}
 			catch (Exception e)
 			{
@@ -48,30 +29,14 @@ namespace ET
 			}
 		}
 
-		public static void Update()
+		public void Update()
 		{
-			Game.Update();
-            fixedUpdate.Tick();
+			FiberManager.Instance.Update();
 		}
 
-		public static void LateUpdate()
+		public void LateUpdate()
 		{
-			Game.LateUpdate();
-		}
-
-		[StaticField]
-        private static long lastTime = 0;
-		public static void FixedUpdate()
-        {
-            long deltaTime = TimeHelper.GetTimeStamp() - lastTime;
-            //Log.Error($"{deltaTime} ms");
-            lastTime = TimeHelper.ServerNow();
-			Game.FixedUpdate();
-		}
-
-		public static void FrameFinishUpdate()
-		{
-			Game.FrameFinishUpdate();
+			FiberManager.Instance.LateUpdate();
 		}
 	}
 }

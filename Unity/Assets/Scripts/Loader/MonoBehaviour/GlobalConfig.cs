@@ -9,15 +9,20 @@ namespace ET
         ClientServer = 3,
     }
     
+    public enum BuildType
+    {
+        None,
+        Debug,
+        Release,
+    }
+    
     [CreateAssetMenu(menuName = "ET/CreateGlobalConfig", fileName = "GlobalConfig", order = 0)]
     public class GlobalConfig: ScriptableObject
     {
-        public static GlobalConfig Instance;
-
         public CodeMode CodeMode;
+        
+        public BuildType BuildType;
 
-        public int ModelVersion = 1;
-
-        public int HotFixVersion = 1;
+        public AppType AppType;
     }
 }

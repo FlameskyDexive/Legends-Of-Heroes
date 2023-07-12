@@ -6,13 +6,14 @@ using System.Runtime.Loader;
 
 namespace ET
 {
-    public class CodeLoader: Singleton<CodeLoader>
+   
+    public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
     {
         private AssemblyLoadContext assemblyLoadContext;
 
         private Assembly model;
 
-        public void Start()
+        public void Awake()
         {
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
             foreach (Assembly assembly in assemblies)
@@ -38,9 +39,11 @@ namespace ET
             byte[] pdbBytes = File.ReadAllBytes("./Hotfix.pdb");
             Assembly hotfixAssembly = assemblyLoadContext.LoadFromStream(new MemoryStream(dllBytes), new MemoryStream(pdbBytes));
 
-            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (Game).Assembly, this.model, hotfixAssembly);
-			
-            EventSystem.Instance.Add(types);
+            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(Assembly.GetEntryAssembly(), typeof(Init).Assembly, typeof (Fiber).Assembly, this.model, hotfixAssembly);
+
+            World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+            
+            World.Instance.Load();
         }
     }
 }

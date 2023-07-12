@@ -223,7 +223,7 @@ namespace ET.Analyzer
     {
         private const string Title = "实体类限制多层继承";
 
-        private const string MessageFormat = "类: {0} 不能继承Entiy的子类 请直接继承Entity";
+        private const string MessageFormat = "类: {0} 不能继承{1}的子类 请直接继承{1}";
 
         private const string Description = "实体类限制多层继承.";
 
@@ -298,6 +298,60 @@ namespace ET.Analyzer
 
         public static readonly DiagnosticDescriptor Rule =
                 new DiagnosticDescriptor(DiagnosticIds.ClientClassInServerAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
+    public static class LSEntityFloatMemberAnalyzer
+    {
+        private const string Title = "LSEntity类禁止声明浮点数字段或属性";
+
+        private const string MessageFormat = "LSEntity类: {0} 禁止声明浮点数字段或属性: {1}";
+
+        private const string Description = "LSEntity类禁止声明浮点数字段或属性.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.LSEntityFloatMemberAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
+    public static class EntitySystemAnalyzerRule
+    {
+        private const string Title = "Entity类存在未生成的生命周期函数";
+
+        private const string MessageFormat = "Entity类: {0} 存在未生成的生命周期函数111";
+
+        private const string Description = "Entity类存在未生成的生命周期函数.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.EntitySystemAnalyzerRuleId,
+                    Title,
+                    MessageFormat,
+                    DiagnosticCategories.Model,
+                    DiagnosticSeverity.Error,
+                    true,
+                    Description);
+    }
+
+    public static class EntitySystemMethodNeedSystemOfAttrAnalyzerRule
+    {
+        private const string Title = "EntitySystem标签只能添加在含有EntitySystemOf标签的静态类中";
+
+        private const string MessageFormat = "方法:{0}的{1}标签只能添加在含有{2}标签的静态类中";
+
+        private const string Description = "EntitySystem标签只能添加在含有EntitySystemOf标签的静态类中.";
+
+        public static readonly DiagnosticDescriptor Rule =
+                new DiagnosticDescriptor(DiagnosticIds.EntitySystemMethodNeedSystemOfAttrAnalyzerRuleId,
                     Title,
                     MessageFormat,
                     DiagnosticCategories.Model,

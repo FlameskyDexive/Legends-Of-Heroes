@@ -115,7 +115,6 @@ public class CodesListenerExecutor
     }
 
     private static string analyzerPath = @"..\Codes\Analyzer\Share.Analyzer.csproj";
-    private static string uguiPath = @"ugui.joystick.csproj";
     public static XDocument Adjust(CodeClass codeClass, string workPlace, string csprojPath, List<FileInfo> files)
     {
         DirectoryInfo workPlaceDir = new DirectoryInfo(workPlace);
@@ -140,12 +139,7 @@ public class CodesListenerExecutor
                 if (element.Name.LocalName == "ProjectReference")
                 {
                     XAttribute includeAttr = element.Attribute("Include");
-                    Debug.Log($"{element} ");
                     if (includeAttr != null && includeAttr.Value == analyzerPath)
-                    {
-                        delCompile.Add(element);
-                    }
-                    if (includeAttr != null && includeAttr.Value == uguiPath)
                     {
                         delCompile.Add(element);
                     }
@@ -169,7 +163,6 @@ public class CodesListenerExecutor
         XElement lastItemGroup = project.Elements().Last(e => e.Name.LocalName == "ItemGroup");
         XElement projectReference = new XElement(project.Name.ToString().Replace("Project", "ProjectReference"));
         projectReference.SetAttributeValue("Include", analyzerPath);
-        projectReference.SetAttributeValue("Include", uguiPath);
         projectReference.SetAttributeValue("OutputItemType", @"Analyzer");
         projectReference.SetAttributeValue("ReferenceOutputAssembly", @"false");
         if (codeClass == CodeClass.Client)

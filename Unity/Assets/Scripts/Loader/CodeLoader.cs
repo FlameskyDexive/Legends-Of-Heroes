@@ -1,105 +1,100 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
-using YooAsset;
+#pragma warning disable CS0162
 
 namespace ET
 {
-    public class CodeLoader : Singleton<CodeLoader>
-    {
-        private Assembly model;
-        private Assembly hotfixAssembly;
+	public class CodeLoader: Singleton<CodeLoader>, ISingletonAwake
+	{
+		private Assembly assembly;
+		
+		public void Awake()
+		{
+		}
 
-        public void Start()
-        {
-            if (Define.EnableCodes)
-            {
-                if (GlobalConfig.Instance.CodeMode != CodeMode.ClientServer)
-                {
-                    throw new Exception("ENABLE_CODES mode must use ClientServer code mode!");
-                }
+		public void Start()
+		{
+			if (!Define.EnableDll)
+			{
+				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+				if (globalConfig.CodeMode != CodeMode.ClientServer)
+				{
+					throw new Exception("!ENABLE_CODES mode must use ClientServer code mode!");
+				}
+				
+				Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+				Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(assemblies);
+				World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+				foreach (Assembly ass in assemblies)
+				{
+					string name = ass.GetName().Name;
+					if (name == "Unity.Model")
+					{
+						this.assembly = ass;
+					}
+				}
+			}
+			else
+			{
+				byte[] assBytes;
+				byte[] pdbBytes;
+				if (!Define.IsEditor)
+				{
+					//Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
+					//assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
+					//pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
+					
+					// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Model.dll，真正打包要还原使用上面注释的代码
+					assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.dll"));
+					pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.pdb"));
 
-                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-                Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(assemblies);
-                EventSystem.Instance.Add(types);
-                foreach (Assembly ass in assemblies)
-                {
-                    string name = ass.GetName().Name;
-                    if (name == "Unity.Model.Codes")
-                    {
-                        this.model = ass;
-                    }
-                }
-            }
-            else
-            {
-                bool modelDllExist = false;
-                bool hotfixDllExist = false;
-                Assembly[] asss = AppDomain.CurrentDomain.GetAssemblies();
-                foreach (Assembly ass in asss)
-                {
-                    string name = ass.GetName().Name;
-                    if (name == $"Model_{GlobalConfig.Instance.ModelVersion}")
-                    {
-                        modelDllExist = true;
-                        this.model = ass;
-                    }
-                    if (name == $"Hotfix_{GlobalConfig.Instance.HotFixVersion}")
-                    {
-                        hotfixDllExist = true;
-                        this.hotfixAssembly = ass;
-                    }
-                }
+					if (Define.EnableIL2CPP)
+					{
+						HybridCLRHelper.Load();
+					}
+				}
+				else
+				{
+					assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.dll"));
+					pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Model.pdb"));
+				}
+			
+				this.assembly = Assembly.Load(assBytes, pdbBytes);
+			}
+			
+			this.LoadHotfix();
+			
+			IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
+			start.Run();
+		}
 
-                if (modelDllExist && hotfixDllExist)
-                {
-                    Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof(Game).Assembly, typeof(Init).Assembly, this.model, hotfixAssembly);
-                    EventSystem.Instance.Add(types);
-                }
-                else
-                {
-
-                    if (!Define.IsEditor)
-                    {
-                        if (Define.EnableIL2CPP)
-                        {
-                            HybridCLRHelper.Load();
-                        }
-                    }
-
-                    if (!modelDllExist)
-                    {
-                        byte[] assBytes = MonoResComponent.Instance.LoadRawFile($"Model_{GlobalConfig.Instance.ModelVersion}.dll");
-                        byte[] pdbBytes = MonoResComponent.Instance.LoadRawFile($"Model_{GlobalConfig.Instance.ModelVersion}.pdb");
-                        this.model = Assembly.Load(assBytes, pdbBytes);
-                    }
-
-                    if (!hotfixDllExist)
-                    {
-                        this.LoadHotfix();
-                    }
-                    Dictionary<string, Type> types2 = AssemblyHelper.GetAssemblyTypes(typeof(Game).Assembly, typeof(Init).Assembly, this.model, hotfixAssembly);
-
-                    EventSystem.Instance.Add(types2);
-                }
-
-            }
-
-            IStaticMethod start = new StaticMethod(this.model, "ET.Entry", "Start");
-            start.Run();
-        }
-
-        // 热重载调用该方法
-        public void LoadHotfix()
-        {
-            byte[] assBytes = MonoResComponent.Instance.LoadRawFile($"Hotfix_{GlobalConfig.Instance.HotFixVersion}.dll");
-            byte[] pdbBytes = MonoResComponent.Instance.LoadRawFile($"Hotfix_{GlobalConfig.Instance.HotFixVersion}.pdb");
-
-            hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
-
-        }
-    }
+		public void LoadHotfix()
+		{
+			byte[] assBytes;
+			byte[] pdbBytes;
+			if (!Define.IsEditor)
+			{
+				//Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
+				//assBytes = ((TextAsset)dictionary["Hotfix.dll"]).bytes;
+				//pdbBytes = ((TextAsset)dictionary["Hotfix.pdb"]).bytes;
+					
+				// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Hotfix.dll，真正打包要还原使用上面注释的代码
+				assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.dll"));
+				pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.pdb"));
+			}
+			else
+			{
+				assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"));
+				pdbBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Hotfix.pdb"));
+			}
+			
+			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
+			
+			Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
+			World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+		}
+	}
 }

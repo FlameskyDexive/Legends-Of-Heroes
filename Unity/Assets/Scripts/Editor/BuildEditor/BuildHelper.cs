@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
@@ -11,12 +11,12 @@ namespace ET
         private const string relativeDirPrefix = "../Release";
 
         public static string BuildFolder = "../Release/{0}/StreamingAssets/";
-
-
+        
+        
         [InitializeOnLoadMethod]
         public static void ReGenerateProjectFiles()
         {
-            if (Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().Name == "RiderScriptEditor")
+            if (Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().Name== "RiderScriptEditor")
             {
                 FieldInfo generator = Unity.CodeEditor.CodeEditor.CurrentEditor.GetType().GetField("m_ProjectGeneration", BindingFlags.Static | BindingFlags.NonPublic);
                 var syncMethod = generator.FieldType.GetMethod("Sync");
@@ -26,22 +26,22 @@ namespace ET
             {
                 Unity.CodeEditor.CodeEditor.CurrentEditor.SyncAll();
             }
-
+            
             Debug.Log("ReGenerateProjectFiles finished.");
         }
 
-
-#if ENABLE_CODES
-        [MenuItem("ET/ChangeDefine/Remove ENABLE_CODES")]
-        public static void RemoveEnableCodes()
+              
+#if ENABLE_DLL
+        [MenuItem("ET/ChangeDefine/Remove ENABLE_DLL")]
+        public static void RemoveEnableDll()
         {
-            EnableDefineSymbols("ENABLE_CODES", false);
+            EnableDefineSymbols("ENABLE_DLL", false);
         }
 #else
-        [MenuItem("ET/ChangeDefine/Add ENABLE_CODES")]
-        public static void AddEnableCodes()
+        [MenuItem("ET/ChangeDefine/Add ENABLE_DLL")]
+        public static void AddEnableDll()
         {
-            EnableDefineSymbols("ENABLE_CODES", true);
+            EnableDefineSymbols("ENABLE_DLL", true);
         }
 #endif
 
@@ -85,7 +85,7 @@ namespace ET
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }
-
+        
         public static void ShowNotification(string tips)
         {
             EditorWindow game = EditorWindow.GetWindow(typeof(EditorWindow).Assembly.GetType("UnityEditor.GameView"));
@@ -113,7 +113,7 @@ namespace ET
                 case PlatformType.MacOS:
                     buildTarget = BuildTarget.StandaloneOSX;
                     break;
-
+                
                 case PlatformType.Linux:
                     buildTarget = BuildTarget.StandaloneLinux64;
                     break;

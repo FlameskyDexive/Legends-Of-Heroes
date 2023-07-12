@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Attributes;
 using OfficeOpenXml;
-using OfficeOpenXml.DataValidation;
-using ProtoBuf;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace ET
@@ -25,6 +25,7 @@ namespace ET
 
     class HeadInfo
     {
+        [BsonElement]
         public string FieldCS;
         public string FieldDesc;
         public string FieldName;
@@ -42,7 +43,6 @@ namespace ET
     }
 
     // 这里加个标签是为了防止编译时裁剪掉protobuf，因为整个tool工程没有用到protobuf，编译会去掉引用，然后动态编译就会出错
-    [ProtoContract]
     class Table
     {
         public bool C;
@@ -54,13 +54,12 @@ namespace ET
     public static class ExcelExporter
     {
         private static string template;
-        private static string templateMultiKeys;
 
-        private const string ClientClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Client/Config";
+        private const string ClientClassDir = "../Unity/Assets/Scripts/Model/Generate/Client/Config";
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
-        private const string ServerClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/Server/Config";
+        private const string ServerClassDir = "../Unity/Assets/Scripts/Model/Generate/Server/Config";
 
-        private const string CSClassDir = "../Unity/Assets/Scripts/Codes/Model/Generate/ClientServer/Config";
+        private const string CSClassDir = "../Unity/Assets/Scripts/Model/Generate/ClientServer/Config";
 
         private const string excelDir = "../Unity/Assets/Config/Excel/";
 
@@ -100,12 +99,7 @@ namespace ET
         {
             try
             {
-                keyDic = new Dictionary<string, List<string>>();
-                //防止编译时裁剪掉protobuf
-                ProtoBuf.WireType.Fixed64.ToString();
-                
                 template = File.ReadAllText("Template.txt");
-                templateMultiKeys = File.ReadAllText("TemplateMultiKeys.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
                 if (Directory.Exists(ClientClassDir))
@@ -189,18 +183,11 @@ namespace ET
                 {
                     ExportExcel(path);
                 }
-
-                FileInfo[] byteFiles = new DirectoryInfo(clientProtoDir).GetFiles("*.bytes", SearchOption.AllDirectories);
-
-                for (int i = 0; i < byteFiles.Length; i++)
+                
+                if (Directory.Exists(clientProtoDir))
                 {
-                    FileInfo file = byteFiles[i];
-                    File.Delete(file.FullName);
+                    Directory.Delete(clientProtoDir, true);
                 }
-                // if (Directory.Exists(clientProtoDir))
-                // {
-                //     Directory.Delete(clientProtoDir, true);
-                // }
                 FileHelper.CopyDirectory("../Config/Excel/c", clientProtoDir);
                 
                 Log.Console("Export Excel Sucess!");
@@ -231,7 +218,6 @@ namespace ET
                 return;
             }
 
-            Log.Console($"export excel: {fileName}");
             string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
             string fileNameWithoutCS = fileNameWithoutExtension;
             string cs = "cs";
@@ -357,21 +343,17 @@ namespace ET
 
 
         #region 导出class
-        private static Dictionary<string, List<string>> keyDic = new Dictionary<string, List<string>>();
 
         static void ExportExcelClass(ExcelPackage p, string name, Table table)
         {
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
-                if (worksheet.Name.Contains("#"))
-                    continue;
-                ExportSheetClass(worksheet, table, name);
+                ExportSheetClass(worksheet, table);
             }
         }
 
-        static void ExportSheetClass(ExcelWorksheet worksheet, Table table, string excelName)
+        static void ExportSheetClass(ExcelWorksheet worksheet, Table table)
         {
-            List<string> configKeys = new List<string>();
             const int row = 2;
             for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
             {
@@ -397,13 +379,8 @@ namespace ET
                     table.HeadInfos[fieldName] = null;
                     continue;
                 }
-                if (fieldCS.Contains("key"))
-                {
-                    // Log.Console($"find key: {excelName}: {fieldName}");
-                    configKeys.Add(fieldName);
-                }
                 
-                if (fieldCS == "" || fieldCS.Contains("key"))
+                if (fieldCS == "")
                 {
                     fieldCS = "cs";
                 }
@@ -423,9 +400,6 @@ namespace ET
 
                 table.HeadInfos[fieldName] = new HeadInfo(fieldCS, fieldDesc, fieldName, fieldType, ++table.Index);
             }
-
-            keyDic[excelName] = configKeys;
-            // Log.Console($"000 :{excelName}, key count:{keyDic[excelName].Count}");
         }
 
         static void ExportClass(string protoName, Dictionary<string, HeadInfo> classField, ConfigType configType)
@@ -455,53 +429,13 @@ namespace ET
                 }
 
                 sb.Append($"\t\t/// <summary>{headInfo.FieldDesc}</summary>\n");
-                sb.Append($"\t\t[ProtoMember({headInfo.FieldIndex})]\n");
                 string fieldType = headInfo.FieldType;
                 sb.Append($"\t\tpublic {fieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
 
-
-
             string content = template.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
-
-            //单Key的时候，用唯一key做索引
-            //多key情况后续处理，总key 64bit，拆分4个key， 32bit - 16bit - 8bit - 8bit
-            //合并：高32位-中16位-中8位-低8位
-            // return (long)a << 32 | ((long)b << 16) | ((long)c << 8) | (long)d;
-            //分解：此处注释
-            /*int x = (int)(testKey >> 32);
-	        int y = (int)(testKey & 0x00000000FFFF0000) >> 16;
-	        int z = (int)(testKey & 0x000000000000FF00) >> 8;
-	        int k = (int)(testKey & 0x00000000000000FF);*/
-
-            // Log.Console($"excel:{protoName}, key count:{keyDic[protoName].Count}");
-            if (keyDic.TryGetValue(protoName, out List<string> configKeys))
-            {
-                if (configKeys.Count > 1)
-                {
-                    content = templateMultiKeys.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
-                    // Log.Console($"multiple key excel:{protoName}");
-                    string str = "";
-                    string keyLog = "";
-                    foreach (string key in configKeys)
-                    {
-                        str += $"config.{key}, ";
-                        keyLog += $"{{config.{key}}}, ";
-                    }
-                    str = str.Substring(0, str.Length - 2);
-                    content = content.Replace("config.Id", $"GetMultiKeyMerge({str})");
-                    content = content.Replace("{key}", keyLog);
-                    // Log.Console($"{content}");
-                }
-                else if (configKeys.Count == 1)
-                {
-                    content = content.Replace("config.Id", $"config.{configKeys[0]}");
-                }
-            }
-
             sw.Write(content);
         }
-        
 
         #endregion
 
@@ -511,7 +445,7 @@ namespace ET
         static void ExportExcelJson(ExcelPackage p, string name, Table table, ConfigType configType, string relativeDir)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("{\"list\":[\n");
+            sb.Append("{\"dict\": [\n");
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
                 if (worksheet.Name.StartsWith("#"))
@@ -563,8 +497,7 @@ namespace ET
                     continue;
                 }
 
-                sb.Append("{");
-                sb.Append($"\"_t\":\"{name}\"");
+                sb.Append($"[{worksheet.Cells[row, 3].Text.Trim()}, {{\"_t\":\"{name}\"");
                 for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
                 {
                     string fieldName = worksheet.Cells[4, col].Text.Trim();
@@ -594,7 +527,7 @@ namespace ET
                     sb.Append($",\"{fieldN}\":{Convert(headInfo.FieldType, worksheet.Cells[row, col].Text.Trim())}");
                 }
 
-                sb.Append("},\n");
+                sb.Append("}],\n");
             }
         }
 
@@ -648,9 +581,6 @@ namespace ET
             Type type = ass.GetType($"ET.{protoName}Category");
             Type subType = ass.GetType($"ET.{protoName}");
 
-            Serializer.NonGeneric.PrepareSerializer(type);
-            Serializer.NonGeneric.PrepareSerializer(subType);
-
             IMerge final = Activator.CreateInstance(type) as IMerge;
 
             string p = Path.Combine(string.Format(jsonDir, configType, relativeDir));
@@ -667,34 +597,16 @@ namespace ET
                     object deserialize = BsonSerializer.Deserialize(json, type);
                     final.Merge(deserialize);
                 }
-                catch
+                catch (Exception e)
                 {
-                    #region 为了定位该文件中具体那一行出现了异常
-                    List<string> list = new List<string>(json.Split('\n'));
-                    if (list.Count > 0)
-                        list.RemoveAt(0);
-                    if (list.Count > 0)
-                        list.RemoveAt(list.Count - 1);
-                    foreach (string s in list)
-                    {
-                        try
-                        {
-                            BsonSerializer.Deserialize(s.Substring(0, s.Length - 1), subType);
-                        }
-                        catch (Exception)
-                        {
-                            Log.Console($"json : {s}");
-                            throw;
-                        }
-                    }
-                    #endregion
+                    throw new Exception($"json : {jsonPath} error", e);
                 }
             }
 
             string path = Path.Combine(dir, $"{protoName}Category.bytes");
 
             using FileStream file = File.Create(path);
-            Serializer.Serialize(file, final);
+            file.Write(final.ToBson());
         }
     }
 }

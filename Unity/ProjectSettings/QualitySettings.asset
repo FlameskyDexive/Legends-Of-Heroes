@@ -227,4 +227,4 @@ QualitySettings:
     Android: 0
     Server: 0
     Standalone: 0
-    WebGL: 0
+    iPhone: 0

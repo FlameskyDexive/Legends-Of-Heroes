@@ -60,7 +60,7 @@ message ObjectAddRequest // IActorRequest
 	int32 RpcId = 1;
 	int32 Type = 2;
 	int64 Key = 3;
-	int64 InstanceId = 4;
+	ActorId ActorId = 4;
 }
 
 message ObjectAddResponse // IActorResponse
@@ -76,7 +76,7 @@ message ObjectLockRequest // IActorRequest
 	int32 RpcId = 1;
 	int32 Type = 2;
 	int64 Key = 3;
-	int64 InstanceId = 4;
+	ActorId ActorId = 4;
 	int32 Time = 5;
 }
 message ObjectLockResponse // IActorResponse
@@ -92,8 +92,8 @@ message ObjectUnLockRequest // IActorRequest
 	int32 RpcId = 1;
 	int32 Type = 2;
 	int64 Key = 3;
-	int64 OldInstanceId = 4;
-	int64 InstanceId = 5;
+	ActorId OldActorId = 4;
+	ActorId NewActorId = 5;
 }
 message ObjectUnLockResponse // IActorResponse
 {
@@ -129,7 +129,7 @@ message ObjectGetResponse // IActorResponse
 	int32 Error = 2;
 	string Message = 3;
 	int32 Type = 4;
-	int64 InstanceId = 5;
+	ActorId ActorId = 5;
 }
 
 //ResponseType G2R_GetLoginKey
@@ -165,7 +165,7 @@ message ObjectQueryResponse // IActorResponse
 message M2M_UnitTransferRequest // IActorRequest
 {
 	int32 RpcId = 1;
-	int64 OldInstanceId = 2;
+	ActorId OldActorId = 2;
 	bytes Unit = 3;
 	repeated bytes Entitys = 4;
 }
@@ -176,32 +176,3 @@ message M2M_UnitTransferResponse // IActorResponse
 	int32 Error = 2;
 	string Message = 3;
 }
-
-
-
-///////////////////////////////// 房间相关  START ///////////////////////////////////
-
-//ResponseType Lobby2G_JoinOrCreateRoom
-message G2Lobby_JoinOrCreateRoom // IActorRequest
-{
-	int32 RpcId = 1;
-	int64 PlayerId = 2;  // 帐号
-	int64 RoomId = 3; //加入的房间Id,传0的时候则寻找已有房间，>0则进入对应的房间。
-}
-
-message Lobby2G_JoinOrCreateRoom // IActorResponse
-{
-	int32 RpcId = 1;
-	int32 Error = 2;
-    string Message = 3;
-    RoomInfoProto roomInfo = 4;
-}
-
-
-///////////////////////////////// 房间相关  END ///////////////////////////////////
-
-
-///////////////////////////////// 副本相关  START ///////////////////////////////////
-
-
-///////////////////////////////// 副本相关  END ///////////////////////////////////

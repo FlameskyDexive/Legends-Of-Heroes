@@ -72,14 +72,11 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaClip: 0
-    - _AlphaToMask: 0
     - _Blend: 0
-    - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
-    - _DstBlendAlpha: 0
     - _GlossinessSource: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -89,7 +86,6 @@ Material:
     - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _SrcBlendAlpha: 1
     - _Surface: 0
     - _ZWrite: 1
     m_Colors:

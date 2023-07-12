@@ -1,15 +1,5 @@
-{"list":[
-{"_t":"UnitConfig","_id":1000,"Type":1,"Name":"艾希","Position":1,"Weight":68,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1001,"Type":1,"Name":"伊泽瑞尔","Position":1,"Weight":68,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1002,"Type":1,"Name":"盖伦","Position":2,"Weight":78,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1003,"Type":1,"Name":"易大师","Position":1,"Weight":68,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1004,"Type":1,"Name":"阿狸","Position":2,"Weight":78,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1005,"Type":1,"Name":"小法师","Position":2,"Weight":78,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1006,"Type":1,"Name":"瑞兹","Position":2,"Weight":78,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1007,"Type":1,"Name":"潘森","Position":2,"Weight":78,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1008,"Type":1,"Name":"赵信","Position":2,"Weight":78,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1009,"Type":1,"Name":"武器大师","Position":2,"Weight":78,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1010,"Type":1,"Name":"盲僧","Position":2,"Weight":78,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":1011,"Type":1,"Name":"阿木木","Position":2,"Weight":78,"BornSkills":[1001,1002]},
-{"_t":"UnitConfig","_id":-1000,"Type":4,"Name":"常规子弹","Position":1,"Weight":0,"BornSkills":[]},
+{"dict": [
+[1001, {"_t":"UnitConfig","_id":1001,"Type":1,"Name":"米克尔","Position":1,"Weight":68}],
+[1002, {"_t":"UnitConfig","_id":1002,"Type":1,"Name":"米克尔2","Position":2,"Weight":78}],
+[1003, {"_t":"UnitConfig","_id":1003,"Type":1,"Name":"米克尔3","Position":1,"Weight":68}],
 ]}
