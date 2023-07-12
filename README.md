@@ -1,7 +1,7 @@
 # Legends-Of-Heroes
 English: please use your browser to translate to english
 
-一个LOL风格的球球大作战游戏，基于ET7.2，使用状态同步
+一个LOL风格的球球大作战游戏，基于ET，使用状态同步
 ![loh22023532242551](https://user-images.githubusercontent.com/8274346/235951176-f96efa8f-d3e5-4089-a1c9-56643859b487.gif)
 
 ## Main
