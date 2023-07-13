@@ -6,8 +6,7 @@
         "Unity.Core",
         "Unity.Mathematics",
         "Unity.Loader",
-        "Unity.Model",
-        "Unity.3thPart"
+        "Unity.Model"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

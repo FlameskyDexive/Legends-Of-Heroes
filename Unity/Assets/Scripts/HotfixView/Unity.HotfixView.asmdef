@@ -9,8 +9,7 @@
         "MemoryPack",
         "Unity.Model",
         "Unity.Hotfix",
-        "Unity.ModelView",
-        "Unity.3thPart"
+        "Unity.ModelView"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -14,9 +14,10 @@ namespace ET.Client
             foreach (long playerId in room.PlayerIds)
             {
                 LSUnit lsUnit = lsUnitComponent.GetChild<LSUnit>(playerId);
-                ResourcesComponent resourcesComponent = root.GetComponent<ResourcesComponent>();
-                GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset("Unit.unity3d", "Unit");
-                GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
+                // ResourcesComponent resourcesComponent = root.GetComponent<ResourcesComponent>();
+                // GameObject bundleGameObject = (GameObject)resourcesComponent.GetAsset("Unit.unity3d", "Unit");
+                // GameObject prefab = bundleGameObject.Get<GameObject>("Skeleton");
+                GameObject prefab = ResComponent.Instance.LoadAsset<GameObject>($"Skeleton");
 
                 GlobalComponent globalComponent = root.GetComponent<GlobalComponent>();
                 GameObject unitGo = UnityEngine.Object.Instantiate(prefab, globalComponent.Unit, true);

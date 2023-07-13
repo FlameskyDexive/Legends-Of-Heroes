@@ -10,7 +10,7 @@ namespace ET.Client
         {
             // ResourcesComponent resourcesComponent = uiComponent.Root().GetComponent<ResourcesComponent>();
             // await uiComponent.Scene().GetComponent<ResourcesLoaderComponent>().LoadAsync(resourcesComponent.StringToAB(UIType.UILSLogin));
-            GameObject bundleGameObject = UnityEngine.Object.Instantiate(ResComponent.Instance.LoadAsset<GameObject>($"UILSLogin"));
+            GameObject bundleGameObject = ResComponent.Instance.LoadAsset<GameObject>($"UILSLogin");
             GameObject gameObject = UnityEngine.Object.Instantiate(bundleGameObject, uiComponent.UIGlobalComponent.GetLayer((int)uiLayer));
             UI ui = uiComponent.AddChild<UI, string, GameObject>(UIType.UILSLogin, gameObject);
             ui.AddComponent<UILSLoginComponent>();

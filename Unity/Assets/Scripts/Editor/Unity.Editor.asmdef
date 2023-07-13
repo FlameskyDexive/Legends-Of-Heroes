@@ -8,8 +8,7 @@
         "HybridCLR.Runtime",
         "HybridCLR.Editor",
         "Unity.Model",
-        "Unity.Hotfix",
-        "3thPart"
+        "Unity.Hotfix"
     ],
     "includePlatforms": [
         "Editor"
