@@ -10,6 +10,7 @@ namespace ET
     {
         public override Dictionary<Type, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
         {
+            // World.Instance.AddSingleton<ResComponent>();
             Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
             HashSet<Type> configTypes = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
             
@@ -59,6 +60,7 @@ namespace ET
                 foreach (Type type in configTypes)
                 {
                     TextAsset v = dictionary[type.Name] as TextAsset;
+                    // TextAsset v = ResComponent.Instance.LoadAsset<TextAsset>(type.Name/*.ToLower()*/) as TextAsset;
                     output[type] = v.bytes;
                 }
             }

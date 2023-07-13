@@ -22,8 +22,10 @@ namespace ET
             {
                 return GenerateCustomProject(path, content);
             }
-            
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+
+            // GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            // var ab = AssetBundle.LoadFromFile($"{Path.Combine(Application.dataPath, "Bundles/Config/")}");
+            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("");
 
             if (path.EndsWith("Unity.AllModel.csproj"))
             {

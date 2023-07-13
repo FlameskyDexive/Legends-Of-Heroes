@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Threading;
 using CommandLine;
 using UnityEngine;
+using YooAsset;
 
 namespace ET
 {
 	public class Init: MonoBehaviour
-	{
-		private void Start()
+    {
+        public EPlayMode PlayMode;
+        private void Start()
 		{
 			DontDestroyOnLoad(gameObject);
 			
@@ -25,17 +28,30 @@ namespace ET
 			
 			World.Instance.AddSingleton<Logger>().ILog = new UnityLogger();
 			ETTask.ExceptionHandler += Log.Error;
-			World.Instance.AddSingleton<CodeLoader>().Start();
-		}
+			// World.Instance.AddSingleton<CodeLoader>().Start();
+            StartCoroutine(this.InitCode());
+        }
+
+        private bool initCode = false;
+        IEnumerator InitCode()
+        {
+            yield return MonoResComponent.Instance.InitAsync(PlayMode);
+            // yield return new WaitForSeconds(0.5f);
+            World.Instance.AddSingleton<CodeLoader>().Start();
+            this.initCode = true;
+
+        }
 
 		private void Update()
 		{
-			FiberManager.Instance.Update();
+            if(this.initCode)
+			    FiberManager.Instance.Update();
 		}
 
 		private void LateUpdate()
-		{
-			FiberManager.Instance.LateUpdate();
+        {
+            if (this.initCode)
+                FiberManager.Instance.LateUpdate();
 		}
 
 		private void OnApplicationQuit()

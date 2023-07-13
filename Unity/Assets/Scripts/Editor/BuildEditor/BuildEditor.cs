@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
@@ -123,14 +124,16 @@ namespace ET
 				this.globalConfig.CodeMode = codeMode;
 				EditorUtility.SetDirty(this.globalConfig);
 				AssetDatabase.SaveAssets();
-			}
+            }
+            GUILayout.Space(5);
 
-			if (GUILayout.Button("ReGenerateProjectFiles"))
+            if (GUILayout.Button("ReGenerateProjectFiles"))
 			{
 				BuildHelper.ReGenerateProjectFiles();
 			}
-			
-			if (GUILayout.Button("ExcelExporter"))
+
+            GUILayout.Space(5);
+            if (GUILayout.Button("ExcelExporter"))
 			{
 				//Directory.Delete("Assets/Bundles/Config", true);
 				ToolsEditor.ExcelExporter();
@@ -141,13 +144,13 @@ namespace ET
 				AssetDatabase.SaveAssets();
 				AssetDatabase.Refresh();
 			}
-			
-			if (GUILayout.Button("Proto2CS"))
+
+            GUILayout.Space(5);
+            if (GUILayout.Button("Proto2CS"))
 			{
 				ToolsEditor.Proto2CS();
 			}
-
-			GUILayout.Space(5);
-		}
+            GUILayout.Space(5);
+        }
 	}
 }

@@ -458,7 +458,7 @@ namespace ET.Client
             string p = "";
             AssetBundle assetBundle = null;
 
-            if (!Define.IsAsync)
+            /*if (!Define.IsAsync)
             {
                 if (Define.IsEditor)
                 {
@@ -512,7 +512,7 @@ namespace ET.Client
             }
 
             abInfo = self.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
-            self.bundles[assetBundleName] = abInfo;
+            self.bundles[assetBundleName] = abInfo;*/
             return abInfo;
             //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
         }
@@ -520,7 +520,7 @@ namespace ET.Client
         // 加载ab包中的all assets
         private static async ETTask LoadOneBundleAllAssets(this ResourcesComponent self, ABInfo abInfo)
         {
-            using CoroutineLock coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
+            /*using CoroutineLock coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
 
             if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
             {
@@ -538,7 +538,7 @@ namespace ET.Client
                 {
                     self.AddResource(abInfo.Name, asset.name, asset);
                 }
-            }
+            }*/
 
             abInfo.AlreadyLoadAssets = true;
         }

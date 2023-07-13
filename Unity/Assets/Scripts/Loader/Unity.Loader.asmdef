@@ -5,7 +5,8 @@
         "Unity.ThirdParty",
         "Unity.Core",
         "HybridCLR.Runtime",
-        "MemoryPack"
+        "MemoryPack",
+        "Unity.3thPart"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
