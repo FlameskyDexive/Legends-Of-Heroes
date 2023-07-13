@@ -16,7 +16,9 @@ namespace ET
         public object DrawAndGetNewValue(Type memberType, string memberName, object value, object target)
         {
             Entity iScene = (Entity)value;
+#if ENABLE_VIEW && UNITY_EDITOR
             EditorGUILayout.ObjectField(memberName, iScene.ViewGO, memberType, true);
+#endif
             return value;
         }
     }
