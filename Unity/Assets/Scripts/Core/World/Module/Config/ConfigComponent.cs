@@ -12,6 +12,7 @@ namespace ET
     {
         public struct GetAllConfigBytes
         {
+            public Scene scene;
         }
         
         public struct GetOneConfigBytes
@@ -40,7 +41,7 @@ namespace ET
 		public void Load()
 		{
 			this.allConfig.Clear();
-			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes());
+			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes(){});
 
 			foreach (Type type in configBytes.Keys)
 			{
@@ -49,10 +50,10 @@ namespace ET
 			}
 		}
 		
-		public async ETTask LoadAsync()
+		public async ETTask LoadAsync(Scene rootScene)
 		{
 			this.allConfig.Clear();
-			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes());
+			Dictionary<Type, byte[]> configBytes = EventSystem.Instance.Invoke<GetAllConfigBytes, Dictionary<Type, byte[]>>(new GetAllConfigBytes(){scene = rootScene});
 
 			using ListComponent<Task> listTasks = ListComponent<Task>.Create();
 			

@@ -25,7 +25,7 @@ namespace ET.Client
             await resourcesComponent.LoadBundleAsync("unit.unity3d");
             
             // 根据配置修改掉Main Fiber的SceneType
-            SceneType sceneType = EnumHelper.FromString<SceneType>(globalComponent.GlobalConfig.AppType.ToString());
+            SceneType sceneType = EnumHelper.FromString<SceneType>(GlobalConfig.Instance.AppType.ToString());
             root.SceneType = sceneType;
             
             await EventSystem.Instance.PublishAsync(root, new EventType.AppStartInitFinish());

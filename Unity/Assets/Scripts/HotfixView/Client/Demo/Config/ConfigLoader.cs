@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace ET
+namespace ET.Client
 {
     [Invoke]
     public class GetAllConfigBytes: AInvokeHandler<ConfigComponent.GetAllConfigBytes, Dictionary<Type, byte[]>>
     {
         public override Dictionary<Type, byte[]> Handle(ConfigComponent.GetAllConfigBytes args)
         {
-            // World.Instance.AddSingleton<ResComponent>();
+            args.scene?.AddComponent<ResComponent>();
             Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
             HashSet<Type> configTypes = EventSystem.Instance.GetTypes(typeof (ConfigAttribute));
             
             if (Define.IsEditor)
             {
                 string ct = "cs";
-                GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-                CodeMode codeMode = globalConfig.CodeMode;
+                // GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+                CodeMode codeMode = GlobalConfig.Instance.CodeMode;
                 switch (codeMode)
                 {
                     case CodeMode.Client:
@@ -59,8 +59,8 @@ namespace ET
                 Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("config.unity3d");
                 foreach (Type type in configTypes)
                 {
-                    TextAsset v = dictionary[type.Name] as TextAsset;
-                    // TextAsset v = ResComponent.Instance.LoadAsset<TextAsset>(type.Name/*.ToLower()*/) as TextAsset;
+                    // TextAsset v = dictionary[type.Name] as TextAsset;
+                    TextAsset v = ResComponent.Instance.LoadAsset<TextAsset>(type.Name/*.ToLower()*/) as TextAsset;
                     output[type] = v.bytes;
                 }
             }
@@ -75,8 +75,8 @@ namespace ET
         public override byte[] Handle(ConfigComponent.GetOneConfigBytes args)
         {
             string ct = "cs";
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            CodeMode codeMode = globalConfig.CodeMode;
+            // GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            CodeMode codeMode = GlobalConfig.Instance.CodeMode;
             switch (codeMode)
             {
                 case CodeMode.Client:
