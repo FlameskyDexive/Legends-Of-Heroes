@@ -66,15 +66,21 @@ namespace ET
 			
 				this.assembly = Assembly.Load(assBytes, pdbBytes);
 			}
-			
-			this.LoadHotfix();
-			
-			IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
-			start.Run();
-		}
 
-		public void LoadHotfix()
-		{
+            {
+                Assembly hotfixAssembly = this.LoadHotfix();
+
+                Dictionary<string, Type> types =
+                        AssemblyHelper.GetAssemblyTypes(typeof(World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
+                World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+
+                IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
+                start.Run();
+            }
+        }
+
+        private Assembly LoadHotfix()
+        {
 			byte[] assBytes;
 			byte[] pdbBytes;
 			if (!Define.IsEditor)
@@ -94,9 +100,19 @@ namespace ET
 			}
 			
 			Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
-			
-			Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
-			World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
-		}
-	}
+            return hotfixAssembly;
+        }
+        
+        public void Reload()
+        {
+            Assembly hotfixAssembly = this.LoadHotfix();
+
+            Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof(World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly);
+            World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types, true);
+
+            World.Instance.Load();
+
+            Log.Debug($"reload dll finish!");
+        }
+    }
 }
