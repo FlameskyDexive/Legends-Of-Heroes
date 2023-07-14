@@ -9,6 +9,9 @@ namespace ET.Client
 	/// </summary>
 	public class UIEventComponent: SingletonLock<UIEventComponent>, ISingletonAwake
 	{
+		// public static UIEventComponent Instance { get; set; }
+		public readonly Dictionary<WindowID, IAUIEventHandler> UIEventHandlers = new Dictionary<WindowID, IAUIEventHandler>();
+		public bool IsClicked { get; set; }
 		public Dictionary<string, AUIEvent> UIEvents { get; } = new();
 		
         public void Awake()

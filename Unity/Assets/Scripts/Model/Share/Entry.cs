@@ -34,7 +34,7 @@ namespace ET
         {
             WinPeriod.Init();
             
-            MongoHelper.RegisterStruct<LSInput>();
+            // MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
             
             World.Instance.AddSingleton<OpcodeType>();
@@ -42,7 +42,7 @@ namespace ET
             World.Instance.AddSingleton<ObjectPool>();
             World.Instance.AddSingleton<ActorMessageQueue>();
             World.Instance.AddSingleton<EntitySystemSingleton>();
-            World.Instance.AddSingleton<LSEntitySystemSingleton>();
+            // World.Instance.AddSingleton<LSEntitySystemSingleton>();
             World.Instance.AddSingleton<MessageDispatcherComponent>();
             World.Instance.AddSingleton<NumericWatcherComponent>();
             World.Instance.AddSingleton<AIDispatcherComponent>();
