@@ -19,7 +19,7 @@ namespace ET
             if (owner == null)
                 return;
             ListComponent<Entity> units = ListComponent<Entity>.Create();
-            units.AddRange(skillEvent.DomainScene().GetComponent<UnitComponent>().Children.Values.ToList());
+            units.AddRange(skillEvent.Root().GetComponent<UnitComponent>().Children.Values.ToList());
             for (int i = 0; i < units.Count; i++)
             {
                 Unit unit = units[i] as Unit;

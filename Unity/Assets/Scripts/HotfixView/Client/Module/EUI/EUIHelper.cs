@@ -362,12 +362,12 @@ namespace ET.Client
             closeButton.onClick.RemoveAllListeners();
             if (isClose)
             {
-                closeButton.onClick.AddListener(() => { self.DomainScene().GetComponent<UIComponent>().CloseWindow(self.GetParent<UIBaseWindow>().WindowID); });
+                closeButton.onClick.AddListener(() => { self.Root().GetComponent<UIComponent>().CloseWindow(self.GetParent<UIBaseWindow>().WindowID); });
 
             }
             else
             {
-                closeButton.onClick.AddListener(() => { self.DomainScene().GetComponent<UIComponent>().HideWindow(self.GetParent<UIBaseWindow>().WindowID); });
+                closeButton.onClick.AddListener(() => { self.Root().GetComponent<UIComponent>().HideWindow(self.GetParent<UIBaseWindow>().WindowID); });
             }
         }
 

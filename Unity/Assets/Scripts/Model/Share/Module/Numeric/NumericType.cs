@@ -28,5 +28,17 @@
 	    public const int AOIPct = AOI * 10 + 3;
 	    public const int AOIFinalAdd = AOI * 10 + 4;
 	    public const int AOIFinalPct = AOI * 10 + 5;
+
+	    public const int Attack = 1011;         //攻击力
+	    public const int AttackBase = Attack * 10 + 1;
+	    public const int AttackAdd = Attack * 10 + 2;
+	    public const int AttackPct = Attack * 10 + 3;
+	    public const int AttackFinalAdd = Attack * 10 + 4;
+	    public const int AttackFinalPct = Attack * 10 + 5;
+        
+        
+	    //////////子弹属性相关//////////////
+	    public const int BulletRadius = 1101;	//子弹半径
+	    public const int BulletLife = 1101;	//子弹周期
     }
 }

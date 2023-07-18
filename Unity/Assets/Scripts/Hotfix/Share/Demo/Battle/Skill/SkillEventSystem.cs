@@ -23,7 +23,7 @@ namespace ET
         {
             self.EventData = skillConfig.Params;
             //触发时间 = 事件触发百分比 * 技能时长 + 技能触发时间
-            self.EventTriggerTime = skillConfig.Params[0] * self.EventData[2] / 100 + TimeHelper.ServerNow();
+            self.EventTriggerTime = skillConfig.Params[0] * self.EventData[2] / 100 + self.Fiber().TimeInfo.ServerNow();
             self.SkillEventType = (ESkillEventType)skillConfig.Params[1];
         }
 

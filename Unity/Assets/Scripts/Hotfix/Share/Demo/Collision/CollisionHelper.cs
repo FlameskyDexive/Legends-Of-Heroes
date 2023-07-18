@@ -33,9 +33,9 @@ namespace ET
         
 
 
-        public static World CreateWorld(Vector2 gravity)
+        public static Box2DSharp.Dynamics.World CreateWorld(Vector2 gravity)
         {
-            return new World(gravity);
+            return new Box2DSharp.Dynamics.World(gravity);
         }
     }
 }

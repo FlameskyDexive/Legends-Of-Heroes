@@ -2,32 +2,6 @@ using System;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class FsmComponentAwakeSystem: AwakeSystem<FsmComponent, ETTask>
-    {
-        protected override void Awake(FsmComponent self, ETTask task)
-        {
-            self.Awake(task);
-        }
-    }
-    
-    [ObjectSystem]
-    public class FsmComponentUpdateSystem: UpdateSystem<FsmComponent>
-    {
-        protected override void Update(FsmComponent self)
-        {
-            self.Update();
-        }
-    }
-    
-    [ObjectSystem]
-    public class FsmComponentDestroySystem: DestroySystem<FsmComponent>
-    {
-        protected override void Destroy(FsmComponent self)
-        {
-            self.Destroy();
-        }
-    }
 
     [FriendOf(typeof(FsmComponent))]
     [FriendOf(typeof(FsmDispatcherComponent))]

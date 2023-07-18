@@ -37,7 +37,7 @@ namespace ET
         /// <summary>
         /// 当前冷却时间
         /// </summary>
-        public int CurrentCD => (int)(this.SpellStartTime + this.CD - TimeHelper.ClientNow());
+        public int CurrentCD => (int)(this.SpellStartTime + this.CD - this.Fiber().TimeInfo.ClientNow());
 
 
 

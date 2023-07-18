@@ -1,0 +1,10 @@
+{"list":[
+{"_t":"SkillConfig","_id":1001,"Level":1,"AbstractType":2,"Name":"扩散吞噬1级","Desc":"爆发混沌之力，吸食2m附近食物","Life":1000,"CD":3000,"Params":[0,1,2000]},
+{"_t":"SkillConfig","_id":1001,"Level":2,"AbstractType":2,"Name":"扩散吞噬2级","Desc":"爆发混沌之力，吸食3m附近食物","Life":1000,"CD":3000,"Params":[0,1,3000]},
+{"_t":"SkillConfig","_id":1001,"Level":3,"AbstractType":2,"Name":"扩散吞噬3级","Desc":"爆发混沌之力，吸食4m附近食物","Life":1000,"CD":3000,"Params":[0,1,4000]},
+{"_t":"SkillConfig","_id":1001,"Level":4,"AbstractType":2,"Name":"扩散吞噬4级","Desc":"爆发混沌之力，吸食5m附近食物","Life":1000,"CD":3000,"Params":[0,1,5000]},
+{"_t":"SkillConfig","_id":1002,"Level":1,"AbstractType":2,"Name":"随机喷射1级","Desc":"随机方向间隔发射1颗子弹","Life":1000,"CD":2000,"Params":[0,2,300,1500,1]},
+{"_t":"SkillConfig","_id":1002,"Level":2,"AbstractType":2,"Name":"随机喷射2级","Desc":"随机方向间隔发射2颗子弹","Life":1000,"CD":2000,"Params":[0,2,300,1500,2]},
+{"_t":"SkillConfig","_id":1002,"Level":3,"AbstractType":2,"Name":"随机喷射3级","Desc":"随机方向间隔发射3颗子弹","Life":1000,"CD":2000,"Params":[0,2,300,1500,3]},
+{"_t":"SkillConfig","_id":1002,"Level":4,"AbstractType":2,"Name":"随机喷射4级","Desc":"随机方向间隔发射4颗子弹","Life":1000,"CD":2000,"Params":[0,2,300,1500,4]},
+]}

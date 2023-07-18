@@ -14,7 +14,7 @@ namespace ET
         {
             try
             {
-                self.DomainScene().GetComponent<UnitComponent>()?.Remove(self.GetParent<Unit>().Id);
+                self.Root().GetComponent<UnitComponent>()?.Remove(self.GetParent<Unit>().Id);
             }
             catch (Exception e)
             {
@@ -23,38 +23,17 @@ namespace ET
         }
     }
 
-    [ObjectSystem]
-    public class BulletAwakeSystem : AwakeSystem<BulletComponent>
-    {
-        protected override void Awake(BulletComponent self)
-        {
-            self.Awake();
-        }
-    }
-    [ObjectSystem]
-    public class BulletFixedUpdateSystem : FixedUpdateSystem<BulletComponent>
-    {
-        protected override void FixedUpdate(BulletComponent self)
-        {
-            self.FixedUpdate();
-        }
-    }
-    
-    [ObjectSystem]
-    public class BulletDestroySystem : DestroySystem<BulletComponent>
-    {
-        protected override void Destroy(BulletComponent self)
-        {
-            TimerComponent.Instance.Remove(ref self.Timer);
-        }
-    }
     [FriendOf(typeof(BulletComponent))]
     public static class BulletComponentSystem
     {
+        public static void Destroy(this BulletComponent self)
+        {
+            self.Fiber().TimerComponent.Remove(ref self.Timer);
+        }
         public static void Awake(this BulletComponent self)
         {
             //测试子弹，生存时间700ms
-            self.Timer = TimerComponent.Instance.NewOnceTimer(TimeHelper.ServerNow() + 700, TimerInvokeType.BulletLifeTimeout, self);
+            self.Timer = self.Fiber().TimerComponent.NewOnceTimer(self.Fiber().TimeInfo.ServerNow() + 700, TimerInvokeType.BulletLifeTimeout, self);
 
         }
 

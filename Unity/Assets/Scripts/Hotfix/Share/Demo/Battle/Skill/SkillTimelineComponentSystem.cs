@@ -44,7 +44,7 @@ namespace ET
         {
             using (ListComponent<long> list = ListComponent<long>.Create())
             {
-                long timeNow = TimeHelper.ServerNow();
+                long timeNow = self.Fiber().TimeInfo.ServerNow();
                 foreach ((long key, Entity value) in self.Children)
                 {
                     SkillEvent skillEvent = (SkillEvent)value;
@@ -65,7 +65,7 @@ namespace ET
         
         public static void StartPlay(this SkillTimelineComponent self)
         {
-            self.StartSpellTime = TimeHelper.ServerNow();
+            self.StartSpellTime = self.Fiber().TimeInfo.ServerNow();
             self.InitEvents();
         }
         
