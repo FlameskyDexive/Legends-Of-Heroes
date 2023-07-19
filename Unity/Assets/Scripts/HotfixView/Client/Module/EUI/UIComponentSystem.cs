@@ -328,7 +328,7 @@ namespace ET.Client
             try
             {
                 // coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoadUIBaseWindows, (int)id);
-                coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.LoadUIBaseWindows, (int)id);
+                // coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.LoadUIBaseWindows, (int)id);
                 UIBaseWindow baseWindow = self.GetUIBaseWindow(id);
                 if (null == baseWindow)
                 {
@@ -352,7 +352,7 @@ namespace ET.Client
             }
             finally
             {
-                coroutineLock?.Dispose();
+                // coroutineLock?.Dispose();
             }
         }
         

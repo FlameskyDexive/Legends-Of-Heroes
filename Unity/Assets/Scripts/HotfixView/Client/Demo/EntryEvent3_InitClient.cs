@@ -16,8 +16,9 @@ namespace ET.Client
             root.AddComponent<CoroutineLockComponent>();
             
             GlobalComponent globalComponent = root.AddComponent<GlobalComponent>();
-            root.AddComponent<UIGlobalComponent>();
+            // root.AddComponent<UIGlobalComponent>();
             root.AddComponent<UIComponent>();
+            root.AddComponent<UIPathComponent>();
             // ResourcesComponent resourcesComponent = root.AddComponent<ResourcesComponent>();
             // root.AddComponent<ResourcesLoaderComponent>();
             root.AddComponent<PlayerComponent>();
@@ -30,8 +31,10 @@ namespace ET.Client
             root.SceneType = sceneType;
             
             // 热更流程
-            await HotUpdateAsync(root);
-            // await EventSystem.Instance.PublishAsync(root, new EventType.AppStartInitFinish());
+            // await HotUpdateAsync(root);
+            
+            await root.GetComponent<UIComponent>().ShowWindowAsync(WindowID.WindowID_Login);
+            await EventSystem.Instance.PublishAsync(root, new EventType.AppStartInitFinish());
         }
         
         private static async ETTask HotUpdateAsync(Scene clientScene)
