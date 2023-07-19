@@ -31,23 +31,23 @@ namespace ET.Client
 
 		public static void ShowWindow(this DlgLobby self, ShowWindowDataBase contextData = null)
         {
-            PlayerComponent playerComponent = self.ClientScene().GetComponent<PlayerComponent>();
+            PlayerComponent playerComponent = self.Root().GetComponent<PlayerComponent>();
             if (playerComponent != null)
             {
-                Player player = playerComponent.MyPlayer;
+                /*Player player = playerComponent.MyPlayer;
                 if (player != null)
                 {
                     self.View.E_PlayerNameText.text = player.PlayerName;
                     self.View.E_AvatarEUIImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{player.AvatarIndex}");
-                }
+                }*/
             }
         }
 		
 		public static async ETTask OnEnterMapClickHandler(this DlgLobby self)
         {
             // await EnterMapHelper.EnterMapAsync(self.DomainScene());
-            self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
-            await EnterMapHelper.EnterMapAsync(self.ClientScene());
+            self.Root().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
+            await EnterMapHelper.EnterMapAsync(self.Root());
 		}
         
         /// <summary>
@@ -57,13 +57,13 @@ namespace ET.Client
 		/// <returns></returns>
 		public static async ETTask OnSoloClickHandler(this DlgLobby self)
         {
-            self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Room);
+            self.Root().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Room);
         }
 		public static async ETTask OnBackToLoginHandler(this DlgLobby self)
         {
 
             Transform trans = GlobalComponent.Instance.Global;
-            Game.Close();
+            // Game.Close();
             MonoResComponent.Instance.Destroy();
             trans.gameObject.SetActive(false);
             UnityEngine.Object.DestroyImmediate(trans.gameObject);

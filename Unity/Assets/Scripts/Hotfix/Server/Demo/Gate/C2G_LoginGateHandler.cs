@@ -38,12 +38,12 @@ namespace ET.Server
             else
             {
                 // 判断是否在战斗
-                PlayerRoomComponent playerRoomComponent = player.GetComponent<PlayerRoomComponent>();
+                /*PlayerRoomComponent playerRoomComponent = player.GetComponent<PlayerRoomComponent>();
                 if (playerRoomComponent.RoomActorId != default)
                 {
                     CheckRoom(player, session).Coroutine();
                 }
-                else
+                else*/
                 {
                     PlayerSessionComponent playerSessionComponent = player.GetComponent<PlayerSessionComponent>();
                     playerSessionComponent.Session = session;
@@ -59,15 +59,15 @@ namespace ET.Server
             Fiber fiber = player.Fiber();
             await fiber.WaitFrameFinish();
             
-            using Room2G_Reconnect room2GateReconnect = await fiber.Root.GetComponent<ActorSenderComponent>().Call(
-                player.GetComponent<PlayerRoomComponent>().RoomActorId,
-                new G2Room_Reconnect() { PlayerId = player.Id }) as Room2G_Reconnect;
-            G2C_Reconnect g2CReconnect = new() { StartTime = room2GateReconnect.StartTime, Frame = room2GateReconnect.Frame };
-            g2CReconnect.UnitInfos.AddRange(room2GateReconnect.UnitInfos);
-            session.Send(g2CReconnect);
-            
-            session.AddComponent<SessionPlayerComponent>().Player = player;
-            player.GetComponent<PlayerSessionComponent>().Session = session;
+            // using Room2G_Reconnect room2GateReconnect = await fiber.Root.GetComponent<ActorSenderComponent>().Call(
+            //     player.GetComponent<PlayerRoomComponent>().RoomActorId,
+            //     new G2Room_Reconnect() { PlayerId = player.Id }) as Room2G_Reconnect;
+            // G2C_Reconnect g2CReconnect = new() { StartTime = room2GateReconnect.StartTime, Frame = room2GateReconnect.Frame };
+            // g2CReconnect.UnitInfos.AddRange(room2GateReconnect.UnitInfos);
+            // session.Send(g2CReconnect);
+            //
+            // session.AddComponent<SessionPlayerComponent>().Player = player;
+            // player.GetComponent<PlayerSessionComponent>().Session = session;
         }
     }
 }

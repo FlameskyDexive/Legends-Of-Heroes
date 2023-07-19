@@ -16,22 +16,22 @@
             // 根据消息接口判断是不是Actor消息，不同的接口做不同的处理,比如需要转发给Chat Scene，可以做一个IChatMessage接口
             switch (message)
             {
-                case FrameMessage frameMessage:
-                {
-                    Player player = session.GetComponent<SessionPlayerComponent>().Player;
-                    ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
-                    frameMessage.PlayerId = player.Id;
-                    root.GetComponent<ActorSenderComponent>().Send(roomActorId, frameMessage);
-                    break;
-                }
-                case IActorRoom actorRoom:
-                {
-                    Player player = session.GetComponent<SessionPlayerComponent>().Player;
-                    ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
-                    actorRoom.PlayerId = player.Id;
-                    root.GetComponent<ActorSenderComponent>().Send(roomActorId, actorRoom);
-                    break;
-                }
+                // case FrameMessage frameMessage:
+                // {
+                //     Player player = session.GetComponent<SessionPlayerComponent>().Player;
+                //     ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
+                //     frameMessage.PlayerId = player.Id;
+                //     root.GetComponent<ActorSenderComponent>().Send(roomActorId, frameMessage);
+                //     break;
+                // }
+                // case IActorRoom actorRoom:
+                // {
+                //     Player player = session.GetComponent<SessionPlayerComponent>().Player;
+                //     ActorId roomActorId = player.GetComponent<PlayerRoomComponent>().RoomActorId;
+                //     actorRoom.PlayerId = player.Id;
+                //     root.GetComponent<ActorSenderComponent>().Send(roomActorId, actorRoom);
+                //     break;
+                // }
                 case IActorLocationMessage actorLocationMessage:
                 {
                     long unitId = session.GetComponent<SessionPlayerComponent>().Player.Id;

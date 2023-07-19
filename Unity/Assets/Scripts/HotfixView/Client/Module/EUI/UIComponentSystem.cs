@@ -5,23 +5,6 @@ using ET.Client;
 
 namespace ET.Client
 {
-    /*[ObjectSystem]
-    public class UIComponentAwakeSystem : AwakeSystem<UIComponent>
-    {
-        protected override void Awake(UIComponent self)
-        {
-            self.Awake();
-        }
-    }
-    
-    [ObjectSystem]
-    public class UIComponentDestroySystem : DestroySystem<UIComponent>
-    {
-        protected override void Destroy(UIComponent self)
-        {
-            self.Destroy();
-        }
-    }*/
 
     [EntitySystemOf(typeof(UIComponent))]
     [FriendOf(typeof(WindowCoreData))]
@@ -344,7 +327,8 @@ namespace ET.Client
             CoroutineLock coroutineLock = null;
             try
             {
-                coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoadUIBaseWindows, (int)id);
+                // coroutineLock = await CoroutineLockComponent.Instance.Wait(CoroutineLockType.LoadUIBaseWindows, (int)id);
+                coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.LoadUIBaseWindows, (int)id);
                 UIBaseWindow baseWindow = self.GetUIBaseWindow(id);
                 if (null == baseWindow)
                 {

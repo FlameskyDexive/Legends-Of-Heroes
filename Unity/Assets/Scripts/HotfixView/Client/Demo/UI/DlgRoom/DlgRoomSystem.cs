@@ -57,18 +57,18 @@ namespace ET.Client
 
 		public static void ShowWindow(this DlgRoom self, ShowWindowDataBase contextData = null)
 		{
-            LobbyHelper.JoinOrCreateRoom(self.DomainScene()).Coroutine();
+            // LobbyHelper.JoinOrCreateRoom(self.DomainScene()).Coroutine();
 
             self.RefreshRoomInfo();
         }
 
         public static void OnScrollItemRefreshHandler(this DlgRoom self, Transform transform, int index)
         {
-            Scroll_Item_role itemRole = self.ScrollItemRoles[index].BindTrans(transform);
-            PlayerInfoRoom playerInfo = self.ClientScene().GetComponent<RoomComponent>().PlayerInfos[index];
-            //
-            itemRole.E_RoleNameText.text = playerInfo.PlayerName;
-            itemRole.E_AvatarImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{playerInfo.AvatarIndex}");
+            // Scroll_Item_role itemRole = self.ScrollItemRoles[index].BindTrans(transform);
+            // PlayerInfoRoom playerInfo = self.ClientScene().GetComponent<RoomComponent>().PlayerInfos[index];
+            // //
+            // itemRole.E_RoleNameText.text = playerInfo.PlayerName;
+            // itemRole.E_AvatarImage.sprite = ResComponent.Instance.LoadAsset<Sprite>($"Avatar{playerInfo.AvatarIndex}");
 
         }
 
@@ -112,9 +112,9 @@ namespace ET.Client
             for (int i = 5; i > 0; i--)
             {
                 self.View.ECountDownText.text = i.ToString();
-                await TimerComponent.Instance.WaitAsync(1000);
+                await self.Fiber().TimerComponent.WaitAsync(1000);
             }
-            await TimerComponent.Instance.WaitAsync(500);
+            await self.Fiber().TimerComponent.WaitAsync(500);
             self.Root().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Room);
             self.Root().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Lobby);
         }

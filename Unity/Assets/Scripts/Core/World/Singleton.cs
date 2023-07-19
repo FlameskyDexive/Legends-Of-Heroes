@@ -75,7 +75,7 @@ namespace ET
                     return instance;
                 }
             }
-            private set
+            set
             {
                 lock (lockObj)
                 {

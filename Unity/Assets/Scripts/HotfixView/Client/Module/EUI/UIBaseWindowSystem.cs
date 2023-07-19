@@ -2,21 +2,17 @@
 
 namespace ET.Client
 {
-    
-    [ObjectSystem]
-    public class UIBaseWindowAwakeSystem : AwakeSystem<UIBaseWindow>
+    [EntitySystemOf(typeof(UIBaseWindow))]
+    [FriendOf(typeof(UIBaseWindow))]
+    public  static class UIBaseWindowSystem  
     {
-        protected override void Awake(UIBaseWindow self)
+        public static void Awake(this UIBaseWindow self)
         {
             self.WindowData = self.AddChild<WindowCoreData>();
             self.IsInStackQueue = false;
+            
         }
-    }
-    
-    [ObjectSystem]
-    public class UIBaseWindowDestroySystem : DestroySystem<UIBaseWindow>
-    {
-        protected override void Destroy(UIBaseWindow self)
+        public static void Destroy(this UIBaseWindow self)
         {
             self.WindowData?.Dispose();
             self.WindowID = WindowID.WindowID_Invaild;
@@ -27,12 +23,6 @@ namespace ET.Client
                 self.UIPrefabGameObject = null;
             }
         }
-    }
-    
-    
-    
-    public  static class UIBaseWindowSystem  
-    {
         public static void SetRoot(this UIBaseWindow self, Transform rootTransform)
         {
             if(self.uiTransform == null)

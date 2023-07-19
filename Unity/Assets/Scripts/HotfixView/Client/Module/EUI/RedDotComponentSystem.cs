@@ -3,19 +3,11 @@ using UnityEngine;
 
 namespace ET
 {
-    [ObjectSystem]
-    public class RedDotComponentAwakeSystem: AwakeSystem<RedDotComponent>
-    {
-        protected override void Awake(RedDotComponent self)
-        {
-           
-        }
-    }
 
-    [ObjectSystem]
-    public class RedDotComponentDestroySystem: DestroySystem<RedDotComponent>
+    [FriendOf(typeof(RedDotComponent))]
+    public static class RedDotComponentSystem
     {
-        protected override void Destroy(RedDotComponent self)
+        public static void Destroy(this RedDotComponent self)
         {
             foreach (var List in self.RedDotNodeParentsDict.Values)
             {
@@ -28,11 +20,6 @@ namespace ET
             self.RedDotNodeNeedShowSet.Clear();
             self.RetainViewCount.Clear();
         }
-    }
-
-    [FriendOf(typeof(RedDotComponent))]
-    public static class RedDotComponentSystem
-    {
         public static void AddRedDotNode(this RedDotComponent self, string parent, string target, bool isNeedShowNum)
         {
             if (string.IsNullOrEmpty(target))

@@ -2,32 +2,19 @@
 
 namespace ET.Client
 {
-    [ObjectSystem]
-    public class UIEventComponentAwakeSystem : AwakeSystem<UIEventComponent>
+    [EntitySystemOf(typeof(UIEventComponent))]
+    [FriendOf(typeof(UIEventComponent))]
+    public static class UIEventComponentSystem
     {
-        protected override void Awake(UIEventComponent self)
-        {
-            UIEventComponent.Instance = self;
-            self.Awake();
-        }
-    }
-    
-    [ObjectSystem]
-    public class UIEventComponentDestroySystem : DestroySystem<UIEventComponent>
-    {
-        protected override void Destroy(UIEventComponent self)
+        public static void Destroy(this UIEventComponent self)
         {
             self.UIEventHandlers.Clear();
             self.IsClicked = false;
             UIEventComponent.Instance = null;
         }
-    }
-    
-    [FriendOf(typeof(UIEventComponent))]
-    public static class UIEventComponentSystem
-    {
         public static void Awake(this UIEventComponent self)
         {
+            UIEventComponent.Instance = self;
             self.UIEventHandlers.Clear();
             foreach (Type v in EventSystem.Instance.GetTypes(typeof (AUIEventAttribute)))
             {

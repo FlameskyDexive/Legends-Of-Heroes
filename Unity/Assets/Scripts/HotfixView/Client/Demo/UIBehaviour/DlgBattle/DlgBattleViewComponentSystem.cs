@@ -3,20 +3,15 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET.Client
 {
-	[ObjectSystem]
-	public class DlgBattleViewComponentAwakeSystem : AwakeSystem<DlgBattleViewComponent> 
+	[FriendOf(typeof(DlgBattleViewComponent))]
+	[EntitySystemOf(typeof(DlgBattleViewComponent))]
+	public static class DlgBattleViewComponentSystem
 	{
-		protected override void Awake(DlgBattleViewComponent self)
+		public static void Awake(this DlgBattleViewComponent self)
 		{
 			self.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;
 		}
-	}
-
-
-	[ObjectSystem]
-	public class DlgBattleViewComponentDestroySystem : DestroySystem<DlgBattleViewComponent> 
-	{
-		protected override void Destroy(DlgBattleViewComponent self)
+		public static void Destroy(this DlgBattleViewComponent self)
 		{
 			self.DestroyWidget();
 		}

@@ -2,33 +2,19 @@
 
 namespace ET
 {
-    
-    [ObjectSystem]
-    public class UIPathComponentAwakeSystem : AwakeSystem<UIPathComponent>
+    [FriendOf(typeof(UIPathComponent))]
+    [EntitySystemOf(typeof(UIPathComponent))]
+    public static class UIPathComponentSystem
     {
-        protected override void Awake(UIPathComponent self)
-        {
-            UIPathComponent.Instance = self;
-            self.Awake();
-        }
-    }
-    
-    [ObjectSystem]
-    public class UIPathComponentDestroySystem : DestroySystem<UIPathComponent>
-    {
-        protected override void Destroy(UIPathComponent self)
+        public static void Destroy(this UIPathComponent self)
         {
             self.WindowPrefabPath.Clear();
             self.WindowTypeIdDict.Clear();
-            UIPathComponent.Instance = null;
+            UIPathComponent.Instance = null; 
         }
-    }
-    
-    [FriendOf(typeof(UIPathComponent))]
-    public static class UIPathComponentSystem
-    {
         public static void Awake(this UIPathComponent self)
         {
+            UIPathComponent.Instance = self;
             foreach (WindowID windowID in Enum.GetValues(typeof(WindowID)))
             {
                 string dlgName = "Dlg" + windowID.ToString().Split('_')[1];

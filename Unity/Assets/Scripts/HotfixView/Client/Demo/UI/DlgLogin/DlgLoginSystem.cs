@@ -30,12 +30,12 @@ namespace ET.Client
         private static async ETTask Login(this DlgLogin self)
         {
             int res = await LoginHelper.Login(
-                self.DomainScene(),
+                self.Root(),
                 self.View.E_AccountInputField.GetComponent<InputField>().text,
                 self.View.E_PasswordInputField.GetComponent<InputField>().text);
             if (res == ErrorCode.ERR_Success)
             {
-                self.DomainScene().GetComponent<NetworkCheckComponent>()?.StartCheck();
+                // self.Root().GetComponent<NetworkCheckComponent>()?.StartCheck();
             }
 
         }

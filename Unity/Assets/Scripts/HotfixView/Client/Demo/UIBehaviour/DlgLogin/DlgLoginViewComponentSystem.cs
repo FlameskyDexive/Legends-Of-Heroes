@@ -3,20 +3,16 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET.Client
 {
-	[ObjectSystem]
-	public class DlgLoginViewComponentAwakeSystem : AwakeSystem<DlgLoginViewComponent> 
+	
+	[FriendOf(typeof(DlgLoginViewComponent))]
+	[EntitySystemOf(typeof(DlgLoginViewComponent))]
+	public static class DlgLoginViewComponentSystem
 	{
-		protected override void Awake(DlgLoginViewComponent self)
+		public static void Awake(this DlgLoginViewComponent self)
 		{
 			self.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;
 		}
-	}
-
-
-	[ObjectSystem]
-	public class DlgLoginViewComponentDestroySystem : DestroySystem<DlgLoginViewComponent> 
-	{
-		protected override void Destroy(DlgLoginViewComponent self)
+		public static void Destroy(this DlgLoginViewComponent self)
 		{
 			self.DestroyWidget();
 		}
