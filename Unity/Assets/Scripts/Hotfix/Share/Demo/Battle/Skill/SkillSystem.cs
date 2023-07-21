@@ -3,21 +3,12 @@ using System.Collections.Generic;
 
 namespace ET
 {
+    [EntitySystemOf(typeof(Skill))]
     [FriendOf(typeof(Skill))]
-    public static class SkillSystem
+    public static partial class SkillSystem
     {
-        /*[ObjectSystem]
-        public class SkillEntityAwakeSystem : AwakeSystem<Skill, int, int>
-        {
-            protected override void Awake(Skill self, int skillId, int skillLevel)
-            {
-                self.SkillId = skillId;
-                self.SkillLevel = skillLevel;
-                self.CD = 1000;
-                self.AddComponent<SkillTimelineComponent,int, int>(skillId, skillLevel);
-            }
-        }*/
 
+        [EntitySystem]
         public static void Awake(this Skill self, int skillId, int skillLevel)
         {
             self.SkillId = skillId;
@@ -25,6 +16,7 @@ namespace ET
             self.CD = 1000;
             self.AddComponent<SkillTimelineComponent,int, int>(skillId, skillLevel);
         }
+        [EntitySystem]
         public static void Destroy(this Skill self)
         {
             

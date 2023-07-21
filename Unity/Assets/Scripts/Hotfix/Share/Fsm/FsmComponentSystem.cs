@@ -3,15 +3,17 @@ using System;
 namespace ET
 {
 
+    [EntitySystemOf(typeof(FsmComponent))]
     [FriendOf(typeof(FsmComponent))]
     [FriendOf(typeof(FsmDispatcherComponent))]
-    public static class FsmComponentSystem
+    public static partial class FsmComponentSystem
     {
         /// <summary>
         /// 启动状态机
         /// </summary>
         /// <param name="self"></param>
         /// <param name="entryNode">入口节点</param>
+        [EntitySystem]
         public static void Awake(this FsmComponent self, ETTask task)
         {
             self.DoneTask = task;
@@ -20,12 +22,14 @@ namespace ET
         /// <summary>
         /// 更新状态机
         /// </summary>
+        [EntitySystem]
         public static void Update(this FsmComponent self)
         {
             if (self.CurNodeHandler != null)
                 self.CurNodeHandler.OnUpdate(self);
         }
 
+        [EntitySystem]
         public static void Destroy(this FsmComponent self)
         {
             self.NodeHandlers.Clear();

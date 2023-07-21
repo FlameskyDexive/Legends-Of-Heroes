@@ -3,39 +3,12 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    /*[ObjectSystem]
-    public class FsmDispatcherComponentLoadSystem: LoadSystem<FsmDispatcherComponent>
-    {
-        protected override void Load(FsmDispatcherComponent self)
-        {
-            self.Load();
-        }
-    }*/
-    
-    /*[ObjectSystem]
-    public class FsmDispatcherComponentAwakeSystem: AwakeSystem<FsmDispatcherComponent>
-    {
-        protected override void Awake(FsmDispatcherComponent self)
-        {
-            FsmDispatcherComponent.Instance = self;
-            self.Load();
-        }
-    }
-    
-    [ObjectSystem]
-    public class FsmDispatcherComponentDestroySystem: DestroySystem<FsmDispatcherComponent>
-    {
-        protected override void Destroy(FsmDispatcherComponent self)
-        {
-            self.FsmNodeHandlers.Clear();
-            FsmDispatcherComponent.Instance = null;
-        }
-    }*/
-    
+
     [EntitySystemOf(typeof(FsmDispatcherComponent))]
     [FriendOf(typeof(FsmDispatcherComponent))]
-    public static class FsmDispatcherComponentSystem
+    public static partial class FsmDispatcherComponentSystem
     {
+        [EntitySystem]
         public static void Awake(this FsmDispatcherComponent self)
         {
             FsmDispatcherComponent.Instance = self;
@@ -55,6 +28,7 @@ namespace ET
                 self.FsmNodeHandlers.Add(type.Name, aFsmNodeHandler);
             }
         }
+        [EntitySystem]
         public static void Destroy(this FsmDispatcherComponent self)
         {
             self.FsmNodeHandlers.Clear();

@@ -6,33 +6,16 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
-
-    public class DlgBattleAwakeSystem : AwakeSystem<DlgBattle>
-    {
-        protected override void Awake(DlgBattle self)
-        {
-            self.Awake();
-        }
-    }
-    public class DlgBattleUpdateSystem : UpdateSystem<DlgBattle>
-    {
-        protected override void Update(DlgBattle self)
-        {
-            self.Update();
-        }
-    }
-
-    public class DlgBattleDestroySystem : DestroySystem<DlgBattle>
-    {
-        protected override void Destroy(DlgBattle self)
+    [FriendOf(typeof(DlgBattle))]
+    [EntitySystemOf(typeof(DlgBattle))]
+	public static partial class DlgBattleSystem
+	{
+        [EntitySystem]
+        public static void Destroy(this DlgBattle self)
         {
             
         }
-    }
-
-    [FriendOf(typeof(DlgBattle))]
-	public static  class DlgBattleSystem
-	{
+        [EntitySystem]
         public static void Awake(this DlgBattle self)
         {
             // self.RefreshSkillView();
@@ -118,6 +101,7 @@ namespace ET.Client
             self.Root().GetComponent<OperaComponent>()?.OnClickSkill2();
         }
 
+        [EntitySystem]
         public static void Update(this DlgBattle self)
         {
             if (self.Skill1 != null)

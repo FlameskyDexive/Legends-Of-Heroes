@@ -7,27 +7,9 @@ namespace ET
     [EntitySystemOf(typeof(SkillWatcherComponent))]
     [FriendOf(typeof(SkillWatcherComponent))]
     [FriendOf(typeof(SkillEvent))]
-    public static class SkillWatcherComponentSystem
+    public static partial class SkillWatcherComponentSystem
     {
-        /*[ObjectSystem]
-        public class SkillWatcherComponentAwakeSystem : AwakeSystem<SkillWatcherComponent>
-        {
-            protected override void Awake(SkillWatcherComponent self)
-            {
-                SkillWatcherComponent.Instance = self;
-                self.Init();
-            }
-        }
-
-	
-        public class SkillWatcherComponentLoadSystem : LoadSystem<SkillWatcherComponent>
-        {
-            protected override void Load(SkillWatcherComponent self)
-            {
-                self.Init();
-            }
-        }*/
-
+        [EntitySystem]
         private static void Awake(this SkillWatcherComponent self)
         {
             SkillWatcherComponent.Instance = self;

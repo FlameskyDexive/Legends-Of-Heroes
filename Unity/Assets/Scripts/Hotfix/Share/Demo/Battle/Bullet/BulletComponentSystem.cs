@@ -23,13 +23,16 @@ namespace ET
         }
     }
 
+    [EntitySystemOf(typeof(BulletComponent))]
     [FriendOf(typeof(BulletComponent))]
-    public static class BulletComponentSystem
+    public static partial class BulletComponentSystem
     {
+        [EntitySystem]
         public static void Destroy(this BulletComponent self)
         {
             self.Fiber().TimerComponent.Remove(ref self.Timer);
         }
+        [EntitySystem]
         public static void Awake(this BulletComponent self)
         {
             //测试子弹，生存时间700ms

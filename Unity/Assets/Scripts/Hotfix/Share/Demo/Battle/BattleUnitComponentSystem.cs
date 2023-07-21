@@ -1,47 +1,24 @@
 ﻿using System.Collections.Generic;
 namespace ET
 {
-    /*[ObjectSystem]
-    public class BattleUnitAwakeSystem : AwakeSystem<BattleUnitComponent,List<int>>
-    {
-        protected override void Awake(BattleUnitComponent self,List<int> skills)
-        {
-            self.Awake(skills);
-        }
-    }
-    [ObjectSystem]
-    public class BattleUnitAwakeSystem2 : AwakeSystem<BattleUnitComponent>
-    {
-        protected override void Awake(BattleUnitComponent self)
-        {
-            
-        }
-    }
-    
-    [ObjectSystem]
-    public class BattleUnitDestroySystem : DestroySystem<BattleUnitComponent>
-    {
-        protected override void Destroy(BattleUnitComponent self)
-        {
-            self.IdSkillMap.Clear();
-            self.AbstractTypeSkills.Clear();
-        }
-    }*/
     
     [EntitySystemOf(typeof(BattleUnitComponent))]
     [FriendOf(typeof(BattleUnitComponent))]
-    public static class BattleUnitComponentSystem
+    public static partial class BattleUnitComponentSystem
     {
+        [EntitySystem]
         public static void Awake(this BattleUnitComponent self)
         {
             
         }
+        [EntitySystem]
         public static void Destroy(this BattleUnitComponent self)
         {
             
             self.IdSkillMap.Clear();
             self.AbstractTypeSkills.Clear();
         }
+        [EntitySystem]
         public static void Awake(this BattleUnitComponent self, List<int> skillIds)
         {
             // int activeSkillIndex = 0;

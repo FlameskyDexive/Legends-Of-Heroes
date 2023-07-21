@@ -6,20 +6,10 @@ namespace ET
     [EntitySystemOf(typeof(SkillComponent))]
     [FriendOf(typeof(SkillComponent))]
     [FriendOf(typeof(BattleUnitComponent))]
-    public static class SkillComponentSystem
+    public static partial class SkillComponentSystem
     {
-        /*[ObjectSystem]
-        public class SkillComponentAwakeSystem : AwakeSystem<SkillComponent>
-        {
-            protected override void Awake(SkillComponent self)
-            {
-                self.Awake();
-            }
-        }
-        */
 
-	
-
+        [EntitySystem]
         private static void Awake(this SkillComponent self)
         {
             

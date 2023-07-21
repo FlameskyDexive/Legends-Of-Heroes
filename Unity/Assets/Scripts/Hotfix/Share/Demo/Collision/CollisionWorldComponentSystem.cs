@@ -7,34 +7,11 @@ using World = Box2DSharp.Dynamics.World;
 
 namespace ET
 {
-    /*[ObjectSystem]
-    public class CollisionWorldAwakeSystem : AwakeSystem<CollisionWorldComponent>
-    {
-        protected override void Awake(CollisionWorldComponent self)
-        {
-            self.Awake();
-        }
-    }
-    [ObjectSystem]
-    public class CollisionWorldFixedUpdateSystem : FixedUpdateSystem<CollisionWorldComponent>
-    {
-        protected override void FixedUpdate(CollisionWorldComponent self)
-        {
-         self.FixedUpdate();   
-        }
-    }
-    
-    [ObjectSystem]
-    public class CollisionWorldDestroySystem : DestroySystem<CollisionWorldComponent>
-    {
-        protected override void Destroy(CollisionWorldComponent self)
-        {
-            
-        }
-    }*/
+    [EntitySystemOf(typeof(CollisionWorldComponent))]
     [FriendOf(typeof(CollisionWorldComponent))]
-    public static class CollisionWorldComponentSystem
+    public static partial class CollisionWorldComponentSystem
     {
+        [EntitySystem]
         public static void Awake(this CollisionWorldComponent self)
         {
             self.World = CollisionHelper.CreateWorld(new Vector2(0, 0));
@@ -60,6 +37,7 @@ namespace ET
         /// 每帧驱动更新碰撞检测
         /// </summary>
         /// <param name="self"></param>
+        [EntitySystem]
         public static void FixedUpdate(this CollisionWorldComponent self)
         {
             foreach (var body in self.BodyToDestroy)
@@ -71,6 +49,7 @@ namespace ET
         }
 
 
+        [EntitySystem]
         public static void Destroy(this CollisionWorldComponent self)
         {
             

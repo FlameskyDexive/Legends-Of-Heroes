@@ -8,9 +8,18 @@ using UnityEngine.UI;
 namespace ET.Client
 {
     [FriendOf(typeof(GlobalComponent))]
-	public static  class DlgLobbySystem
+    [EntitySystemOf(typeof(DlgLobby))]
+	public static partial class DlgLobbySystem
 	{
 
+		public static void Awake(this DlgLobby self)
+		{
+			
+		}
+		public static void Destroy(this DlgLobby self)
+		{
+			
+		}
 		public static void RegisterUIEvent(this DlgLobby self)
 		{
 		  self.View.E_EnterMapButton.AddListener(()=>

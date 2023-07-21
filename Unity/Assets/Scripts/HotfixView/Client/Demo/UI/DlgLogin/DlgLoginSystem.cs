@@ -4,10 +4,15 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
-    // [FriendOf(typeof(AccountComponent))]
-    public static class DlgLoginSystem
+    [FriendOf(typeof(DlgLogin))]
+    [EntitySystemOf(typeof(DlgLogin))]
+    public static partial class DlgLoginSystem
     {
 
+        public static void Awake(this DlgLogin self)
+        {
+            
+        }
         public static void RegisterUIEvent(this DlgLogin self)
         {
             self.View.E_LoginButton.AddListener(self.OnLoginClickHandler);

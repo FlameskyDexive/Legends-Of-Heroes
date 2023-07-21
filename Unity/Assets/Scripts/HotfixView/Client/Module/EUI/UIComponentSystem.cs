@@ -11,8 +11,9 @@ namespace ET.Client
     [FriendOf(typeof(UIPathComponent))]
     [FriendOf(typeof(UIBaseWindow))]
     [FriendOf(typeof(UIComponent))]
-    public static class UIComponentSystem
+    public static partial class UIComponentSystem
     {
+        [EntitySystem]
         public static void Awake(this UIComponent self)
         {
             self.IsPopStackWndStatus = false;
@@ -366,6 +367,7 @@ namespace ET.Client
             Debug.Log("<color=magenta>### 11 current Navigation window </color>" + baseWindow.WindowID.ToString());
         }
         
+        [EntitySystem]
         public static void Destroy(this UIComponent self)
         {
             self.CloseAllWindow();

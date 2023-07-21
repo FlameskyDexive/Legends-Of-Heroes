@@ -9,37 +9,11 @@ using Unity.Mathematics;
 
 namespace ET
 {
-    /*[ObjectSystem]
-    public class CollisionAwakeSystem : AwakeSystem<CollisionComponent>
-    {
-        protected override void Awake(CollisionComponent self)
-        {
-            self.Awake();
-        }
-    }
-    [ObjectSystem]
-    public class CollisionFixedUpdateSystem : FixedUpdateSystem<CollisionComponent>
-    {
-        protected override void FixedUpdate(CollisionComponent self)
-        {
-            self.FixedUpdate();
-        }
-    }
-    
-    [ObjectSystem]
-    public class CollisionDestroySystem : DestroySystem<CollisionComponent>
-    {
-        protected override void Destroy(CollisionComponent self)
-        {
-            
-        }
-    }*/
-    
-    
     [EntitySystemOf(typeof(CollisionComponent))]
     [FriendOf(typeof(CollisionComponent))]
-    public static class CollisionComponentSystem
+    public static partial class CollisionComponentSystem
     {
+        [EntitySystem]
         public static void Awake(this CollisionComponent self)
         {
             self.WorldComponent = self.Root().GetComponent<CollisionWorldComponent>();
@@ -76,6 +50,7 @@ namespace ET
         /// 每帧更新，同步位置、旋转等信息
         /// </summary>
         /// <param name="self"></param>
+        [EntitySystem]
         public static void FixedUpdate(this CollisionComponent self)
         {
             self.SyncColliderBody();
@@ -108,6 +83,7 @@ namespace ET
             self.Body.IsEnabled = state;
         }
 
+        [EntitySystem]
         public static void Destroy(this CollisionComponent self)
         {
             

@@ -4,14 +4,16 @@ namespace ET
 {
     [FriendOf(typeof(UIPathComponent))]
     [EntitySystemOf(typeof(UIPathComponent))]
-    public static class UIPathComponentSystem
+    public static partial class UIPathComponentSystem
     {
+        [EntitySystem]
         public static void Destroy(this UIPathComponent self)
         {
             self.WindowPrefabPath.Clear();
             self.WindowTypeIdDict.Clear();
             UIPathComponent.Instance = null; 
         }
+        [EntitySystem]
         public static void Awake(this UIPathComponent self)
         {
             UIPathComponent.Instance = self;

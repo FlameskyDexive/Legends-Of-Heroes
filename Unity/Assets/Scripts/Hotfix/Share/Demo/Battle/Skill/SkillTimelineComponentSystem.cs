@@ -8,27 +8,10 @@ namespace ET
     [EntitySystemOf(typeof(SkillTimelineComponent))]
     [FriendOf(typeof(SkillTimelineComponent))]
     [FriendOf(typeof(SkillEvent))]
-    public static class SkillTimelineComponentSystem
+    public static partial class SkillTimelineComponentSystem
     {
-        /*[ObjectSystem]
-        public class SkillTimelineComponentAwakeSystem : AwakeSystem<SkillTimelineComponent, int, int>
-        {
-            protected override void Awake(SkillTimelineComponent self, int skillId, int skillLevel)
-            {
-                self.Awake(skillId, skillLevel);
-            }
-        }
-        [ObjectSystem]
-        public class SkillTimelineComponentFixedUpdateSystem : FixedUpdateSystem<SkillTimelineComponent>
-        {
-            protected override void FixedUpdate(SkillTimelineComponent self)
-            {
-                self.FixedUpdate();
-            }
-        }*/
-
-	
-
+        
+        [EntitySystem]
         private static void Awake(this SkillTimelineComponent self, int skillId, int skillLevel)
         {
             //当前测试，一个事件一个字段，可以自己换成二维数组一个字段存多条事件数据
@@ -40,6 +23,7 @@ namespace ET
         /// 固定帧驱动
         /// </summary>
         /// <param name="self"></param>
+        [EntitySystem]
         public static void FixedUpdate(this SkillTimelineComponent self)
         {
             using (ListComponent<long> list = ListComponent<long>.Create())

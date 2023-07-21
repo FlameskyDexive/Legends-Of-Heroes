@@ -7,36 +7,19 @@ using UnityEngine.UI;
 namespace ET.Client
 {
 	[FriendOf(typeof(DlgRoom))]
-	// [FriendOf(typeof(RoomComponent))]
-	public static  class DlgRoomSystem
+	[EntitySystemOf(typeof(DlgRoom))]
+	public static partial class DlgRoomSystem
     {
 
-        public class DlgRoomAwakeSystem : AwakeSystem<DlgRoom>
+        public static void Awake(this DlgRoom self)
         {
-            protected override void Awake(DlgRoom self)
-            {
-                // self.Awake();
-            }
-        }
-        public class DlgRoomUpdateSystem : UpdateSystem<DlgRoom>
-        {
-            protected override void Update(DlgRoom self)
-            {
-                // if (Time.frameCount % 3 == 0)
-                // self.Tick();
-
-                self.Update();
-            }
+            
         }
 
-        public class DlgRoomDestroySystem : DestroySystem<DlgRoom>
+        public static void Destroy(this DlgRoom self)
         {
-            protected override void Destroy(DlgRoom self)
-            {
-
-            }
+            
         }
-
         public static void RegisterUIEvent(this DlgRoom self)
         {
             self.View.E_ConfirmButton.AddListener(() =>

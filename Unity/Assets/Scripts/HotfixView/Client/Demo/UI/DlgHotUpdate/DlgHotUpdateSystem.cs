@@ -31,9 +31,14 @@ namespace ET.Client
     }
 
     [FriendOf(typeof(DlgHotUpdate))]
-	public static  class DlgHotUpdateSystem
+    [EntitySystemOf(typeof(DlgHotUpdate))]
+	public static partial class DlgHotUpdateSystem
 	{
 
+		public static void Awake(this DlgHotUpdate self)
+		{
+		 
+		}
 		public static void RegisterUIEvent(this DlgHotUpdate self)
 		{
 		 
