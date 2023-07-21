@@ -2,16 +2,18 @@
 
 namespace ET.Client
 {
-    [EntitySystemOf(typeof(UIEventComponent))]
-    [FriendOf(typeof(UIEventComponent))]
+    // [EntitySystemOf(typeof(UIEventComponent))]
+    // [FriendOf(typeof(UIEventComponent))]
     public static class UIEventComponentSystem
     {
-        public static void Destroy(this UIEventComponent self)
+        // [EntitySystem]
+        /*public static void Destroy(this UIEventComponent self)
         {
             self.UIEventHandlers.Clear();
             self.IsClicked = false;
             UIEventComponent.Instance = null;
-        }
+        }*/
+        /*[EntitySystem]
         public static void Awake(this UIEventComponent self)
         {
             UIEventComponent.Instance = self;
@@ -21,9 +23,9 @@ namespace ET.Client
                 AUIEventAttribute attr = v.GetCustomAttributes(typeof (AUIEventAttribute), false)[0] as AUIEventAttribute;
                 self.UIEventHandlers.Add(attr.WindowID, Activator.CreateInstance(v) as IAUIEventHandler);
             }
-        }
+        }*/
         
-        public static IAUIEventHandler GetUIEventHandler(this UIEventComponent self,WindowID windowID)
+        /*public static IAUIEventHandler GetUIEventHandler(this UIEventComponent self,WindowID windowID)
         {
             if (self.UIEventHandlers.TryGetValue(windowID, out IAUIEventHandler handler))
             {
@@ -36,7 +38,7 @@ namespace ET.Client
         public static void SetUIClicked(this UIEventComponent self, bool isClicked)
         {
             self.IsClicked = isClicked;
-        }
+        }*/
         
     }
 }

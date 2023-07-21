@@ -4,14 +4,16 @@ namespace ET.Client
 {
     [EntitySystemOf(typeof(UIBaseWindow))]
     [FriendOf(typeof(UIBaseWindow))]
-    public  static class UIBaseWindowSystem  
+    public static partial class UIBaseWindowSystem  
     {
+        [EntitySystem]
         public static void Awake(this UIBaseWindow self)
         {
             self.WindowData = self.AddChild<WindowCoreData>();
             self.IsInStackQueue = false;
             
         }
+        [EntitySystem]
         public static void Destroy(this UIBaseWindow self)
         {
             self.WindowData?.Dispose();

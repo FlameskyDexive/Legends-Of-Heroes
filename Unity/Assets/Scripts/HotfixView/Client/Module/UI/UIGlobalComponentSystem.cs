@@ -19,7 +19,7 @@ namespace ET.Client
             self.UILayers.Add((int)UILayer.High, referenceCollector.Get<GameObject>(UILayer.High.ToString()).transform);
         }
 
-        public static async ETTask<UI> OnCreate(this UIGlobalComponent self, UIComponent uiComponent, string uiType, UILayer uiLayer)
+        /*public static async ETTask<UI> OnCreate(this UIGlobalComponent self, UIComponent uiComponent, string uiType, UILayer uiLayer)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace ET.Client
             {
                 throw new Exception($"on create ui error: {uiType}", e);
             }
-        }
+        }*/
 
         public static Transform GetLayer(this UIGlobalComponent self, int layer)
         {
@@ -39,14 +39,14 @@ namespace ET.Client
 
         public static void OnRemove(this UIGlobalComponent self, UIComponent uiComponent, string uiType)
         {
-            try
+            /*try
             {
                 UIEventComponent.Instance.UIEvents[uiType].OnRemove(uiComponent);
             }
             catch (Exception e)
             {
                 throw new Exception($"on remove ui error: {uiType}", e);
-            }
+            }*/
         }
     }
 }
