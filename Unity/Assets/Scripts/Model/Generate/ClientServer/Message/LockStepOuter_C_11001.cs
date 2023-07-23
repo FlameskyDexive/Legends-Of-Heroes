@@ -87,7 +87,7 @@ namespace ET
 // 客户端通知房间切换场景完成
 	[Message(LockStepOuter.C2Room_ChangeSceneFinish)]
 	[MemoryPackable]
-	public partial class C2Room_ChangeSceneFinish: MessageObject, IActorRoom
+	public partial class C2Room_ChangeSceneFinish: MessageObject/*, IActorRoom*/
 	{
 		public static C2Room_ChangeSceneFinish Create(bool isFromPool = true) 
 		{ 
@@ -179,15 +179,15 @@ namespace ET
 		[MemoryPackOrder(1)]
 		public long PlayerId { get; set; }
 
-		[MemoryPackOrder(2)]
-		public LSInput Input { get; set; }
+		/*[MemoryPackOrder(2)]
+		public LSInput Input { get; set; }*/
 
 		public override void Dispose() 
 		{
 			if (!this.IsFromPool) return;
 			this.Frame = default;
 			this.PlayerId = default;
-			this.Input = default;
+			// this.Input = default;
 			
 			ObjectPool.Instance.Recycle(this); 
 		}
@@ -203,16 +203,16 @@ namespace ET
 			return !isFromPool? new OneFrameInputs() : ObjectPool.Instance.Fetch(typeof(OneFrameInputs)) as OneFrameInputs; 
 		}
 
-		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
-		[MemoryPackOrder(1)]
-		public Dictionary<long, LSInput> Inputs { get; set; } = new();
-		public override void Dispose() 
-		{
-			if (!this.IsFromPool) return;
-			this.Inputs.Clear();
-			
-			ObjectPool.Instance.Recycle(this); 
-		}
+		// [MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
+		// [MemoryPackOrder(1)]
+		// public Dictionary<long, LSInput> Inputs { get; set; } = new();
+		// public override void Dispose() 
+		// {
+		// 	if (!this.IsFromPool) return;
+		// 	this.Inputs.Clear();
+		// 	
+		// 	ObjectPool.Instance.Recycle(this); 
+		// }
 
 	}
 
@@ -240,7 +240,7 @@ namespace ET
 
 	[Message(LockStepOuter.C2Room_CheckHash)]
 	[MemoryPackable]
-	public partial class C2Room_CheckHash: MessageObject, IActorRoom
+	public partial class C2Room_CheckHash: MessageObject/*, IActorRoom*/
 	{
 		public static C2Room_CheckHash Create(bool isFromPool = true) 
 		{ 

@@ -73,7 +73,7 @@ public partial class UICodeSpawner
     static void SpawnCodeForDlg(GameObject gameObject)
     {
         string strDlgName  = gameObject.name;
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UI/" + strDlgName ;
+        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UI/" + strDlgName ;
         
         
         if ( !System.IO.Directory.Exists(strFilePath) )
@@ -81,7 +81,7 @@ public partial class UICodeSpawner
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
         
-	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UI/" + strDlgName + "/" + strDlgName + "System.cs";
+	    strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UI/" + strDlgName + "/" + strDlgName + "System.cs";
         if(System.IO.File.Exists(strFilePath))
         {
             Debug.LogError("已存在 " + strDlgName + "System.cs,将不会再次生成。");
@@ -100,10 +100,18 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("{");
         
         strBuilder.AppendFormat("\t[FriendOf(typeof({0}))]\r\n", strDlgName);
+        strBuilder.AppendFormat("\t[EntitySystemOf(typeof({0}))]\r\n", strDlgName);
        
-        strBuilder.AppendFormat("\tpublic static  class {0}\r\n", strDlgName + "System");
+        strBuilder.AppendFormat("\tpublic static partial class {0}\r\n", strDlgName + "System");
           strBuilder.AppendLine("\t{");
           strBuilder.AppendLine("");
+
+
+        strBuilder.AppendFormat("\t\tpublic static void Awake(this {0} self)\n",strDlgName)
+               .AppendLine("\t\t{")
+               .AppendLine("\t\t ")
+               .AppendLine("\t\t}")
+               .AppendLine();
 
 
         strBuilder.AppendFormat("\t\tpublic static void RegisterUIEvent(this {0} self)\n",strDlgName)
@@ -133,7 +141,7 @@ public partial class UICodeSpawner
 	static void SpawnCodeForDlgEventHandle(GameObject gameObject)
     {
         string strDlgName = gameObject.name;
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UI/" + strDlgName + "/Event" ;
+        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UI/" + strDlgName + "/Event" ;
         
         
         if ( !System.IO.Directory.Exists(strFilePath) )
@@ -141,7 +149,7 @@ public partial class UICodeSpawner
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
         
-	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UI/" + strDlgName + "/Event/" + strDlgName + "EventHandler.cs";
+	    strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UI/" + strDlgName + "/Event/" + strDlgName + "EventHandler.cs";
         if(System.IO.File.Exists(strFilePath))
         {
 	        Debug.LogError("已存在 " + strDlgName + ".cs,将不会再次生成。");
@@ -219,7 +227,7 @@ public partial class UICodeSpawner
 	static void SpawnCodeForDlgModel(GameObject gameObject)
     {
         string strDlgName = gameObject.name;
-        string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UI/" + strDlgName  ;
+        string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UI/" + strDlgName  ;
         
         
         if ( !System.IO.Directory.Exists(strFilePath) )
@@ -227,7 +235,7 @@ public partial class UICodeSpawner
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
         
-	    strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UI/" + strDlgName  + "/" + strDlgName  + ".cs";
+	    strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UI/" + strDlgName  + "/" + strDlgName  + ".cs";
         if(System.IO.File.Exists(strFilePath))
         {
 	        Debug.LogError("已存在 " + strDlgName + ".cs,将不会再次生成。");
@@ -266,13 +274,13 @@ public partial class UICodeSpawner
         string strDlgName = gameObject.name ;
         string strDlgComponentName =  gameObject.name + "ViewComponent";
 
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UIBehaviour/" + strDlgName;
+        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIBehaviour/" + strDlgName;
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
-	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/GamePlay/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + "System.cs";
+	    strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + "System.cs";
 	    
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
@@ -283,24 +291,30 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("using UnityEngine.UI;");
         strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
-        strBuilder.AppendLine("\t[ObjectSystem]");
-        strBuilder.AppendFormat("\tpublic class {0}AwakeSystem : AwakeSystem<{1}> \r\n", strDlgComponentName, strDlgComponentName);
+
+        strBuilder.AppendFormat("\t[FriendOf(typeof({0}))]\r\n", strDlgComponentName);
+        strBuilder.AppendFormat("\t[EntitySystemOf(typeof({0}))]\r\n", strDlgComponentName);
+
+        strBuilder.AppendFormat("\tpublic static partial class {0}\r\n", strDlgComponentName + "System");
         strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tprotected override void Awake({0} self)\n", strDlgComponentName);
-        strBuilder.AppendLine("\t\t{");
-        strBuilder.AppendLine("\t\t\tself.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;");
-        strBuilder.AppendLine("\t\t}");
-        strBuilder.AppendLine("\t}");
-        strBuilder.AppendLine("\n");
+        strBuilder.AppendLine("");
+
+
+        strBuilder.AppendFormat("\t\tpublic static void Awake(this {0} self)\n", strDlgComponentName)
+                .AppendLine("\t\t{")
+                .AppendLine("\t\t ")
+                .AppendLine("\t\t\tself.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;")
+                .AppendLine("\t\t}")
+                .AppendLine();
+
+
+        strBuilder.AppendFormat("\t\tpublic static void Destroy(this {0} self)\n", strDlgComponentName)
+                .AppendLine("\t\t{")
+                .AppendLine("\t\t ")
+                .AppendFormat("\t\t\tself.DestroyWidget();\r\n")
+                .AppendLine("\t\t}")
+                .AppendLine();
         
-       
-        strBuilder.AppendLine("\t[ObjectSystem]");
-        strBuilder.AppendFormat("\tpublic class {0}DestroySystem : DestroySystem<{1}> \r\n", strDlgComponentName, strDlgComponentName);
-        strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tprotected override void Destroy({0} self)", strDlgComponentName);
-        strBuilder.AppendLine("\n\t\t{");
-        strBuilder.AppendFormat("\t\t\tself.DestroyWidget();\r\n");
-        strBuilder.AppendLine("\t\t}");
         strBuilder.AppendLine("\t}");
         strBuilder.AppendLine("}");
         sw.Write(strBuilder);
@@ -318,12 +332,12 @@ public partial class UICodeSpawner
 	    string strDlgComponentName =  gameObject.name + "ViewComponent";
 
 
-	    string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UIBehaviour/" + strDlgName;
+	    string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIBehaviour/" + strDlgName;
 	    if ( !System.IO.Directory.Exists(strFilePath) )
 	    {
 		    System.IO.Directory.CreateDirectory(strFilePath);
 	    }
-	    strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/GamePlay/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + ".cs";
+	    strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + ".cs";
 	    StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 	    StringBuilder strBuilder = new StringBuilder();
 	    strBuilder.AppendLine()

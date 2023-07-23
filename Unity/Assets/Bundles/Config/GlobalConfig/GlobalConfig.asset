@@ -15,3 +15,5 @@ MonoBehaviour:
   CodeMode: 1
   BuildType: 1
   AppType: 8
+  ModelVersion: 1
+  HotFixVersion: 1

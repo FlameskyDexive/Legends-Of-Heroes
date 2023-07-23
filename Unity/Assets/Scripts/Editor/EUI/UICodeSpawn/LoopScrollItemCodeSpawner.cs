@@ -47,17 +47,24 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("using UnityEngine.UI;");
         strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
-        
-        
-        strBuilder.AppendLine("\t[ObjectSystem]");
-        strBuilder.AppendFormat("\tpublic class Scroll_{0}DestroySystem : DestroySystem<Scroll_{1}> \r\n", strDlgName, strDlgName);
-        strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tprotected override void Destroy( Scroll_{0} self )", strDlgName);
-        strBuilder.AppendLine("\n\t\t{");
-        
-        strBuilder.AppendFormat("\t\t\tself.DestroyWidget();\r\n");
 
-        strBuilder.AppendLine("\t\t}");
+        
+        strBuilder.AppendFormat("\t[FriendOf(typeof({0}))]\r\n", strDlgName);
+        strBuilder.AppendFormat("\t[EntitySystemOf(typeof({0}))]\r\n", strDlgName);
+
+        strBuilder.AppendFormat("\tpublic static partial class {0}\r\n", strDlgName + "System");
+        strBuilder.AppendLine("\t{");
+        strBuilder.AppendLine("");
+        
+
+        strBuilder.AppendFormat("\t\tpublic static void Destroy(this {0} self)\n", strDlgName)
+                .AppendLine("\t\t{")
+                .AppendLine("\t\t ")
+                .AppendFormat("\t\t\tself.DestroyWidget();\r\n")
+                .AppendLine("\t\t}")
+                .AppendLine();
+
+        
         strBuilder.AppendLine("\t}");
         strBuilder.AppendLine("}");
         
