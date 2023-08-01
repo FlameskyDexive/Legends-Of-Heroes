@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
+using UnityEditor.PackageManager.UI;
 
 namespace ET.Client
 {
@@ -8,24 +10,46 @@ namespace ET.Client
 	/// </summary>
 	[Code]
 	public class UIEventComponent: Singleton<UIEventComponent>, ISingletonAwake
-	{
-		public Dictionary<string, AUIEvent> UIEvents { get; } = new();
+    {
+        public readonly Dictionary<WindowID, IAUIEventHandler> UIEventHandlers = new Dictionary<WindowID, IAUIEventHandler>();
+        // public Dictionary<string, AUIEvent> UIEvents { get; } = new();
+        public bool IsClicked { get; set; }
 		
         public void Awake()
         {
-            var uiEvents = CodeTypes.Instance.GetTypes(typeof (UIEventAttribute));
+            var uiEvents = CodeTypes.Instance.GetTypes(typeof (AUIEventAttribute));
             foreach (Type type in uiEvents)
             {
-                object[] attrs = type.GetCustomAttributes(typeof (UIEventAttribute), false);
+                object[] attrs = type.GetCustomAttributes(typeof (AUIEventAttribute), false);
                 if (attrs.Length == 0)
                 {
                     continue;
                 }
 
-                UIEventAttribute uiEventAttribute = attrs[0] as UIEventAttribute;
-                AUIEvent aUIEvent = Activator.CreateInstance(type) as AUIEvent;
-                this.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
+                AUIEventAttribute uiEventAttribute = attrs[0] as AUIEventAttribute;
+                IAUIEventHandler aUIEvent = Activator.CreateInstance(type) as IAUIEventHandler;
+                // this.UIEvents.Add(uiEventAttribute.UIType, aUIEvent);
+                this.UIEventHandlers.Add(uiEventAttribute.WindowID, aUIEvent);
             }
         }
-	}
+
+        // public override void Load()
+        // {
+        //     World.Instance.AddSingleton<UIEventComponent>(true);
+        // }
+        public IAUIEventHandler GetUIEventHandler(WindowID windowID)
+        {
+            if (this.UIEventHandlers.TryGetValue(windowID, out IAUIEventHandler handler))
+            {
+                return handler;
+            }
+            Log.Error($"windowId : {windowID} is not have any uiEvent");
+            return null;
+        }
+
+        public void SetUIClicked(bool isClicked)
+        {
+            this.IsClicked = isClicked;
+        }
+    }
 }

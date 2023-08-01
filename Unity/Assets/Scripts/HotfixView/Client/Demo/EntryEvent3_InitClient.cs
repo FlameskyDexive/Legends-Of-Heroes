@@ -8,23 +8,26 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene root, EventType.EntryEvent3 args)
         {
+            World.Instance.AddSingleton<UIEventComponent>();
             root.AddComponent<TimerComponent>();
             root.AddComponent<CoroutineLockComponent>();
             
             GlobalComponent globalComponent = root.AddComponent<GlobalComponent>();
-            root.AddComponent<UIGlobalComponent>();
+            // root.AddComponent<UIGlobalComponent>();
             root.AddComponent<UIComponent>();
-            ResourcesComponent resourcesComponent = root.AddComponent<ResourcesComponent>();
-            root.AddComponent<ResourcesLoaderComponent>();
+            root.AddComponent<UIPathComponent>();
+            // ResourcesComponent resourcesComponent = root.AddComponent<ResourcesComponent>();
+            // root.AddComponent<ResourcesLoaderComponent>();
             root.AddComponent<PlayerComponent>();
             root.AddComponent<CurrentScenesComponent>();
             
-            await resourcesComponent.LoadBundleAsync("unit.unity3d");
+            // await resourcesComponent.LoadBundleAsync("unit.unity3d");
             
             // 根据配置修改掉Main Fiber的SceneType
-            SceneType sceneType = EnumHelper.FromString<SceneType>(globalComponent.GlobalConfig.AppType.ToString());
+            SceneType sceneType = EnumHelper.FromString<SceneType>(GlobalConfig.Instance.AppType.ToString());
             root.SceneType = sceneType;
-            
+
+            await root.GetComponent<UIComponent>().ShowWindowAsync(WindowID.WindowID_Login);
             await EventSystem.Instance.PublishAsync(root, new EventType.AppStartInitFinish());
         }
     }

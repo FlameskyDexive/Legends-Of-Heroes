@@ -21,15 +21,16 @@ namespace ET.Client
 
         public static async ETTask<UI> OnCreate(this UIGlobalComponent self, UIComponent uiComponent, string uiType, UILayer uiLayer)
         {
-            try
-            {
-                UI ui = await UIEventComponent.Instance.UIEvents[uiType].OnCreate(uiComponent, uiLayer);
-                return ui;
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"on create ui error: {uiType}", e);
-            }
+            // try
+            // {
+            //     UI ui = await UIEventComponent.Instance.UIEvents[uiType].OnCreate(uiComponent, uiLayer);
+            //     return ui;
+            // }
+            // catch (Exception e)
+            // {
+            //     throw new Exception($"on create ui error: {uiType}", e);
+            // }
+            return null;
         }
 
         public static Transform GetLayer(this UIGlobalComponent self, int layer)
@@ -41,7 +42,7 @@ namespace ET.Client
         {
             try
             {
-                UIEventComponent.Instance.UIEvents[uiType].OnRemove(uiComponent);
+                // UIEventComponent.Instance.UIEvents[uiType].OnRemove(uiComponent);
             }
             catch (Exception e)
             {

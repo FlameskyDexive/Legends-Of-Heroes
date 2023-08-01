@@ -41,14 +41,15 @@ namespace ET
 
         private void OnEnable()
 		{
-			globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-			
+			// globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig/GlobalConfig.asset");
+
 #if UNITY_ANDROID
 			activePlatform = PlatformType.Android;
 #elif UNITY_IOS
 			activePlatform = PlatformType.IOS;
 #elif UNITY_STANDALONE_WIN
-			activePlatform = PlatformType.Windows;
+            activePlatform = PlatformType.Windows;
 #elif UNITY_STANDALONE_OSX
 			activePlatform = PlatformType.MacOS;
 #elif UNITY_STANDALONE_LINUX
