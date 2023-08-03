@@ -10,7 +10,7 @@ namespace ET.Server
         [EntitySystem]
         private static void Awake(this NetServerComponent self, IPEndPoint address)
         {
-            self.AService = new KService(address, ServiceType.Outer);
+            self.AService = new KService(address, ServiceType.Outer, self.Fiber().Log);
             self.AService.AcceptCallback = self.OnAccept;
             self.AService.ReadCallback = self.OnRead;
             self.AService.ErrorCallback = self.OnError;
@@ -63,9 +63,9 @@ namespace ET.Server
                 return;
             }
             session.LastRecvTime = TimeInfo.Instance.ClientNow();
-            
-            LogMsg.Instance.Debug(message);
-			
+
+            LogMsg.Instance.Debug(self.Fiber(), message);
+
             EventSystem.Instance.Publish(self.Scene(), new NetServerComponentOnRead() {Session = session, Message = message});
         }
     }

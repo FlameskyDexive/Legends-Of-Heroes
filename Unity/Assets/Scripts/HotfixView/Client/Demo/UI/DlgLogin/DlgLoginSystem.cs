@@ -10,7 +10,7 @@ namespace ET.Client
 	[EntitySystemOf(typeof(DlgLogin))]
 	public static partial class DlgLoginSystem
 	{
-
+        [EntitySystem]
 		public static void Awake(this DlgLogin self)
 		{
 		 
