@@ -7,14 +7,15 @@ namespace ET.Client
 	[EntitySystemOf(typeof(DlgLoginViewComponent))]
 	public static partial class DlgLoginViewComponentSystem
 	{
-
+		[EntitySystem]
 		public static void Awake(this DlgLoginViewComponent self)
 		{
 			self.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;
 			Log.Info($"11111:{self.uiTransform?.name}");
 		}
 
-		public static void Destroy(this DlgLoginViewComponent self)
+        [EntitySystem]
+        public static void Destroy(this DlgLoginViewComponent self)
 		{
 		 
 			self.DestroyWidget();

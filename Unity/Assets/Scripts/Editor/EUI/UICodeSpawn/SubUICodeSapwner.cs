@@ -52,14 +52,16 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("");
 
 
-        strBuilder.AppendFormat("\t\tpublic static void Awake(this {0} self)\n", strDlgName)
+        strBuilder.AppendLine("\t\t[EntitySystem]")
+                .AppendFormat("\t\tpublic static void Awake(this {0} self)\n", strDlgName)
                 .AppendLine("\t\t{")
                 .AppendLine("\t\t ")
                 .AppendLine("\t\t\tself.uiTransform = transform;")
                 .AppendLine("\t\t}")
                 .AppendLine();
 
-        strBuilder.AppendFormat("\t\tpublic static void Destroy(this {0} self)\n", strDlgName)
+        strBuilder.AppendLine("\t\t[EntitySystem]")
+                .AppendFormat("\t\tpublic static void Destroy(this {0} self)\n", strDlgName)
                 .AppendLine("\t\t{")
                 .AppendLine("\t\t ")
                 .AppendFormat("\t\t\tself.DestroyWidget();\r\n")

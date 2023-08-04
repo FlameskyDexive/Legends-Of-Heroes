@@ -100,6 +100,19 @@ namespace ET
             RawFileOperationHandle handle = YooAssets.LoadRawFileSync(location);
             return handle.GetRawFileData();
         }
+        
+        public T LoadAsset<T>(string location) where T : UnityEngine.Object
+        {
+            // self.AssetsOperationHandles.TryGetValue(location, out AssetOperationHandle handle);
+            AssetOperationHandle handle;
+            // if (handle == null)
+            {
+                handle = YooAssets.LoadAssetSync<T>(location);
+                // self.AssetsOperationHandles[location] = handle;
+            }
+
+            return handle.AssetObject as T;
+        }
 
         public async ETTask<byte[]> LoadRawFileAsync(string location)
         {

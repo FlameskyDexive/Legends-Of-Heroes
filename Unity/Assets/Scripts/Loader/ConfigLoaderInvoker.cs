@@ -10,7 +10,6 @@ namespace ET.Client
     {
         public override Dictionary<Type, byte[]> Handle(ConfigLoader.GetAllConfigBytes args)
         {
-            args.scene?.AddComponent<ResComponent>();
             Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
             HashSet<Type> configTypes = CodeTypes.Instance.GetTypes(typeof (ConfigAttribute));
             
@@ -60,7 +59,7 @@ namespace ET.Client
                 Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("config.unity3d");
                 foreach (Type type in configTypes)
                 {
-                    TextAsset v = ResComponent.Instance.LoadAsset<TextAsset>(type.Name/*.ToLower()*/) as TextAsset;
+                    TextAsset v = MonoResComponent.Instance.LoadAsset<TextAsset>(type.Name/*.ToLower()*/) as TextAsset;
                     // TextAsset v = dictionary[type.Name] as TextAsset;
                     output[type] = v.bytes;
                 }
