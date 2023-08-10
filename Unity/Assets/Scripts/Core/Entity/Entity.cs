@@ -327,7 +327,7 @@ namespace ET
                         foreach (Entity component in this.componentsDB)
                         {
                             component.IsComponent = true;
-                            this.Components.Add(component.GetType().FullName, component);
+                            this.Components.Add(this.GetLongHashCode(component.GetType()), component);
                             component.parent = this;
                         }
                     }
@@ -410,14 +410,14 @@ namespace ET
         private List<Entity> componentsDB;
 
         [BsonIgnore]
-        private SortedDictionary<string, Entity> components;
+        private SortedDictionary<long, Entity> components;
 
         [BsonIgnore]
-        public SortedDictionary<string, Entity> Components
+        public SortedDictionary<long, Entity> Components
         {
             get
             {
-                return this.components ??= ObjectPool.Instance.Fetch<SortedDictionary<string, Entity>>();
+                return this.components ??= ObjectPool.Instance.Fetch<SortedDictionary<long, Entity>>();
             }
         }
 
@@ -477,7 +477,7 @@ namespace ET
             // 清理Component
             if (this.components != null)
             {
-                foreach (KeyValuePair<string, Entity> kv in this.components)
+                foreach (var kv in this.components)
                 {
                     kv.Value.Dispose();
                 }
@@ -532,7 +532,7 @@ namespace ET
 
         private void AddToComponents(Entity component)
         {
-            this.Components.Add(component.GetType().FullName, component);
+            this.Components.Add(this.GetLongHashCode(component.GetType()), component);
         }
 
         private void RemoveFromComponents(Entity component)
@@ -542,7 +542,7 @@ namespace ET
                 return;
             }
 
-            this.components.Remove(component.GetType().FullName);
+            this.components.Remove(this.GetLongHashCode(component.GetType()));
 
             if (this.components.Count == 0)
             {
@@ -591,8 +591,9 @@ namespace ET
             }
 
             Type type = typeof (K);
-            Entity c = this.GetComponent(type);
-            if (c == null)
+            
+            Entity c;
+            if (!this.components.TryGetValue(this.GetLongHashCode(type), out c))
             {
                 return;
             }
@@ -613,8 +614,8 @@ namespace ET
                 return;
             }
 
-            Entity c = this.GetComponent(component.GetType());
-            if (c == null)
+            Entity c;
+            if (!this.components.TryGetValue(this.GetLongHashCode(component.GetType()), out c))
             {
                 return;
             }
@@ -635,8 +636,8 @@ namespace ET
                 return;
             }
 
-            Entity c = this.GetComponent(type);
-            if (c == null)
+            Entity c;
+            if (!this.components.TryGetValue(this.GetLongHashCode(type), out c))
             {
                 return;
             }
@@ -652,16 +653,16 @@ namespace ET
                 return null;
             }
 
+            // 如果有IGetComponent接口，则触发GetComponentSystem
+            if (this is IGetComponentSys)
+            {
+                EntitySystemSingleton.Instance.GetComponentSys(this, typeof(K));
+            }
+            
             Entity component;
-            if (!this.components.TryGetValue(typeof (K).FullName, out component))
+            if (!this.components.TryGetValue(this.GetLongHashCode(typeof (K)), out component))
             {
                 return default;
-            }
-
-            // 如果有IGetComponent接口，则触发GetComponentSystem
-            if (this is IGetComponent)
-            {
-                EntitySystemSingleton.Instance.GetComponent(this, component);
             }
 
             return (K) component;
@@ -674,16 +675,17 @@ namespace ET
                 return null;
             }
 
+            // 如果有IGetComponent接口，则触发GetComponentSystem
+            // 这个要在tryget之前调用，因为有可能components没有，但是执行GetComponentSystem后又有了
+            if (this is IGetComponentSys)
+            {
+                EntitySystemSingleton.Instance.GetComponentSys(this, type);
+            }
+            
             Entity component;
-            if (!this.components.TryGetValue(type.FullName, out component))
+            if (!this.components.TryGetValue(this.GetLongHashCode(type), out component))
             {
                 return null;
-            }
-
-            // 如果有IGetComponent接口，则触发GetComponentSystem
-            if (this is IGetComponent)
-            {
-                EntitySystemSingleton.Instance.GetComponent(this, component);
             }
 
             return component;
@@ -711,24 +713,19 @@ namespace ET
         public Entity AddComponent(Entity component)
         {
             Type type = component.GetType();
-            if (this.components != null && this.components.ContainsKey(type.FullName))
+            if (this.components != null && this.components.ContainsKey(this.GetLongHashCode(type)))
             {
                 throw new Exception($"entity already has component: {type.FullName}");
             }
 
             component.ComponentParent = this;
 
-            if (this is IAddComponent)
-            {
-                EntitySystemSingleton.Instance.AddComponent(this, component);
-            }
-
             return component;
         }
 
         public Entity AddComponent(Type type, bool isFromPool = false)
         {
-            if (this.components != null && this.components.ContainsKey(type.FullName))
+            if (this.components != null && this.components.ContainsKey(this.GetLongHashCode(type)))
             {
                 throw new Exception($"entity already has component: {type.FullName}");
             }
@@ -739,18 +736,13 @@ namespace ET
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component);
 
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
-
             return component;
         }
 
         public K AddComponentWithId<K>(long id, bool isFromPool = false) where K : Entity, IAwake, new()
         {
             Type type = typeof (K);
-            if (this.components != null && this.components.ContainsKey(type.FullName))
+            if (this.components != null && this.components.ContainsKey(this.GetLongHashCode(type)))
             {
                 throw new Exception($"entity already has component: {type.FullName}");
             }
@@ -761,18 +753,13 @@ namespace ET
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component);
 
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
-
             return component as K;
         }
 
         public K AddComponentWithId<K, P1>(long id, P1 p1, bool isFromPool = false) where K : Entity, IAwake<P1>, new()
         {
             Type type = typeof (K);
-            if (this.components != null && this.components.ContainsKey(type.FullName))
+            if (this.components != null && this.components.ContainsKey(this.GetLongHashCode(type)))
             {
                 throw new Exception($"entity already has component: {type.FullName}");
             }
@@ -783,18 +770,13 @@ namespace ET
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component, p1);
 
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
-
             return component as K;
         }
 
         public K AddComponentWithId<K, P1, P2>(long id, P1 p1, P2 p2, bool isFromPool = false) where K : Entity, IAwake<P1, P2>, new()
         {
             Type type = typeof (K);
-            if (this.components != null && this.components.ContainsKey(type.FullName))
+            if (this.components != null && this.components.ContainsKey(this.GetLongHashCode(type)))
             {
                 throw new Exception($"entity already has component: {type.FullName}");
             }
@@ -805,18 +787,13 @@ namespace ET
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component, p1, p2);
 
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
-
             return component as K;
         }
 
         public K AddComponentWithId<K, P1, P2, P3>(long id, P1 p1, P2 p2, P3 p3, bool isFromPool = false) where K : Entity, IAwake<P1, P2, P3>, new()
         {
             Type type = typeof (K);
-            if (this.components != null && this.components.ContainsKey(type.FullName))
+            if (this.components != null && this.components.ContainsKey(this.GetLongHashCode(type)))
             {
                 throw new Exception($"entity already has component: {type.FullName}");
             }
@@ -826,11 +803,6 @@ namespace ET
             component.ComponentParent = this;
             EntitySystemSingleton entitySystemSingleton = EntitySystemSingleton.Instance;
             entitySystemSingleton.Awake(component, p1, p2, p3);
-
-            if (this is IAddComponent)
-            {
-                entitySystemSingleton.AddComponent(this, component);
-            }
 
             return component as K;
         }
@@ -946,6 +918,11 @@ namespace ET
 
             EntitySystemSingleton.Instance.Awake(component, a, b, c);
             return component;
+        }
+
+        protected virtual long GetLongHashCode(Type type)
+        {
+            return type.TypeHandle.Value.ToInt64();
         }
 
         public override void BeginInit()

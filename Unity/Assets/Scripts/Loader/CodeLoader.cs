@@ -19,8 +19,8 @@ namespace ET
 		{
 			if (!Define.EnableDll)
 			{
-				// GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-				if (GlobalConfig.Instance.CodeMode != CodeMode.ClientServer)
+				GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+				if (globalConfig.CodeMode != CodeMode.ClientServer)
 				{
 					throw new Exception("!ENABLE_CODES mode must use ClientServer code mode!");
 				}
@@ -44,17 +44,15 @@ namespace ET
 				byte[] pdbBytes;
 				if (!Define.IsEditor)
 				{
-					// Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-					// assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
-					// pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
+					Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
+					assBytes = ((TextAsset)dictionary["Model.dll"]).bytes;
+					pdbBytes = ((TextAsset)dictionary["Model.pdb"]).bytes;
+					
+					// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Model.dll，真正打包要还原使用上面注释的代码
+					//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.dll"));
+					//pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.pdb"));
 
-                    // 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Model.dll，真正打包要还原使用上面注释的代码
-                    //assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.dll"));
-                    //pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.pdb"));
-                    assBytes = MonoResComponent.Instance.LoadRawFile($"Model.dll");
-                    pdbBytes = MonoResComponent.Instance.LoadRawFile($"Model.pdb");
-
-                    if (Define.EnableIL2CPP)
+					if (Define.EnableIL2CPP)
 					{
 						HybridCLRHelper.Load();
 					}
@@ -82,16 +80,14 @@ namespace ET
 			byte[] pdbBytes;
 			if (!Define.IsEditor)
 			{
-                // Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
-                // assBytes = ((TextAsset)dictionary["Hotfix.dll"]).bytes;
-                // pdbBytes = ((TextAsset)dictionary["Hotfix.pdb"]).bytes;
-
-                // 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Hotfix.dll，真正打包要还原使用上面注释的代码
-                //assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.dll"));
-                //pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.pdb"));
-                assBytes = MonoResComponent.Instance.LoadRawFile($"Hotfix.dll");
-                pdbBytes = MonoResComponent.Instance.LoadRawFile($"Hotfix.pdb");
-            }
+				Dictionary<string, UnityEngine.Object> dictionary = AssetsBundleHelper.LoadBundle("code.unity3d");
+				assBytes = ((TextAsset)dictionary["Hotfix.dll"]).bytes;
+				pdbBytes = ((TextAsset)dictionary["Hotfix.pdb"]).bytes;
+					
+				// 这里为了方便做测试，直接加载了Unity/Temp/Bin/Debug/Hotfix.dll，真正打包要还原使用上面注释的代码
+				//assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.dll"));
+				//pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.pdb"));
+			}
 			else
 			{
 				assBytes = File.ReadAllBytes(Path.Combine(Define.BuildOutputDir, "Hotfix.dll"));
@@ -108,7 +104,7 @@ namespace ET
 			Assembly hotfixAssembly = this.LoadHotfix();
 
 			CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new []{typeof (World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly});
-			codeTypes.CreateCodeSingleton();
+			codeTypes.CreateCode();
 
 			Log.Debug($"reload dll finish!");
 		}

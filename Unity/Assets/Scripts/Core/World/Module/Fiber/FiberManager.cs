@@ -66,8 +66,11 @@ namespace ET
             try
             {
                 Fiber fiber = new(fiberId, zone, sceneType, name);
-                
-                this.fibers.TryAdd(fiberId, fiber);
+
+                if (!this.fibers.TryAdd(fiberId, fiber))
+                {
+                    throw new Exception($"same fiber already existed, if you remove, please await Remove then Create fiber! {fiberId}");
+                }
                 this.schedulers[(int) schedulerType].Add(fiberId);
                 
                 TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
@@ -101,10 +104,10 @@ namespace ET
             return await this.Create(schedulerType, fiberId, zone, sceneType, name);
         }
         
-        public void Remove(int id)
+        public async Task Remove(int id)
         {
             Fiber fiber = this.Get(id);
-            
+            TaskCompletionSource<bool> tcs = new();
             // 要扔到fiber线程执行，否则会出现线程竞争
             fiber.ThreadSynchronizationContext.Post(() =>
             {
@@ -112,7 +115,9 @@ namespace ET
                 {
                     f.Dispose();
                 }
+                tcs.SetResult(true);
             });
+            await tcs.Task;
         }
 
         // 不允许外部调用，容易出现多线程问题, 只能通过消息通信，不允许直接获取其它Fiber引用

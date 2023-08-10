@@ -124,11 +124,11 @@ namespace ET.Client
             ResourceDownloaderOperation downloader = YooAssets.CreateResourceDownloader(downloadingMaxNum, failedTryAgain);
             if (downloader.TotalDownloadCount == 0)
             {
-                Log.Info("没有发现需要下载的资源");
+                self.Fiber().Info("没有发现需要下载的资源");
             }
             else
             {
-                Log.Info("一共发现了{0}个资源需要更新下载。".Fmt(downloader.TotalDownloadCount));
+                self.Fiber().Info("一共发现了{0}个资源需要更新下载。".Fmt(downloader.TotalDownloadCount));
                 self.Downloader = downloader;
             }
 
@@ -198,7 +198,7 @@ namespace ET.Client
             }
             else
             {
-                Log.Error($"资源{location}不存在");
+                self.Fiber().Error($"资源{location}不存在");
             }
         }
 

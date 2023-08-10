@@ -24,19 +24,19 @@ namespace ET
         {
             if (string.IsNullOrEmpty(target))
             {
-                Log.Error($"target is null");
+                self.Fiber().Error($"target is null");
                 return;
             }
             
             if (string.IsNullOrEmpty(parent))
             {
-                Log.Error($"parent is null");
+                self.Fiber().Error($"parent is null");
                 return;
             }
 
             if (self.ToParentDict.ContainsKey(target))
             {
-                Log.Error($"{target} is already exist!");
+                self.Fiber().Error($"{target} is already exist!");
                 return;
             }
 
@@ -82,7 +82,7 @@ namespace ET
 
             if (!self.IsLeafNode(target))
             {
-                Log.Error("can not remove parent node!");
+                self.Fiber().Error("can not remove parent node!");
                 return ;
             }
 
@@ -105,7 +105,7 @@ namespace ET
         {
             if (!self.RedDotNodeRetainCount.TryGetValue(target, out int retainCount))
             {
-                Log.Error("redDot Node never added :" + target);
+                self.Fiber().Error("redDot Node never added :" + target);
                 return;
             }
 
@@ -141,7 +141,7 @@ namespace ET
         {
             if (!self.IsLeafNode(target))
             {
-                Log.Error("can not hide parent node!"+target);
+                self.Fiber().Error("can not hide parent node!"+target);
                 return false;
             }
 
@@ -153,7 +153,7 @@ namespace ET
         {
             if (!self.IsLeafNode(target))
             {
-                Log.Error("can not show parent node : " + target);
+                self.Fiber().Error("can not show parent node : " + target);
                 return false;
             }
 
@@ -165,13 +165,13 @@ namespace ET
         {
             if (!self.RedDotNodeRetainCount.ContainsKey(target))
             {
-                Log.Error($"redDot logic node {target} is not exist!");
+                self.Fiber().Error($"redDot logic node {target} is not exist!");
                 return;
             }
             
             if (!self.IsLeafNode(target))
             {
-                Log.Error($"redDot logic node {target} is not leaf node!");
+                self.Fiber().Error($"redDot logic node {target} is not leaf node!");
                 return;
             }
 
@@ -179,14 +179,14 @@ namespace ET
             {
                 if (self.RedDotNodeRetainCount[target] == 1)
                 {
-                    Log.Error($"redDot logic node {target} RetainCount is already one!");
+                    self.Fiber().Error($"redDot logic node {target} RetainCount is already one!");
                     return;
                 }
 
                 self.RedDotNodeRetainCount[target] += 1;
                 if (self.RedDotNodeRetainCount[target] != 1)
                 {
-                    Log.Error($"redDot logic node {target} RetainCount is {self.RedDotNodeRetainCount[target]}, number error!");
+                    self.Fiber().Error($"redDot logic node {target} RetainCount is {self.RedDotNodeRetainCount[target]}, number error!");
                     return;
                 }
             }
@@ -194,7 +194,7 @@ namespace ET
             {
                 if (self.RedDotNodeRetainCount[target] != 1)
                 {
-                    Log.Error($"redDot logic node {target} is not show status, RetainCount is {self.RedDotNodeRetainCount[target]}");
+                    self.Fiber().Error($"redDot logic node {target} is not show status, RetainCount is {self.RedDotNodeRetainCount[target]}");
                     return;
                 }
                 self.RedDotNodeRetainCount[target] += -1;
@@ -204,7 +204,7 @@ namespace ET
 
             if ( curr < 0 || curr > 1 )
             {
-                Log.Error("count is error, redDot node is logic error!");
+                self.Fiber().Error("count is error, redDot node is logic error!");
                 return;
             }
             
@@ -250,7 +250,7 @@ namespace ET
         {
             if (!self.IsLeafNode(target))
             {
-                Log.Error("can not refresh parent node view count");
+                self.Fiber().Error("can not refresh parent node view count");
                 return;
             }
             

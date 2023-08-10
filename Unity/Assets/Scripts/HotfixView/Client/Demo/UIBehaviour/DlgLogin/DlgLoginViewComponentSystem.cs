@@ -11,7 +11,7 @@ namespace ET.Client
 		public static void Awake(this DlgLoginViewComponent self)
 		{
 			self.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;
-			Log.Info($"11111:{self.uiTransform?.name}");
+			self.Fiber().Info($"11111:{self.uiTransform?.name}");
 		}
 
         [EntitySystem]

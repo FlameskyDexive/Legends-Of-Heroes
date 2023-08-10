@@ -1,18 +1,15 @@
 ﻿namespace ET
 {
-    namespace EventType
+    public struct EntryEvent1
     {
-        public struct EntryEvent1
-        {
-        }   
-        
-        public struct EntryEvent2
-        {
-        } 
-        
-        public struct EntryEvent3
-        {
-        } 
+    }   
+    
+    public struct EntryEvent2
+    {
+    } 
+    
+    public struct EntryEvent3
+    {
     }
     
     public static class Entry
@@ -45,7 +42,7 @@
             World.Instance.AddSingleton<LogMsg>();
             
             // 创建需要reload的code singleton
-            CodeTypes.Instance.CreateCodeSingleton();
+            CodeTypes.Instance.CreateCode();
 
             await FiberManager.Instance.Create(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
         }
