@@ -1,15 +1,16 @@
 ﻿using System.Net;
+using System.Net.Sockets;
 
-namespace ET.Server
+namespace ET
 {
-    public struct NetServerComponentOnRead
+    public struct NetOuterComponentOnRead
     {
         public Session Session;
         public object Message;
     }
     
     [ComponentOf(typeof(Scene))]
-    public class NetServerComponent: Entity, IAwake<IPEndPoint>, IDestroy, IUpdate
+    public class NetComponent: Entity, IAwake<IPEndPoint>, IAwake<AddressFamily>, IDestroy, IUpdate
     {
         public AService AService;
     }

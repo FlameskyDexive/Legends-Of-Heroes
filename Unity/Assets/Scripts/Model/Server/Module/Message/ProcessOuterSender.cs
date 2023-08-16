@@ -4,7 +4,7 @@ using System.Net;
 namespace ET.Server
 {
     [ComponentOf(typeof(Scene))]
-    public class MessageOuterSender: Entity, IAwake<IPEndPoint>, IUpdate, IDestroy
+    public class ProcessOuterSender: Entity, IAwake<IPEndPoint>, IUpdate, IDestroy
     {
         public const long TIMEOUT_TIME = 40 * 1000;
         
