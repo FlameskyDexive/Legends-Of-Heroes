@@ -4,6 +4,7 @@ using System.IO;
 using System.Net;
 using System.Net.WebSockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ET
 {
@@ -76,7 +77,7 @@ namespace ET
             this.webSocket.Dispose();
         }
 
-        public async ETTask ConnectAsync(string url)
+        private async ETTask ConnectAsync(string url)
         {
             try
             {
@@ -153,6 +154,10 @@ namespace ET
                         {
                             return;
                         }
+                    }
+                    catch (TaskCanceledException e)
+                    {
+                        Log.Warning(e.ToString());
                     }
                     catch (Exception e)
                     {
