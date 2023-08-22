@@ -57,3 +57,13 @@ English: please use your browser to translate to english
 ### [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET) 烟雨的开源moba案例，基于ET5.X魔改
 ### [XAsset](https://github.com/xasset/xasset) 一个很高效易用强大的资源管理系统（打包/加载/热更）
 ### [ETPro](https://github.com/526077247/ETPro) ET加强版，基于ET6.0，自带技能系统、UI框架、镜像版无缝大世界。
+
+'''
+## Stats
+<img src="https://github-readme-stats.vercel.app/api?username=flameskydexive&show_icons=true" alt="logo" height="160" align="right" style="margin: 5px; margin-bottom: 20px;" />
+
+## Stars
+<img src="https://github-profile-trophy.vercel.app/?username=flameskydexive&theme=flat" alt="logo" height="120" align="center" style="margin: auto; margin-bottom: 20px;" />
+## Languages
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=flameskydexive&layout=compact)](https://github.com/flameskydexive/github-readme-stats)
+'''
