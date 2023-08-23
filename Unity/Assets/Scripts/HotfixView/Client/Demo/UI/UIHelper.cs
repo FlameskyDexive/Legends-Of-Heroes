@@ -2,28 +2,18 @@
 {
     public static class UIHelper
     {
-        
-
-        public static string GetIconQualityBG_1_Name(int rare)
+        [EnableAccessEntiyChild]
+        public static async ETTask<UI> Create(Entity scene, string uiType, UILayer uiLayer)
         {
-            var rareName = "Common_003";
-            switch (rare)
-            {
-                case 2: { rareName = "Common_004"; } break;
-                case 3: { rareName = "Common_005"; } break;
-            }
-            return rareName;
+            // return await scene.GetComponent<UIComponent>().Create(uiType, uiLayer);
+            return null;
         }
-
-        public static string GetIconQualityBG_2_Name(int rare)
+        
+        [EnableAccessEntiyChild]
+        public static async ETTask Remove(Entity scene, string uiType)
         {
-            var rareName = "Common_014";
-            switch (rare)
-            {
-                case 2: { rareName = "Common_013"; } break;
-                case 3: { rareName = "Common_012"; } break;
-            }
-            return rareName;
+            // scene.GetComponent<UIComponent>().Remove(uiType);
+            await ETTask.CompletedTask;
         }
     }
 }

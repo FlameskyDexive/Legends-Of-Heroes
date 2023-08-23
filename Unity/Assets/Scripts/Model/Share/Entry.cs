@@ -1,21 +1,17 @@
-﻿using System.IO;
-using MemoryPack;
+﻿using System.Collections.Generic;
 
 namespace ET
 {
-    namespace EventType
+    public struct EntryEvent1
     {
-        public struct EntryEvent1
-        {
-        }   
-        
-        public struct EntryEvent2
-        {
-        } 
-        
-        public struct EntryEvent3
-        {
-        } 
+    }   
+    
+    public struct EntryEvent2
+    {
+    } 
+    
+    public struct EntryEvent3
+    {
     }
     
     public static class Entry
@@ -34,25 +30,20 @@ namespace ET
         {
             WinPeriod.Init();
             
-            // MongoHelper.RegisterStruct<LSInput>();
+            MongoHelper.RegisterStruct<LSInput>();
             MongoHelper.Register();
-            
+
+            World.Instance.AddSingleton<IdGenerater>();
             World.Instance.AddSingleton<OpcodeType>();
-            World.Instance.AddSingleton<IdValueGenerater>();
             World.Instance.AddSingleton<ObjectPool>();
-            World.Instance.AddSingleton<ActorMessageQueue>();
-            World.Instance.AddSingleton<EntitySystemSingleton>();
-            // World.Instance.AddSingleton<LSEntitySystemSingleton>();
-            World.Instance.AddSingleton<MessageDispatcherComponent>();
-            World.Instance.AddSingleton<NumericWatcherComponent>();
-            World.Instance.AddSingleton<AIDispatcherComponent>();
-            World.Instance.AddSingleton<ActorMessageDispatcherComponent>();
+            World.Instance.AddSingleton<MessageQueue>();
             World.Instance.AddSingleton<NetServices>();
             World.Instance.AddSingleton<NavmeshComponent>();
             World.Instance.AddSingleton<LogMsg>();
             
-            World.Instance.AddSingleton<FiberManager>();
-            
+            // 创建需要reload的code singleton
+            CodeTypes.Instance.CreateCode();
+
             await FiberManager.Instance.Create(SchedulerType.Main, ConstFiberId.Main, 0, SceneType.Main, "");
         }
     }

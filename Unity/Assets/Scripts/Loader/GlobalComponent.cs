@@ -12,9 +12,9 @@ namespace ET
             // self.Unit = GameObject.Find("/Global/Unit").transform;
             // self.UI = GameObject.Find("/Global/UI").transform;
             // self.GlobalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            
+
             GlobalComponent.Instance = self;
-            
+
             self.Global = GameObject.Find("/Global").transform;
             self.Unit = GameObject.Find("/Global/UnitRoot").transform;
             // self.UI = GameObject.Find("/Global/UI").transform;
@@ -35,11 +35,10 @@ namespace ET
         // public Transform UI;
         //
         // public GlobalConfig GlobalConfig { get; set; }
-        
-        
+
         [StaticField]
         public static GlobalComponent Instance;
-        
+
         public Transform Global;
         public Transform Unit { get; set; }
         public Transform UI;

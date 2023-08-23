@@ -4,17 +4,17 @@ using System.Net;
 
 namespace ET.Server
 {
-	[MessageHandler(SceneType.Realm)]
-	public class C2R_LoginHandler : MessageHandler<C2R_Login, R2C_Login>
+	[MessageSessionHandler(SceneType.Realm)]
+	public class C2R_LoginHandler : MessageSessionHandler<C2R_Login, R2C_Login>
 	{
 		protected override async ETTask Run(Session session, C2R_Login request, R2C_Login response)
 		{
 			// 随机分配一个Gate
 			StartSceneConfig config = RealmGateAddressHelper.GetGate(session.Zone(), request.Account);
-			Log.Debug($"gate address: {config}");
+			session.Fiber().Debug($"gate address: {config}");
 			
 			// 向gate请求一个key,客户端可以拿着这个key连接gate
-			G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey) await session.Fiber().Root.GetComponent<ActorSenderComponent>().Call(
+			G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey) await session.Fiber().Root.GetComponent<MessageSender>().Call(
 				config.ActorId, new R2G_GetLoginKey() {Account = request.Account});
 
 			response.Address = config.InnerIPPort.ToString();

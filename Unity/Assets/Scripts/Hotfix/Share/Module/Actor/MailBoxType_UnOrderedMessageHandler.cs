@@ -12,9 +12,9 @@
         {
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
             
-            using MessageObject messageObject = args.MessageObject;
+            MessageObject messageObject = (MessageObject)args.MessageObject;
             
-            await ActorMessageDispatcherComponent.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
+            await MessageDispatcher.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace ET
     [ComponentOf(typeof(Scene))]
     public class UIPathComponent : Entity,IAwake,IDestroy
     {
+        [StaticField]
         public static UIPathComponent Instance { get; set; }
 
         public  Dictionary<int, string> WindowPrefabPath = new Dictionary<int, string>();

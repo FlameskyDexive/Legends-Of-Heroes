@@ -6,11 +6,11 @@ using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
     [Config]
-    public partial class AIConfigCategory : ConfigSingleton<AIConfigCategory>, IMerge
+    public partial class AIConfigCategory : Singleton<AIConfigCategory>, IMerge
     {
         [BsonElement]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        private Dictionary<int, AIConfig> dict = new Dictionary<int, AIConfig>();
+        private Dictionary<int, AIConfig> dict = new();
 		
         public void Merge(object o)
         {

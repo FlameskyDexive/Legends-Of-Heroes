@@ -8,6 +8,7 @@ namespace ET.Client
     [ComponentOf(typeof(Scene))]
     public class ResComponent: Entity, IAwake, IDestroy, IUpdate
     {
+        [StaticField]
         public static ResComponent Instance { get; set; }
 
         public string PackageVersion { get; set; }

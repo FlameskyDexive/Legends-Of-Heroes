@@ -3,8 +3,8 @@ using System.Net.Sockets;
 
 namespace ET.Client
 {
-    [ActorMessageHandler(SceneType.NetClient)]
-    public class Main2NetClient_LoginHandler: ActorMessageHandler<Scene, Main2NetClient_Login, NetClient2Main_Login>
+    [MessageHandler(SceneType.NetClient)]
+    public class Main2NetClient_LoginHandler: MessageHandler<Scene, Main2NetClient_Login, NetClient2Main_Login>
     {
         protected override async ETTask Run(Scene root, Main2NetClient_Login request, NetClient2Main_Login response)
         {
@@ -19,7 +19,8 @@ namespace ET.Client
                 routerAddressComponent =
                         root.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
                 await routerAddressComponent.Init();
-                root.AddComponent<NetClientComponent, AddressFamily>(routerAddressComponent.RouterManagerIPAddress.AddressFamily);
+                root.AddComponent<NetComponent, AddressFamily>(routerAddressComponent.RouterManagerIPAddress.AddressFamily);
+                root.GetComponent<FiberParentComponent>().ParentFiberId = request.OwnerFiberId;
             }
             IPEndPoint realmAddress = routerAddressComponent.GetRealmAddress(account);
 
@@ -35,7 +36,7 @@ namespace ET.Client
             root.AddComponent<SessionComponent>().Session = gateSession;
             G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId });
 
-            Log.Debug("登陆gate成功!");
+            root.Fiber().Debug("登陆gate成功!");
 
             response.PlayerId = g2CLoginGate.PlayerId;
         }

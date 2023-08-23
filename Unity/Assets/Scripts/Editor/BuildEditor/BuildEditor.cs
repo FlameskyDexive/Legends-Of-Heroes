@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
@@ -42,7 +41,8 @@ namespace ET
 
         private void OnEnable()
 		{
-			globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig/GlobalConfig.asset");
+			// globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig/GlobalConfig.asset");
 
 #if UNITY_ANDROID
 			activePlatform = PlatformType.Android;
@@ -124,33 +124,24 @@ namespace ET
 				this.globalConfig.CodeMode = codeMode;
 				EditorUtility.SetDirty(this.globalConfig);
 				AssetDatabase.SaveAssets();
-            }
-            GUILayout.Space(5);
+			}
 
-            if (GUILayout.Button("ReGenerateProjectFiles"))
+			if (GUILayout.Button("ReGenerateProjectFiles"))
 			{
 				BuildHelper.ReGenerateProjectFiles();
 			}
-
-            GUILayout.Space(5);
-            if (GUILayout.Button("ExcelExporter"))
+			
+			if (GUILayout.Button("ExcelExporter"))
 			{
-				//Directory.Delete("Assets/Bundles/Config", true);
 				ToolsEditor.ExcelExporter();
-				
-				// 设置ab包
-				AssetImporter assetImporter = AssetImporter.GetAtPath($"Assets/Bundles/Config");
-				assetImporter.assetBundleName = "Config.unity3d";
-				AssetDatabase.SaveAssets();
-				AssetDatabase.Refresh();
 			}
-
-            GUILayout.Space(5);
-            if (GUILayout.Button("Proto2CS"))
+			
+			if (GUILayout.Button("Proto2CS"))
 			{
 				ToolsEditor.Proto2CS();
 			}
-            GUILayout.Space(5);
-        }
+
+			GUILayout.Space(5);
+		}
 	}
 }

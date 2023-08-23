@@ -1,61 +1,35 @@
-﻿using Box2DSharp.Dynamics.Contacts;
-
-namespace ET
+﻿namespace ET.Client
 {
-    namespace EventType
+    public struct SceneChangeStart
     {
-        public struct SceneChangeStart
-        {
-        }
-        
-        public struct SceneChangeFinish
-        {
-        }
-        
-        public struct AfterCreateClientScene
-        {
-        }
-        
-        public struct AfterCreateCurrentScene
-        {
-        }
+    }
+    
+    public struct SceneChangeFinish
+    {
+    }
+    
+    public struct AfterCreateClientScene
+    {
+    }
+    
+    public struct AfterCreateCurrentScene
+    {
+    }
 
-        public struct AppStartInitFinish
-        {
-        }
+    public struct AppStartInitFinish
+    {
+    }
 
-        public struct LoginFinish
-        {
-        }
+    public struct LoginFinish
+    {
+    }
 
-        public struct EnterMapFinish
-        {
-        }
+    public struct EnterMapFinish
+    {
+    }
 
-        public struct AfterUnitCreate
-        {
-            public Unit Unit;
-        }
-        public struct AfterMyUnitCreate
-        {
-            public Unit unit;
-        }
-
-        public struct UpdateRoomPlayers
-        {
-            // public G2C_UpdateRoomPlayers roomPlayersProto;
-        }
-        public struct OnCollisionContact
-        {
-            public Contact contact;
-            public bool isEnd;
-        }
-
-
-        public struct HitResult
-        {
-            public EHitResultType hitResultType;
-            public int value;
-        }
+    public struct AfterUnitCreate
+    {
+        public Unit Unit;
     }
 }

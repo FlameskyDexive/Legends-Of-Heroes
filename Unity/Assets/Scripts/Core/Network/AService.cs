@@ -7,6 +7,7 @@ namespace ET
 {
     public abstract class AService: IDisposable
     {
+        public ILog Log;
         public Action<long, IPEndPoint> AcceptCallback;
         public Action<long, ActorId, object> ReadCallback;
         public Action<long, int> ErrorCallback;
@@ -14,21 +15,26 @@ namespace ET
         public long Id { get; set; }
         
         public ServiceType ServiceType { get; protected set; }
-        
-        public const int MaxCacheBufferSize = 1024;
+
+        private const int MaxMemoryBufferSize = 1024;
 		
         private readonly Queue<MemoryBuffer> pool = new();
 
+        protected AService(ILog log)
+        {
+            this.Log = log;
+        }
+
         public MemoryBuffer Fetch(int size = 0)
         {
-            if (size > MaxCacheBufferSize)
+            if (size > MaxMemoryBufferSize)
             {
                 return new MemoryBuffer(size);
             }
             
-            if (size < MaxCacheBufferSize)
+            if (size < MaxMemoryBufferSize)
             {
-                size = MaxCacheBufferSize;
+                size = MaxMemoryBufferSize;
             }
             
             if (this.pool.Count == 0)
@@ -57,14 +63,9 @@ namespace ET
             this.pool.Enqueue(memoryBuffer);
         }
         
-        public AService()
-        {
-            NetServices.Instance.Add(this);
-        }
         
         public virtual void Dispose()
         {
-            NetServices.Instance?.Remove(this.Id);
         }
 
         public abstract void Update();
@@ -73,7 +74,7 @@ namespace ET
         
         public abstract bool IsDisposed();
 
-        public abstract void Create(long id, IPEndPoint address);
+        public abstract void Create(long id, string address);
 
         public abstract void Send(long channelId, ActorId actorId, MessageObject message);
 

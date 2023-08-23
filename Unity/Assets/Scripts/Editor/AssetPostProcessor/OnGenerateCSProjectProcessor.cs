@@ -24,7 +24,6 @@ namespace ET
             }
 
             // GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            // var ab = AssetBundle.LoadFromFile($"{Path.Combine(Application.dataPath, "Bundles/Config/")}");
             GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig/GlobalConfig.asset");
 
             if (path.EndsWith("Unity.AllModel.csproj"))

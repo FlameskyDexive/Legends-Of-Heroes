@@ -1,21 +1,23 @@
-﻿using System;
-using System.Threading;
-
-namespace ET
+﻿namespace ET
 {
-    public interface ISingleton: IDisposable
+    public interface ISingletonReverseDispose
     {
-        void Register();
         
     }
     
-    public abstract class Singleton<T>: ISingleton where T: Singleton<T>, new()
+    public abstract class ASingleton: DisposeObject
     {
-        protected bool isDisposed;
+        internal abstract void Register();
+    }
+    
+    public abstract class Singleton<T>: ASingleton where T: Singleton<T>
+    {
+        private bool isDisposed;
         
         [StaticField]
         private static T instance;
         
+        [StaticField]
         public static T Instance
         {
             get
@@ -28,7 +30,7 @@ namespace ET
             }
         }
 
-        public virtual void Register()
+        internal override void Register()
         {
             Instance = (T)this;
         }
@@ -43,7 +45,7 @@ namespace ET
             
         }
 
-        void IDisposable.Dispose()
+        public override void Dispose()
         {
             if (this.isDisposed)
             {
@@ -51,68 +53,10 @@ namespace ET
             }
             
             this.isDisposed = true;
-            
+
             this.Destroy();
-        }
-    }
-    
-    public abstract class SingletonLock<T>: ISingleton, ISingletonLoad where T: SingletonLock<T>, new()
-    {
-        private bool isDisposed;
-        
-        [StaticField]
-        private static T instance;
-        
-        [StaticField]
-        private static object lockObj = new();
-
-        public static T Instance
-        {
-            get
-            {
-                lock (lockObj)
-                {
-                    return instance;
-                }
-            }
-            set
-            {
-                lock (lockObj)
-                {
-                    instance = value;
-                }
-            }
-        }
-
-        public virtual void Register()
-        {
-            Instance = (T)this;
-        }
-
-        public bool IsDisposed()
-        {
-            return this.isDisposed;
-        }
-
-        protected virtual void Destroy()
-        {
             
-        }
-
-        void IDisposable.Dispose()
-        {
-            if (this.isDisposed)
-            {
-                return;
-            }
-            
-            this.isDisposed = true;
-
             Instance = null;
-            
-            this.Destroy();
         }
-
-        public abstract void Load();
     }
 }

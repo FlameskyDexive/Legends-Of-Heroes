@@ -300,7 +300,8 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("");
 
 
-        strBuilder.AppendFormat("\t\tpublic static void Awake(this {0} self)\n", strDlgComponentName)
+        strBuilder.AppendLine("\t\t[EntitySystem]")
+                .AppendFormat("\t\tpublic static void Awake(this {0} self)\n", strDlgComponentName)
                 .AppendLine("\t\t{")
                 .AppendLine("\t\t ")
                 .AppendLine("\t\t\tself.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;")
@@ -308,7 +309,8 @@ public partial class UICodeSpawner
                 .AppendLine();
 
 
-        strBuilder.AppendFormat("\t\tpublic static void Destroy(this {0} self)\n", strDlgComponentName)
+        strBuilder.AppendLine("\t\t[EntitySystem]")
+                .AppendFormat("\t\tpublic static void Destroy(this {0} self)\n", strDlgComponentName)
                 .AppendLine("\t\t{")
                 .AppendLine("\t\t ")
                 .AppendFormat("\t\t\tself.DestroyWidget();\r\n")

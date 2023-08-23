@@ -6,7 +6,7 @@ namespace ET
 	[ResponseType(nameof(G2C_Match))]
 	[Message(LockStepOuter.C2G_Match)]
 	[MemoryPackable]
-	public partial class C2G_Match: MessageObject, IRequest
+	public partial class C2G_Match: MessageObject, ISessionRequest
 	{
 		public static C2G_Match Create(bool isFromPool = true) 
 		{ 
@@ -28,7 +28,7 @@ namespace ET
 
 	[Message(LockStepOuter.G2C_Match)]
 	[MemoryPackable]
-	public partial class G2C_Match: MessageObject, IResponse
+	public partial class G2C_Match: MessageObject, ISessionResponse
 	{
 		public static G2C_Match Create(bool isFromPool = true) 
 		{ 
@@ -59,7 +59,7 @@ namespace ET
 // 匹配成功，通知客户端切换场景
 	[Message(LockStepOuter.Match2G_NotifyMatchSuccess)]
 	[MemoryPackable]
-	public partial class Match2G_NotifyMatchSuccess: MessageObject, IActorMessage
+	public partial class Match2G_NotifyMatchSuccess: MessageObject, IMessage
 	{
 		public static Match2G_NotifyMatchSuccess Create(bool isFromPool = true) 
 		{ 
@@ -87,7 +87,7 @@ namespace ET
 // 客户端通知房间切换场景完成
 	[Message(LockStepOuter.C2Room_ChangeSceneFinish)]
 	[MemoryPackable]
-	public partial class C2Room_ChangeSceneFinish: MessageObject/*, IActorRoom*/
+	public partial class C2Room_ChangeSceneFinish: MessageObject, IRoomMessage
 	{
 		public static C2Room_ChangeSceneFinish Create(bool isFromPool = true) 
 		{ 
@@ -140,7 +140,7 @@ namespace ET
 // 房间通知客户端进入战斗
 	[Message(LockStepOuter.Room2C_Start)]
 	[MemoryPackable]
-	public partial class Room2C_Start: MessageObject, IActorMessage
+	public partial class Room2C_Start: MessageObject, IMessage
 	{
 		public static Room2C_Start Create(bool isFromPool = true) 
 		{ 
@@ -166,7 +166,7 @@ namespace ET
 
 	[Message(LockStepOuter.FrameMessage)]
 	[MemoryPackable]
-	public partial class FrameMessage: MessageObject, IActorMessage
+	public partial class FrameMessage: MessageObject, IMessage
 	{
 		public static FrameMessage Create(bool isFromPool = true) 
 		{ 
@@ -179,15 +179,15 @@ namespace ET
 		[MemoryPackOrder(1)]
 		public long PlayerId { get; set; }
 
-		/*[MemoryPackOrder(2)]
-		public LSInput Input { get; set; }*/
+		[MemoryPackOrder(2)]
+		public LSInput Input { get; set; }
 
 		public override void Dispose() 
 		{
 			if (!this.IsFromPool) return;
 			this.Frame = default;
 			this.PlayerId = default;
-			// this.Input = default;
+			this.Input = default;
 			
 			ObjectPool.Instance.Recycle(this); 
 		}
@@ -196,29 +196,29 @@ namespace ET
 
 	[Message(LockStepOuter.OneFrameInputs)]
 	[MemoryPackable]
-	public partial class OneFrameInputs: MessageObject, IActorMessage
+	public partial class OneFrameInputs: MessageObject, IMessage
 	{
 		public static OneFrameInputs Create(bool isFromPool = true) 
 		{ 
 			return !isFromPool? new OneFrameInputs() : ObjectPool.Instance.Fetch(typeof(OneFrameInputs)) as OneFrameInputs; 
 		}
 
-		// [MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
-		// [MemoryPackOrder(1)]
-		// public Dictionary<long, LSInput> Inputs { get; set; } = new();
-		// public override void Dispose() 
-		// {
-		// 	if (!this.IsFromPool) return;
-		// 	this.Inputs.Clear();
-		// 	
-		// 	ObjectPool.Instance.Recycle(this); 
-		// }
+		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
+		[MemoryPackOrder(1)]
+		public Dictionary<long, LSInput> Inputs { get; set; } = new();
+		public override void Dispose() 
+		{
+			if (!this.IsFromPool) return;
+			this.Inputs.Clear();
+			
+			ObjectPool.Instance.Recycle(this); 
+		}
 
 	}
 
 	[Message(LockStepOuter.Room2C_AdjustUpdateTime)]
 	[MemoryPackable]
-	public partial class Room2C_AdjustUpdateTime: MessageObject, IActorMessage
+	public partial class Room2C_AdjustUpdateTime: MessageObject, IMessage
 	{
 		public static Room2C_AdjustUpdateTime Create(bool isFromPool = true) 
 		{ 
@@ -240,7 +240,7 @@ namespace ET
 
 	[Message(LockStepOuter.C2Room_CheckHash)]
 	[MemoryPackable]
-	public partial class C2Room_CheckHash: MessageObject/*, IActorRoom*/
+	public partial class C2Room_CheckHash: MessageObject, IRoomMessage
 	{
 		public static C2Room_CheckHash Create(bool isFromPool = true) 
 		{ 
@@ -270,7 +270,7 @@ namespace ET
 
 	[Message(LockStepOuter.Room2C_CheckHashFail)]
 	[MemoryPackable]
-	public partial class Room2C_CheckHashFail: MessageObject, IActorMessage
+	public partial class Room2C_CheckHashFail: MessageObject, IMessage
 	{
 		public static Room2C_CheckHashFail Create(bool isFromPool = true) 
 		{ 
@@ -296,7 +296,7 @@ namespace ET
 
 	[Message(LockStepOuter.G2C_Reconnect)]
 	[MemoryPackable]
-	public partial class G2C_Reconnect: MessageObject, IActorMessage
+	public partial class G2C_Reconnect: MessageObject, IMessage
 	{
 		public static G2C_Reconnect Create(bool isFromPool = true) 
 		{ 

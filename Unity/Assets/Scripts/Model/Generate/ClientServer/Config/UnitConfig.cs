@@ -6,11 +6,11 @@ using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
     [Config]
-    public partial class UnitConfigCategory : ConfigSingleton<UnitConfigCategory>, IMerge
+    public partial class UnitConfigCategory : Singleton<UnitConfigCategory>, IMerge
     {
         [BsonElement]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        private Dictionary<int, UnitConfig> dict = new Dictionary<int, UnitConfig>();
+        private Dictionary<int, UnitConfig> dict = new();
 		
         public void Merge(object o)
         {
@@ -63,14 +63,10 @@ namespace ET
 		public string Name { get; set; }
 		/// <summary>位置</summary>
 		public int Position { get; set; }
-		/// <summary>模型</summary>
-		public string ModelName { get; set; }
+		/// <summary>身高</summary>
+		public int Height { get; set; }
 		/// <summary>体重</summary>
 		public int Weight { get; set; }
-		/// <summary>模型</summary>
-		public string IconName { get; set; }
-		/// <summary>初始携带技能</summary>
-		public int[] BornSkills { get; set; }
 
 	}
 }

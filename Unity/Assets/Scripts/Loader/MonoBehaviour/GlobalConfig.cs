@@ -20,9 +20,9 @@ namespace ET
     public class GlobalConfig: ScriptableObject
     {
         public static GlobalConfig Instance;
-        
+
         public CodeMode CodeMode;
-        
+
         public BuildType BuildType;
 
         public AppType AppType;

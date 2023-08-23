@@ -5,14 +5,31 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "058270c658e2b9dd593e04f0330314b426698430"
+      "hash": "8a95fd57f592ae3c45347a00da1a6db186f0dd66"
     },
     "com.cysharp.memorypack": {
       "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "09eb5f1535d0d01dee98c84fa110c21a436bd896"
+      "hash": "9aa51ce1e8da24e27053bf2448c127c4263c2096"
+    },
+    "com.gwiazdorrr.betterstreamingassets": {
+      "version": "file:betterstreamingassets",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.tuyoogame.yooasset": {
+      "version": "file:YooAsset",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.scriptablebuildpipeline": "1.20.2",
+        "com.unity.modules.assetbundle": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
+      }
     },
     "com.unity.ai.navigation": {
       "version": "1.1.4",

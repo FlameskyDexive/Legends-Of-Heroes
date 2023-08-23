@@ -9,11 +9,13 @@ namespace ET
 {
 	public class KChannel : AChannel
 	{
+		private const int MaxKcpMessageSize = 10000;
+		
 		private readonly KService Service;
 
 		private Kcp kcp { get; set; }
 
-		private readonly Queue<ActorMessageInfo> waitSendMessages = new Queue<ActorMessageInfo>();
+		private readonly Queue<MessageInfo> waitSendMessages = new();
 		
 		public readonly uint CreateTime;
 
@@ -28,6 +30,15 @@ namespace ET
 				this.Id = value;
 			}
 		}
+
+		private ILog Log
+		{
+			get
+			{
+				return this.Service.Log;
+			}
+		}
+		
 		public uint RemoteConn { get; set; }
 
 		private readonly byte[] sendCache = new byte[2 * 1024];
@@ -62,14 +73,14 @@ namespace ET
 					this.kcp.SetWindowSize(1024, 1024);
 					this.kcp.SetMtu(1400); // 默认1400
 					this.kcp.SetMinrto(30);
-					this.kcp.InitArrayPool(1600, 10000);
+					this.kcp.SetArrayPool(this.Service.byteArrayPool);
 					break;
 				case ServiceType.Outer:
 					this.kcp.SetNoDelay(1, 10, 2, true);
 					this.kcp.SetWindowSize(256, 256);
 					this.kcp.SetMtu(470);
 					this.kcp.SetMinrto(30);
-					this.kcp.InitArrayPool(600, 10000);
+					this.kcp.SetArrayPool(this.Service.byteArrayPool);
 					break;
 			}
 
@@ -78,12 +89,13 @@ namespace ET
 		// connect
 		public KChannel(uint localConn, IPEndPoint remoteEndPoint, KService kService)
 		{
+			this.Service = kService;
 			this.LocalConn = localConn;
 			this.ChannelType = ChannelType.Connect;
 			
 			Log.Info($"channel create: {this.LocalConn} {remoteEndPoint} {this.ChannelType}");
 			
-			this.Service = kService;
+			
 			this.RemoteAddress = remoteEndPoint;
 			this.CreateTime = kService.TimeNow;
 
@@ -94,11 +106,10 @@ namespace ET
 		// accept
 		public KChannel(uint localConn, uint remoteConn, IPEndPoint remoteEndPoint, KService kService)
 		{
+			this.Service = kService;
 			this.ChannelType = ChannelType.Accept;
 			
 			Log.Info($"channel create: {localConn} {remoteConn} {remoteEndPoint} {this.ChannelType}");
-
-			this.Service = kService;
 			this.LocalConn = localConn;
 			this.RemoteConn = remoteConn;
 			this.RemoteAddress = remoteEndPoint;
@@ -160,7 +171,7 @@ namespace ET
 					break;
 				}
 				
-				ActorMessageInfo buffer = this.waitSendMessages.Dequeue();
+				MessageInfo buffer = this.waitSendMessages.Dequeue();
 				this.Send(buffer.ActorId, buffer.MessageObject);
 			}
 		}
@@ -319,7 +330,7 @@ namespace ET
 						if (headInt == 0)
 						{
 							this.needReadSplitCount = BitConverter.ToInt32(readMemory.GetBuffer(), 4);
-							if (this.needReadSplitCount <= AService.MaxCacheBufferSize)
+							if (this.needReadSplitCount <= MaxKcpMessageSize)
 							{
 								Log.Error($"kchannel read error3: {this.needReadSplitCount} {this.LocalConn} {this.RemoteConn}");
 								this.OnError(ErrorCore.ERR_KcpSplitCountError);
@@ -349,7 +360,7 @@ namespace ET
 			}
 		}
 
-		public void Output(byte[] bytes, int count)
+		private void Output(byte[] bytes, int count)
 		{
 			if (this.IsDisposed)
 			{
@@ -405,7 +416,8 @@ namespace ET
 			int count = (int) (memoryStream.Length - memoryStream.Position);
 
 			// 超出maxPacketSize需要分片
-			if (count <= AService.MaxCacheBufferSize)
+			
+			if (count <= MaxKcpMessageSize)
 			{
 				this.kcp.Send(memoryStream.GetBuffer().AsSpan((int)memoryStream.Position, count));
 			}
@@ -422,7 +434,7 @@ namespace ET
 				{
 					int leftCount = count - alreadySendCount;
 					
-					int sendCount = leftCount < AService.MaxCacheBufferSize? leftCount: AService.MaxCacheBufferSize;
+					int sendCount = leftCount < MaxKcpMessageSize? leftCount: MaxKcpMessageSize;
 					
 					this.kcp.Send(memoryStream.GetBuffer().AsSpan((int)memoryStream.Position + alreadySendCount, sendCount));
 					
@@ -437,8 +449,8 @@ namespace ET
 		{
 			if (!this.IsConnected)
 			{
-				ActorMessageInfo actorMessageInfo = new() { ActorId = actorId, MessageObject = message };
-				this.waitSendMessages.Enqueue(actorMessageInfo);
+				MessageInfo messageInfo = new() { ActorId = actorId, MessageObject = message };
+				this.waitSendMessages.Enqueue(messageInfo);
 				return;
 			}
 

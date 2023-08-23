@@ -18,6 +18,8 @@ namespace ET.Client
             long instanceId = self.InstanceId;
             Fiber fiber = self.Fiber();
             Scene root = fiber.Root;
+            
+            IPEndPoint realAddress = NetworkHelper.ToIPEndPoint(self.GetParent<Session>().RemoteAddress);
             while (true)
             {
                 if (self.InstanceId != instanceId)
@@ -32,7 +34,7 @@ namespace ET.Client
                     return;
                 }
 
-                long time = self.Fiber().TimeInfo.ClientFrameTime();
+                long time = TimeInfo.Instance.ClientFrameTime();
 
                 if (time - session.LastRecvTime < 7 * 1000)
                 {
@@ -45,25 +47,28 @@ namespace ET.Client
 
                     (uint localConn, uint remoteConn) = session.AService.GetChannelConn(sessionId);
                     
-                    IPEndPoint realAddress = self.GetParent<Session>().RemoteAddress;
-                    Log.Info($"get recvLocalConn start: {root.Id} {realAddress} {localConn} {remoteConn}");
+                    
+                    fiber.Info($"get recvLocalConn start: {root.Id} {realAddress} {localConn} {remoteConn}");
 
                     (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(root, realAddress, localConn, remoteConn);
                     if (recvLocalConn == 0)
                     {
-                        Log.Error($"get recvLocalConn fail: {root.Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
+                        fiber.Error($"get recvLocalConn fail: {root.Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
                         continue;
                     }
                     
-                    Log.Info($"get recvLocalConn ok: {root.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
+                    fiber.Info($"get recvLocalConn ok: {root.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
+
+                    realAddress = routerAddress;
+                    session.RemoteAddress = realAddress.ToString();
                     
-                    session.LastRecvTime = self.Fiber().TimeInfo.ClientNow();
+                    session.LastRecvTime = TimeInfo.Instance.ClientNow();
                     
                     session.AService.ChangeAddress(sessionId, routerAddress);
                 }
                 catch (Exception e)
                 {
-                    Log.Error(e);
+                    fiber.Error(e);
                 }
             }
         }

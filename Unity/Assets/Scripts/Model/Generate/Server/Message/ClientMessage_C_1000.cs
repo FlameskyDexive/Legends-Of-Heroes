@@ -7,7 +7,7 @@ namespace ET
 	[ResponseType(nameof(NetClient2Main_Login))]
 	[Message(ClientMessage.Main2NetClient_Login)]
 	[MemoryPackable]
-	public partial class Main2NetClient_Login: MessageObject, IActorRequest
+	public partial class Main2NetClient_Login: MessageObject, IRequest
 	{
 		public static Main2NetClient_Login Create(bool isFromPool = true) 
 		{ 
@@ -18,15 +18,19 @@ namespace ET
 		public int RpcId { get; set; }
 
 		[MemoryPackOrder(1)]
-		public string Account { get; set; }
+		public int OwnerFiberId { get; set; }
 
 		[MemoryPackOrder(2)]
+		public string Account { get; set; }
+
+		[MemoryPackOrder(3)]
 		public string Password { get; set; }
 
 		public override void Dispose() 
 		{
 			if (!this.IsFromPool) return;
 			this.RpcId = default;
+			this.OwnerFiberId = default;
 			this.Account = default;
 			this.Password = default;
 			
@@ -37,7 +41,7 @@ namespace ET
 
 	[Message(ClientMessage.NetClient2Main_Login)]
 	[MemoryPackable]
-	public partial class NetClient2Main_Login: MessageObject, IActorResponse
+	public partial class NetClient2Main_Login: MessageObject, IResponse
 	{
 		public static NetClient2Main_Login Create(bool isFromPool = true) 
 		{ 

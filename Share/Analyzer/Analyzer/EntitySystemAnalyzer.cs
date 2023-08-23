@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
@@ -51,7 +50,7 @@ public class EntitySystemAnalyzer: DiagnosticAnalyzer
         )
     );
 
-    public class ETSystemData
+    private class ETSystemData
     {
         public string EntityTypeName;
         public string SystemOfAttribute;
@@ -122,6 +121,13 @@ public class EntitySystemAnalyzer: DiagnosticAnalyzer
             return;
         }
 
+        bool ignoreAwake = false;
+        if (attr.ConstructorArguments.Length>=2 && attr.ConstructorArguments[1].Value is bool ignore)
+        {
+            ignoreAwake = ignore;
+        }
+        
+
         // 排除非Entity子类
         if (entityTypeSymbol.BaseType?.ToString() != etSystemData.EntityTypeName)
         {
@@ -130,6 +136,12 @@ public class EntitySystemAnalyzer: DiagnosticAnalyzer
 
         foreach (INamedTypeSymbol? interfacetypeSymbol in entityTypeSymbol.AllInterfaces)
         {
+            if (ignoreAwake && interfacetypeSymbol.IsInterface(Definition.IAwakeInterface))
+            {
+                continue;
+            }
+
+            
             foreach (SystemMethodData systemMethodData in etSystemData.SystemMethods)
             {
                 if (interfacetypeSymbol.IsInterface(systemMethodData.InterfaceName))
@@ -154,7 +166,14 @@ public class EntitySystemAnalyzer: DiagnosticAnalyzer
                     }
                     else
                     {
-                        if (!namedTypeSymbol.HasMethodWithParams(systemMethodData.MethodName, entityTypeSymbol))
+                        if (interfacetypeSymbol.IsInterface(Definition.IGetComponentInterface))
+                        {
+                            if (!namedTypeSymbol.HasMethodWithParams(systemMethodData.MethodName, entityTypeSymbol.ToString(),"System.Type"))
+                            {
+                                AddProperty(ref builder, systemMethodData.MethodName, $"{entityTypeSymbol}/{etSystemData.SystemAttributeShowName}/System.Type");
+                            }
+                        }
+                        else if (!namedTypeSymbol.HasMethodWithParams(systemMethodData.MethodName, entityTypeSymbol))
                         {
                             AddProperty(ref builder, systemMethodData.MethodName, $"{entityTypeSymbol}/{etSystemData.SystemAttributeShowName}");
                         }

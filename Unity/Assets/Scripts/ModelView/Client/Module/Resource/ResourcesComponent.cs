@@ -353,7 +353,7 @@ namespace ET.Client
                     }
                     else
                     {
-                        Log.Error($"assets bundle not found: {assetBundleName}");
+                        self.Fiber().Error($"assets bundle not found: {assetBundleName}");
                     }
                 }
 
@@ -375,7 +375,7 @@ namespace ET.Client
             if (assetBundle == null)
             {
                 // 获取资源的时候会抛异常，这个地方不直接抛异常，因为有些地方需要Load之后判断是否Load成功
-                Log.Warning($"assets bundle not found: {assetBundleName}");
+                self.Fiber().Warning($"assets bundle not found: {assetBundleName}");
                 return;
             }
 
@@ -458,7 +458,7 @@ namespace ET.Client
             string p = "";
             AssetBundle assetBundle = null;
 
-            /*if (!Define.IsAsync)
+            if (!Define.IsAsync)
             {
                 if (Define.IsEditor)
                 {
@@ -478,7 +478,7 @@ namespace ET.Client
                     }
                     else
                     {
-                        Log.Error("Bundle not exist! BundleName: " + assetBundleName);
+                        self.Fiber().Error("Bundle not exist! BundleName: " + assetBundleName);
                     }
 
                     // 编辑器模式也不能同步加载
@@ -494,7 +494,7 @@ namespace ET.Client
                 p = Path.Combine(PathHelper.AppResPath, assetBundleName);
             }
 
-            Log.Debug("Async load bundle BundleName : " + p);
+            self.Fiber().Debug("Async load bundle BundleName : " + p);
 
             // if (!File.Exists(p))
             // {
@@ -507,12 +507,12 @@ namespace ET.Client
             if (assetBundle == null)
             {
                 // 获取资源的时候会抛异常，这个地方不直接抛异常，因为有些地方需要Load之后判断是否Load成功
-                Log.Warning($"assets bundle not found: {assetBundleName}");
+                self.Fiber().Warning($"assets bundle not found: {assetBundleName}");
                 return null;
             }
 
             abInfo = self.AddChild<ABInfo, string, AssetBundle>(assetBundleName, assetBundle);
-            self.bundles[assetBundleName] = abInfo;*/
+            self.bundles[assetBundleName] = abInfo;
             return abInfo;
             //Log.Debug($"---------------load one bundle {assetBundleName} refcount: {abInfo.RefCount}");
         }
@@ -520,7 +520,7 @@ namespace ET.Client
         // 加载ab包中的all assets
         private static async ETTask LoadOneBundleAllAssets(this ResourcesComponent self, ABInfo abInfo)
         {
-            /*using CoroutineLock coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
+            using CoroutineLock coroutineLock = await self.Fiber().CoroutineLockComponent.Wait(CoroutineLockType.Resources, abInfo.Name.GetHashCode());
 
             if (abInfo.IsDisposed || abInfo.AlreadyLoadAssets)
             {
@@ -538,7 +538,7 @@ namespace ET.Client
                 {
                     self.AddResource(abInfo.Name, asset.name, asset);
                 }
-            }*/
+            }
 
             abInfo.AlreadyLoadAssets = true;
         }

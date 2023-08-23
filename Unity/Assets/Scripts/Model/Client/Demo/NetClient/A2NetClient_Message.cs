@@ -1,7 +1,7 @@
 ﻿namespace ET
 {
     [Message]
-    public class A2NetClient_Message: MessageObject, IActorMessage
+    public class A2NetClient_Message: MessageObject, IMessage
     {
         public static A2NetClient_Message Create()
         {
@@ -19,7 +19,7 @@
     
     [Message]
     [ResponseType(nameof(A2NetClient_Response))]
-    public class A2NetClient_Request: MessageObject, IActorRequest
+    public class A2NetClient_Request: MessageObject, IRequest
     {
         public static A2NetClient_Request Create()
         {
@@ -38,7 +38,7 @@
     }
     
     [Message]
-    public class A2NetClient_Response: MessageObject, IActorResponse
+    public class A2NetClient_Response: MessageObject, IResponse
     {
         public static A2NetClient_Response Create()
         {
@@ -62,7 +62,7 @@
     }
     
     [Message]
-    public class NetClient2Main_SessionDispose: MessageObject, IActorMessage
+    public class NetClient2Main_SessionDispose: MessageObject, IMessage
     {
         public static NetClient2Main_SessionDispose Create()
         {

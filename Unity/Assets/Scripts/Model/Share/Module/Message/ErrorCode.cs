@@ -15,6 +15,7 @@ namespace ET
         // 200001以上不抛异常
         
         
+        
         public const int ERR_ResourceInitError = 300000;            // 资源初始化失败
         public const int ERR_ResourceUpdateVersionError = 300001;   // 资源更新版本号失败
         public const int ERR_ResourceUpdateManifestError = 300002;  // 资源更新清单失败

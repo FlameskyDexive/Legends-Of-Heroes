@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class EntitySystemSingleton: SingletonLock<EntitySystemSingleton>, ISingletonAwake
+    [Code]
+    public class EntitySystemSingleton: Singleton<EntitySystemSingleton>, ISingletonAwake
     {
         public TypeSystems TypeSystems { get; private set; }
         
@@ -11,7 +12,7 @@ namespace ET
         {
             this.TypeSystems = new TypeSystems(InstanceQueueIndex.Max);
 
-            foreach (Type type in EventSystem.Instance.GetTypes(typeof (EntitySystemAttribute)))
+            foreach (Type type in CodeTypes.Instance.GetTypes(typeof (EntitySystemAttribute)))
             {
                 object obj = Activator.CreateInstance(type);
 
@@ -26,11 +27,6 @@ namespace ET
                     }
                 }
             }
-        }
-        
-        public override void Load()
-        {
-            World.Instance.AddSingleton<EntitySystemSingleton>(true);
         }
         
         public void Serialize(Entity component)
@@ -96,15 +92,15 @@ namespace ET
         }
         
         // GetComponentSystem
-        public void GetComponent(Entity entity, Entity component)
+        public void GetComponentSys(Entity entity, Type type)
         {
-            List<object> iGetSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSystem));
+            List<object> iGetSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IGetComponentSysSystem));
             if (iGetSystem == null)
             {
                 return;
             }
 
-            foreach (IGetComponentSystem getSystem in iGetSystem)
+            foreach (IGetComponentSysSystem getSystem in iGetSystem)
             {
                 if (getSystem == null)
                 {
@@ -113,7 +109,7 @@ namespace ET
 
                 try
                 {
-                    getSystem.Run(entity, component);
+                    getSystem.Run(entity, type);
                 }
                 catch (Exception e)
                 {
@@ -122,33 +118,6 @@ namespace ET
             }
         }
         
-        // AddComponentSystem
-        public void AddComponent(Entity entity, Entity component)
-        {
-            List<object> iAddSystem = this.TypeSystems.GetSystems(entity.GetType(), typeof (IAddComponentSystem));
-            if (iAddSystem == null)
-            {
-                return;
-            }
-
-            foreach (IAddComponentSystem addComponentSystem in iAddSystem)
-            {
-                if (addComponentSystem == null)
-                {
-                    continue;
-                }
-
-                try
-                {
-                    addComponentSystem.Run(entity, component);
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e);
-                }
-            }
-        }
-
         public void Awake(Entity component)
         {
             List<object> iAwakeSystems = this.TypeSystems.GetSystems(component.GetType(), typeof (IAwakeSystem));

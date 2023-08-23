@@ -17,16 +17,16 @@ namespace ET
         private ResourcePackage defaultPackage;
         private EPlayMode playMode;
 
-        public IEnumerator InitAsync(EPlayMode mode)
+        public async ETTask InitAsync(EPlayMode mode)
         {
             this.playMode = mode;
             // 初始化资源系统
             YooAssets.Initialize();
             YooAssets.SetOperationSystemMaxTimeSlice(30);
 
-            yield return InitPackage();
+            await InitPackage();
 
-            yield return this.LoadGlobalConfig();
+            await this.LoadGlobalConfigAsync();
         }
 
         public async ETTask RestartAsync()
@@ -34,7 +34,7 @@ namespace ET
             await this.LoadGlobalConfigAsync();
         }
 
-        private IEnumerator InitPackage()
+        private async ETTask InitPackage()
         {
 
             // 创建默认的资源包
@@ -61,29 +61,20 @@ namespace ET
             }
             else if (playMode == EPlayMode.HostPlayMode)
             {
-                var createParameters = new HostPlayModeParameters();
-                createParameters.DecryptionServices = new GameDecryptionServices();
+                string defaultHostServer = GetHostServerURL();
+                string fallbackHostServer = GetHostServerURL();
+                HostPlayModeParameters createParameters = new();
                 createParameters.QueryServices = new GameQueryServices();
-                createParameters.DefaultHostServer = GetHostServerURL();
-                createParameters.FallbackHostServer = GetHostServerURL();
+                createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
                 initializationOperation = defaultPackage.InitializeAsync(createParameters);
             }
 
-            yield return initializationOperation;
+            await initializationOperation.Task;
 
             if (defaultPackage.InitializeStatus != EOperationStatus.Succeed)
             {
                 Debug.LogError($"{initializationOperation.Error}");
             }
-        }
-
-        private IEnumerator LoadGlobalConfig()
-        {
-            AssetOperationHandle handler = YooAssets.LoadAssetAsync<GlobalConfig>("GlobalConfig");
-            yield return handler;
-            GlobalConfig.Instance = handler.AssetObject as GlobalConfig;
-            handler.Release();
-            defaultPackage.UnloadUnusedAssets();
         }
 
         private async ETTask LoadGlobalConfigAsync()
@@ -100,6 +91,19 @@ namespace ET
             RawFileOperationHandle handle = YooAssets.LoadRawFileSync(location);
             return handle.GetRawFileData();
         }
+        
+        public T LoadAsset<T>(string location) where T : UnityEngine.Object
+        {
+            // self.AssetsOperationHandles.TryGetValue(location, out AssetOperationHandle handle);
+            AssetOperationHandle handle;
+            // if (handle == null)
+            {
+                handle = YooAssets.LoadAssetSync<T>(location);
+                // self.AssetsOperationHandles[location] = handle;
+            }
+
+            return handle.AssetObject as T;
+        }
 
         public async ETTask<byte[]> LoadRawFileAsync(string location)
         {
@@ -108,9 +112,13 @@ namespace ET
             return handle.GetRawFileData();
         }
 
-        public AssetOperationHandle LoadAssetAsync<T>(string location) where T : UnityEngine.Object
+        public async ETTask<T> LoadAssetAsync<T>(string location) where T : UnityEngine.Object
         {
-            return YooAssets.LoadAssetAsync<T>(location);
+            AssetOperationHandle handle = YooAssets.LoadAssetAsync<T>(location);
+            await handle.Task;
+            T t = (T)handle.AssetObject;
+            handle.Release();
+            return t;
         }
 
         public string[] GetAddressesByTag(string tag)
@@ -165,11 +173,17 @@ namespace ET
         /// </summary>
         private class GameQueryServices : IQueryServices
         {
-            public bool QueryStreamingAssets(string fileName)
+            /*public bool QueryStreamingAssets(string fileName)
             {
                 // 注意：使用了BetterStreamingAssets插件，使用前需要初始化该插件！
                 string buildinFolderName = YooAssets.GetStreamingAssetBuildinFolderName();
                 return StreamingAssetsHelper.FileExists($"{buildinFolderName}/{fileName}");
+            }*/
+            public bool QueryStreamingAssets(string packageName, string fileName)
+            {
+                // 注意：fileName包含文件格式
+                string filePath = Path.Combine(YooAssetSettings.DefaultYooFolderName, packageName, fileName);
+                return BetterStreamingAssets.FileExists(filePath);
             }
         }
 
@@ -200,4 +214,28 @@ namespace ET
             }
         }
     }
+
+    /// <summary>
+    /// 远端资源地址查询服务类
+    /// </summary>
+    public class RemoteServices : IRemoteServices
+    {
+        private readonly string _defaultHostServer;
+        private readonly string _fallbackHostServer;
+
+        public RemoteServices(string defaultHostServer, string fallbackHostServer)
+        {
+            _defaultHostServer = defaultHostServer;
+            _fallbackHostServer = fallbackHostServer;
+        }
+        string IRemoteServices.GetRemoteMainURL(string fileName)
+        {
+            return $"{_defaultHostServer}/{fileName}";
+        }
+        string IRemoteServices.GetRemoteFallbackURL(string fileName)
+        {
+            return $"{_fallbackHostServer}/{fileName}";
+        }
+    }
+
 }

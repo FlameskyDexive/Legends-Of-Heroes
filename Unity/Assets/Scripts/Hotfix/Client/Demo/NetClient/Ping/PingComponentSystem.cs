@@ -30,33 +30,33 @@ namespace ET.Client
                     return;
                 }
 
-                long time1 = self.Fiber().TimeInfo.ClientNow();
+                long time1 = TimeInfo.Instance.ClientNow();
                 try
                 {
                     C2G_Ping c2GPing = C2G_Ping.Create(true);
-                    using G2C_Ping response = await session.Call(c2GPing) as G2C_Ping;
+                    G2C_Ping response = await session.Call(c2GPing) as G2C_Ping;
 
                     if (self.InstanceId != instanceId)
                     {
                         return;
                     }
 
-                    long time2 = self.Fiber().TimeInfo.ClientNow();
+                    long time2 = TimeInfo.Instance.ClientNow();
                     self.Ping = time2 - time1;
                     
-                    fiber.TimeInfo.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
+                    TimeInfo.Instance.ServerMinusClientTime = response.Time + (time2 - time1) / 2 - time2;
                     
                     await fiber.TimerComponent.WaitAsync(2000);
                 }
                 catch (RpcException e)
                 {
                     // session断开导致ping rpc报错，记录一下即可，不需要打成error
-                    Log.Info($"ping error: {self.Id} {e.Error}");
+                    fiber.Info($"ping error: {self.Id} {e.Error}");
                     return;
                 }
                 catch (Exception e)
                 {
-                    Log.Error($"ping error: \n{e}");
+                    fiber.Error($"ping error: \n{e}");
                 }
             }
         }

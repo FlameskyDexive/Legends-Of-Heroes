@@ -25,13 +25,13 @@ namespace ET
         private static void Awake(this Session self, AService aService)
         {
             self.AService = aService;
-            long timeNow = self.Fiber().TimeInfo.ClientNow();
+            long timeNow = TimeInfo.Instance.ClientNow();
             self.LastRecvTime = timeNow;
             self.LastSendTime = timeNow;
 
             self.requestCallbacks.Clear();
             
-            Log.Info($"session create: zone: {self.Zone()} id: {self.Id} {timeNow} ");
+            self.Fiber().Info($"session create: zone: {self.Zone()} id: {self.Id} {timeNow} ");
         }
         
         [EntitySystem]
@@ -44,7 +44,7 @@ namespace ET
                 responseCallback.Tcs.SetException(new RpcException(self.Error, $"session dispose: {self.Id} {self.RemoteAddress}"));
             }
 
-            Log.Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {self.Fiber().TimeInfo.ClientNow()}");
+            self.Fiber().Info($"session dispose: {self.RemoteAddress} id: {self.Id} ErrorCode: {self.Error}, please see ErrorCode.cs! {TimeInfo.Instance.ClientNow()}");
             
             self.requestCallbacks.Clear();
         }
@@ -55,18 +55,12 @@ namespace ET
             {
                 return;
             }
-
-            if (ErrorCore.IsRpcNeedThrowException(response.Error))
-            {
-                action.Tcs.SetException(new Exception($"Rpc error, request: {action.Request} response: {response}"));
-                return;
-            }
             action.Tcs.SetResult(response);
         }
         
         public static async ETTask<IResponse> Call(this Session self, IRequest request, ETCancellationToken cancellationToken)
         {
-            int rpcId = ++Session.RpcId;
+            int rpcId = ++self.RpcId;
             RpcInfo rpcInfo = new RpcInfo(request);
             self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
@@ -102,7 +96,7 @@ namespace ET
 
         public static async ETTask<IResponse> Call(this Session self, IRequest request, int time = 0)
         {
-            int rpcId = ++Session.RpcId;
+            int rpcId = ++self.RpcId;
             RpcInfo rpcInfo = new(request);
             self.requestCallbacks[rpcId] = rpcInfo;
             request.RpcId = rpcId;
@@ -139,8 +133,8 @@ namespace ET
         
         public static void Send(this Session self, ActorId actorId, IMessage message)
         {
-            self.LastSendTime = self.Fiber().TimeInfo.ClientNow();
-            LogMsg.Instance.Debug(message);
+            self.LastSendTime = TimeInfo.Instance.ClientNow();
+            LogMsg.Instance.Debug(self.Fiber(), message);
             self.AService.Send(self.Id, actorId, message as MessageObject);
         }
     }
@@ -150,7 +144,7 @@ namespace ET
     {
         public AService AService { get; set; }
         
-        public static int RpcId
+        public int RpcId
         {
             get;
             set;
@@ -176,7 +170,7 @@ namespace ET
             set;
         }
 
-        public IPEndPoint RemoteAddress
+        public string RemoteAddress
         {
             get;
             set;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 using CommandLine;
 
@@ -20,31 +21,15 @@ namespace ET.Server
                 Parser.Default.ParseArguments<Options>(args)
                     .WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
                     .WithParsed((o)=>World.Instance.AddSingleton(o));
-                World.Instance.AddSingleton<Logger>().ILog = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, "../Config/NLog/NLog.config");
+                World.Instance.AddSingleton<Logger>().Log = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, 0, "../Config/NLog/NLog.config");
                 
-                //Process process = Game.Instance.Create();
-                // 异步方法全部会回掉到主线程
-                //process.AddSingleton<MainThreadSynchronizationContext>();
-                //process.AddSingleton<TimeInfo>();
-                //process.AddSingleton<ObjectPool>();
-                //process.AddSingleton<IdGenerater>();
-                
-                
-                Dictionary<string, Type> types = AssemblyHelper.GetAssemblyTypes(typeof (Init).Assembly);
-                World.Instance.AddSingleton<EventSystem, Dictionary<string, Type>>(types);
+                World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof (Init).Assembly });
+                World.Instance.AddSingleton<EventSystem>();
                 
                 MongoHelper.Register();
                 
                 ETTask.ExceptionHandler += Log.Error;
                 
-
-//
-                //process.AddSingleton<EntitySystemSingleton>();
-                //
-                //process.AddSingleton<Root>();
-
-                //MongoHelper.Register();
-				
                 Log.Info($"server start........................ ");
 				
                 switch (Options.Instance.AppType)

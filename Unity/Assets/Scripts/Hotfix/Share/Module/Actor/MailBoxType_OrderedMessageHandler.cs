@@ -12,28 +12,29 @@
         {
             MailBoxComponent mailBoxComponent = args.MailBoxComponent;
             
-            // 对象池回收
-            using MessageObject messageObject = args.MessageObject;
-            
-            CoroutineLockComponent coroutineLockComponent = mailBoxComponent.CoroutineLockComponent;
-            if (coroutineLockComponent == null)
+            MessageObject messageObject = (MessageObject)args.MessageObject;
+
+            Fiber fiber = mailBoxComponent.Fiber();
+            if (fiber.IsDisposed)
             {
+				messageObject.Dispose();
                 return;
             }
 
             long instanceId = mailBoxComponent.InstanceId;
-            using (await coroutineLockComponent.Wait(CoroutineLockType.Mailbox, mailBoxComponent.ParentInstanceId))
+            using (await fiber.CoroutineLockComponent.Wait(CoroutineLockType.Mailbox, mailBoxComponent.ParentInstanceId))
             {
                 if (mailBoxComponent.InstanceId != instanceId)
                 {
-                    if (messageObject is IActorRequest request)
+                    if (messageObject is IRequest request)
                     {
-                        IActorResponse resp = ActorHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
-                        mailBoxComponent.Root().GetComponent<ActorInnerComponent>().Reply(args.FromAddress, resp);
+                        IResponse resp = MessageHelper.CreateResponse(request, ErrorCore.ERR_NotFoundActor);
+                        mailBoxComponent.Root().GetComponent<ProcessInnerSender>().Reply(args.FromAddress, resp);
                     }
+                    messageObject.Dispose();
                     return;
                 }
-                await ActorMessageDispatcherComponent.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
+                await MessageDispatcher.Instance.Handle(mailBoxComponent.Parent, args.FromAddress, messageObject);
             }
         }
     }

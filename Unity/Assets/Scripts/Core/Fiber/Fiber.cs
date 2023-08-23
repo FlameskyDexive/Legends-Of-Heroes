@@ -30,14 +30,19 @@ namespace ET
                 return new Address(this.Process, this.Id);
             }
         }
-        
-        public int Process { get; }
-        
+
+        public int Process
+        {
+            get
+            {
+                return Options.Instance.Process;
+            }
+        }
+
         public EntitySystem EntitySystem { get; }
-        public TimeInfo TimeInfo { get; }
-        public IdGenerater IdGenerater { get; private set; }
         public Mailboxes Mailboxes { get; private set; }
         public ThreadSynchronizationContext ThreadSynchronizationContext { get; }
+        public ILog Log { get; }
         
         private EntityRef<TimerComponent> timerCompnent;
         public TimerComponent TimerComponent
@@ -65,31 +70,33 @@ namespace ET
             }
         }
         
-        private EntityRef<ActorInnerComponent> actorInnerComponent;
-        public ActorInnerComponent ActorInnerComponent
+        private EntityRef<ProcessInnerSender> processInnerSender;
+        public ProcessInnerSender ProcessInnerSender
         {
             get
             {
-                return this.actorInnerComponent;
+                return this.processInnerSender;
             }
             set
             {
-                this.actorInnerComponent = value;
+                this.processInnerSender = value;
             }
         }
 
         private readonly Queue<ETTask> frameFinishTasks = new();
         
-        internal Fiber(int id, int process, int zone, SceneType sceneType, string name)
+        internal Fiber(int id, int zone, SceneType sceneType, string name)
         {
             this.Id = id;
-            this.Process = process;
             this.Zone = zone;
             this.EntitySystem = new EntitySystem();
-            this.TimeInfo = new TimeInfo();
-            this.IdGenerater = new IdGenerater(process, this.TimeInfo);
             this.Mailboxes = new Mailboxes();
             this.ThreadSynchronizationContext = new ThreadSynchronizationContext();
+#if UNITY
+            this.Log = Logger.Instance.Log;
+#else
+            this.Log = new NLogger(sceneType.ToString(), this.Process, this.Id, "../Config/NLog/NLog.config");
+#endif
             this.Root = new Scene(this, id, 1, sceneType, name);
         }
 
@@ -97,12 +104,11 @@ namespace ET
         {
             try
             {
-                this.TimeInfo.Update();
                 this.EntitySystem.Update();
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                this.Log.Error(e);
             }
         }
         
@@ -144,8 +150,6 @@ namespace ET
                 return;
             }
             this.IsDisposed = true;
-            
-            FiberManager.Instance.RemoveReal(this.Id);
             
             this.Root.Dispose();
         }

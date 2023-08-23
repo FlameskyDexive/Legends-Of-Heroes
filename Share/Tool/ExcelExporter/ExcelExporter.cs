@@ -187,11 +187,17 @@ namespace ET
                 {
                     ExportExcel(path);
                 }
-                
-                if (Directory.Exists(clientProtoDir))
+
+                DirectoryInfo dirInfo = new DirectoryInfo(clientProtoDir);
+                FileInfo[] byteFiles = dirInfo.GetFiles("*", SearchOption.TopDirectoryOnly);
+                for (int i = 0; i < byteFiles.Length; i++)
+                {
+                    File.Delete(byteFiles[i].FullName);
+                }
+                /*if (Directory.Exists(clientProtoDir))
                 {
                     Directory.Delete(clientProtoDir, true);
-                }
+                }*/
                 FileHelper.CopyDirectory("../Config/Excel/c", clientProtoDir);
                 
                 Log.Console("Export Excel Sucess!");

@@ -3,8 +3,8 @@ using Unity.Mathematics;
 
 namespace ET.Server
 {
-    [ActorMessageHandler(SceneType.Map)]
-    public class M2M_UnitTransferRequestHandler: ActorMessageHandler<Scene, M2M_UnitTransferRequest, M2M_UnitTransferResponse>
+    [MessageHandler(SceneType.Map)]
+    public class M2M_UnitTransferRequestHandler: MessageHandler<Scene, M2M_UnitTransferRequest, M2M_UnitTransferResponse>
     {
         protected override async ETTask Run(Scene scene, M2M_UnitTransferRequest request, M2M_UnitTransferResponse response)
         {
@@ -28,12 +28,12 @@ namespace ET.Server
 
             // 通知客户端开始切场景
             M2C_StartSceneChange m2CStartSceneChange = new() { SceneInstanceId = scene.InstanceId, SceneName = scene.Name };
-            MessageHelper.SendToClient(unit, m2CStartSceneChange);
+            MapMessageHelper.SendToClient(unit, m2CStartSceneChange);
 
             // 通知客户端创建My Unit
             M2C_CreateMyUnit m2CCreateUnits = new();
             m2CCreateUnits.Unit = UnitHelper.CreateUnitInfo(unit);
-            MessageHelper.SendToClient(unit, m2CCreateUnits);
+            MapMessageHelper.SendToClient(unit, m2CCreateUnits);
 
             // 加入aoi
             unit.AddComponent<AOIEntity, int, float3>(9 * 1000, unit.Position);

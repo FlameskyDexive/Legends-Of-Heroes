@@ -29,12 +29,12 @@ namespace ET.Client
         {
             if(self.uiTransform == null)
             {
-                Log.Error($"uibaseWindows {self.WindowID} uiTransform is null!!!");
+                self.Fiber().Error($"uibaseWindows {self.WindowID} uiTransform is null!!!");
                 return;
             }
             if(rootTransform == null)
             {
-                Log.Error($"uibaseWindows {self.WindowID} rootTransform is null!!!");
+                self.Fiber().Error($"uibaseWindows {self.WindowID} rootTransform is null!!!");
                 return;
             }
             self.uiTransform.SetParent(rootTransform, false);

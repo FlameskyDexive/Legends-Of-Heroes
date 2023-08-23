@@ -10,5 +10,6 @@
         WindowID_Helper,            //提示界面
         WindowID_Battle,            //战斗界面
         WindowID_Room,              //房间界面
+        WindowID_Cheat,             //Cheat
     }
 }

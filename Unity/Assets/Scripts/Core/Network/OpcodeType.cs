@@ -9,10 +9,10 @@ namespace ET
         private readonly DoubleMap<Type, ushort> typeOpcode = new();
         
         private readonly Dictionary<Type, Type> requestResponse = new();
-
+        
         public void Awake()
         {
-            HashSet<Type> types = EventSystem.Instance.GetTypes(typeof (MessageAttribute));
+            HashSet<Type> types = CodeTypes.Instance.GetTypes(typeof (MessageAttribute));
             foreach (Type type in types)
             {
                 object[] att = type.GetCustomAttributes(typeof (MessageAttribute), false);
@@ -36,9 +36,9 @@ namespace ET
                 // 检查request response
                 if (typeof (IRequest).IsAssignableFrom(type))
                 {
-                    if (typeof (IActorLocationMessage).IsAssignableFrom(type))
+                    if (typeof (ILocationMessage).IsAssignableFrom(type))
                     {
-                        this.requestResponse.Add(type, typeof (ActorResponse));
+                        this.requestResponse.Add(type, typeof (MessageResponse));
                         continue;
                     }
 
@@ -50,11 +50,11 @@ namespace ET
                     }
 
                     ResponseTypeAttribute responseTypeAttribute = attrs[0] as ResponseTypeAttribute;
-                    this.requestResponse.Add(type, EventSystem.Instance.GetType($"ET.{responseTypeAttribute.Type}"));
+                    this.requestResponse.Add(type, CodeTypes.Instance.GetType($"ET.{responseTypeAttribute.Type}"));
                 }
             }
         }
-
+        
         public ushort GetOpcode(Type type)
         {
             return this.typeOpcode.GetValueByKey(type);

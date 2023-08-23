@@ -6,7 +6,7 @@ using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
     [Config]
-    public partial class (ConfigName)Category : ConfigSingleton<(ConfigName)Category>, IMerge
+    public partial class (ConfigName)Category : Singleton<(ConfigName)Category>, IMerge
     {
         [BsonElement]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]

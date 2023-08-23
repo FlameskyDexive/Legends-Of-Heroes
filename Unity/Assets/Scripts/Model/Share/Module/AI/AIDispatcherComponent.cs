@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    public class AIDispatcherComponent: SingletonLock<AIDispatcherComponent>, ISingletonAwake
+    [Code]
+    public class AIDispatcherComponent: Singleton<AIDispatcherComponent>, ISingletonAwake
     {
         private readonly Dictionary<string, AAIHandler> aiHandlers = new();
         
         public void Awake()
         {
-            var types = EventSystem.Instance.GetTypes(typeof (AIHandlerAttribute));
+            var types = CodeTypes.Instance.GetTypes(typeof (AIHandlerAttribute));
             foreach (Type type in types)
             {
                 AAIHandler aaiHandler = Activator.CreateInstance(type) as AAIHandler;
@@ -26,11 +27,6 @@ namespace ET
         {
             this.aiHandlers.TryGetValue(key, out var aaiHandler);
             return aaiHandler;
-        }
-
-        public override void Load()
-        {
-            World.Instance.AddSingleton<AIDispatcherComponent>(true);
         }
     }
 }
