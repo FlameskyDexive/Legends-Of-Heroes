@@ -5,7 +5,9 @@
         "Unity.ThirdParty",
         "Unity.Core",
         "HybridCLR.Runtime",
-        "MemoryPack"
+        "MemoryPack",
+        "YooAsset",
+        "BetterStreamingAssets"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -14,6 +14,23 @@
       "dependencies": {},
       "hash": "9aa51ce1e8da24e27053bf2448c127c4263c2096"
     },
+    "com.gwiazdorrr.betterstreamingassets": {
+      "version": "file:betterstreamingassets",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "com.tuyoogame.yooasset": {
+      "version": "file:YooAsset",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.scriptablebuildpipeline": "1.20.2",
+        "com.unity.modules.assetbundle": "1.0.0",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.modules.unitywebrequestassetbundle": "1.0.0"
+      }
+    },
     "com.unity.ai.navigation": {
       "version": "1.1.4",
       "depth": 0,

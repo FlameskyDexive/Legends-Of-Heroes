@@ -6,8 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace NativeCollection.UnsafeType
-{
-    public unsafe struct HashSet<T> : ICollection<T>, IDisposable where T : unmanaged, IEquatable<T>
+{public unsafe struct HashSet<T> : ICollection<T>, IDisposable where T : unmanaged, IEquatable<T>
 {
     /// <summary>Cutoff point for stackallocs. This corresponds to the number of ints.</summary>
     private const int StackAllocThreshold = 100;
@@ -35,7 +34,6 @@ namespace NativeCollection.UnsafeType
     private int _freeList;
     private int _freeCount;
     private int _version;
-    private static IEqualityComparer<T> _comparer = EqualityComparer<T>.Default;
 
     public static HashSet<T>* Create(int capacity = 0)
     {
@@ -49,6 +47,9 @@ namespace NativeCollection.UnsafeType
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool Add(T item) => AddIfNotPresent(item, out _);
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool AddRef(in T item) => AddIfNotPresent(item, out _);
 
     IEnumerator<T> IEnumerable<T>.GetEnumerator()
     {
@@ -91,6 +92,12 @@ namespace NativeCollection.UnsafeType
     {
         return FindItemIndex(item) >= 0;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool ContainsRef(in T item)
+    {
+        return FindItemIndex(item) >= 0;
+    }
 
     #endregion
 
@@ -100,7 +107,7 @@ namespace NativeCollection.UnsafeType
         throw new NotImplementedException();
     }
     
-    public bool Remove(T item)
+    public bool RemoveRef(in T item)
     {
         //if (_buckets == null) return false;
         var entries = _entries;
@@ -150,6 +157,34 @@ namespace NativeCollection.UnsafeType
 
         return false;
     }
+    
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public bool Remove(T item)
+    {
+        return RemoveRef(item);
+    }
+
+    public bool TryGetValue(in T equalValue, out T actualValue)
+    {
+        int index = FindItemIndex(equalValue);
+        if (index>=0)
+        {
+            actualValue = _entries[index].Value;
+            return true;
+        }
+        actualValue = default;
+        return false;
+    }
+
+    internal T* GetValuePointer(in T key)
+    {
+        int index = FindItemIndex(key);
+        if (index>=0)
+        {
+            return &(_entries + index)->Value;
+        }
+        return null;
+    }
 
     public int Count => _count - _freeCount;
     bool ICollection<T>.IsReadOnly => false;
@@ -157,10 +192,10 @@ namespace NativeCollection.UnsafeType
     public void Dispose()
     {
         NativeMemoryHelper.Free(_buckets);
-        GC.RemoveMemoryPressure(Unsafe.SizeOf<int>()*_bucketLength);
+        NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<int>()*_bucketLength);
         
         NativeMemoryHelper.Free(_entries);
-        GC.RemoveMemoryPressure(Unsafe.SizeOf<Entry>()*_entryLength);
+        NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<Entry>()*_entryLength);
     }
     
     #region Helper methods
@@ -193,7 +228,7 @@ namespace NativeCollection.UnsafeType
     /// <param name="location">The index into <see cref="_entries" /> of the element.</param>
     /// <returns>true if the element is added to the <see cref="HashSet{T}" /> object; false if the element is already present.</returns>
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private bool AddIfNotPresent(T value, out int location)
+    private bool AddIfNotPresent(in T value, out int location)
     {
         //Console.WriteLine($"AddIfNotPresent:{value}");
         //if (_buckets == null) Initialize(0);
@@ -218,7 +253,7 @@ namespace NativeCollection.UnsafeType
             // Console.WriteLine($"i:{i}");
             ref Entry entry = ref _entries[i];
             // Console.WriteLine($"entry.HashCode:{entry.HashCode} hashCode:{hashCode} Equals:{comparer.Equals(entry.Value, value)}");
-            if (entry.HashCode == hashCode && value.Equals(value))
+            if (entry.HashCode == hashCode && entry.Value.Equals(value))
             {
                 location = i;
                 return false;
@@ -328,7 +363,7 @@ namespace NativeCollection.UnsafeType
             // Assign member variables after both arrays allocated to guard against corruption from OOM if second fails
             var newBucket = (int*)NativeMemoryHelper.AllocZeroed((UIntPtr)(Unsafe.SizeOf<int>() * newSize));
             NativeMemoryHelper.Free(_buckets);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<int>()*_bucketLength);
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<int>()*_bucketLength);
             _buckets = newBucket;
             _bucketLength = newSize;
 #if TARGET_64BIT
@@ -346,7 +381,7 @@ namespace NativeCollection.UnsafeType
                 }
             }
             NativeMemoryHelper.Free(_entries);
-            GC.RemoveMemoryPressure(Unsafe.SizeOf<Entry>()*_entryLength);
+            NativeMemoryHelper.RemoveNativeMemoryByte(Unsafe.SizeOf<Entry>()*_entryLength);
             _entries = newEntries;
             _entryLength = newSize;
             
@@ -355,7 +390,7 @@ namespace NativeCollection.UnsafeType
         
         /// <summary>Gets the index of the item in <see cref="_entries"/>, or -1 if it's not in the set.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private int FindItemIndex(T item)
+        private int FindItemIndex(in T item)
         {
             //if (_buckets == null) return -1;
             var entries = _entries;
