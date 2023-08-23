@@ -5,9 +5,9 @@ using System.IO;
 namespace ET
 {
     [Invoke]
-    public class GetAllConfigBytes: AInvokeHandler<ConfigLoader.GetAllConfigBytes, Dictionary<Type, byte[]>>
+    public class GetAllConfigBytes: AInvokeHandler<ConfigLoader.GetAllConfigBytes, ETTask<Dictionary<Type, byte[]>>>
     {
-        public override Dictionary<Type, byte[]> Handle(ConfigLoader.GetAllConfigBytes args)
+        public override async ETTask<Dictionary<Type, byte[]>> Handle(ConfigLoader.GetAllConfigBytes args)
         {
             Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
             List<string> startConfigs = new List<string>()
@@ -32,16 +32,18 @@ namespace ET
                 output[configType] = File.ReadAllBytes(configFilePath);
             }
 
+            await ETTask.CompletedTask;
             return output;
         }
     }
     
     [Invoke]
-    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, byte[]>
+    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, ETTask<byte[]>>
     {
-        public override byte[] Handle(ConfigLoader.GetOneConfigBytes args)
+        public override async ETTask<byte[]> Handle(ConfigLoader.GetOneConfigBytes args)
         {
             byte[] configBytes = File.ReadAllBytes($"../Config/Excel/s/{args.ConfigName}.bytes");
+            await ETTask.CompletedTask;
             return configBytes;
         }
     }

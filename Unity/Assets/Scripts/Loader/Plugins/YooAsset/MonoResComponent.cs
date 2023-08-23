@@ -17,16 +17,16 @@ namespace ET
         private ResourcePackage defaultPackage;
         private EPlayMode playMode;
 
-        public IEnumerator InitAsync(EPlayMode mode)
+        public async ETTask InitAsync(EPlayMode mode)
         {
             this.playMode = mode;
             // 初始化资源系统
             YooAssets.Initialize();
             YooAssets.SetOperationSystemMaxTimeSlice(30);
 
-            yield return InitPackage();
+            await InitPackage();
 
-            yield return this.LoadGlobalConfig();
+            await this.LoadGlobalConfigAsync();
         }
 
         public async ETTask RestartAsync()
@@ -34,7 +34,7 @@ namespace ET
             await this.LoadGlobalConfigAsync();
         }
 
-        private IEnumerator InitPackage()
+        private async ETTask InitPackage()
         {
 
             // 创建默认的资源包
@@ -69,21 +69,12 @@ namespace ET
                 initializationOperation = defaultPackage.InitializeAsync(createParameters);
             }
 
-            yield return initializationOperation;
+            await initializationOperation.Task;
 
             if (defaultPackage.InitializeStatus != EOperationStatus.Succeed)
             {
                 Debug.LogError($"{initializationOperation.Error}");
             }
-        }
-
-        private IEnumerator LoadGlobalConfig()
-        {
-            AssetOperationHandle handler = YooAssets.LoadAssetAsync<GlobalConfig>("GlobalConfig");
-            yield return handler;
-            GlobalConfig.Instance = handler.AssetObject as GlobalConfig;
-            handler.Release();
-            defaultPackage.UnloadUnusedAssets();
         }
 
         private async ETTask LoadGlobalConfigAsync()
@@ -121,9 +112,13 @@ namespace ET
             return handle.GetRawFileData();
         }
 
-        public AssetOperationHandle LoadAssetAsync<T>(string location) where T : UnityEngine.Object
+        public async ETTask<T> LoadAssetAsync<T>(string location) where T : UnityEngine.Object
         {
-            return YooAssets.LoadAssetAsync<T>(location);
+            AssetOperationHandle handle = YooAssets.LoadAssetAsync<T>(location);
+            await handle.Task;
+            T t = (T)handle.AssetObject;
+            handle.Release();
+            return t;
         }
 
         public string[] GetAddressesByTag(string tag)

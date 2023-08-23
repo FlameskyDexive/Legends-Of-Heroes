@@ -30,15 +30,18 @@ namespace ET
 			
 			World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
 			ETTask.ExceptionHandler += Log.Error;
-			
-			// World.Instance.AddSingleton<CodeLoader>().Start();
-			StartCoroutine(this.InitCode());
+
+            World.Instance.AddSingleton<TimeInfo>();
+            World.Instance.AddSingleton<FiberManager>();
+
+            this.StartAsync().Coroutine();
         }
 
-        IEnumerator InitCode()
+        private async ETTask StartAsync()
         {
-            yield return MonoResComponent.Instance.InitAsync(PlayMode);
-            // yield return new WaitForSeconds(0.5f);
+            await MonoResComponent.Instance.InitAsync(PlayMode);
+            World.Instance.AddSingleton<TimeInfo>();
+            World.Instance.AddSingleton<FiberManager>();
             World.Instance.AddSingleton<CodeLoader>().Start();
             this.initCode = true;
 
@@ -60,7 +63,8 @@ namespace ET
 
             World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
             ETTask.ExceptionHandler += Log.Error;
-            StartCoroutine(this.InitCode());
+
+            this.StartAsync().Coroutine();
         }
 
         private void Update()
