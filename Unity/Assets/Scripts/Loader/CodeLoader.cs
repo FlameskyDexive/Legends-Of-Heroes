@@ -56,8 +56,8 @@ namespace ET
                     //assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.dll"));
                     //pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Model.pdb"));
 
-                    assBytes = MonoResComponent.Instance.LoadRawFile($"Model.dll");
-                    pdbBytes = MonoResComponent.Instance.LoadRawFile($"Model.pdb");
+                    assBytes = MonoResComponent.Instance.LoadAsset<TextAsset>($"Model.dll").bytes;
+                    pdbBytes = MonoResComponent.Instance.LoadAsset<TextAsset>($"Model.pdb").bytes;
 
                     if (Define.EnableIL2CPP)
 					{
@@ -95,8 +95,8 @@ namespace ET
                 //assBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.dll"));
                 //pdbBytes = File.ReadAllBytes(Path.Combine("../Unity", Define.BuildOutputDir, "Hotfix.pdb"));
 
-                assBytes = MonoResComponent.Instance.LoadRawFile($"Hotfix.dll");
-                pdbBytes = MonoResComponent.Instance.LoadRawFile($"Hotfix.pdb");
+                assBytes = MonoResComponent.Instance.LoadAsset<TextAsset>($"Hotfix.dll").bytes;
+                pdbBytes = MonoResComponent.Instance.LoadAsset<TextAsset>($"Hotfix.pdb").bytes;
             }
 			else
 			{
