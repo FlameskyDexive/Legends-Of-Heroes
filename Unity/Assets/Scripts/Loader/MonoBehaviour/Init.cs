@@ -10,7 +10,7 @@ namespace ET
 	public class Init: MonoBehaviour
     {
         private bool initCode = false;
-        public EPlayMode PlayMode;
+        public EPlayMode playMode;
         
         private void Start()
 		{
@@ -39,10 +39,10 @@ namespace ET
 
         private async ETTask StartAsync()
         {
-            await MonoResComponent.Instance.InitAsync(PlayMode);
+            await MonoResComponent.Instance.InitAsync(playMode);
             World.Instance.AddSingleton<TimeInfo>();
             World.Instance.AddSingleton<FiberManager>();
-            World.Instance.AddSingleton<CodeLoader>().Start();
+            World.Instance.AddSingleton<CodeLoader>().Start(playMode);
             this.initCode = true;
 
         }
