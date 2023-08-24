@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace ET.Client
 {
+	
 	[FriendOf(typeof(DlgLoginViewComponent))]
 	[EntitySystemOf(typeof(DlgLoginViewComponent))]
 	public static partial class DlgLoginViewComponentSystem
@@ -11,15 +12,11 @@ namespace ET.Client
 		public static void Awake(this DlgLoginViewComponent self)
 		{
 			self.uiTransform = self.GetParent<UIBaseWindow>().uiTransform;
-			self.Fiber().Info($"11111:{self.uiTransform?.name}");
 		}
-
-        [EntitySystem]
-        public static void Destroy(this DlgLoginViewComponent self)
+		[EntitySystem]
+		public static void Destroy(this DlgLoginViewComponent self)
 		{
-		 
 			self.DestroyWidget();
 		}
-
 	}
 }

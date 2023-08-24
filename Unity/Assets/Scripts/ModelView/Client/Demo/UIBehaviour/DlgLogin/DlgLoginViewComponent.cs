@@ -13,7 +13,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-			        this.Fiber().Error("uiTransform is null.");
+     				this.Root().Fiber.Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_LoginButton == null )
@@ -30,7 +30,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-			        this.Fiber().Error("uiTransform is null.");
+     				this.Root().Fiber.Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_LoginImage == null )
@@ -47,7 +47,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-			        this.Fiber().Error("uiTransform is null.");
+     				this.Root().Fiber.Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_AccountImage == null )
@@ -64,7 +64,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-			        this.Fiber().Error("uiTransform is null.");
+     				this.Root().Fiber.Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_AccountInputField == null )
@@ -81,7 +81,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-			        this.Fiber().Error("uiTransform is null.");
+     				this.Root().Fiber.Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_PasswordImage == null )
@@ -98,7 +98,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-			        this.Fiber().Error("uiTransform is null.");
+     				this.Root().Fiber.Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_PasswordInputField == null )
