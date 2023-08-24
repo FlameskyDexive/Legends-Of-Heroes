@@ -38,6 +38,14 @@
         <Link>ETTask/%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
 
+    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\Box2DSharp\**\*.cs">
+        <Link>Box2DSharp/%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
+    <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\LitJson\**\*.cs">
+        <Link>LitJson/%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Compile>
+
     <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\Kcp\**\*.cs">
       <Link>Kcp/%(RecursiveDir)%(FileName)%(Extension)</Link>
     </Compile>
