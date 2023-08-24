@@ -7,49 +7,47 @@ using YooAsset;
 
 namespace ET
 {
-	public class Init: MonoBehaviour
+    public class Init : MonoBehaviour
     {
         private bool initCode = false;
-        public EPlayMode PlayMode;
-        
+        public EPlayMode playMode;
+
         private void Start()
-		{
-			DontDestroyOnLoad(gameObject);
-			
-			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
-			{
-				Log.Error(e.ExceptionObject.ToString());
-			};
+        {
+            DontDestroyOnLoad(gameObject);
 
-			// 命令行参数
-			string[] args = "".Split(" ");
-			Parser.Default.ParseArguments<Options>(args)
-				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-				.WithParsed((o)=>World.Instance.AddSingleton(o));
-			Options.Instance.StartConfig = $"StartConfig/Localhost";
-			
-			World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
-			ETTask.ExceptionHandler += Log.Error;
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                Log.Error(e.ExceptionObject.ToString());
+            };
 
-            World.Instance.AddSingleton<TimeInfo>();
-            World.Instance.AddSingleton<FiberManager>();
+            // 命令行参数
+            string[] args = "".Split(" ");
+            Parser.Default.ParseArguments<Options>(args)
+                .WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
+                .WithParsed((o) => World.Instance.AddSingleton(o));
+            Options.Instance.StartConfig = $"StartConfig/Localhost";
+
+            World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
+            ETTask.ExceptionHandler += Log.Error;
 
             this.StartAsync().Coroutine();
         }
 
         private async ETTask StartAsync()
         {
-            await MonoResComponent.Instance.InitAsync(PlayMode);
+            await MonoResComponent.Instance.InitAsync(playMode);
             World.Instance.AddSingleton<TimeInfo>();
             World.Instance.AddSingleton<FiberManager>();
-            World.Instance.AddSingleton<CodeLoader>().Start();
+            World.Instance.AddSingleton<CodeLoader>().Start(playMode);
             this.initCode = true;
 
         }
 
         public void Restart()
         {
-            World.Instance.Dispose(); AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            World.Instance.Dispose(); 
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
             {
                 Log.Error(e.ExceptionObject.ToString());
             };
@@ -69,24 +67,24 @@ namespace ET
 
         private void Update()
         {
-	        if (!this.initCode)
-		        return;
-			TimeInfo.Instance.Update();
-			FiberManager.Instance.Update();
-		}
+            if (!this.initCode)
+                return;
+            TimeInfo.Instance.Update();
+            FiberManager.Instance.Update();
+        }
 
-		private void LateUpdate()
-		{
-			if (!this.initCode)
-				return;
-			FiberManager.Instance.LateUpdate();
-		}
+        private void LateUpdate()
+        {
+            if (!this.initCode)
+                return;
+            FiberManager.Instance.LateUpdate();
+        }
 
-		private void OnApplicationQuit()
-		{
-			World.Instance.Dispose();
-		}
-	}
-	
-	
+        private void OnApplicationQuit()
+        {
+            World.Instance.Dispose();
+        }
+    }
+
+
 }
