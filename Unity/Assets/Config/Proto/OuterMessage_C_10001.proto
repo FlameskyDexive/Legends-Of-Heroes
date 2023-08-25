@@ -59,6 +59,7 @@ message UnitInfo
 	Unity.Mathematics.float3 Forward = 5;
 	map<int32, int64> KV = 6;
 	MoveInfo MoveInfo = 7;
+	map<int32, int32> Skills = 9; //技能
 }
 
 message M2C_CreateUnits // IMessage

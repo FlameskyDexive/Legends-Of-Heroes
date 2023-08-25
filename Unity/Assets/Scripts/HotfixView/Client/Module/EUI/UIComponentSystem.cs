@@ -375,7 +375,7 @@ namespace ET.Client
 
         /// <summary>
         /// 根据窗口Id获取UIBaseWindow
-        /// </summary>
+        /// </summary>enti
         /// <param name="self"></param>
         /// <param name="id"></param>
         /// <returns></returns>

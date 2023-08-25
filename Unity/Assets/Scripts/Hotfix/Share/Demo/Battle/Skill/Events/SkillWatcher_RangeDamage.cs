@@ -12,7 +12,7 @@ namespace ET
 	[SkillWatcher(ESkillEventType.RangeDamage)]
 	public class SkillWatcher_RangeDamage : ISkillWatcher
 	{
-		public void Run(SkillEvent skillEvent, EventType.SkillEventType args)
+		public void Run(SkillEvent skillEvent, SkillEventType args)
 		{
             Unit owner = args.owner;
             owner.Fiber().Log.Info($"enter range damage");

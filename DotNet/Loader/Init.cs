@@ -5,8 +5,10 @@ using CommandLine;
 namespace ET
 {
 	public class Init
-	{
-		public void Start()
+    {
+        [StaticField]
+        private FixedUpdate fixedUpdate;
+        public void Start()
 		{
 			try
 			{
@@ -24,6 +26,10 @@ namespace ET
                 World.Instance.AddSingleton<TimeInfo>();
                 World.Instance.AddSingleton<FiberManager>();
 
+
+                fixedUpdate = new FixedUpdate();
+                fixedUpdate.UpdateCallback = FixedUpdate;
+
                 World.Instance.AddSingleton<CodeLoader>();
 			}
 			catch (Exception e)
@@ -37,10 +43,16 @@ namespace ET
 			TimeInfo.Instance.Update();
 			FiberManager.Instance.Update();
 		}
+        
+        public static void FixedUpdate()
+        {
+            FiberManager.Instance.FixedUpdate();
+        }
 
-		public void LateUpdate()
+        public void LateUpdate()
 		{
 			FiberManager.Instance.LateUpdate();
 		}
+        
 	}
 }

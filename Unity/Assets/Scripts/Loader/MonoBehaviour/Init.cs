@@ -39,6 +39,7 @@ namespace ET
             await MonoResComponent.Instance.InitAsync(playMode);
             World.Instance.AddSingleton<TimeInfo>();
             World.Instance.AddSingleton<FiberManager>();
+            World.Instance.AddSingleton<ClientFixedUpdate>();
             World.Instance.AddSingleton<CodeLoader>().Start(playMode);
             this.initCode = true;
 
@@ -69,6 +70,8 @@ namespace ET
         {
             if (!this.initCode)
                 return;
+            //客户端的FixedUpdate在此驱动
+            ClientFixedUpdate.Instance.Update();
             TimeInfo.Instance.Update();
             FiberManager.Instance.Update();
         }

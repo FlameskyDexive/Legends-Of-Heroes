@@ -9,21 +9,22 @@ namespace ET
 	[FriendOf(typeof(SkillEvent))]
 	public class SkillWatcher_Bullet : ISkillWatcher
 	{
-		public void Run(SkillEvent skillEvent, EventType.SkillEventType args)
+		public void Run(SkillEvent skillEvent, SkillEventType args)
 		{
             Unit owner = args.owner;
             owner.Fiber().Log.Info($"emit a bullet");
             if (owner == null)
                 return;
 #if DOTNET
-			Scene scene = skillEvent.DomainScene();
-            Unit bullet = Server.UnitFactory.CreateBullet(scene, IdGenerater.Instance.GenerateUnitId(skillEvent.DomainZone()), skillEvent.Skill, -1000, skillEvent.EventData);
+			Scene scene = skillEvent.Scene();
+            Unit bullet = Server.UnitFactory.CreateBullet(scene, IdGenerater.Instance.GenerateId(), skillEvent.Skill, -1000, skillEvent.EventData);
 
             // 通知客户端创建子弹Unit
             M2C_CreateUnits m2CCreateUnits = new M2C_CreateUnits(){ Units = new List<UnitInfo>()};
             UnitInfo info = Server.UnitHelper.CreateUnitInfo(bullet);
             m2CCreateUnits.Units.Add(info);
-            Server.MessageHelper.SendToClient(owner, m2CCreateUnits);
+            Server.MapMessageHelper.SendToClient(owner, m2CCreateUnits);
+            // Server.MessageHelper.SendToClient(owner, m2CCreateUnits);
             // this.TimeOutDestroyBullet(bullet, scene).Coroutine();
 #endif
         }

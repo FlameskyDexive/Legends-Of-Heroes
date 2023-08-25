@@ -2,6 +2,6 @@
 {
 	public interface ISkillWatcher
 	{
-		void Run(SkillEvent skillEvent, EventType.SkillEventType args);
+		void Run(SkillEvent skillEvent, SkillEventType args);
 	}
 }

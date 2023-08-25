@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using System.Collections.Generic;
+using Unity.Mathematics;
 
 namespace ET.Client
 {
@@ -31,8 +32,21 @@ namespace ET.Client
 	        }
 
 	        unit.AddComponent<ObjectWait>();
+            if (unitInfo.Skills?.Count > 0)
+            {
+                using ListComponent<int> list = ListComponent<int>.Create();
+                foreach (int skillsKey in unitInfo.Skills.Keys)
+                {
+                    list.Add(skillsKey);
+                }
+                unit.AddComponent<BattleUnitComponent, List<int>>(list);
+            }
+            else
+            {
+                unit.AddComponent<BattleUnitComponent>();
+            }
 
-	        unit.AddComponent<XunLuoPathComponent>();
+            // unit.AddComponent<XunLuoPathComponent>();
 	        
 	        EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreate() {Unit = unit});
             return unit;

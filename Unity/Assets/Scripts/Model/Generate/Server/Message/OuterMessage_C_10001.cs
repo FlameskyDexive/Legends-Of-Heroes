@@ -234,6 +234,9 @@ namespace ET
 		[MemoryPackOrder(6)]
 		public MoveInfo MoveInfo { get; set; }
 
+		[MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
+		[MemoryPackOrder(8)]
+		public Dictionary<int, int> Skills { get; set; } = new();
 		public override void Dispose() 
 		{
 			if (!this.IsFromPool) return;
@@ -244,6 +247,7 @@ namespace ET
 			this.Forward = default;
 			this.KV.Clear();
 			this.MoveInfo = default;
+			this.Skills.Clear();
 			
 			ObjectPool.Instance.Recycle(this); 
 		}

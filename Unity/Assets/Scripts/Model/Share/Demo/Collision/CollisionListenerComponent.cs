@@ -4,7 +4,6 @@ using Box2DSharp.Collision.Collider;
 using Box2DSharp.Collision.Shapes;
 using Box2DSharp.Dynamics;
 using Box2DSharp.Dynamics.Contacts;
-using ET.EventType;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.Options;
 namespace ET
