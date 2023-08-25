@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CodeMode: 1
   BuildType: 1
-  AppType: 8
+  AppType: 7
   ModelVersion: 1
   HotFixVersion: 1

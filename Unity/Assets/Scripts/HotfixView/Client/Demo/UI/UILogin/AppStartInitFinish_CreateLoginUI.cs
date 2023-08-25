@@ -4,8 +4,9 @@
 	public class AppStartInitFinish_CreateLoginUI: AEvent<Scene, AppStartInitFinish>
 	{
 		protected override async ETTask Run(Scene root, AppStartInitFinish args)
-		{
-			// await UIHelper.Create(root, UIType.UILogin, UILayer.Mid);
-		}
+        {
+            await root.GetComponent<UIComponent>().ShowWindowAsync(WindowID.WindowID_Login);
+            // await UIHelper.Create(root, UIType.UILogin, UILayer.Mid);
+        }
 	}
 }
