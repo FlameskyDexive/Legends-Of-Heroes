@@ -439,7 +439,7 @@ public partial class UICodeSpawner
 				
 				strBuilder.AppendLine("     			if (this.uiTransform == null)");
 				strBuilder.AppendLine("     			{");
-				strBuilder.AppendLine("     				Log.Error(\"uiTransform is null.\");");
+				strBuilder.AppendLine("     				this.Root().Fiber.Log.Error(\"uiTransform is null.\");");
 				strBuilder.AppendLine("     				return null;");
 				strBuilder.AppendLine("     			}");
 
@@ -586,7 +586,7 @@ public partial class UICodeSpawner
 			
 	    strBuilder.AppendLine("     			if (this.uiTransform == null)");
 	    strBuilder.AppendLine("     			{");
-	    strBuilder.AppendLine("     				Log.Error(\"uiTransform is null.\");");
+	    strBuilder.AppendLine("     				this.Root().Fiber.Log.Error(\"uiTransform is null.\");");
 	    strBuilder.AppendLine("     				return null;");
 	    strBuilder.AppendLine("     			}");
 	    
