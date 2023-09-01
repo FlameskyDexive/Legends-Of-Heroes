@@ -1,0 +1,67 @@
+syntax = "proto3";
+package ET;
+
+// 请求匹配
+//ResponseType Match2G_StateSyncMatch
+message G2Match_StateSyncMatch // IRequest
+{
+	int32 RpcId = 1;
+	
+	int64 Id = 2;
+}
+
+message Match2G_StateSyncMatch // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+//ResponseType Map2Match_GetRoom
+message Match2Map_StateSyncGetRoom // IRequest
+{
+	int32 RpcId = 1;
+	repeated int64 PlayerIds = 2;
+}
+
+message Map2Match_StateSyncGetRoom // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	
+	// 房间的ActorId
+	ActorId ActorId = 4;
+}
+
+//ResponseType Room2G_StateSyncReconnect
+message G2Room_StateSyncReconnect // IRequest
+{
+	int32 RpcId = 1;
+	int64 PlayerId = 2;
+}
+
+message Room2G_StateSyncReconnect // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+
+	int64 StartTime = 4;
+	repeated UnitInfo UnitInfos = 5;
+	int32 Frame = 6;
+}
+
+//ResponseType Room2RoomManager_StateSyncInit
+message RoomManager2Room_StateSynInit // IRequest
+{
+	int32 RpcId = 1;
+	repeated int64 PlayerIds = 2;
+}
+
+message Room2RoomManager_StateSyncInit // IResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}

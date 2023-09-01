@@ -1,0 +1,56 @@
+syntax = "proto3";
+package ET;
+
+//ResponseType G2C_StateSyncMatch
+message C2G_StateSyncMatch // ISessionRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_StateSyncMatch // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+// 匹配成功，通知客户端切换场景
+message Match2G_StateSyncNotifyMatchSuccess // IMessage
+{
+	int32 RpcId = 1;
+	// 房间的ActorId
+	ActorId ActorId = 2;
+}
+
+// 客户端通知房间切换场景完成
+message C2Room_StateSyncChangeSceneFinish // IRoomMessage
+{
+	int64 PlayerId = 1;
+}
+
+message StateSyncUnitInfo
+{
+	int64 PlayerId = 1;
+	float3 Position = 2;
+	float3 Rotation = 3;
+}
+
+// 房间通知客户端进入战斗
+message Room2C_StateSyncStart // IMessage
+{
+	int64 StartTime = 1;
+	repeated StateSyncUnitInfo UnitInfo = 2;
+}
+
+message Room2C_StateSynAdjustUpdateTime // IMessage
+{
+	int32 DiffTime = 1;
+}
+
+message G2C_StateSynReconnect // IMessage
+{
+	int64 StartTime = 1;
+	repeated StateSyncUnitInfo UnitInfos = 2;
+	int32 Frame = 3;
+}
+

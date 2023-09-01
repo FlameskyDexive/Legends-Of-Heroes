@@ -78,6 +78,7 @@ namespace ET
             sb.Append("using ET;\n");
             sb.Append("using MemoryPack;\n");
             sb.Append("using System.Collections.Generic;\n");
+            sb.Append("using Unity.Mathematics;\n");
             sb.Append($"namespace {ns}\n");
             sb.Append("{\n");
             

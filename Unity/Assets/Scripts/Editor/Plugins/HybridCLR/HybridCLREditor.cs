@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using HybridCLR.Editor;
+using LitJson;
 using UnityEditor;
 
 namespace ET
@@ -17,17 +19,19 @@ namespace ET
             {
                 Directory.Delete(toDir, true);
             }
+
             Directory.CreateDirectory(toDir);
             AssetDatabase.Refresh();
-            
+
+            string aotDllsPath = "Assets/Resources/AotDlls.json";
             foreach (string aotDll in HybridCLRSettings.Instance.patchAOTAssemblies)
             {
                 File.Copy(Path.Combine(fromDir, aotDll), Path.Combine(toDir, $"{aotDll}.bytes"), true);
             }
-            
-            // 设置ab包
-            AssetImporter assetImporter = AssetImporter.GetAtPath(toDir);
-            assetImporter.assetBundleName = "AotDlls.unity3d";
+
+            string json = JsonMapper.ToJson(HybridCLRSettings.Instance.patchAOTAssemblies.ToList());
+            File.WriteAllText(aotDllsPath, json);
+
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }

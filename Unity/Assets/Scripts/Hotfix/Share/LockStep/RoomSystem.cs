@@ -11,7 +11,11 @@ namespace ET
         {
             return entity.IScene as Room;
         }
-        
+
+        public static void Init(this Room self, List<StateSyncUnitInfo> unitInfos, long startTime, int frame = -1)
+        {
+            
+        }
         public static void Init(this Room self, List<LockStepUnitInfo> unitInfos, long startTime, int frame = -1)
         {
             self.StartTime = startTime;

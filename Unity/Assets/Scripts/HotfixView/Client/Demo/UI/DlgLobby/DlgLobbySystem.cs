@@ -66,7 +66,8 @@ namespace ET.Client
 		/// <returns></returns>
 		public static async ETTask OnSoloClickHandler(this DlgLobby self)
         {
-            self.Root().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Room);
+            // self.Root().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Room);
+            EnterMapHelper.StateSyncMatch(self.Fiber()).Coroutine();
         }
 		public static async ETTask OnBackToLoginHandler(this DlgLobby self)
         {

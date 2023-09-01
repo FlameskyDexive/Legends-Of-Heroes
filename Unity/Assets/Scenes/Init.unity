@@ -437,6 +437,7 @@ GameObject:
   - component: {fileID: 575235020}
   - component: {fileID: 575235023}
   - component: {fileID: 575235024}
+  - component: {fileID: 575235025}
   m_Layer: 0
   m_Name: Global
   m_TagString: Untagged
@@ -575,6 +576,49 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &575235025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 575235018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f05eaceeebe870a4595e51f998ed518b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Skin: {fileID: 0}
+  m_ActiveWindow: 0
+  m_ShowFullWindow: 0
+  m_ConsoleWindow:
+    m_LockScroll: 0
+    m_MaxLine: 100
+    m_InfoFilter: 1
+    m_WarningFilter: 1
+    m_ErrorFilter: 1
+    m_FatalFilter: 1
+    m_saveLog: 0
+    m_InfoColor:
+      serializedVersion: 2
+      rgba: 4294967295
+    m_WarningColor:
+      serializedVersion: 2
+      rgba: 4278512639
+    m_ErrorColor:
+      serializedVersion: 2
+      rgba: 4278190335
+    m_FatalColor:
+      serializedVersion: 2
+      rgba: 4281545650
+    searchImage: {fileID: 0}
+    barImage: {fileID: 0}
+    barActiveImage: {fileID: 0}
+    searchContent:
+      m_Text: 
+      m_Image: {fileID: 0}
+      m_Tooltip: 
+    size: {x: 32, y: 32}
 --- !u!1 &630054495
 GameObject:
   m_ObjectHideFlags: 0
