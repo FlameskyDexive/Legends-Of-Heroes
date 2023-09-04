@@ -6,28 +6,28 @@ using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
     [Config]
-    public partial class StartProcessConfigCategory : Singleton<StartProcessConfigCategory>, IMerge
+    public partial class PlayModeConfigCategory : Singleton<PlayModeConfigCategory>, IMerge
     {
         [BsonElement]
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        private Dictionary<int, StartProcessConfig> dict = new();
+        private Dictionary<int, PlayModeConfig> dict = new();
 		
         public void Merge(object o)
         {
-            StartProcessConfigCategory s = o as StartProcessConfigCategory;
+            PlayModeConfigCategory s = o as PlayModeConfigCategory;
             foreach (var kv in s.dict)
             {
                 this.dict.Add(kv.Key, kv.Value);
             }
         }
 		
-        public StartProcessConfig Get(int id)
+        public PlayModeConfig Get(int id)
         {
-            this.dict.TryGetValue(id, out StartProcessConfig item);
+            this.dict.TryGetValue(id, out PlayModeConfig item);
 
             if (item == null)
             {
-                throw new Exception($"配置找不到，配置表名: {nameof (StartProcessConfig)}，配置id: {id}");
+                throw new Exception($"配置找不到，配置表名: {nameof (PlayModeConfig)}，配置id: {id}");
             }
 
             return item;
@@ -38,12 +38,12 @@ namespace ET
             return this.dict.ContainsKey(id);
         }
 
-        public Dictionary<int, StartProcessConfig> GetAll()
+        public Dictionary<int, PlayModeConfig> GetAll()
         {
             return this.dict;
         }
 
-        public StartProcessConfig GetOne()
+        public PlayModeConfig GetOne()
         {
             if (this.dict == null || this.dict.Count <= 0)
             {
@@ -53,14 +53,18 @@ namespace ET
         }
     }
 
-	public partial class StartProcessConfig: ProtoObject, IConfig
+	public partial class PlayModeConfig: ProtoObject, IConfig
 	{
 		/// <summary>Id</summary>
 		public int Id { get; set; }
-		/// <summary>所属机器</summary>
-		public int MachineId { get; set; }
-		/// <summary>外网端口</summary>
-		public int Port { get; set; }
+		/// <summary>Type</summary>
+		public int PlayModeType { get; set; }
+		/// <summary>名字</summary>
+		public string Name { get; set; }
+		/// <summary>描述</summary>
+		public string Desc { get; set; }
+		/// <summary>房间最大玩家数量</summary>
+		public int RoomMaxPlayer { get; set; }
 
 	}
 }

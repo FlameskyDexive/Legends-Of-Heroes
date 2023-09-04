@@ -19,7 +19,7 @@ namespace ET
         {
             SkillConfigCategory s = o as SkillConfigCategory;
             
-            foreach (SkillConfig config in list)
+            foreach (SkillConfig config in s.list)
             {
                 try
                 {
