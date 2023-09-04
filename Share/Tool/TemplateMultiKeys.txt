@@ -19,7 +19,7 @@ namespace ET
         {
             (ConfigName)Category s = o as (ConfigName)Category;
             
-            foreach ((ConfigName) config in list)
+            foreach ((ConfigName) config in s.list)
             {
                 try
                 {
