@@ -32,7 +32,7 @@ namespace ET.Server
 
             room.Init(room2CStart.UnitInfo, room2CStart.StartTime);
 
-            room.AddComponent<LSServerUpdater>();
+            // room.AddComponent<LSServerUpdater>();
 
             RoomMessageHelper.BroadCast(room, room2CStart);
         }

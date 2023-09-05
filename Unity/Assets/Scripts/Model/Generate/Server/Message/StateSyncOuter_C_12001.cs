@@ -1,6 +1,7 @@
 using ET;
 using MemoryPack;
 using System.Collections.Generic;
+using Unity.Mathematics;
 namespace ET
 {
 	[ResponseType(nameof(G2C_StateSyncMatch))]
