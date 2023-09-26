@@ -1,11 +1,11 @@
 # Legends-Of-Heroes
-English: please use your browser to translate to english
+English: please translate readme by your browser
 
 一个LOL风格的球球大作战游戏，基于ET，使用状态同步
 ![loh22023532242551](https://user-images.githubusercontent.com/8274346/235951176-f96efa8f-d3e5-4089-a1c9-56643859b487.gif)
 
 ## Main
-#### 基于C#双端框架[ET](https://github.com/egametang/ET) 注意：当前Master正在同步ET8升级修改，跑Demo请切换到ET7.2+分支。
+#### 基于C#双端框架[ET](https://github.com/egametang/ET) 注意：当前Master正在同步ET8升级修改, ET8基础框架已经移植完毕，剩余开放pvp战斗部分计划重写，尚未完成，跑Demo请切换到ET7.2+分支。
 # 觉得项目不错的话麻烦右上角给个star哈.
 #### 此游戏为ET的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
