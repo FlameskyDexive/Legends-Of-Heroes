@@ -14,16 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   k_AssetVersion: 3
   m_RenderingLayerNames:
-  - Default
-  m_ValidRenderingLayers: 1
-  lightLayerName0: 
-  lightLayerName1: 
-  lightLayerName2: 
-  lightLayerName3: 
-  lightLayerName4: 
-  lightLayerName5: 
-  lightLayerName6: 
-  lightLayerName7: 
+  - Light Layer default
+  - Light Layer 1
+  - Light Layer 2
+  - Light Layer 3
+  - Light Layer 4
+  - Light Layer 5
+  - Light Layer 6
+  - Light Layer 7
+  m_ValidRenderingLayers: 255
+  lightLayerName0: Light Layer default
+  lightLayerName1: Light Layer 1
+  lightLayerName2: Light Layer 2
+  lightLayerName3: Light Layer 3
+  lightLayerName4: Light Layer 4
+  lightLayerName5: Light Layer 5
+  lightLayerName6: Light Layer 6
+  lightLayerName7: Light Layer 7
   m_StripDebugVariants: 1
   m_StripUnusedPostProcessingVariants: 0
   m_StripUnusedVariants: 1

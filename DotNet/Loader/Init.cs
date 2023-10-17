@@ -5,10 +5,8 @@ using CommandLine;
 namespace ET
 {
 	public class Init
-    {
-        [StaticField]
-        private FixedUpdate fixedUpdate;
-        public void Start()
+	{
+		public void Start()
 		{
 			try
 			{
@@ -23,14 +21,10 @@ namespace ET
 						.WithParsed((o)=>World.Instance.AddSingleton(o));
 				World.Instance.AddSingleton<Logger>().Log = new NLogger(Options.Instance.AppType.ToString(), Options.Instance.Process, 0, "../Config/NLog/NLog.config");
 				ETTask.ExceptionHandler += Log.Error;
-                World.Instance.AddSingleton<TimeInfo>();
-                World.Instance.AddSingleton<FiberManager>();
+				World.Instance.AddSingleton<TimeInfo>();
+				World.Instance.AddSingleton<FiberManager>();
 
-
-                fixedUpdate = new FixedUpdate();
-                fixedUpdate.UpdateCallback = FixedUpdate;
-
-                World.Instance.AddSingleton<CodeLoader>();
+				World.Instance.AddSingleton<CodeLoader>();
 			}
 			catch (Exception e)
 			{
@@ -43,16 +37,10 @@ namespace ET
 			TimeInfo.Instance.Update();
 			FiberManager.Instance.Update();
 		}
-        
-        public static void FixedUpdate()
-        {
-            FiberManager.Instance.FixedUpdate();
-        }
 
-        public void LateUpdate()
+		public void LateUpdate()
 		{
 			FiberManager.Instance.LateUpdate();
 		}
-        
 	}
 }

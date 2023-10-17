@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using UnityEditor.PackageManager.UI;
 
 namespace ET.Client
 {

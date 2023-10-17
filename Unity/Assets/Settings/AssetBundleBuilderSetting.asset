@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a455fdd5d5550ba4b9e7ef5437c80a7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 09788b4733bab2d4792fdd5d28e7653c, type: 3}
   m_Name: AssetBundleBuilderSetting
   m_EditorClassIdentifier: 
-  BuildPipeline: 0
-  BuildMode: 0
-  BuildPackage: 
+  BuildPipeline: 1
+  BuildMode: 1
+  BuildPackage: DefaultPackage
   CompressOption: 2
-  OutputNameStyle: 1
-  CopyBuildinFileOption: 0
+  OutputNameStyle: 4
+  CopyBuildinFileOption: 1
   CopyBuildinFileTags: 
-  EncyptionClassName: 
+  EncyptionClassName: EncryptionNone

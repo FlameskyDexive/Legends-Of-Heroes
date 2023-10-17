@@ -20,6 +20,8 @@ namespace ET.Client
             Scene root = fiber.Root;
             
             IPEndPoint realAddress = NetworkHelper.ToIPEndPoint(self.GetParent<Session>().RemoteAddress);
+            NetComponent netComponent = root.GetComponent<NetComponent>();
+            
             while (true)
             {
                 if (self.InstanceId != instanceId)
@@ -48,16 +50,16 @@ namespace ET.Client
                     (uint localConn, uint remoteConn) = session.AService.GetChannelConn(sessionId);
                     
                     
-                    fiber.Info($"get recvLocalConn start: {root.Id} {realAddress} {localConn} {remoteConn}");
+                    Log.Info($"get recvLocalConn start: {root.Id} {realAddress} {localConn} {remoteConn}");
 
-                    (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(root, realAddress, localConn, remoteConn);
+                    (uint recvLocalConn, IPEndPoint routerAddress) = await RouterHelper.GetRouterAddress(netComponent, realAddress, localConn, remoteConn);
                     if (recvLocalConn == 0)
                     {
-                        fiber.Error($"get recvLocalConn fail: {root.Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
+                        Log.Error($"get recvLocalConn fail: {root.Id} {routerAddress} {realAddress} {localConn} {remoteConn}");
                         continue;
                     }
                     
-                    fiber.Info($"get recvLocalConn ok: {root.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
+                    Log.Info($"get recvLocalConn ok: {root.Id} {routerAddress} {realAddress} {recvLocalConn} {localConn} {remoteConn}");
 
                     realAddress = routerAddress;
                     session.RemoteAddress = realAddress.ToString();
@@ -68,7 +70,7 @@ namespace ET.Client
                 }
                 catch (Exception e)
                 {
-                    fiber.Error(e);
+                    Log.Error(e);
                 }
             }
         }

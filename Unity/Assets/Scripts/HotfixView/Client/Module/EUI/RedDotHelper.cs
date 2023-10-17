@@ -22,7 +22,7 @@ namespace ET
 
             if (!string.IsNullOrEmpty(parent) && !RedDotComponent.RedDotNodeParentsDict.ContainsKey(parent))
             {
-                ZoneScene.Fiber.Warning("Runtime动态添加的红点，其父节点是新节点： " + parent);
+                Log.Warning("Runtime动态添加的红点，其父节点是新节点： " + parent);
             }
 
             RedDotComponent.AddRedDotNode(parent, target, isNeedShowNum);
@@ -151,7 +151,7 @@ namespace ET
             RedDotComponent redDotComponent = ZoneScene.GetComponent<RedDotComponent>();
             if (redDotComponent == null)
             {
-                ZoneScene.Fiber().Error("redDotComponent is not exist!");
+                Log.Error("redDotComponent is not exist!");
                 return false;
             }
 

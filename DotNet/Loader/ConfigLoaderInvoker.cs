@@ -38,12 +38,11 @@ namespace ET
     }
     
     [Invoke]
-    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, ETTask<byte[]>>
+    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, byte[]>
     {
-        public override async ETTask<byte[]> Handle(ConfigLoader.GetOneConfigBytes args)
+        public override byte[] Handle(ConfigLoader.GetOneConfigBytes args)
         {
             byte[] configBytes = File.ReadAllBytes($"../Config/Excel/s/{args.ConfigName}.bytes");
-            await ETTask.CompletedTask;
             return configBytes;
         }
     }
