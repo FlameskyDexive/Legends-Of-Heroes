@@ -88,14 +88,14 @@ namespace ET.Client
         
         public static void OnClickSkill1(this DlgBattle self)
         {
-            self.Root().Fiber.Log.Info($"click skil1, {self.Skill1 == null}");
+            Log.Info($"click skil1, {self.Skill1 == null}");
             if (self.Skill1 == null || self.Skill1.IsInCd())
                 return;
             self.Root().GetComponent<OperaComponent>()?.OnClickSkill1();
         }
         public static void OnClickSkill2(this DlgBattle self)
         {
-            self.Root().Fiber.Log.Info($"click skil2, {self.Skill2 == null}");
+            Log.Info($"click skil2, {self.Skill2 == null}");
             if (self.Skill2 == null || self.Skill2.IsInCd())
                 return;
             self.Root().GetComponent<OperaComponent>()?.OnClickSkill2();

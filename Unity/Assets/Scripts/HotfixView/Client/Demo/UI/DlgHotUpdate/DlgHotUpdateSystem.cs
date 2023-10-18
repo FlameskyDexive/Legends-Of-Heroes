@@ -24,7 +24,7 @@ namespace ET.Client
     {
         protected override async ETTask Run(Scene scene, OnPatchDownlodFailed a)
         {
-            scene.Fiber.Log.Error($"下载资源失败: {a.FileName} {a.Error}");
+            Log.Error($"下载资源失败: {a.FileName} {a.Error}");
             await ETTask.CompletedTask;
         }
     }

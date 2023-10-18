@@ -53,7 +53,7 @@ namespace ET.Client
         public static void OnClickSkill1(this OperaComponent self)
         {
             //可在此处检测技能是否可释放（蓝量、CD、僵直等判定）
-            self.Root().Fiber.Log.Info($"press skill1");
+            Log.Info($"press skill1");
             // OperateInfo operateInfo = new OperateInfo() { OperateType = (int)EOperateType.Skill1, InputType = (int)EInputType.KeyDown };
             // self.OperateInfos.Add(operateInfo);
         }
@@ -61,14 +61,14 @@ namespace ET.Client
         public static void OnClickSkill2(this OperaComponent self)
         {
             //可在此处检测技能是否可释放（蓝量、CD、僵直等判定）
-            self.Root().Fiber.Log.Info($"press skill2");
+            Log.Info($"press skill2");
             // OperateInfo operateInfo = new OperateInfo() { OperateType = (int)EOperateType.Skill2, InputType = (int)EInputType.KeyDown };
             // self.OperateInfos.Add(operateInfo);
         }
         
         public static void OnMove(this OperaComponent self, Vector2 v2)
         {
-            self.Root().Fiber.Log.Info($"press joystick: {v2}");
+            Log.Info($"press joystick: {v2}");
             // C2M_JoystickMove c2mJoystickMove = new C2M_JoystickMove() { MoveForward = new float3(v2.x, 0, v2.y) };
             // self.ClientScene().GetComponent<PlayerSessionComponent>().Session.Send(c2mJoystickMove);
             // OperateInfo operateInfo = new OperateInfo(){OperateType = (int)EOperateType.Move, InputType = (int)EInputType.KeyDown, Vec3 = new float3(v2.x, 0, v2.y) };

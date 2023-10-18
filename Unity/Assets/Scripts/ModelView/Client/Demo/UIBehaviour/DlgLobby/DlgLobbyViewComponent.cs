@@ -13,7 +13,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_EGBackGroundRectTransform == null )
@@ -30,7 +30,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_EnterMapButton == null )
@@ -47,7 +47,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_EnterMapImage == null )
@@ -64,7 +64,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_AvatarEUIButton == null )
@@ -81,7 +81,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_AvatarEUIImage == null )
@@ -98,7 +98,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_PlayerNameText == null )
@@ -115,7 +115,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_SoloButton == null )
@@ -132,7 +132,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_SoloImage == null )
@@ -149,7 +149,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_BackToLoginButton == null )
@@ -166,7 +166,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_BackToLoginImage == null )

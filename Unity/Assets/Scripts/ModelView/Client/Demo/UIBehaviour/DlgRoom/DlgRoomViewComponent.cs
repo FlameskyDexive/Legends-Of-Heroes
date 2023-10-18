@@ -13,7 +13,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_ConfirmButton == null )
@@ -30,7 +30,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_ConfirmImage == null )
@@ -47,7 +47,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_ELoopScrollList_RolesLoopHorizontalScrollRect == null )
@@ -64,7 +64,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_CancelButton == null )
@@ -81,7 +81,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_CancelImage == null )
@@ -98,7 +98,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_ECountDownText == null )
@@ -115,7 +115,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_ETitleText == null )

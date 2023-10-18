@@ -33,7 +33,7 @@ namespace ET.Server
         }
         public static Unit CreateBullet(Scene scene, long id, Skill ownerSkill, int config, int[] bulletData)
         {
-            scene.Fiber.Log.Info($"create bullet");
+            Log.Info($"create bullet");
             UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
             Unit owner = ownerSkill.Unit;
             Unit bullet = unitComponent.AddChildWithId<Unit, int>(id, config);

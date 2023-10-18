@@ -13,7 +13,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_TxtLoadingText == null )
@@ -30,7 +30,7 @@ namespace ET.Client
      		{
      			if (this.uiTransform == null)
      			{
-     				this.Root().Fiber.Log.Error("uiTransform is null.");
+     				Log.Error("uiTransform is null.");
      				return null;
      			}
      			if( this.m_E_ImgLoadingImage == null )
