@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using YooAsset;
 
 namespace ET.Client
 {
@@ -147,9 +148,7 @@ namespace ET.Client
 
         public static GameObject GetGameObjectByResType( string poolName)
         {
-            GameObject pb = null;
-            Dictionary<string, UnityEngine.Object>  assetDict = AssetsBundleHelper.LoadBundle(poolName + ".unity3d");
-            pb = assetDict[poolName] as GameObject;
+            GameObject pb = ResourcesComponent.Instance.LoadAssetSync<GameObject>( $"Assets/Bundles/UI/Item/{poolName}.prefab");
             return pb;
         }
     }

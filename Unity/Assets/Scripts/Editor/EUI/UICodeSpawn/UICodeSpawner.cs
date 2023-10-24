@@ -73,7 +73,7 @@ public partial class UICodeSpawner
     static void SpawnCodeForDlg(GameObject gameObject)
     {
         string strDlgName  = gameObject.name;
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UI/" + strDlgName ;
+        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UI/" + strDlgName ;
         
         
         if ( !System.IO.Directory.Exists(strFilePath) )
@@ -81,7 +81,7 @@ public partial class UICodeSpawner
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
         
-	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UI/" + strDlgName + "/" + strDlgName + "System.cs";
+	    strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UI/" + strDlgName + "/" + strDlgName + "System.cs";
         if(System.IO.File.Exists(strFilePath))
         {
             Debug.LogError("已存在 " + strDlgName + "System.cs,将不会再次生成。");
@@ -136,7 +136,7 @@ public partial class UICodeSpawner
     static void SpawnWindowIdCode(GameObject gameObject)
     {
 	    string strDlgName = gameObject.name;
-	    string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Plugins/EUI/WindowId.cs";
+	    string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Plugins/EUI/WindowId.cs";
 	 
 	    
 	    if(!File.Exists(strFilePath))
@@ -174,7 +174,7 @@ public partial class UICodeSpawner
 	static void SpawnCodeForDlgEventHandle(GameObject gameObject)
     {
         string strDlgName = gameObject.name;
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UI/" + strDlgName + "/Event" ;
+        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UI/" + strDlgName + "/Event" ;
         
         
         if ( !System.IO.Directory.Exists(strFilePath) )
@@ -182,7 +182,7 @@ public partial class UICodeSpawner
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
         
-	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UI/" + strDlgName + "/Event/" + strDlgName + "EventHandler.cs";
+	    strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UI/" + strDlgName + "/Event/" + strDlgName + "EventHandler.cs";
         if(System.IO.File.Exists(strFilePath))
         {
 	        Debug.LogError("已存在 " + strDlgName + ".cs,将不会再次生成。");
@@ -258,7 +258,7 @@ public partial class UICodeSpawner
 	static void SpawnCodeForDlgModel(GameObject gameObject)
     {
         string strDlgName = gameObject.name;
-        string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UI/" + strDlgName  ;
+        string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UI/" + strDlgName  ;
         
         
         if ( !System.IO.Directory.Exists(strFilePath) )
@@ -266,7 +266,7 @@ public partial class UICodeSpawner
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
         
-	    strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UI/" + strDlgName  + "/" + strDlgName  + ".cs";
+	    strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UI/" + strDlgName  + "/" + strDlgName  + ".cs";
         if(System.IO.File.Exists(strFilePath))
         {
 	        Debug.LogError("已存在 " + strDlgName + ".cs,将不会再次生成。");
@@ -305,13 +305,13 @@ public partial class UICodeSpawner
         string strDlgName = gameObject.name ;
         string strDlgComponentName =  gameObject.name + "ViewComponent";
 
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIBehaviour/" + strDlgName;
+        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIBehaviour/" + strDlgName;
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
 	        System.IO.Directory.CreateDirectory(strFilePath);
         }
-	    strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + "System.cs";
+	    strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + "System.cs";
 	    
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
@@ -322,25 +322,26 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("using UnityEngine.UI;");
         strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
-        strBuilder.AppendLine("\t[ObjectSystem]");
-        strBuilder.AppendFormat("\tpublic class {0}AwakeSystem : AwakeSystem<{1}> \r\n", strDlgComponentName, strDlgComponentName);
+        
+        strBuilder.AppendFormat("\t[EntitySystemOf(typeof({0}))]\r\n", strDlgComponentName);
+        strBuilder.AppendFormat("\t[FriendOfAttribute(typeof(ET.Client.{0}))]\r\n", strDlgComponentName);
+        strBuilder.AppendFormat("\tpublic static partial class {0}System\r\n", strDlgComponentName);
         strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tprotected override void Awake({0} self)\n",strDlgComponentName);
+        strBuilder.AppendLine("\t\t[EntitySystem]");
+        strBuilder.AppendFormat("\t\tprivate static void Awake(this {0} self)\n",strDlgComponentName);
         strBuilder.AppendLine("\t\t{");
         strBuilder.AppendLine("\t\t\tself.uiTransform = self.Parent.GetParent<UIBaseWindow>().uiTransform;");
         strBuilder.AppendLine("\t\t}");
-        strBuilder.AppendLine("\t}");
         strBuilder.AppendLine("\n");
         
-       
-        strBuilder.AppendLine("\t[ObjectSystem]");
-        strBuilder.AppendFormat("\tpublic class {0}DestroySystem : DestroySystem<{1}> \r\n", strDlgComponentName, strDlgComponentName);
-        strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tprotected override void Destroy({0} self)",strDlgComponentName);
-        strBuilder.AppendLine("\n\t\t{");
-        strBuilder.AppendFormat("\t\t\tself.DestroyWidget();\r\n");
+        strBuilder.AppendLine("\t\t[EntitySystem]");
+        strBuilder.AppendFormat("\t\tprivate static void Destroy(this {0} self)\n",strDlgComponentName);
+        strBuilder.AppendLine("\t\t{");
+        strBuilder.AppendLine("\t\t\tself.DestroyWidget();");
         strBuilder.AppendLine("\t\t}");
+        
         strBuilder.AppendLine("\t}");
+        strBuilder.AppendLine("\n");
         strBuilder.AppendLine("}");
         sw.Write(strBuilder);
         sw.Flush();
@@ -357,12 +358,12 @@ public partial class UICodeSpawner
 	    string strDlgComponentName =  gameObject.name + "ViewComponent";
 
 
-	    string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIBehaviour/" + strDlgName;
+	    string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIBehaviour/" + strDlgName;
 	    if ( !System.IO.Directory.Exists(strFilePath) )
 	    {
 		    System.IO.Directory.CreateDirectory(strFilePath);
 	    }
-	    strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + ".cs";
+	    strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIBehaviour/" + strDlgName + "/" + strDlgComponentName + ".cs";
 	    StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 	    StringBuilder strBuilder = new StringBuilder();
 	    strBuilder.AppendLine()
@@ -416,7 +417,6 @@ public partial class UICodeSpawner
 		   
 			    if (pair.Key.StartsWith(CommonUIPrefix))
 			    {
-				    strBuilder.AppendFormat("\t\t	{0}.m_{1}?.Dispose();\r\n", pointStr,pair.Key.ToLower());
 				    strBuilder.AppendFormat("\t\t	{0}.m_{1} = null;\r\n", pointStr,pair.Key.ToLower());
 				    continue;
 			    }
@@ -514,7 +514,7 @@ public partial class UICodeSpawner
 					    return;
 				    }
 				    string subUIClassType = subUIClassPrefab.name;
-				    strBuilder.AppendFormat("\t\tprivate {0} m_{1} = null;\r\n", subUIClassType, pair.Key.ToLower());
+				    strBuilder.AppendFormat("\t\tprivate EntityRef<{0}> m_{1} = null;\r\n", subUIClassType, pair.Key.ToLower());
 				    continue;
 			    }
 

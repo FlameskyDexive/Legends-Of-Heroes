@@ -1,6 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.FlowAnalysis;
+using Exception = System.Exception;
 
 namespace ET.Analyzer
 {
@@ -135,13 +141,22 @@ namespace ET.Analyzer
         {
             foreach (INamedTypeSymbol? iInterface in namedTypeSymbol.AllInterfaces)
             {
-                if (iInterface.ToString() == InterfaceName)
+                if (iInterface.IsInterface(InterfaceName))
                 {
                     return true;
                 }
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// 某个接口symbol 是否是指定的接口
+        /// </summary>
+
+        public static bool IsInterface(this INamedTypeSymbol namedTypeSymbol, string InterfaceName)
+        {
+            return $"{namedTypeSymbol.GetNameSpace()}.{namedTypeSymbol.Name}" == InterfaceName;
         }
 
         /// <summary>
@@ -230,6 +245,296 @@ namespace ET.Analyzer
                 }
             }
             return null ;
+        }
+        
+        /// <summary>
+        /// 判断函数是否是否含有指定类型的参数
+        /// </summary>
+        public static bool HasParameterType(this IMethodSymbol methodSymbol, string parameterType, out IParameterSymbol? cencelTokenSymbol)
+        {
+            foreach (var parameterSymbol in methodSymbol.Parameters)
+            {
+                if (parameterSymbol.Type.ToString() == parameterType)
+                {
+                    cencelTokenSymbol = parameterSymbol;
+                    return true;
+                }
+            }
+            cencelTokenSymbol = null;
+            return false;
+        }
+
+        /// <summary>
+        /// 获取所有指定类型的子节点
+        /// </summary>
+        public static IEnumerable<T> DescendantNodes<T>(this SyntaxNode syntaxNode) where T : SyntaxNode
+        {
+            foreach (var descendantNode in syntaxNode.DescendantNodes())
+            {
+                if (descendantNode is T node)
+                {
+                    yield return node;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取与该语法节点同层级的上一个节点
+        /// </summary>
+        public static SyntaxNode? PreviousNode(this SyntaxNode syntaxNode)
+        {
+            if (syntaxNode.Parent==null)
+            {
+                return null;
+            }
+            
+            int index = 0;
+            foreach (var childNode in syntaxNode.Parent.ChildNodes())
+            {
+                if (childNode == syntaxNode)
+                {
+                    break;
+                }
+                index++;
+            }
+
+            if (index==0)
+            {
+                return null;
+            }
+            
+            return syntaxNode.Parent.ChildNodes().ElementAt(index-1);
+        }
+
+        /// <summary>
+        /// 获取与该语法节点同层级的下一个节点
+        /// </summary>
+        public static SyntaxNode? NextNode(this SyntaxNode syntaxNode)
+        {
+            if (syntaxNode.Parent==null)
+            {
+                return null;
+            }
+            
+            int index = 0;
+            
+            foreach (var childNode in syntaxNode.Parent.ChildNodes())
+            {
+                if (childNode == syntaxNode)
+                {
+                    break;
+                }
+                index++;
+            }
+
+            if (index == syntaxNode.Parent.ChildNodes().Count()-1)
+            {
+                return null;
+            }
+            
+            return syntaxNode.Parent.ChildNodes().ElementAt(index+1);
+        }
+        
+        /// <summary>
+        /// 获取await表达式所在的控制流block
+        /// </summary>
+        public static BasicBlock? GetAwaitStatementControlFlowBlock(StatementSyntax statementSyntax,AwaitExpressionSyntax awaitExpressionSyntax ,SemanticModel semanticModel)
+        {
+            // 跳过 return 表达式
+            if (statementSyntax.IsKind(SyntaxKind.ReturnStatement))
+            {
+                return null;
+            }
+            
+            var methodSyntax = statementSyntax.GetNeareastAncestor<MethodDeclarationSyntax>();
+            if (methodSyntax==null)
+            {
+                return null;
+            }
+
+            // 构建表达式所在函数的控制流图
+            var controlFlowGraph = ControlFlowGraph.Create(methodSyntax, semanticModel);
+
+            if (controlFlowGraph==null)
+            {
+                return null;
+            }
+
+            if (statementSyntax is LocalDeclarationStatementSyntax)
+            {
+                return null;
+            }
+            
+            BasicBlock? block = controlFlowGraph.Blocks.FirstOrDefault(x => x.Operations.Any(y => y.Syntax.Contains(statementSyntax)));
+            return block;
+        }
+        
+        /// <summary>
+        /// 判断类是否为partial类
+        /// </summary>
+        public static bool IsPartial(this ClassDeclarationSyntax classDeclaration)
+        {
+            foreach (var modifier in classDeclaration.Modifiers)
+            {
+                if (modifier.IsKind(SyntaxKind.PartialKeyword))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static string? GetNameSpace(this INamedTypeSymbol namedTypeSymbol)
+        {
+            INamespaceSymbol? namespaceSymbol = namedTypeSymbol.ContainingNamespace;
+            string? namespaceName = namespaceSymbol?.Name;
+            while (namespaceSymbol?.ContainingNamespace != null)
+            {
+                namespaceSymbol = namespaceSymbol.ContainingNamespace;
+                if (string.IsNullOrEmpty(namespaceSymbol.Name))
+                {
+                    break;
+                }
+
+                namespaceName = $"{namespaceSymbol.Name}.{namespaceName}";
+            }
+
+            if (string.IsNullOrEmpty(namespaceName))
+            {
+                return null;
+            }
+
+            return namespaceName;
+        }
+
+        /// <summary>
+        /// 根据语义模型的文件路径 判断是否需要分析
+        /// </summary>
+        public static bool IsSemanticModelNeedAnalyze(SemanticModel semanticModel, params string[] filePaths)
+        {
+            foreach (var filePath in filePaths)
+            {
+                if (semanticModel.SyntaxTree.FilePath.Contains(filePath))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 类型symbol是否有指定名字 指定参数的方法
+        /// </summary>
+        public static bool HasMethodWithParams(this INamedTypeSymbol namedTypeSymbol, string methodName, params ITypeSymbol[] typeSymbols)
+        {
+            
+            foreach (var member in namedTypeSymbol.GetMembers())
+            {
+                if (member is not IMethodSymbol methodSymbol)
+                {
+                    continue;
+                }
+
+                if (methodSymbol.Name!=methodName)
+                {
+                    continue;
+                }
+                
+                if (typeSymbols.Length!=methodSymbol.Parameters.Length)
+                {
+                    continue;
+                }
+                
+                if (typeSymbols.Length==0)
+                {
+                    return true;
+                }
+
+                bool isEqual = true;
+                
+                for (int i = 0; i < typeSymbols.Length; i++)
+                {
+                    if (typeSymbols[i].ToString()!=methodSymbol.Parameters[i].Type.ToString())
+                    {
+                        isEqual = false;
+                        break;
+                    }
+                }
+
+                if (isEqual)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        /// <summary>
+        /// 类型symbol是否有指定名字 指定参数的方法
+        /// </summary>
+        public static bool HasMethodWithParams(this INamedTypeSymbol namedTypeSymbol, string methodName, params string[] typeSymbols)
+        {
+            
+            foreach (var member in namedTypeSymbol.GetMembers())
+            {
+                if (member is not IMethodSymbol methodSymbol)
+                {
+                    continue;
+                }
+
+                if (methodSymbol.Name!=methodName)
+                {
+                    continue;
+                }
+                
+                if (typeSymbols.Length!=methodSymbol.Parameters.Length)
+                {
+                    continue;
+                }
+                
+                if (typeSymbols.Length==0)
+                {
+                    return true;
+                }
+
+                bool isEqual = true;
+                
+                for (int i = 0; i < typeSymbols.Length; i++)
+                {
+                    if (typeSymbols[i]!=methodSymbol.Parameters[i].Type.ToString())
+                    {
+                        isEqual = false;
+                        break;
+                    }
+                }
+
+                if (isEqual)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        
+        
+
+
+        /// <summary>
+        /// 方法symbol 是否有指定的attribute
+        /// </summary>
+        public static bool HasAttribute(this IMethodSymbol methodSymbol, string AttributeName)
+        {
+            foreach (AttributeData? attributeData in methodSymbol.GetAttributes())
+            {
+                if (attributeData?.AttributeClass?.ToString()==AttributeName)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

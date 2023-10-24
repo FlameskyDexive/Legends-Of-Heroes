@@ -27,13 +27,13 @@ public partial class UICodeSpawner
         }
         string strDlgName = gameObject.name;
 
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIItemBehaviour";
+        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIItemBehaviour";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath     = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIItemBehaviour/" + strDlgName + "ViewSystem.cs";
+        strFilePath     = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIItemBehaviour/" + strDlgName + "ViewSystem.cs";
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
         StringBuilder strBuilder = new StringBuilder();
@@ -44,10 +44,19 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("{");
         
         
-        strBuilder.AppendLine("\t[ObjectSystem]");
-        strBuilder.AppendFormat("\tpublic class Scroll_{0}DestroySystem : DestroySystem<Scroll_{1}> \r\n", strDlgName, strDlgName);
+        strBuilder.AppendFormat("\t[EntitySystemOf(typeof(Scroll_{0}))]\n",strDlgName);
+        strBuilder.AppendFormat("\tpublic static partial class Scroll_{0}System \r\n", strDlgName);
         strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tprotected override void Destroy( Scroll_{0} self )",strDlgName);
+        
+        strBuilder.AppendLine("\t\t[EntitySystem]");
+        strBuilder.AppendFormat("\t\tprivate static void Awake(this Scroll_{0} self )",strDlgName);
+        strBuilder.AppendLine("\n\t\t{");
+        
+        strBuilder.AppendLine("\t\t}\n");
+        
+        
+        strBuilder.AppendLine("\t\t[EntitySystem]");
+        strBuilder.AppendFormat("\t\tprivate static void Destroy(this Scroll_{0} self )",strDlgName);
         strBuilder.AppendLine("\n\t\t{");
         
         strBuilder.AppendFormat("\t\t\tself.DestroyWidget();\r\n");
@@ -70,13 +79,13 @@ public partial class UICodeSpawner
         }
         string strDlgName = gameObject.name;
 
-        string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIItemBehaviour";
+        string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIItemBehaviour";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath     = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIItemBehaviour/" + strDlgName + ".cs";
+        strFilePath     = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIItemBehaviour/" + strDlgName + ".cs";
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
         StringBuilder strBuilder = new StringBuilder();

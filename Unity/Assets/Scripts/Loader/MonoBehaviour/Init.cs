@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using CommandLine;
 using UnityEngine;
 
@@ -9,48 +8,55 @@ namespace ET
 	{
 		private void Start()
 		{
+			this.StartAsync().Coroutine();
+		}
+		
+		private async ETTask StartAsync()
+		{
 			DontDestroyOnLoad(gameObject);
 			
 			AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
 			{
 				Log.Error(e.ExceptionObject.ToString());
 			};
-				
-			Game.AddSingleton<MainThreadSynchronizationContext>();
 
 			// 命令行参数
 			string[] args = "".Split(" ");
 			Parser.Default.ParseArguments<Options>(args)
 				.WithNotParsed(error => throw new Exception($"命令行格式错误! {error}"))
-				.WithParsed(Game.AddSingleton);
+				.WithParsed((o)=>World.Instance.AddSingleton(o));
+			Options.Instance.StartConfig = $"StartConfig/Localhost";
 			
-			Game.AddSingleton<TimeInfo>();
-			Game.AddSingleton<Logger>().ILog = new UnityLogger();
-			Game.AddSingleton<ObjectPool>();
-			Game.AddSingleton<IdGenerater>();
-			Game.AddSingleton<EventSystem>();
-			Game.AddSingleton<TimerComponent>();
-			Game.AddSingleton<CoroutineLockComponent>();
-			
+			World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
 			ETTask.ExceptionHandler += Log.Error;
+			
+			World.Instance.AddSingleton<TimeInfo>();
+			World.Instance.AddSingleton<FiberManager>();
 
-			Game.AddSingleton<CodeLoader>().Start();
+			await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
+			
+			CodeLoader codeLoader = World.Instance.AddSingleton<CodeLoader>();
+			await codeLoader.DownloadAsync();
+			
+			codeLoader.Start();
 		}
 
 		private void Update()
 		{
-			Game.Update();
+			TimeInfo.Instance.Update();
+			FiberManager.Instance.Update();
 		}
 
 		private void LateUpdate()
 		{
-			Game.LateUpdate();
-			Game.FrameFinishUpdate();
+			FiberManager.Instance.LateUpdate();
 		}
 
 		private void OnApplicationQuit()
 		{
-			Game.Close();
+			World.Instance.Dispose();
 		}
 	}
+	
+	
 }

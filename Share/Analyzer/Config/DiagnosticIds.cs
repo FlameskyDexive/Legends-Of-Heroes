@@ -32,5 +32,27 @@
 
         public const string StaticFieldDeclarationAnalyzerRule = "ET0015";
 
+        public const string ETCancellationTokenAnalyzerRuleId = "ET0016";
+
+        public const string AwaitExpressionCancelTokenParamAnalyzerRuleId = "ET0017";
+
+        public const string AsyncMethodWithCancelTokenParamAnalyzerRuleId = "ET0018";
+
+        public const string ExpressionWithCancelTokenParamAnalyzerRuleId = "ET0019";
+
+        public const string EntityFieldDeclarationInEntityAnalyzerRuleId = "ET0020";
+
+        public const string AsyncMethodReturnTypeAnalyzerRuleId = "ET0021";
+
+        public const string ClientClassInServerAnalyzerRuleId = "ET0022";
+
+        public const string LSEntityFloatMemberAnalyzerRuleId = "ET0023";
+
+        public const string EntitySystemAnalyzerRuleId = "ET0024";
+
+        public const string EntitySystemMethodNeedSystemOfAttrAnalyzerRuleId = "ET0025";
+
+        public const string FiberLogAnalyzerRuleId = "ET0026";
+
     }
 }

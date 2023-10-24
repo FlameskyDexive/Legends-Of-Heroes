@@ -26,14 +26,14 @@ public partial class UICodeSpawner
         }
         string strDlgName = objPanel.name;
 
-        string strFilePath = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIBehaviour/CommonUI" +
+        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIBehaviour/CommonUI" +
                              "";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath     = Application.dataPath + "/Scripts/Codes/HotfixView/Client/Demo/UIBehaviour/CommonUI/" + strDlgName + "ViewSystem.cs";
+        strFilePath     = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIBehaviour/CommonUI/" + strDlgName + "ViewSystem.cs";
 	    
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
@@ -43,27 +43,25 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("using UnityEngine.UI;");
         strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
-        strBuilder.AppendLine("\t[ObjectSystem]");
-        strBuilder.AppendFormat("\tpublic class {0}AwakeSystem : AwakeSystem<{1},Transform> \r\n", strDlgName, strDlgName);
+        strBuilder.AppendFormat("\t[EntitySystemOf(typeof({0}))]\n",strDlgName);
+        strBuilder.AppendFormat("\t[FriendOfAttribute(typeof({0}))]\n",strDlgName);
+        strBuilder.AppendFormat("\tpublic static partial class {0}System \r\n", strDlgName, strDlgName);
         strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tprotected override void Awake({0} self,Transform transform)\n",strDlgName);
+        strBuilder.AppendLine("\t\t[EntitySystem]");
+        strBuilder.AppendFormat("\t\tprivate static void Awake(this {0} self,Transform transform)\n",strDlgName);
         strBuilder.AppendLine("\t\t{");
         strBuilder.AppendLine("\t\t\tself.uiTransform = transform;");
+        strBuilder.AppendLine("\t\t}\n");
+        
+        
+        strBuilder.AppendLine("\t\t[EntitySystem]");
+        strBuilder.AppendFormat("\t\tprivate static void Destroy(this {0} self)\n",strDlgName);
+        strBuilder.AppendLine("\t\t{");
+        strBuilder.AppendLine("\t\t\tself.DestroyWidget();");
         strBuilder.AppendLine("\t\t}");
+        
         strBuilder.AppendLine("\t}");
         strBuilder.AppendLine("\n");
-        
-       
-        strBuilder.AppendLine("\t[ObjectSystem]");
-        strBuilder.AppendFormat("\tpublic class {0}DestroySystem : DestroySystem<{1}> \r\n", strDlgName, strDlgName);
-        strBuilder.AppendLine("\t{");
-        strBuilder.AppendFormat("\t\tprotected override void Destroy({0} self)",strDlgName);
-        strBuilder.AppendLine("\n\t\t{");
-
-        strBuilder.AppendFormat("\t\t\tself.DestroyWidget();\r\n");
-        
-        strBuilder.AppendLine("\t\t}");
-        strBuilder.AppendLine("\t}");
         strBuilder.AppendLine("}");
         
         sw.Write(strBuilder);
@@ -79,13 +77,13 @@ public partial class UICodeSpawner
         }
         string strDlgName = objPanel.name;
 
-        string strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIBehaviour/CommonUI";
+        string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIBehaviour/CommonUI";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath = Application.dataPath + "/Scripts/Codes/ModelView/Client/Demo/UIBehaviour/CommonUI/" + strDlgName + ".cs";
+        strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIBehaviour/CommonUI/" + strDlgName + ".cs";
 	    
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
