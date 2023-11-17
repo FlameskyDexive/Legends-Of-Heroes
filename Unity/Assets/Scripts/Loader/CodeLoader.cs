@@ -89,8 +89,8 @@ namespace ET
                 }
                 else
                 {
-                    assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.dll"));
-                    pdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.pdb"));
+                    assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.dll.bytes"));
+                    pdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.pdb.bytes"));
                 }
 
                 this.assembly = Assembly.Load(assBytes, pdbBytes);
@@ -112,8 +112,8 @@ namespace ET
             {
                 // assBytes = this.dlls["Hotfix.dll"].bytes;
                 // pdbBytes = this.dlls["Hotfix.pdb"].bytes;
-                assBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Hotfix.dll.bytes")).bytes;
-                pdbBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Hotfix.pdb.bytes")).bytes;
+                assBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Hotfix.dll")).bytes;
+                pdbBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Hotfix.pdb")).bytes;
 
                 // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/Hotfix.dll.bytes，但真正打包时必须使用上面的代码
                 //assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Hotfix.dll.bytes"));
