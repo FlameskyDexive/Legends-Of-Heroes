@@ -13,7 +13,8 @@ namespace ET
     {
         public static string StringToAB(this string value)
         {
-            string result =  $"Assets/Bundles/UI/Dlg/{value}.prefab";
+            // string result =  $"Assets/Bundles/UI/Dlg/{value}.prefab";
+            string result =  $"{value}.prefab";
             return result;
         }
 
@@ -156,6 +157,32 @@ namespace ET
             T t = (T)handle.AssetObject;
             handle.Release();
             return t;
+        }
+
+        public byte[] LoadRawFile(string location)
+        {
+            RawFileOperationHandle handle = YooAssets.LoadRawFileSync(location);
+            return handle.GetRawFileData();
+        }
+
+        public T LoadAsset<T>(string location) where T : UnityEngine.Object
+        {
+            // self.AssetsOperationHandles.TryGetValue(location, out AssetOperationHandle handle);
+            AssetOperationHandle handle;
+            // if (handle == null)
+            {
+                handle = YooAssets.LoadAssetSync<T>(location);
+                // self.AssetsOperationHandles[location] = handle;
+            }
+
+            return handle.AssetObject as T;
+        }
+
+        public async ETTask<byte[]> LoadRawFileAsync(string location)
+        {
+            RawFileOperationHandle handle = YooAssets.LoadRawFileAsync(location);
+            await handle.Task;
+            return handle.GetRawFileData();
         }
 
         /// <summary>

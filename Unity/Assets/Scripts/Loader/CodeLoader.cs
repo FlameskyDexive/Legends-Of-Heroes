@@ -11,23 +11,23 @@ namespace ET
     {
         private Assembly assembly;
 
-        private Dictionary<string, TextAsset> dlls;
-        private Dictionary<string, TextAsset> aotDlls;
+        // private Dictionary<string, TextAsset> dlls;
+        // private Dictionary<string, TextAsset> aotDlls;
 
         public void Awake()
         {
         }
 
-        public async ETTask DownloadAsync()
+        /*public async ETTask DownloadAsync()
         {
             if (!Define.IsEditor)
             {
                 this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/Code/Model.dll.bytes");
                 this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
             }
-        }
+        }*/
 
-        public void Start()
+        public async ETTask Start()
         {
             if (!Define.EnableDll)
             {
@@ -57,8 +57,11 @@ namespace ET
                 byte[] pdbBytes;
                 if (!Define.IsEditor)
                 {
-                    assBytes = this.dlls["Model.dll"].bytes;
-                    pdbBytes = this.dlls["Model.pdb"].bytes;
+                    // assBytes = this.dlls["Model.dll"].bytes;
+                    // pdbBytes = this.dlls["Model.pdb"].bytes;
+                    assBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Model.dll.bytes")).bytes;
+                    pdbBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Model.pdb.bytes")).bytes;
+
 
                     // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/Model.dll.bytes，但真正打包时必须使用上面的代码
                     //assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.dll.bytes"));
@@ -66,9 +69,10 @@ namespace ET
 
                     if (Define.EnableIL2CPP)
                     {
-                        foreach (var kv in this.aotDlls)
+                        List<string> aotDlls = JsonUtility.FromJson<List<string>>("");
+                        foreach (var kv in /*this.*/aotDlls)
                         {
-                            TextAsset textAsset = kv.Value;
+                            TextAsset textAsset = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{kv}.dll.bytes");
                             RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
                         }
                     }
@@ -81,7 +85,7 @@ namespace ET
 
                 this.assembly = Assembly.Load(assBytes, pdbBytes);
 
-                Assembly hotfixAssembly = this.LoadHotfix();
+                Assembly hotfixAssembly = await this.LoadHotfix();
 
                 World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof(World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
             }
@@ -90,14 +94,16 @@ namespace ET
             start.Run();
         }
 
-        private Assembly LoadHotfix()
+        private async ETTask<Assembly> LoadHotfix()
         {
             byte[] assBytes;
             byte[] pdbBytes;
             if (!Define.IsEditor)
             {
-                assBytes = this.dlls["Hotfix.dll"].bytes;
-                pdbBytes = this.dlls["Hotfix.pdb"].bytes;
+                // assBytes = this.dlls["Hotfix.dll"].bytes;
+                // pdbBytes = this.dlls["Hotfix.pdb"].bytes;
+                assBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Hotfix.dll.bytes")).bytes;
+                pdbBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Hotfix.pdb.bytes")).bytes;
 
                 // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/Hotfix.dll.bytes，但真正打包时必须使用上面的代码
                 //assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Hotfix.dll.bytes"));
@@ -113,9 +119,9 @@ namespace ET
             return hotfixAssembly;
         }
 
-        public void Reload()
+        public async ETTask Reload()
         {
-            Assembly hotfixAssembly = this.LoadHotfix();
+            Assembly hotfixAssembly = await this.LoadHotfix();
 
             CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof(World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
             codeTypes.CreateCode();

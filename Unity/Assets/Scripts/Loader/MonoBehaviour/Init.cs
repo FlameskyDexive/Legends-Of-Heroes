@@ -36,9 +36,9 @@ namespace ET
 			await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
 			
 			CodeLoader codeLoader = World.Instance.AddSingleton<CodeLoader>();
-			await codeLoader.DownloadAsync();
+			// await codeLoader.DownloadAsync();
 			
-			codeLoader.Start();
+			await codeLoader.Start();
 		}
 
 		private void Update()

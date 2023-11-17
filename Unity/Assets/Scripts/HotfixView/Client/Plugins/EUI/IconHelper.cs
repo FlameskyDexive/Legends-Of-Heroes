@@ -19,7 +19,7 @@ namespace ET.Client
         {
             try
             {
-                SpriteAtlas spriteAtlas = scene.GetComponent<ResourcesLoaderComponent>().LoadAssetSync<SpriteAtlas>(atlasName.StringToAB()); 
+                SpriteAtlas spriteAtlas = scene.GetComponent<ResourcesLoaderComponent>().LoadAssetSync<SpriteAtlas>(atlasName/*.StringToAB()*/); 
                 Sprite sprite = spriteAtlas.GetSprite(spriteName);
                 if ( null == sprite )
                 {
@@ -43,7 +43,7 @@ namespace ET.Client
         {
             try
             {
-                SpriteAtlas spriteAtlas = await scene.GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<SpriteAtlas>(atlasName.StringToAB()); 
+                SpriteAtlas spriteAtlas = await scene.GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<SpriteAtlas>(atlasName/*.StringToAB()*/); 
                 Sprite sprite = spriteAtlas.GetSprite(spriteName);
                 if (null == sprite)
                 {

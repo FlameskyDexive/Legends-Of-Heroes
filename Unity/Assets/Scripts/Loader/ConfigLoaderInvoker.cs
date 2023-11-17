@@ -57,7 +57,7 @@ namespace ET
             {
                 foreach (Type type in configTypes)
                 {
-                    TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Assets/Bundles/Config/{type.Name}.bytes");
+                    TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{type.Name}.bytes");
                     output[type] = v.bytes;
                 }
             }

@@ -148,7 +148,8 @@ namespace ET.Client
 
         public static GameObject GetGameObjectByResType( string poolName)
         {
-            GameObject pb = ResourcesComponent.Instance.LoadAssetSync<GameObject>( $"Assets/Bundles/UI/Item/{poolName}.prefab");
+            // GameObject pb = ResourcesComponent.Instance.LoadAssetSync<GameObject>( $"Assets/Bundles/UI/Item/{poolName}.prefab");
+            GameObject pb = ResourcesComponent.Instance.LoadAssetSync<GameObject>( poolName);
             return pb;
         }
     }

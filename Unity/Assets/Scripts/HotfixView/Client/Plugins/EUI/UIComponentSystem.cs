@@ -270,7 +270,7 @@ namespace ET.Client
             UIEventComponent.Instance.GetUIEventHandler(id).BeforeUnload(baseWindow);
             if(baseWindow.IsPreLoad)
             {
-                self.Scene().GetComponent<ResourcesLoaderComponent>().UnLoadAssetSync(baseWindow.UIPrefabGameObject.name.StringToAB());
+                self.Scene().GetComponent<ResourcesLoaderComponent>().UnLoadAssetSync(baseWindow.UIPrefabGameObject.name/*.StringToAB()*/);
                 UnityEngine.Object.Destroy( baseWindow.UIPrefabGameObject);
                 baseWindow.UIPrefabGameObject = null;
             }
@@ -475,11 +475,11 @@ namespace ET.Client
 
             if (self.IScene is Room)
             {
-                go = self.Scene<Room>().GetComponent<ResourcesLoaderComponent>().LoadAssetSync<GameObject>(value.StringToAB());
+                go = self.Scene<Room>().GetComponent<ResourcesLoaderComponent>().LoadAssetSync<GameObject>(value/*.StringToAB()*/);
             }
             else
             {
-                go = self.Scene<Scene>().GetComponent<ResourcesLoaderComponent>().LoadAssetSync<GameObject>(value.StringToAB());
+                go = self.Scene<Scene>().GetComponent<ResourcesLoaderComponent>().LoadAssetSync<GameObject>(value/*.StringToAB()*/);
             }
             baseWindow.UIPrefabGameObject      = UnityEngine.Object.Instantiate(go);
             baseWindow.UIPrefabGameObject.name = go.name;
@@ -511,11 +511,11 @@ namespace ET.Client
 
             if (self.IScene is Room)
             {
-                go = await self.Scene<Room>().GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<GameObject>(value.StringToAB());
+                go = await self.Scene<Room>().GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<GameObject>(value/*.StringToAB()*/);
             }
             else
             {
-                go = await self.Scene<Scene>().GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<GameObject>(value.StringToAB());
+                go = await self.Scene<Scene>().GetComponent<ResourcesLoaderComponent>().LoadAssetAsync<GameObject>(value/*.StringToAB()*/);
             }
             baseWindow.UIPrefabGameObject      = UnityEngine.Object.Instantiate(go);
             baseWindow.UIPrefabGameObject.name = go.name;
