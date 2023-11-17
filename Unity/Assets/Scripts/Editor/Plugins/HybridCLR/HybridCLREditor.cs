@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
-using HybridCLR.Editor;
 using HybridCLR.Editor.Settings;
+using LitJson;
 using UnityEditor;
+using UnityEngine;
 
 namespace ET
 {
@@ -23,12 +25,23 @@ namespace ET
             
             foreach (string aotDll in HybridCLRSettings.Instance.patchAOTAssemblies)
             {
-                File.Copy(Path.Combine(fromDir, aotDll), Path.Combine(toDir, $"{aotDll}.bytes"), true);
+                try
+                {
+                    Debug.Log($"copy aot dll:{aotDll}");
+                    File.Copy(Path.Combine(fromDir, aotDll), Path.Combine(toDir, $"{aotDll}.bytes"), true);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"copy aotDll {aotDll} error:\n{e}");
+                }
             }
-            
+
+            string aotDllsPath = "Assets/Resources/AotDlls.json";
+            File.WriteAllText(aotDllsPath, JsonMapper.ToJson(HybridCLRSettings.Instance.patchAOTAssemblies));
+
             // 设置ab包
-            AssetImporter assetImporter = AssetImporter.GetAtPath(toDir);
-            assetImporter.assetBundleName = "AotDlls.unity3d";
+            // AssetImporter assetImporter = AssetImporter.GetAtPath(toDir);
+            // assetImporter.assetBundleName = "AotDlls.unity3d";
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
         }

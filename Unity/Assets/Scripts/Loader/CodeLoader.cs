@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using HybridCLR;
+using LitJson;
 using UnityEngine;
 
 namespace ET
@@ -59,8 +60,8 @@ namespace ET
                 {
                     // assBytes = this.dlls["Model.dll"].bytes;
                     // pdbBytes = this.dlls["Model.pdb"].bytes;
-                    assBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Model.dll.bytes")).bytes;
-                    pdbBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Model.pdb.bytes")).bytes;
+                    assBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Model.dll")).bytes;
+                    pdbBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Model.pdb")).bytes;
 
 
                     // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/Model.dll.bytes，但真正打包时必须使用上面的代码
@@ -69,18 +70,27 @@ namespace ET
 
                     if (Define.EnableIL2CPP)
                     {
-                        List<string> aotDlls = JsonUtility.FromJson<List<string>>("");
-                        foreach (var kv in /*this.*/aotDlls)
+                        // List<string> aotDlls = JsonUtility.FromJson<List<string>>("");
+                        // foreach (var kv in /*this.*/aotDlls)
+                        // {
+                        //     TextAsset textAsset = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{kv}.dll");
+                        //     RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
+                        // }
+                        string json = Resources.Load<TextAsset>("AotDlls").text;
+                        string[] aotDlls = JsonMapper.ToObject<string[]>(json);
+                        foreach (var dll in aotDlls)
                         {
-                            TextAsset textAsset = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{kv}.dll.bytes");
-                            RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
+                            // byte[] bytes = (kv.Value as TextAsset).bytes;
+                            Debug.Log($"load aot dll: {dll}");
+                            byte[] bytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{dll}")).bytes;
+                            RuntimeApi.LoadMetadataForAOTAssembly(bytes, HomologousImageMode.SuperSet);
                         }
                     }
                 }
                 else
                 {
-                    assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.dll.bytes"));
-                    pdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.pdb.bytes"));
+                    assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.dll"));
+                    pdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.pdb"));
                 }
 
                 this.assembly = Assembly.Load(assBytes, pdbBytes);
