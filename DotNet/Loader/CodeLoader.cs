@@ -43,7 +43,7 @@ namespace ET
             return hotfixAssembly;
         }
         
-        public void Reload()
+        public async ETTask Reload()
         {
             Assembly hotfixAssembly = this.LoadHotfix();
 			
@@ -51,6 +51,7 @@ namespace ET
 
             codeTypes.CreateCode();
             Log.Debug($"reload dll finish!");
+            await ETTask.CompletedTask;
         }
     }
 }
