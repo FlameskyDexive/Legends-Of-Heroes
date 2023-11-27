@@ -25,8 +25,9 @@ namespace ET
 				ETTask.ExceptionHandler += Log.Error;
 				World.Instance.AddSingleton<TimeInfo>();
 				World.Instance.AddSingleton<FiberManager>();
+                World.Instance.AddSingleton<FixedUpdate, Action>(FixedUpdate);
 
-				World.Instance.AddSingleton<CodeLoader>();
+                World.Instance.AddSingleton<CodeLoader>();
 			}
 			catch (Exception e)
 			{
@@ -38,11 +39,17 @@ namespace ET
 		{
 			TimeInfo.Instance.Update();
 			FiberManager.Instance.Update();
+            ET.FixedUpdate.Instance.Tick();
 		}
 
 		public void LateUpdate()
 		{
 			FiberManager.Instance.LateUpdate();
 		}
-	}
+
+        private void FixedUpdate()
+        {
+            FiberManager.Instance.FixedUpdate();
+        }
+    }
 }

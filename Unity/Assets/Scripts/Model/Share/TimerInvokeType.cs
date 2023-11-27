@@ -13,7 +13,13 @@
         public const int MoveTimer = 201;
         public const int AITimer = 202;
         public const int SessionAcceptTimeout = 203;
-        
+        public const int BulletLifeTimeout = 204;
+
         public const int RoomUpdate = 301;
+        
+        //自动重连计时器
+        public const int AutoReconnect = 2001;
+        public const int HeartBeat = 2002;
+        public const int NetworkCheck = 2003;
     }
 }

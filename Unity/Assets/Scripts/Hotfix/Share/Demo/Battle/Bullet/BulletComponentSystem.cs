@@ -30,13 +30,13 @@ namespace ET
         [EntitySystem]
         public static void Destroy(this BulletComponent self)
         {
-            self.Fiber().TimerComponent.Remove(ref self.Timer);
+            self.Root().GetComponent<TimerComponent>()?.Remove(ref self.Timer);
         }
         [EntitySystem]
         public static void Awake(this BulletComponent self)
         {
             //测试子弹，生存时间700ms
-            self.Timer = self.Fiber().TimerComponent.NewOnceTimer(TimeInfo.Instance.ServerNow() + 700, TimerInvokeType.BulletLifeTimeout, self);
+            self.Timer = self.Timer = self.Root().GetComponent<TimerComponent>().NewOnceTimer(TimeInfo.Instance.ServerNow() + 700, TimerInvokeType.BulletLifeTimeout, self);
 
         }
 

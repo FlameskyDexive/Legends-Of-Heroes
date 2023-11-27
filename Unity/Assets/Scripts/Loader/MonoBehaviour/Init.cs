@@ -32,6 +32,7 @@ namespace ET
 			
 			World.Instance.AddSingleton<TimeInfo>();
 			World.Instance.AddSingleton<FiberManager>();
+			World.Instance.AddSingleton<FixedUpdate, Action>(CustomFixedUpdate);
 
 			await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
 			
@@ -45,11 +46,17 @@ namespace ET
 		{
 			TimeInfo.Instance.Update();
 			FiberManager.Instance.Update();
+            FixedUpdate.Instance.Tick();
 		}
 
 		private void LateUpdate()
 		{
 			FiberManager.Instance.LateUpdate();
+		}
+        
+		private void CustomFixedUpdate()
+		{
+			FiberManager.Instance.FixedUpdate();
 		}
 
 		private void OnApplicationQuit()

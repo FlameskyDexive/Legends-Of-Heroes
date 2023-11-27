@@ -23,7 +23,7 @@ namespace ET
             for (int i = 0; i < units.Count; i++)
             {
                 Unit unit = units[i] as Unit;
-                if(unit == null || (unit.Type != UnitType.Player && unit.Type != UnitType.Monster) || unit.GetComponent<BattleUnitComponent>().IsDead())
+                if(unit == null || (unit.Type() != UnitType.Player && unit.Type() != UnitType.Monster) || unit.GetComponent<BattleUnitComponent>().IsDead())
                     continue;
                 float dis = math.distance(owner.Position, unit.Position);
                 //满足范围伤害，则进行命中伤害结算

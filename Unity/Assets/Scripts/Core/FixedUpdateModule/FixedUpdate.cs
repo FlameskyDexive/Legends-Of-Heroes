@@ -10,38 +10,28 @@ namespace ET
     /// <summary>
     /// 来自Xenko的固定时间间隔刷新器
     /// </summary>
-    public class FixedUpdate
+    public class FixedUpdate : Singleton<FixedUpdate>, ISingletonAwake<Action>
     {
-        private readonly GameTime _updateTime;
-
-        private readonly TimerTick _playTimer;
-
-        private readonly TimerTick _updateTimer;
-
-        private readonly int[] _lastUpdateCount;
-
-        private readonly float _updateCountAverageSlowLimit;
-
+        private GameTime _updateTime;
+        private TimerTick _playTimer;
+        private TimerTick _updateTimer;
+        private int[] _lastUpdateCount;
+        private float _updateCountAverageSlowLimit;
         private TimeSpan _singleFrameUpdateTime;
-
         private TimeSpan _totalUpdateTime;
-
-        private readonly TimeSpan _maximumElapsedTime;
-
+        private TimeSpan _maximumElapsedTime;
         private TimeSpan _accumulatedElapsedGameTime;
-
         private TimeSpan _lastFrameElapsedGameTime;
-
         private int _nextLastUpdateCountIndex;
-
         private bool _drawRunningSlowly;
-
         private bool _forceElapsedTimeToZero;
-
-        private readonly TimerTick _timer;
-
+        private TimerTick _timer;
         internal object TickLock = new object();
-        public FixedUpdate()
+        private Action UpdateCallback;
+
+
+        // public FixedUpdate()
+        public void Awake(Action updateCallback)
         {
             // Internals
             _updateTime = new GameTime();
@@ -60,6 +50,8 @@ namespace ET
             const int BadUpdateCountTime = 2; // number of bad frame (a bad frame is a frame that has at least 2 updates)
             var maxLastCount = 2 * Math.Min(BadUpdateCountTime, _lastUpdateCount.Length);
             _updateCountAverageSlowLimit = (float) (maxLastCount + (_lastUpdateCount.Length - maxLastCount)) / _lastUpdateCount.Length;
+            
+            this.UpdateCallback = updateCallback;
         }
 
         /// <summary>
@@ -200,7 +192,6 @@ namespace ET
 
         #region Methods
 
-        public Action UpdateCallback;
 
         /// <summary>
         /// Reference page contains links to related conceptual articles.
