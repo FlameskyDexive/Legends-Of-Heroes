@@ -93,6 +93,18 @@ namespace ET
             }
         }
 
+        internal void FixedUpdate()
+        {
+            try
+            {
+                this.EntitySystem.FixedUpdate();
+            }
+            catch (Exception e)
+            {
+                this.Log.Error(e);
+            }
+        }
+
         public async ETTask WaitFrameFinish()
         {
             ETTask task = ETTask.Create(true);

@@ -46,6 +46,11 @@ namespace ET
             this.mainThreadScheduler.LateUpdate();
         }
 
+        public void FixedUpdate()
+        {
+            this.mainThreadScheduler.FixedUpdate();
+        }
+
         protected override void Destroy()
         {
             foreach (IScheduler scheduler in this.schedulers)

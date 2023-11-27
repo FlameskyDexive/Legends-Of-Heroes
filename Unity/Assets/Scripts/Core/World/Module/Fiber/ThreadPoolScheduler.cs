@@ -67,6 +67,7 @@ namespace ET
                 SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.Update();
                 fiber.LateUpdate();
+                fiber.FixedUpdate();
                 SynchronizationContext.SetSynchronizationContext(null);
                 Fiber.Instance = null;
 

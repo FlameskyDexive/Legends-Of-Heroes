@@ -45,6 +45,7 @@ namespace ET
                 
                 fiber.Update();
                 fiber.LateUpdate();
+                fiber.FixedUpdate();
 
                 Thread.Sleep(1);
             }
