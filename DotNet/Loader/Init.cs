@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using CommandLine;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
 
 namespace ET
 {
@@ -28,7 +30,9 @@ namespace ET
                 World.Instance.AddSingleton<FixedUpdate, Action>(FixedUpdate);
 
                 World.Instance.AddSingleton<CodeLoader>();
-			}
+                var objectSerializer = new ObjectSerializer(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.StartsWith("ET"));
+                BsonSerializer.RegisterSerializer(objectSerializer);
+            }
 			catch (Exception e)
 			{
 				Log.Error(e);
