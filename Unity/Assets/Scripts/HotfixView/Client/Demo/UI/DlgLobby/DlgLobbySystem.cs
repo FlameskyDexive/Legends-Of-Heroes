@@ -12,7 +12,7 @@ namespace ET.Client
 
 		public static void RegisterUIEvent(this DlgLobby self)
 		{
-			self.View.E_EnterMapButton.AddListenerAsync(self.EnterMap);
+			self.View.EEnterMapButton.AddListenerAsync(self.EnterMap);
 		}
 
 		public static void ShowWindow(this DlgLobby self, Entity contextData = null)

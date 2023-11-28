@@ -7,24 +7,6 @@ namespace ET.Client
 	[EnableMethod]
 	public  class DlgLoginViewComponent : Entity,IAwake,IDestroy 
 	{
-		public ESReuseUI ESReuseUI
-     	{
-     		get
-     		{
-     			if (this.uiTransform == null)
-     			{
-     				Log.Error("uiTransform is null.");
-     				return null;
-     			}
-     			if( this.m_esreuseui == null )
-     			{
-		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,"Sprite_BackGround/ESReuseUI");
-		    	   this.m_esreuseui = this.AddChild<ESReuseUI,Transform>(subTrans);
-     			}
-     			return this.m_esreuseui;
-     		}
-     	}
-
 		public UnityEngine.UI.Button ELoginButton
      	{
      		get
@@ -127,44 +109,23 @@ namespace ET.Client
      		}
      	}
 
-		public UnityEngine.UI.LoopHorizontalScrollRect ELoopTestLoopHorizontalScrollRect
-     	{
-     		get
-     		{
-     			if (this.uiTransform == null)
-     			{
-     				Log.Error("uiTransform is null.");
-     				return null;
-     			}
-     			if( this.m_ELoopTestLoopHorizontalScrollRect == null )
-     			{
-		    		this.m_ELoopTestLoopHorizontalScrollRect = UIFindHelper.FindDeepChild<UnityEngine.UI.LoopHorizontalScrollRect>(this.uiTransform.gameObject,"ELoopTest");
-     			}
-     			return this.m_ELoopTestLoopHorizontalScrollRect;
-     		}
-     	}
-
 		public void DestroyWidget()
 		{
-			this.m_esreuseui = null;
 			this.m_ELoginButton = null;
 			this.m_ELoginImage = null;
 			this.m_EAccountInputField = null;
 			this.m_EAccountImage = null;
 			this.m_EPasswordInputField = null;
 			this.m_EPasswordImage = null;
-			this.m_ELoopTestLoopHorizontalScrollRect = null;
 			this.uiTransform = null;
 		}
 
-		private EntityRef<ESReuseUI> m_esreuseui = null;
 		private UnityEngine.UI.Button m_ELoginButton = null;
 		private UnityEngine.UI.Image m_ELoginImage = null;
 		private UnityEngine.UI.InputField m_EAccountInputField = null;
 		private UnityEngine.UI.Image m_EAccountImage = null;
 		private UnityEngine.UI.InputField m_EPasswordInputField = null;
 		private UnityEngine.UI.Image m_EPasswordImage = null;
-		private UnityEngine.UI.LoopHorizontalScrollRect m_ELoopTestLoopHorizontalScrollRect = null;
 		public Transform uiTransform = null;
 	}
 }

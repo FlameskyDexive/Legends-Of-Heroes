@@ -13,14 +13,14 @@ namespace ET.Client
 		public static void RegisterUIEvent(this DlgLogin self)
 		{
 			self.View.ELoginButton.AddListener(self.OnLogin);
-			self.View.ELoopTestLoopHorizontalScrollRect.AddItemRefreshListener(self.OnLoop);
+			// self.View.ELoopTestLoopHorizontalScrollRect.AddItemRefreshListener(self.OnLoop);
 		}
 
 		public static void ShowWindow(this DlgLogin self, Entity contextData = null)
 		{
 			self.AddUIScrollItems(ref self.Dictionary,100);
-			self.View.ELoopTestLoopHorizontalScrollRect.SetVisible(true,100);
-			self.View.ESReuseUI.Test();
+			// self.View.ELoopTestLoopHorizontalScrollRect.SetVisible(true,100);
+			// self.View.ESReuseUI.Test();
 		}
 
 		public static void OnLoop(this DlgLogin self, Transform transform, int index)
