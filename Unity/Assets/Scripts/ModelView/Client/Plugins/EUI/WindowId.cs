@@ -4,6 +4,7 @@ namespace ET.Client
     {
         WindowID_Invaild = 0,
         WindowID_MessageBox,
+        WindowID_HotUpdate,
         WindowID_Lobby,    //房间界面
         WindowID_Login,     //登录界面
         WindowID_RedDot,   //红点测试界面
@@ -11,5 +12,7 @@ namespace ET.Client
     	WindowID_LSLobby,
 		WindowID_LSLogin,
 		WindowID_LSRoom,
-	}
+        WindowID_Battle,            //战斗界面
+        WindowID_Room,              //房间界面
+    }
 }

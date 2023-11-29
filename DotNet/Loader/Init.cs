@@ -30,8 +30,6 @@ namespace ET
                 World.Instance.AddSingleton<FixedUpdate, Action>(FixedUpdate);
 
                 World.Instance.AddSingleton<CodeLoader>();
-                var objectSerializer = new ObjectSerializer(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.StartsWith("ET"));
-                BsonSerializer.RegisterSerializer(objectSerializer);
             }
 			catch (Exception e)
 			{
