@@ -153,18 +153,15 @@ namespace YooAsset
 		/// <summary>
 		/// 销毁
 		/// </summary>
-		public virtual void Destroy(bool forceDestroy)
+		public virtual void Destroy()
 		{
 			IsDestroyed = true;
 
 			// Check fatal
-			if (forceDestroy == false)
-			{
-				if (RefCount > 0)
-					throw new Exception($"Bundle file loader ref is not zero : {MainBundleInfo.Bundle.BundleName}");
-				if (IsDone() == false)
-					throw new Exception($"Bundle file loader is not done : {MainBundleInfo.Bundle.BundleName}");
-			}
+			if (RefCount > 0)
+				throw new Exception($"Bundle file loader ref is not zero : {MainBundleInfo.Bundle.BundleName}");
+			if (IsDone() == false)
+				throw new Exception($"Bundle file loader is not done : {MainBundleInfo.Bundle.BundleName}");
 
 			if (CacheBundle != null)
 			{

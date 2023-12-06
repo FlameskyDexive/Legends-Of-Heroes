@@ -24,12 +24,13 @@ namespace ET
     /// <summary>
     /// 资源文件查询服务类
     /// </summary>
-    public class GameQueryServices : IQueryServices
+    public class GameQueryServices : IBuildinQueryServices
     {
+        public const string RootFolderName = "yoo";
         public bool QueryStreamingAssets(string packageName, string fileName)
         {
             // 注意：fileName包含文件格式
-            string filePath = Path.Combine(YooAssetSettings.DefaultYooFolderName, packageName, fileName);
+            string filePath = Path.Combine(RootFolderName, packageName, fileName);
             return BetterStreamingAssets.FileExists(filePath);
         }
     }
@@ -103,8 +104,8 @@ namespace ET
                     string defaultHostServer = GetHostServerURL();
                     string fallbackHostServer = GetHostServerURL();
                     HostPlayModeParameters createParameters = new();
-                    createParameters.QueryServices = new GameQueryServices();
-                    createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
+                    createParameters.BuildinQueryServices = new GameQueryServices();
+                        createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
                     createParameters.DecryptionServices = new GameDecryptionServices();
                         await package.InitializeAsync(createParameters).Task;
                     break;

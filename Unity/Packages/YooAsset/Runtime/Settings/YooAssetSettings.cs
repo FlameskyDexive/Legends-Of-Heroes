@@ -3,13 +3,17 @@
 namespace YooAsset
 {
 	[CreateAssetMenu(fileName = "YooAssetSettings", menuName = "YooAsset/Create YooAsset Settings")]
-	public class YooAssetSettings : ScriptableObject
+	internal class YooAssetSettings : ScriptableObject
 	{
 		/// <summary>
 		/// 清单文件名称
 		/// </summary>
 		public string ManifestFileName = "PackageManifest";
 
+		/// <summary>
+		/// 默认的YooAsset文件夹名称
+		/// </summary>
+		public string DefaultYooFolderName = "yoo";
 
 		/// <summary>
 		/// 清单文件头标记
@@ -24,7 +28,7 @@ namespace YooAsset
 		/// <summary>
 		/// 清单文件格式版本
 		/// </summary>
-		public const string ManifestFileVersion = "1.4.17";
+		public const string ManifestFileVersion = "1.5.2";
 
 
 		/// <summary>
@@ -36,11 +40,6 @@ namespace YooAsset
 		/// 缓存的信息文件名称
 		/// </summary>
 		public const string CacheBundleInfoFileName = "__info";
-
-		/// <summary>
-		/// 默认的YooAsset文件夹名称
-		/// </summary>
-		public const string DefaultYooFolderName = "Bundles";
 
 		/// <summary>
 		/// 缓存的资源文件的文件夹名称

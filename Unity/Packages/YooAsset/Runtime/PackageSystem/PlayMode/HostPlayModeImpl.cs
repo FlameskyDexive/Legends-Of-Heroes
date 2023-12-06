@@ -10,7 +10,8 @@ namespace YooAsset
 
 		// 参数相关
 		private string _packageName;
-		private IQueryServices _queryServices;
+		private IBuildinQueryServices _buildinQueryServices;
+		private IDeliveryQueryServices _deliveryQueryServices;
 		private IRemoteServices _remoteServices;
 
 		public IRemoteServices RemoteServices
@@ -21,10 +22,11 @@ namespace YooAsset
 		/// <summary>
 		/// 异步初始化
 		/// </summary>
-		public InitializationOperation InitializeAsync(string packageName, IQueryServices queryServices, IRemoteServices remoteServices)
+		public InitializationOperation InitializeAsync(string packageName, IBuildinQueryServices buildinQueryServices, IDeliveryQueryServices deliveryQueryServices, IRemoteServices remoteServices)
 		{
 			_packageName = packageName;
-			_queryServices = queryServices;
+			_buildinQueryServices = buildinQueryServices;
+			_deliveryQueryServices = deliveryQueryServices;
 			_remoteServices = remoteServices;
 
 			var operation = new HostPlayModeInitializationOperation(this, packageName);
@@ -51,6 +53,24 @@ namespace YooAsset
 			return bundleInfo;
 		}
 
+		// 查询相关
+		private bool IsBuildinPackageBundle(PackageBundle packageBundle)
+		{
+			return _buildinQueryServices.QueryStreamingAssets(_packageName, packageBundle.FileName);
+		}
+		private bool IsCachedPackageBundle(PackageBundle packageBundle)
+		{
+			return CacheSystem.IsCached(packageBundle.PackageName, packageBundle.CacheGUID);
+		}
+		private bool IsDeliveryPackageBundle(PackageBundle packageBundle)
+		{
+			return _deliveryQueryServices.QueryDeliveryFiles(_packageName, packageBundle.FileName);
+		}
+		private DeliveryFileInfo GetDeiveryFileInfo(PackageBundle packageBundle)
+		{
+			return _deliveryQueryServices.GetDeliveryFileInfo(_packageName, packageBundle.FileName);
+		}
+
 		#region IPlayModeServices接口
 		public PackageManifest ActiveManifest
 		{
@@ -69,15 +89,6 @@ namespace YooAsset
 			{
 				PersistentTools.GetPersistent(_packageName).SaveSandboxPackageVersionFile(_activeManifest.PackageVersion);
 			}
-		}
-
-		private bool IsBuildinPackageBundle(PackageBundle packageBundle)
-		{
-			return _queryServices.QueryStreamingAssets(_packageName, packageBundle.FileName);
-		}
-		private bool IsCachedPackageBundle(PackageBundle packageBundle)
-		{
-			return CacheSystem.IsCached(packageBundle.PackageName, packageBundle.CacheGUID);
 		}
 
 		UpdatePackageVersionOperation IPlayModeServices.UpdatePackageVersionAsync(bool appendTimeTicks, int timeout)
@@ -110,6 +121,10 @@ namespace YooAsset
 			List<PackageBundle> downloadList = new List<PackageBundle>(1000);
 			foreach (var packageBundle in manifest.BundleList)
 			{
+				// 忽略分发文件
+				if (IsDeliveryPackageBundle(packageBundle))
+					continue;
+
 				// 忽略缓存文件
 				if (IsCachedPackageBundle(packageBundle))
 					continue;
@@ -135,6 +150,10 @@ namespace YooAsset
 			List<PackageBundle> downloadList = new List<PackageBundle>(1000);
 			foreach (var packageBundle in manifest.BundleList)
 			{
+				// 忽略分发文件
+				if (IsDeliveryPackageBundle(packageBundle))
+					continue;
+
 				// 忽略缓存文件
 				if (IsCachedPackageBundle(packageBundle))
 					continue;
@@ -196,6 +215,10 @@ namespace YooAsset
 			List<PackageBundle> downloadList = new List<PackageBundle>(1000);
 			foreach (var packageBundle in checkList)
 			{
+				// 忽略分发文件
+				if (IsDeliveryPackageBundle(packageBundle))
+					continue;
+
 				// 忽略缓存文件
 				if (IsCachedPackageBundle(packageBundle))
 					continue;
@@ -268,6 +291,14 @@ namespace YooAsset
 		{
 			if (packageBundle == null)
 				throw new Exception("Should never get here !");
+
+			// 查询分发资源
+			if (IsDeliveryPackageBundle(packageBundle))
+			{
+				DeliveryFileInfo deliveryFileInfo = GetDeiveryFileInfo(packageBundle);
+				BundleInfo bundleInfo = new BundleInfo(packageBundle, BundleInfo.ELoadMode.LoadFromDelivery, deliveryFileInfo.DeliveryFilePath, deliveryFileInfo.DeliveryFileOffset);
+				return bundleInfo;
+			}
 
 			// 查询沙盒资源
 			if (IsCachedPackageBundle(packageBundle))

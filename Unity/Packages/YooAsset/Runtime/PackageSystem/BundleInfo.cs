@@ -6,6 +6,7 @@ namespace YooAsset
 		public enum ELoadMode
 		{
 			None,
+			LoadFromDelivery,
 			LoadFromStreaming,
 			LoadFromCache,
 			LoadFromRemote,
@@ -26,6 +27,16 @@ namespace YooAsset
 		public string RemoteFallbackURL { private set; get; }
 
 		/// <summary>
+		/// 开发者分发的文件地址
+		/// </summary>
+		public string DeliveryFilePath { private set; get; }
+
+		/// <summary>
+		/// 开发者分发的文件偏移量
+		/// </summary>
+		public ulong DeliveryFileOffset { private set; get; }
+
+		/// <summary>
 		/// 注意：该字段只用于帮助编辑器下的模拟模式。
 		/// </summary>
 		public string[] IncludeAssets;
@@ -40,6 +51,17 @@ namespace YooAsset
 			LoadMode = loadMode;
 			RemoteMainURL = mainURL;
 			RemoteFallbackURL = fallbackURL;
+			DeliveryFilePath = string.Empty;
+			DeliveryFileOffset = 0;
+		}
+		public BundleInfo(PackageBundle bundle, ELoadMode loadMode, string deliveryFilePath, ulong deliveryFileOffset)
+		{
+			Bundle = bundle;
+			LoadMode = loadMode;
+			RemoteMainURL = string.Empty;
+			RemoteFallbackURL = string.Empty;
+			DeliveryFilePath = deliveryFilePath;
+			DeliveryFileOffset = deliveryFileOffset;
 		}
 		public BundleInfo(PackageBundle bundle, ELoadMode loadMode)
 		{
@@ -47,6 +69,8 @@ namespace YooAsset
 			LoadMode = loadMode;
 			RemoteMainURL = string.Empty;
 			RemoteFallbackURL = string.Empty;
+			DeliveryFilePath = string.Empty;
+			DeliveryFileOffset = 0;
 		}
 
 		/// <summary>

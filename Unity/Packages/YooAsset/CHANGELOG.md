@@ -2,6 +2,136 @@
 
 All notable changes to this package will be documented in this file.
 
+## [1.5.7] - 2023-10-07
+
+### Changed
+
+- WebGL平台支持创建下载器。
+
+## [1.5.6-preview] - 2023-09-26
+
+### Fixed
+
+- (#172) 修复包裹初始化后，package的状态不正确的问题。
+
+## [1.5.5-preview] - 2023-09-25
+
+### Fixed
+
+- (#96) 修复了异步操作任务的完成回调在业务层触发异常时无法正常完成的问题。
+- (#156) 修复了多个Package存在时，服务器请求地址请求顺序不对的问题。
+- (#163) 修复了Unity2019版本编译报错的问题。
+- (#167) 修复了初始化时每次都会提示文件验证失败日志。
+- (#171) 修复了IsNeedDownloadFromRemote里缺少判断依赖的资源是否下载 。
+
+### Added
+
+- 资源收集器里增加了AddressDisable规则。
+
+- 资源收集器里FilterRuleData结构体增加了多个备选字段。
+
+  ```c#
+  public struct FilterRuleData
+  {
+      public string AssetPath;
+      public string CollectPath;
+      public string GroupName;
+      public string UserData;
+  }
+  ```
+
+### Changed
+
+- 可以设置自定义参数DefaultYooFolderName。
+
+- 资源配置界面的分组不激活时，不再进行配置检测。
+
+- SBP构建管线增加新构建参数用于修复图集资源冗余问题。
+
+  ```c#
+  public class SBPBuildParameters
+  {
+      /// <summary>
+      /// 修复图集资源冗余问题
+      /// </summary>
+      public bool FixSpriteAtlasRedundancy = false;
+  }
+  ```
+
+## [1.5.4-preview] - 2023-08-25
+
+优化了资源清单文件构建速度（极大提升构建体验）（感谢yingnierxiao同学）。
+
+### Fixed
+
+- (#130) 修复了打包路径无效问题bug
+- (#138) 修复了Unity不支持的格式的原生文件会报warning
+
+### Added
+
+- 新增了IBuildinQueryServices 接口。
+
+### Changed
+
+- 在开启可寻址模式下，默认支持通过资源路径加载资源对象。
+
+- 优化了资源收集界面，增加了配置相关的警示提示。
+
+- 优化了资源报告界面，增加了BundleView界面里的builtin资源的列表显示。
+
+- IQueryServices接口变更为IBuildinQueryServices接口
+
+- EOperationStatus增加了正在处理的状态。
+
+  ```c#
+  public enum EOperationStatus
+  {
+      None,
+      Processing,
+      Succeed,
+      Failed
+  }
+  ```
+
+## [1.5.3-preview] - 2023-07-28
+
+### Fixed
+
+- 修复了Unity2020以下版本的编辑器提示找不到"autoLoadAssetBundle"的编译错误。
+
+### Added
+
+- 新增了支持开发者分发资源的功能。
+
+  ```c#
+  public interface IQueryServices
+  {
+      /// <summary>
+      /// 查询应用程序里的内置资源是否存在
+      /// </summary>
+      bool QueryStreamingAssets(string packageName, string fileName);
+  
+      /// <summary>
+      /// 查询是否为开发者分发的资源
+      /// </summary>
+      bool QueryDeliveryFiles(string packageName, string fileName);
+  
+      /// <summary>
+      /// 获取开发者分发的资源信息
+      /// </summary>
+      DeliveryFileInfo GetDeliveryFileInfo(string packageName, string fileName);
+  }
+  ```
+
+### Changed
+
+- 针对资源清单更新方法传入参数的合法性检测。
+- 编辑器下针对激活的资源清单有效性的检测。
+
+## [1.5.2-preview] - 2023-07-18
+
+重新设计了对WebGL平台的支持，新增加了专属模式：WebPlayMode
+
 ## [1.5.1] - 2023-07-12
 
 ### Fixed

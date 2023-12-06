@@ -122,7 +122,24 @@ namespace YooAsset
 				var initializeParameters = parameters as HostPlayModeParameters;
 				initializeOperation = hostPlayModeImpl.InitializeAsync(
 					PackageName,
-					initializeParameters.QueryServices,
+					initializeParameters.BuildinQueryServices,
+					initializeParameters.DeliveryQueryServices,
+					initializeParameters.RemoteServices
+					);
+			}
+			else if (_playMode == EPlayMode.WebPlayMode)
+			{
+				var webPlayModeImpl = new WebPlayModeImpl();
+				_bundleServices = webPlayModeImpl;
+				_playModeServices = webPlayModeImpl;
+				_assetSystemImpl.Initialize(PackageName, false,
+					parameters.LoadingMaxTimeSlice, parameters.DownloadFailedTryAgain,
+					parameters.DecryptionServices, _bundleServices);
+
+				var initializeParameters = parameters as WebPlayModeParameters;
+				initializeOperation = webPlayModeImpl.InitializeAsync(
+					PackageName,
+					initializeParameters.BuildinQueryServices,
 					initializeParameters.RemoteServices
 					);
 			}
@@ -171,8 +188,10 @@ namespace YooAsset
 			if (parameters is HostPlayModeParameters)
 			{
 				var hostPlayModeParameters = parameters as HostPlayModeParameters;
-				if (hostPlayModeParameters.QueryServices == null)
-					throw new Exception($"{nameof(IQueryServices)} is null.");
+				if (hostPlayModeParameters.BuildinQueryServices == null)
+					throw new Exception($"{nameof(IBuildinQueryServices)} is null.");
+				if (hostPlayModeParameters.DeliveryQueryServices == null)
+					throw new Exception($"{nameof(IDeliveryQueryServices)} is null.");
 				if (hostPlayModeParameters.RemoteServices == null)
 					throw new Exception($"{nameof(IRemoteServices)} is null.");
 			}
@@ -184,8 +203,26 @@ namespace YooAsset
 				_playMode = EPlayMode.OfflinePlayMode;
 			else if (parameters is HostPlayModeParameters)
 				_playMode = EPlayMode.HostPlayMode;
+			else if (parameters is WebPlayModeParameters)
+				_playMode = EPlayMode.WebPlayMode;
 			else
 				throw new NotImplementedException();
+
+			// 检测运行时平台
+			if (_playMode != EPlayMode.EditorSimulateMode)
+			{
+#if UNITY_WEBGL
+				if (_playMode != EPlayMode.WebPlayMode)
+				{
+					throw new Exception($"{_playMode} can not support WebGL plateform ! Please use {nameof(EPlayMode.WebPlayMode)}");
+				}
+#else
+				if (_playMode == EPlayMode.WebPlayMode)
+				{
+					throw new Exception($"{nameof(EPlayMode.WebPlayMode)} only support WebGL plateform !");
+				}
+#endif
+			}
 
 			// 检测参数范围
 			if (parameters.LoadingMaxTimeSlice < 10)
@@ -212,7 +249,7 @@ namespace YooAsset
 		/// <param name="timeout">超时时间（默认值：60秒）</param>
 		public UpdatePackageVersionOperation UpdatePackageVersionAsync(bool appendTimeTicks = true, int timeout = 60)
 		{
-			DebugCheckInitialize();
+			DebugCheckInitialize(false);
 			return _playModeServices.UpdatePackageVersionAsync(appendTimeTicks, timeout);
 		}
 
@@ -224,7 +261,7 @@ namespace YooAsset
 		/// <param name="timeout">超时时间（默认值：60秒）</param>
 		public UpdatePackageManifestOperation UpdatePackageManifestAsync(string packageVersion, bool autoSaveVersion = true, int timeout = 60)
 		{
-			DebugCheckInitialize();
+			DebugCheckInitialize(false);
 			DebugCheckUpdateManifest();
 			return _playModeServices.UpdatePackageManifestAsync(packageVersion, autoSaveVersion, timeout);
 		}
@@ -236,7 +273,7 @@ namespace YooAsset
 		/// <param name="timeout">超时时间（默认值：60秒）</param>
 		public PreDownloadContentOperation PreDownloadContentAsync(string packageVersion, int timeout = 60)
 		{
-			DebugCheckInitialize();
+			DebugCheckInitialize(false);
 			return _playModeServices.PreDownloadContentAsync(packageVersion, timeout);
 		}
 
@@ -268,8 +305,6 @@ namespace YooAsset
 		public string GetPackageVersion()
 		{
 			DebugCheckInitialize();
-			if (_playModeServices.ActiveManifest == null)
-				return string.Empty;
 			return _playModeServices.ActiveManifest.PackageVersion;
 		}
 
@@ -333,17 +368,7 @@ namespace YooAsset
 		{
 			DebugCheckInitialize();
 			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, null);
-			if (assetInfo.IsInvalid)
-			{
-				YooLogger.Warning(assetInfo.Error);
-				return false;
-			}
-
-			BundleInfo bundleInfo = _bundleServices.GetBundleInfo(assetInfo);
-			if (bundleInfo.LoadMode == BundleInfo.ELoadMode.LoadFromRemote)
-				return true;
-			else
-				return false;
+			return IsNeedDownloadFromRemoteInternal(assetInfo);
 		}
 
 		/// <summary>
@@ -353,17 +378,7 @@ namespace YooAsset
 		public bool IsNeedDownloadFromRemote(AssetInfo assetInfo)
 		{
 			DebugCheckInitialize();
-			if (assetInfo.IsInvalid)
-			{
-				YooLogger.Warning(assetInfo.Error);
-				return false;
-			}
-
-			BundleInfo bundleInfo = _bundleServices.GetBundleInfo(assetInfo);
-			if (bundleInfo.LoadMode == BundleInfo.ELoadMode.LoadFromRemote)
-				return true;
-			else
-				return false;
+			return IsNeedDownloadFromRemoteInternal(assetInfo);
 		}
 
 		/// <summary>
@@ -416,6 +431,28 @@ namespace YooAsset
 			DebugCheckInitialize();
 			string assetPath = _playModeServices.ActiveManifest.TryMappingToAssetPath(location);
 			return string.IsNullOrEmpty(assetPath) == false;
+		}
+
+		private bool IsNeedDownloadFromRemoteInternal(AssetInfo assetInfo)
+		{
+			if (assetInfo.IsInvalid)
+			{
+				YooLogger.Warning(assetInfo.Error);
+				return false;
+			}
+
+			BundleInfo bundleInfo = _bundleServices.GetBundleInfo(assetInfo);
+			if (bundleInfo.LoadMode == BundleInfo.ELoadMode.LoadFromRemote)
+				return true;
+
+			BundleInfo[] depends = _bundleServices.GetAllDependBundleInfos(assetInfo);
+			foreach (var depend in depends)
+			{
+				if (depend.LoadMode == BundleInfo.ELoadMode.LoadFromRemote)
+					return true;
+			}
+
+			return false;
 		}
 		#endregion
 
@@ -547,6 +584,18 @@ namespace YooAsset
 			return LoadAssetInternal(assetInfo, true);
 		}
 
+		/// <summary>
+		/// 同步加载资源对象
+		/// </summary>
+		/// <param name="location">资源的定位地址</param>
+		public AssetOperationHandle LoadAssetSync(string location)
+		{
+			DebugCheckInitialize();
+			Type type = typeof(UnityEngine.Object);
+			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, type);
+			return LoadAssetInternal(assetInfo, true);
+		}
+
 
 		/// <summary>
 		/// 异步加载资源对象
@@ -578,6 +627,18 @@ namespace YooAsset
 		public AssetOperationHandle LoadAssetAsync(string location, System.Type type)
 		{
 			DebugCheckInitialize();
+			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, type);
+			return LoadAssetInternal(assetInfo, false);
+		}
+
+		/// <summary>
+		/// 异步加载资源对象
+		/// </summary>
+		/// <param name="location">资源的定位地址</param>
+		public AssetOperationHandle LoadAssetAsync(string location)
+		{
+			DebugCheckInitialize();
+			Type type = typeof(UnityEngine.Object);
 			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, type);
 			return LoadAssetInternal(assetInfo, false);
 		}
@@ -636,6 +697,18 @@ namespace YooAsset
 			return LoadSubAssetsInternal(assetInfo, true);
 		}
 
+		/// <summary>
+		/// 同步加载子资源对象
+		/// </summary>
+		/// <param name="location">资源的定位地址</param>
+		public SubAssetsOperationHandle LoadSubAssetsSync(string location)
+		{
+			DebugCheckInitialize();
+			Type type = typeof(UnityEngine.Object);
+			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, type);
+			return LoadSubAssetsInternal(assetInfo, true);
+		}
+
 
 		/// <summary>
 		/// 异步加载子资源对象
@@ -667,6 +740,18 @@ namespace YooAsset
 		public SubAssetsOperationHandle LoadSubAssetsAsync(string location, System.Type type)
 		{
 			DebugCheckInitialize();
+			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, type);
+			return LoadSubAssetsInternal(assetInfo, false);
+		}
+
+		/// <summary>
+		/// 异步加载子资源对象
+		/// </summary>
+		/// <param name="location">资源的定位地址</param>
+		public SubAssetsOperationHandle LoadSubAssetsAsync(string location)
+		{
+			DebugCheckInitialize();
+			Type type = typeof(UnityEngine.Object);
 			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, type);
 			return LoadSubAssetsInternal(assetInfo, false);
 		}
@@ -725,6 +810,18 @@ namespace YooAsset
 			return LoadAllAssetsInternal(assetInfo, true);
 		}
 
+		/// <summary>
+		/// 同步加载资源包内所有资源对象
+		/// </summary>
+		/// <param name="location">资源的定位地址</param>
+		public AllAssetsOperationHandle LoadAllAssetsSync(string location)
+		{
+			DebugCheckInitialize();
+			Type type = typeof(UnityEngine.Object);
+			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, type);
+			return LoadAllAssetsInternal(assetInfo, true);
+		}
+
 
 		/// <summary>
 		/// 异步加载资源包内所有资源对象
@@ -756,6 +853,18 @@ namespace YooAsset
 		public AllAssetsOperationHandle LoadAllAssetsAsync(string location, System.Type type)
 		{
 			DebugCheckInitialize();
+			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, type);
+			return LoadAllAssetsInternal(assetInfo, false);
+		}
+
+		/// <summary>
+		/// 异步加载资源包内所有资源对象
+		/// </summary>
+		/// <param name="location">资源的定位地址</param>
+		public AllAssetsOperationHandle LoadAllAssetsAsync(string location)
+		{
+			DebugCheckInitialize();
+			Type type = typeof(UnityEngine.Object);
 			AssetInfo assetInfo = ConvertLocationToAssetInfo(location, type);
 			return LoadAllAssetsInternal(assetInfo, false);
 		}
@@ -941,12 +1050,18 @@ namespace YooAsset
 
 		#region 调试方法
 		[Conditional("DEBUG")]
-		private void DebugCheckInitialize()
+		private void DebugCheckInitialize(bool checkActiveManifest = true)
 		{
 			if (_initializeStatus == EOperationStatus.None)
 				throw new Exception("Package initialize not completed !");
 			else if (_initializeStatus == EOperationStatus.Failed)
 				throw new Exception($"Package initialize failed ! {_initializeError}");
+
+			if (checkActiveManifest)
+			{
+				if (_playModeServices.ActiveManifest == null)
+					throw new Exception("Not found active manifest !");
+			}
 		}
 
 		[Conditional("DEBUG")]

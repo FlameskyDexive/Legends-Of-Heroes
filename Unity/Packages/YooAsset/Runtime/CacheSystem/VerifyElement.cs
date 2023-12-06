@@ -5,7 +5,7 @@ namespace YooAsset
 	/// <summary>
 	/// 缓存文件验证元素
 	/// </summary>
-	internal class VerifyCacheElement
+	internal class VerifyCacheFileElement
 	{
 		public string PackageName { private set; get; }
 		public string CacheGUID { private set; get; }
@@ -17,7 +17,7 @@ namespace YooAsset
 		public string DataFileCRC;
 		public long DataFileSize;
 
-		public VerifyCacheElement(string packageName, string cacheGUID, string fileRootPath, string dataFilePath, string infoFilePath)
+		public VerifyCacheFileElement(string packageName, string cacheGUID, string fileRootPath, string dataFilePath, string infoFilePath)
 		{
 			PackageName = packageName;
 			CacheGUID = cacheGUID;
@@ -28,14 +28,13 @@ namespace YooAsset
 
 		public void DeleteFiles()
 		{
-			if (File.Exists(DataFilePath))
+			try
 			{
-				File.Delete(DataFilePath);
+				Directory.Delete(FileRootPath, true);
 			}
-
-			if (File.Exists(InfoFilePath))
+			catch (System.Exception e)
 			{
-				File.Delete(InfoFilePath);
+				YooLogger.Warning($"Failed delete cache bundle folder : {e}");
 			}
 		}
 	}
@@ -43,7 +42,7 @@ namespace YooAsset
 	/// <summary>
 	/// 下载文件验证元素
 	/// </summary>
-	internal class VerifyTempElement
+	internal class VerifyTempFileElement
 	{
 		public string TempDataFilePath { private set; get; }
 		public string FileCRC { private set; get; }
@@ -51,7 +50,7 @@ namespace YooAsset
 
 		public int Result = 0; // 注意：原子操作对象
 
-		public VerifyTempElement(string tempDataFilePath, string fileCRC, long fileSize)
+		public VerifyTempFileElement(string tempDataFilePath, string fileCRC, long fileSize)
 		{
 			TempDataFilePath = tempDataFilePath;
 			FileCRC = fileCRC;

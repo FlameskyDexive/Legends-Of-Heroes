@@ -111,7 +111,7 @@ namespace YooAsset
 				if (loader.CanDestroy())
 				{
 					string bundleName = loader.MainBundleInfo.Bundle.BundleName;
-					loader.Destroy(false);
+					loader.Destroy();
 					_loaderList.RemoveAt(i);
 					_loaderDic.Remove(bundleName);
 				}
@@ -123,6 +123,9 @@ namespace YooAsset
 		/// </summary>
 		public void ForceUnloadAllAssets()
 		{
+#if UNITY_WEBGL
+			throw new Exception($"WebGL not support invoke {nameof(ForceUnloadAllAssets)}");
+#else
 			foreach (var provider in _providerList)
 			{
 				provider.WaitForAsyncComplete();
@@ -131,7 +134,7 @@ namespace YooAsset
 			foreach (var loader in _loaderList)
 			{
 				loader.WaitForAsyncComplete();
-				loader.Destroy(true);
+				loader.Destroy();
 			}
 
 			_providerList.Clear();
@@ -142,6 +145,7 @@ namespace YooAsset
 
 			// 注意：调用底层接口释放所有资源
 			Resources.UnloadUnusedAssets();
+#endif
 		}
 
 		/// <summary>
@@ -195,7 +199,7 @@ namespace YooAsset
 				return completedProvider.CreateHandle<AssetOperationHandle>();
 			}
 
-			string providerGUID = assetInfo.GUID;
+			string providerGUID = nameof(LoadAssetAsync) + assetInfo.GUID;
 			ProviderBase provider = TryGetProvider(providerGUID);
 			if (provider == null)
 			{
@@ -223,7 +227,7 @@ namespace YooAsset
 				return completedProvider.CreateHandle<SubAssetsOperationHandle>();
 			}
 
-			string providerGUID = assetInfo.GUID;
+			string providerGUID = nameof(LoadSubAssetsAsync) + assetInfo.GUID;
 			ProviderBase provider = TryGetProvider(providerGUID);
 			if (provider == null)
 			{
@@ -251,7 +255,7 @@ namespace YooAsset
 				return completedProvider.CreateHandle<AllAssetsOperationHandle>();
 			}
 
-			string providerGUID = assetInfo.GUID;
+			string providerGUID = nameof(LoadAllAssetsAsync) + assetInfo.GUID;
 			ProviderBase provider = TryGetProvider(providerGUID);
 			if (provider == null)
 			{
@@ -279,7 +283,7 @@ namespace YooAsset
 				return completedProvider.CreateHandle<RawFileOperationHandle>();
 			}
 
-			string providerGUID = assetInfo.GUID;
+			string providerGUID = nameof(LoadRawFileAsync) + assetInfo.GUID;
 			ProviderBase provider = TryGetProvider(providerGUID);
 			if (provider == null)
 			{
