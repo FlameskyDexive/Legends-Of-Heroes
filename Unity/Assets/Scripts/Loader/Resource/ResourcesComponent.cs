@@ -88,13 +88,14 @@ namespace ET
                 {
                     EditorSimulateModeParameters createParameters = new();
                     createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild(packageName);
-                    await package.InitializeAsync(createParameters).Task;
+                        await package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 case EPlayMode.OfflinePlayMode:
                 {
                     OfflinePlayModeParameters createParameters = new();
-                    await package.InitializeAsync(createParameters).Task;
+                    createParameters.DecryptionServices = new GameDecryptionServices();
+                        await package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 case EPlayMode.HostPlayMode:
@@ -104,7 +105,8 @@ namespace ET
                     HostPlayModeParameters createParameters = new();
                     createParameters.QueryServices = new GameQueryServices();
                     createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
-                    await package.InitializeAsync(createParameters).Task;
+                    createParameters.DecryptionServices = new GameDecryptionServices();
+                        await package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 default:
