@@ -5,7 +5,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "f810ede6d74a7fcfc2c2fd03ad08c44696b3a0e0"
+      "hash": "410bb9b542664e9288588b5c23d3300e01e5936e"
     },
     "com.cysharp.memorypack": {
       "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",
@@ -13,12 +13,6 @@
       "source": "git",
       "dependencies": {},
       "hash": "2554e81f0315ddf835026940ccc4ba8175edfda3"
-    },
-    "com.dbrizov.naughtyattributes": {
-      "version": "file:NaughtyAttributes",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
     },
     "com.gwiazdorrr.betterstreamingassets": {
       "version": "file:betterstreamingassets",
@@ -47,7 +41,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.burst": {
-      "version": "1.8.9",
+      "version": "1.8.11",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -63,7 +57,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.26",
+      "version": "3.0.27",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -113,11 +107,20 @@
         "com.unity.mathematics": "1.2.1",
         "com.unity.burst": "1.8.9",
         "com.unity.render-pipelines.core": "14.0.9",
-        "com.unity.shadergraph": "14.0.9"
+        "com.unity.shadergraph": "14.0.9",
+        "com.unity.render-pipelines.universal-config": "14.0.9"
+      }
+    },
+    "com.unity.render-pipelines.universal-config": {
+      "version": "14.0.9",
+      "depth": 1,
+      "source": "builtin",
+      "dependencies": {
+        "com.unity.render-pipelines.core": "14.0.9"
       }
     },
     "com.unity.scriptablebuildpipeline": {
-      "version": "1.21.20",
+      "version": "1.21.21",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
