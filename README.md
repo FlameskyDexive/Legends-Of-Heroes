@@ -10,7 +10,7 @@ English: please use your browser to translate to english
 #### 此游戏为ET的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
 ## 环境：
-- 1. 安装Unity2022.3.12f1，安装VS2022/Rider2023，安装[.Net7 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/7.0).
+- 1. 安装Unity2022.3.15f1，安装VS2022/Rider2023，安装[.Net8 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0).
 - 
 ## 运行步骤：
 - 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,然后点击BuildModelAndHotfix.

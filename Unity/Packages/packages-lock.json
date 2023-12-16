@@ -14,6 +14,12 @@
       "dependencies": {},
       "hash": "2554e81f0315ddf835026940ccc4ba8175edfda3"
     },
+    "com.dbrizov.naughtyattributes": {
+      "version": "file:NaughtyAttributes",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.gwiazdorrr.betterstreamingassets": {
       "version": "file:betterstreamingassets",
       "depth": 0,
