@@ -26,6 +26,7 @@ namespace ET.Server
                         await FiberManager.Instance.Create(SchedulerType.ThreadPool, startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
                     }
 
+                    root.AddComponent<RobotCaseComponent>();
                     break;
                 }
                 case AppType.Watcher:
