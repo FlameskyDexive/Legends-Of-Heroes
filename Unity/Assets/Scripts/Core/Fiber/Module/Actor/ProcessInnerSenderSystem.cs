@@ -85,7 +85,6 @@ namespace ET
             }
 
             self.Tcs.SetResult(response);
-            ((MessageObject)response).Dispose();
         }
         
         public static void Reply(this ProcessInnerSender self, Address fromAddress, IResponse message)

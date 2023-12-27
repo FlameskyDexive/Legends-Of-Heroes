@@ -76,6 +76,7 @@ namespace ET.Server
                         IResponse response = await fiber.Root.GetComponent<ProcessInnerSender>().Call(actorId, request, false);
                         actorId.Process = fromProcess;
                         self.Send(actorId, response);
+                        ((MessageObject)response).Dispose();
                     }
                     Call().Coroutine();
                     break;
@@ -158,7 +159,6 @@ namespace ET.Server
             }
 
             self.Tcs.SetResult(response);
-            ((MessageObject)response).Dispose();
         }
 
         public static void Send(this ProcessOuterSender self, ActorId actorId, IMessage message)
