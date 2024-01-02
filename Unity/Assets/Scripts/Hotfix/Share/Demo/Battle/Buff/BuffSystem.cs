@@ -53,10 +53,12 @@ namespace ET
         [EntitySystem]
         public static void Destroy(this Buff self)
         {
-            
+            self.Root().GetComponent<TimerComponent>().Remove(ref self.LifeTimer);
+            self.Root().GetComponent<TimerComponent>().Remove(ref self.IntervalTimer);
+
         }
         /// <summary>
-        /// 每帧更新检测buff的周期、触发事件等
+        /// 每帧更新检测buff的周期、触发事件等. 如果表现层需要获取当前buff的剩余时间进度等，此处更新
         /// </summary>
         /// <param name="self"></param>
         [EntitySystem]

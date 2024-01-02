@@ -26,8 +26,9 @@ namespace ET
     {
         [BsonIgnore]
         public Unit Unit => this.GetParent<BattleUnitComponent>().Unit;
-        public long LifeTimer { get; set; }
-        public long IntervalTimer { get; set; }
+
+        public long LifeTimer;
+        public long IntervalTimer;
         
         /// <summary>
         /// buff表id
