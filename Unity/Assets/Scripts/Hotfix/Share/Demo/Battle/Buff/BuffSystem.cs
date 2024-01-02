@@ -47,8 +47,10 @@ namespace ET
             self.BuffId = BuffId;
             self.LifeTimer = self.Root().GetComponent<TimerComponent>().NewOnceTimer(TimeInfo.Instance.ServerNow() + self.BuffConfig.Duration, TimerInvokeType.BuffLifeTimeout, self);
             //常规buff添加则立即出发一次，时间到销毁。如果有触发间隔，则间隔固定的时间再次出发buff行为
-            self.IntervalTimer = self.Root().GetComponent<TimerComponent>().NewRepeatedTimer(self.BuffConfig.Interval, TimerInvokeType.BuffInterval, self);
+            if(self.IntervalTimer > 0)
+                self.IntervalTimer = self.Root().GetComponent<TimerComponent>().NewRepeatedTimer(self.BuffConfig.Interval, TimerInvokeType.BuffInterval, self);
             //初始默认触发一次buff效果
+            self.TriggerBuff();
         }
         [EntitySystem]
         public static void Destroy(this Buff self)
