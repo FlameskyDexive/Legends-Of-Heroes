@@ -27,9 +27,10 @@ English: please use your browser to translate to english
 - [x] 配置表支持多Key（也可自行接入强大的多平台配置方案 [Luban](https://github.com/focus-creative-games/luban)，当前Demo用不到那么复杂excel就不进行接入了）。
 - [ ] 房间大厅，匹配房友，每个房间最多20个玩家。
 - [ ] 一个Demo关卡流程：有限的2d地图，随机生成食物，吃食物会变大，碰到敌人会产生伤害（大吞小，小死亡）。
-- [x] 一个比较基本的战斗技能框架设计，主动/被动技能释放(demo已经包含主动技能演示)。
-- [x]       时间线技能事件系统
-- [x]       子弹碰撞系统（碰撞检测使用[Box2dSharp](https://github.com/Zonciu/Box2DSharp)）
+- [x] 基础战斗技能框架设计，主动/被动技能释放(demo已经包含主动技能演示)。
+- [x] Buff系统
+- [x] 时间线技能事件系统
+- [x] 子弹碰撞系统（碰撞检测使用[Box2dSharp](https://github.com/Zonciu/Box2DSharp)）
 - [ ] 额外（有空的话）：2d moba玩法。
 
 ## 补充说明
