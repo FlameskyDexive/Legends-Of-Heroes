@@ -14,7 +14,7 @@ namespace ET
             {
                 return;
             }
-            scene.Fiber.Log.Info($"start contact:{unitA.Config().Name}, {unitB.Config().Name}");
+            Log.Info($"start contact:{unitA.Config().Name}, {unitB.Config().Name}");
             
             //当前子弹只处理子弹伤害，子弹回血（给队友回血/技能吸血自行拓展）
             if (unitA.Type() == UnitType.Bullet && unitB.Type() == UnitType.Player)

@@ -35,6 +35,7 @@ public class EntitySystemAnalyzer: DiagnosticAnalyzer
             new SystemMethodData(Definition.IGetComponentInterface, Definition.GetComponentMethod),
             new SystemMethodData(Definition.ILoadInterface, Definition.LoadMethod),
             new SystemMethodData(Definition.ILateUpdateInterface, Definition.LateUpdateMethod),
+            new SystemMethodData(Definition.IFixedUpdateInterface, Definition.FixedUpdateMethod),
             new SystemMethodData(Definition.ISerializeInterface, Definition.SerializeMethod),
             new SystemMethodData(Definition.ILSRollbackInterface,Definition.LSRollbackMethod)),
         new ETSystemData(Definition.LSEntitySystemOfAttribute,Definition.LSEntitySystemAttribute,Definition.LSEntityType,Definition.LSEntitySystemAttributeMetaName,

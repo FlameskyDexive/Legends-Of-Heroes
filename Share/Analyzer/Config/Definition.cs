@@ -72,6 +72,9 @@
         public const string ILateUpdateInterface = "ET.ILateUpdate";
         public const string LateUpdateMethod = "LateUpdate";
 
+        public const string IFixedUpdateInterface = "ET.IFixedUpdate";
+        public const string FixedUpdateMethod = "FixedUpdate";
+
         public const string ISerializeInterface = "ET.ISerialize";
         public const string SerializeMethod = "Serialize";
 

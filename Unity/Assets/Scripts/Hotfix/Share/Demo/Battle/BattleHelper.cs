@@ -25,7 +25,7 @@ namespace ET
                     {
                         //死亡发事件通知
                     }
-                    to.Fiber().Log.Info($"hit settle, from:{from?.Id}, to:{to?.Id}, value:{dmg}");
+                    Log.Info($"hit settle, from:{from?.Id}, to:{to?.Id}, value:{dmg}");
                     //命中结算结果发事件通知，处理一系列逻辑/表现（飘血，血量触发引发的其他事件等，当前球球会重新更新大小）
                     EventSystem.Instance.Publish(from.Root(), new HitResult(){hitResultType = EHitResultType.Damage, value = dmg});
                     break;
@@ -38,7 +38,7 @@ namespace ET
                     {
                         //死亡发事件通知
                     }
-                    to.Fiber().Log.Info($"hit settle, from:{from?.Id}, to:{to?.Id}, value:{dmg}");
+                    Log.Info($"hit settle, from:{from?.Id}, to:{to?.Id}, value:{dmg}");
                     EventSystem.Instance.Publish(from.Root(), new HitResult(){hitResultType = EHitResultType.Damage, value = dmg});
                     break;
                 }

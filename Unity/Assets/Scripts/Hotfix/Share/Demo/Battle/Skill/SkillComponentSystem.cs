@@ -24,7 +24,7 @@ namespace ET
         public static bool SpellSkill(this SkillComponent self, ESkillAbstractType absType, int index = 0)
         {
             //
-            self.Fiber().Log.Info($"spell skill {index}");
+            Log.Info($"spell skill {index}");
             Skill skill = null;
             self.GetParent<BattleUnitComponent>()?.TryGetSkill(absType, index, out skill);
             if (skill == null || skill.IsInCd())

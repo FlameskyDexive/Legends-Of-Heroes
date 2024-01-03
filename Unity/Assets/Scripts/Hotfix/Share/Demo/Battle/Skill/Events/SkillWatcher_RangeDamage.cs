@@ -15,7 +15,7 @@ namespace ET
 		public void Run(SkillEvent skillEvent, EventType.SkillEventType args)
 		{
             Unit owner = args.owner;
-            owner.Fiber().Log.Info($"enter range damage");
+            Log.Info($"enter range damage");
             if (owner == null)
                 return;
             ListComponent<Entity> units = ListComponent<Entity>.Create();

@@ -12,7 +12,7 @@ namespace ET
 		public void Run(SkillEvent skillEvent, EventType.SkillEventType args)
 		{
             Unit owner = args.owner;
-            owner.Fiber().Log.Info($"emit a bullet");
+            Log.Info($"emit a bullet");
             if (owner == null)
                 return;
 #if DOTNET
