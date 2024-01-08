@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Bright.Serialization;
 using UnityEngine;
 
 namespace ET
 {
     [Invoke]
-    public class GetAllConfigBytes: AInvokeHandler<ConfigLoader.GetAllConfigBytes, ETTask<Dictionary<Type, byte[]>>>
+    public class GetAllConfigBytes: AInvokeHandler<ConfigLoader.GetAllConfigBytes, ETTask<Dictionary<Type, ByteBuf>>>
     {
-        public override async ETTask<Dictionary<Type, byte[]>> Handle(ConfigLoader.GetAllConfigBytes args)
+        public override async ETTask<Dictionary<Type, ByteBuf>> Handle(ConfigLoader.GetAllConfigBytes args)
         {
-            Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
+            Dictionary<Type, ByteBuf> output = new Dictionary<Type, ByteBuf>();
             HashSet<Type> configTypes = CodeTypes.Instance.GetTypes(typeof (ConfigAttribute));
             
             if (Define.IsEditor)
@@ -50,7 +51,7 @@ namespace ET
                     {
                         configFilePath = $"../Config/Excel/{ct}/GameConfig/{configType.Name.ToLower()}.bytes";
                     }
-                    output[configType] = File.ReadAllBytes(configFilePath);
+                    output[configType] = new ByteBuf(File.ReadAllBytes(configFilePath));
                 }
             }
             else
@@ -58,7 +59,7 @@ namespace ET
                 foreach (Type type in configTypes)
                 {
                     TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{type.Name.ToLower()}.bytes");
-                    output[type] = v.bytes;
+                    output[type] = new ByteBuf(v.bytes);
                 }
             }
 
@@ -67,9 +68,9 @@ namespace ET
     }
     
     [Invoke]
-    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, ETTask<byte[]>>
+    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, ETTask<ByteBuf>>
     {
-        public override async ETTask<byte[]> Handle(ConfigLoader.GetOneConfigBytes args)
+        public override async ETTask<ByteBuf> Handle(ConfigLoader.GetOneConfigBytes args)
         {
             string ct = "cs";
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
@@ -109,7 +110,7 @@ namespace ET
             }
 
             await ETTask.CompletedTask;
-            return File.ReadAllBytes(configFilePath);
+            return new ByteBuf(File.ReadAllBytes(configFilePath));
         }
     }
 }
