@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Bright.Serialization;
 
 namespace ET
 {
     [Invoke]
-    public class GetAllConfigBytes: AInvokeHandler<ConfigLoader.GetAllConfigBytes, ETTask<Dictionary<Type, byte[]>>>
+    public class GetAllConfigBytes: AInvokeHandler<ConfigLoader.GetAllConfigBytes, ETTask<Dictionary<Type, ByteBuf>>>
     {
-        public override async ETTask<Dictionary<Type, byte[]>> Handle(ConfigLoader.GetAllConfigBytes args)
+        public override async ETTask<Dictionary<Type, ByteBuf>> Handle(ConfigLoader.GetAllConfigBytes args)
         {
-            Dictionary<Type, byte[]> output = new Dictionary<Type, byte[]>();
+            Dictionary<Type, ByteBuf> output = new Dictionary<Type, ByteBuf>();
             List<string> startConfigs = new List<string>()
             {
                 "StartMachineConfigCategory", 
@@ -23,13 +24,13 @@ namespace ET
                 string configFilePath;
                 if (startConfigs.Contains(configType.Name))
                 {
-                    configFilePath = $"../Config/Excel/s/{Options.Instance.StartConfig}/{configType.Name}.bytes";    
+                    configFilePath = $"../Config/Excel/s/{Options.Instance.StartConfig}/{configType.Name.ToLower()}.bytes";    
                 }
                 else
                 {
-                    configFilePath = $"../Config/Excel/s/{configType.Name}.bytes";
+                    configFilePath = $"../Config/Excel/s/{configType.Name.ToLower()}.bytes";
                 }
-                output[configType] = File.ReadAllBytes(configFilePath);
+                output[configType] = new ByteBuf(File.ReadAllBytes(configFilePath));
             }
 
             await ETTask.CompletedTask;
@@ -38,12 +39,12 @@ namespace ET
     }
     
     [Invoke]
-    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, byte[]>
+    public class GetOneConfigBytes: AInvokeHandler<ConfigLoader.GetOneConfigBytes, ByteBuf>
     {
-        public override byte[] Handle(ConfigLoader.GetOneConfigBytes args)
+        public override ByteBuf Handle(ConfigLoader.GetOneConfigBytes args)
         {
             byte[] configBytes = File.ReadAllBytes($"../Config/Excel/s/{args.ConfigName}.bytes");
-            return configBytes;
+            return new ByteBuf(configBytes);
         }
     }
 }

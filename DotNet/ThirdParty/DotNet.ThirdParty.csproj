@@ -39,6 +39,10 @@
         <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\Box2DSharp\**\*.cs">
             <Link>Box2DSharp/%(RecursiveDir)%(FileName)%(Extension)</Link>
         </Compile>
+        
+        <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\LubanLib\**\*.cs">
+            <Link>LubanLib/%(RecursiveDir)%(FileName)%(Extension)</Link>
+        </Compile>
 
         <Compile Include="..\..\Unity\Assets\Scripts\ThirdParty\TrueSync\**\*.cs">
             <Link>TrueSync/%(RecursiveDir)%(FileName)%(Extension)</Link>
