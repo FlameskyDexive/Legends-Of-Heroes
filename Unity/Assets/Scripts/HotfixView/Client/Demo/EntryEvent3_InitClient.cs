@@ -20,7 +20,7 @@ namespace ET.Client
             // 根据配置修改掉Main Fiber的SceneType
             SceneType sceneType = EnumHelper.FromString<SceneType>(globalComponent.GlobalConfig.AppType.ToString());
             root.SceneType = sceneType;
-            SkillConfig skillConfig = SkillConfigCategory.Instance.GetByKeys(1001, 1);
+            SkillConfig skillConfig = SkillConfigCategory.Instance.Get(1001, 1);
             Log.Info($"{skillConfig?.Desc}");
             await EventSystem.Instance.PublishAsync(root, new AppStartInitFinish());
         }

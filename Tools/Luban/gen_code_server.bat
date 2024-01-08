@@ -3,7 +3,7 @@ set WORKSPACE=..\..
 
 set GEN_CLIENT=Luban.ClientServer\Luban.ClientServer.exe
 set CONF_ROOT=%WORKSPACE%\Unity\Assets\Config\Excel
-set OUTPUT_CODE_DIR=%WORKSPACE%\Unity\Assets\Scripts\Codes\Model\Generate
+set OUTPUT_CODE_DIR=%WORKSPACE%\Unity\Assets\Scripts\Model\Generate
 set OUTPUT_DATA_DIR=%WORKSPACE%\Config\Excel
 set OUTPUT_JSON_DIR=%WORKSPACE%\Config\Json
 set CONFIG_FOLDER=%1

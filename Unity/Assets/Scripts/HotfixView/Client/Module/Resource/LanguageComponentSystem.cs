@@ -15,7 +15,7 @@ namespace ET
             LanguageComponent.Instance = self;
             self.curLangType = (ELanguageType)PlayerPrefs.GetInt(CacheKeys.CurLangType, 0);
 
-            var res = LanguageConfigCategory.Instance.GetAll();
+            /*var res = LanguageConfigCategory.Instance.GetAll();
             self.langTextKeyDic = new Dictionary<string, string>();
             foreach (var item in res)
             {
@@ -25,7 +25,7 @@ namespace ET
                     value = item.Value.English;
                 }
                 self.langTextKeyDic.Add(item.Value.Key, value);
-            }
+            }*/
 
             LanguageBridge.Instance.langTextKeyDic = self.langTextKeyDic;
             self.AddSystemFonts();
@@ -94,7 +94,7 @@ namespace ET
             PlayerPrefs.SetInt(CacheKeys.CurLangType, (int)langType);
             self.curLangType = langType;
             self.langTextKeyDic.Clear();
-            var res = LanguageConfigCategory.Instance.GetAll();
+            /*var res = LanguageConfigCategory.Instance.GetAll();
             foreach (var item in res)
             {
                 string value = item.Value.Chinese;
@@ -103,7 +103,7 @@ namespace ET
                     value = item.Value.English;
                 }
                 self.langTextKeyDic.Add(item.Value.Key, value);
-            }
+            }*/
 
             LanguageBridge.Instance.langTextKeyDic = self.langTextKeyDic;
 

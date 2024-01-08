@@ -178,7 +178,7 @@ namespace ET
             {
                 // ToolsEditor.ExcelExporter();
                 
-                ToolsEditor.ExcelExporter(globalConfig.CodeMode, this.configFolder);
+                ToolsEditor.ExcelExporter(codeMode, this.configFolder);
                 
                 const string clientProtoDir = "../Unity/Assets/Bundles/Config/GameConfig";
                 if (Directory.Exists(clientProtoDir))

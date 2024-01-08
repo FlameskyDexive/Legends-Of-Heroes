@@ -15,7 +15,7 @@ namespace ET
 			return this.AIConfigs[aiConfigId];
 		}
 
-		public override void EndInit()
+		/*public override void EndInit()
 		{
 			foreach (var kv in this.GetAll())
 			{
@@ -28,6 +28,6 @@ namespace ET
 				
 				aiNodeConfig.Add(kv.Key, kv.Value);
 			}
-		}
+		}*/
 	}
 }

@@ -44,11 +44,11 @@ namespace ET
                     string configFilePath;
                     if (startConfigs.Contains(configType.Name))
                     {
-                        configFilePath = $"../Config/Excel/{ct}/{Options.Instance.StartConfig}/{configType.Name}.bytes";    
+                        configFilePath = $"../Config/Excel/{ct}/{Options.Instance.StartConfig}/{configType.Name.ToLower()}.bytes";    
                     }
                     else
                     {
-                        configFilePath = $"../Config/Excel/{ct}/{configType.Name}.bytes";
+                        configFilePath = $"../Config/Excel/{ct}/GameConfig/{configType.Name.ToLower()}.bytes";
                     }
                     output[configType] = File.ReadAllBytes(configFilePath);
                 }
@@ -57,7 +57,7 @@ namespace ET
             {
                 foreach (Type type in configTypes)
                 {
-                    TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{type.Name}.bytes");
+                    TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{type.Name.ToLower()}.bytes");
                     output[type] = v.bytes;
                 }
             }
@@ -96,7 +96,7 @@ namespace ET
                 "StartZoneConfigCategory",
             };
 
-            string configName = args.ConfigName;
+            string configName = args.ConfigName.ToLower();
                 
             string configFilePath;
             if (startConfigs.Contains(configName))
@@ -105,7 +105,7 @@ namespace ET
             }
             else
             {
-                configFilePath = $"../Config/Excel/{ct}/{configName}.bytes";
+                configFilePath = $"../Config/Excel/{ct}/GameConfig/{configName}.bytes";
             }
 
             await ETTask.CompletedTask;

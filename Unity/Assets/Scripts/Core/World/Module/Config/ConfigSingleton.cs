@@ -10,9 +10,12 @@ namespace ET
         void TranslateText(System.Func<string, string, string> translator);
     }
 
-    public interface IConfigSingleton: IConfigCategory, ISingleton
+    public interface IConfigSingleton: IConfigCategory
     {
-        
+        void Register();
+        void Destroy();
+        bool IsDisposed();
+
     }
     public abstract class ConfigSingleton<T>: IConfigSingleton where T: ConfigSingleton<T>
     {
@@ -21,6 +24,7 @@ namespace ET
         [StaticField]
         private static T instance;
 
+        [StaticField]
         public static T Instance
         {
             get
@@ -29,7 +33,7 @@ namespace ET
             }
         }
 
-        void ISingleton.Register()
+        void IConfigSingleton.Register()
         {
             if (instance != null)
             {
@@ -38,7 +42,7 @@ namespace ET
             instance = (T)this;
         }
 
-        void ISingleton.Destroy()
+        void IConfigSingleton.Destroy()
         {
             if (this.isDisposed)
             {
@@ -51,7 +55,7 @@ namespace ET
             t.Dispose();
         }
 
-        bool ISingleton.IsDisposed()
+        bool IConfigSingleton.IsDisposed()
         {
             return this.isDisposed;
         }
