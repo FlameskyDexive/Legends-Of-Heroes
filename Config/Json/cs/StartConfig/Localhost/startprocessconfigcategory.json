@@ -2,6 +2,6 @@
   {
     "Id": 1,
     "MachineId": 1,
-    "InnerPort": 20101
+    "Port": 20101
   }
 ]

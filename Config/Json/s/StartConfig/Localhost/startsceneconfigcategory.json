@@ -5,7 +5,7 @@
     "Zone": 1,
     "SceneType": "Realm",
     "Name": "Realm",
-    "OuterPort": 30002
+    "Port": 30002
   },
   {
     "Id": 2,
@@ -13,7 +13,7 @@
     "Zone": 1,
     "SceneType": "Gate",
     "Name": "Gate1",
-    "OuterPort": 30003
+    "Port": 30003
   },
   {
     "Id": 3,
@@ -21,7 +21,7 @@
     "Zone": 1,
     "SceneType": "Gate",
     "Name": "Gate2",
-    "OuterPort": 30004
+    "Port": 30004
   },
   {
     "Id": 4,
@@ -29,7 +29,7 @@
     "Zone": 1,
     "SceneType": "Location",
     "Name": "Location",
-    "OuterPort": 0
+    "Port": 0
   },
   {
     "Id": 5,
@@ -37,7 +37,7 @@
     "Zone": 1,
     "SceneType": "Map",
     "Name": "Map1",
-    "OuterPort": 0
+    "Port": 0
   },
   {
     "Id": 6,
@@ -45,7 +45,7 @@
     "Zone": 1,
     "SceneType": "Map",
     "Name": "Map2",
-    "OuterPort": 0
+    "Port": 0
   },
   {
     "Id": 200,
@@ -53,7 +53,7 @@
     "Zone": 2,
     "SceneType": "Robot",
     "Name": "Robot01",
-    "OuterPort": 0
+    "Port": 0
   },
   {
     "Id": 300,
@@ -61,7 +61,7 @@
     "Zone": 3,
     "SceneType": "RouterManager",
     "Name": "RouterManager",
-    "OuterPort": 30300
+    "Port": 30300
   },
   {
     "Id": 301,
@@ -69,7 +69,7 @@
     "Zone": 3,
     "SceneType": "Router",
     "Name": "Router01",
-    "OuterPort": 30301
+    "Port": 30301
   },
   {
     "Id": 302,
@@ -77,7 +77,7 @@
     "Zone": 3,
     "SceneType": "Router",
     "Name": "Router02",
-    "OuterPort": 30302
+    "Port": 30302
   },
   {
     "Id": 303,
@@ -85,7 +85,7 @@
     "Zone": 3,
     "SceneType": "Router",
     "Name": "Router03",
-    "OuterPort": 30303
+    "Port": 30303
   },
   {
     "Id": 304,
@@ -93,6 +93,6 @@
     "Zone": 3,
     "SceneType": "Router",
     "Name": "Router04",
-    "OuterPort": 30304
+    "Port": 30304
   }
 ]

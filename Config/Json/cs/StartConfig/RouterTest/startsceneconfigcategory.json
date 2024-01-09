@@ -5,7 +5,7 @@
     "Zone": 1,
     "SceneType": "Realm",
     "Name": "Realm",
-    "Port": 30002
+    "Port": 30001
   },
   {
     "Id": 2,
@@ -13,7 +13,7 @@
     "Zone": 1,
     "SceneType": "Gate",
     "Name": "Gate1",
-    "Port": 30003
+    "Port": 30002
   },
   {
     "Id": 3,
@@ -21,7 +21,7 @@
     "Zone": 1,
     "SceneType": "Gate",
     "Name": "Gate2",
-    "Port": 30004
+    "Port": 30003
   },
   {
     "Id": 4,
@@ -56,40 +56,40 @@
     "Port": 0
   },
   {
-    "Id": 300,
-    "Process": 1,
+    "Id": 400,
+    "Process": 3,
     "Zone": 3,
     "SceneType": "RouterManager",
     "Name": "RouterManager",
     "Port": 30300
   },
   {
-    "Id": 301,
-    "Process": 1,
+    "Id": 401,
+    "Process": 4,
     "Zone": 3,
     "SceneType": "Router",
     "Name": "Router01",
     "Port": 30301
   },
   {
-    "Id": 302,
-    "Process": 1,
+    "Id": 402,
+    "Process": 5,
     "Zone": 3,
     "SceneType": "Router",
     "Name": "Router02",
     "Port": 30302
   },
   {
-    "Id": 303,
-    "Process": 1,
+    "Id": 403,
+    "Process": 6,
     "Zone": 3,
     "SceneType": "Router",
     "Name": "Router03",
     "Port": 30303
   },
   {
-    "Id": 304,
-    "Process": 1,
+    "Id": 404,
+    "Process": 7,
     "Zone": 3,
     "SceneType": "Router",
     "Name": "Router04",
