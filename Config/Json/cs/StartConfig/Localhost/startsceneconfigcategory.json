@@ -35,8 +35,8 @@
     "Id": 5,
     "Process": 1,
     "Zone": 1,
-    "SceneType": "Map",
-    "Name": "Map1",
+    "SceneType": "Match",
+    "Name": "Match",
     "Port": 0
   },
   {
@@ -44,15 +44,15 @@
     "Process": 1,
     "Zone": 1,
     "SceneType": "Map",
-    "Name": "Map2",
+    "Name": "Map1",
     "Port": 0
   },
   {
-    "Id": 200,
+    "Id": 7,
     "Process": 1,
-    "Zone": 2,
-    "SceneType": "Robot",
-    "Name": "Robot01",
+    "Zone": 1,
+    "SceneType": "Map",
+    "Name": "Map2",
     "Port": 0
   },
   {

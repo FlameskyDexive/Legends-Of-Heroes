@@ -58,11 +58,11 @@ namespace ET
 				this.LoadOneInThread(type, oneConfigBytes);
 			}
 			
-			foreach (IConfigSingleton category in this.allConfig.Values)
+			/*foreach (IConfigSingleton category in this.allConfig.Values)
 			{
 				category.Register();
 				category.Resolve(allConfig);
-			}
+			}*/
 		}
 		
 		public async ETTask LoadAsync()
@@ -86,10 +86,10 @@ namespace ET
 				category.Register();
 			}
 			
-			foreach (IConfigSingleton category in this.allConfig.Values)
+			/*foreach (IConfigSingleton category in this.allConfig.Values)
 			{
 				category.Resolve(allConfig);
-			}
+			}*/
 		}
 		
 		private void LoadOneInThread(Type configType, ByteBuf oneConfigBytes)

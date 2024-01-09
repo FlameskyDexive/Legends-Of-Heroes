@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 using Bright.Serialization;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System;
 
 
 namespace ET
@@ -21,7 +23,7 @@ public sealed partial class StartSceneConfig: Bright.Config.BeanBase
         Zone = _buf.ReadInt();
         SceneType = _buf.ReadString();
         Name = _buf.ReadString();
-        OuterPort = _buf.ReadInt();
+        Port = _buf.ReadInt();
         PostInit();
     }
 
@@ -53,12 +55,12 @@ public sealed partial class StartSceneConfig: Bright.Config.BeanBase
     /// <summary>
     /// 外网端口
     /// </summary>
-    public int OuterPort { get; private set; }
+    public int Port { get; private set; }
 
     public const int __ID__ = 1499456844;
     public override int GetTypeId() => __ID__;
 
-    public  void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public  void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         PostResolve();
     }
@@ -75,7 +77,7 @@ public sealed partial class StartSceneConfig: Bright.Config.BeanBase
         + "Zone:" + Zone + ","
         + "SceneType:" + SceneType + ","
         + "Name:" + Name + ","
-        + "OuterPort:" + OuterPort + ","
+        + "Port:" + Port + ","
         + "}";
     }
     

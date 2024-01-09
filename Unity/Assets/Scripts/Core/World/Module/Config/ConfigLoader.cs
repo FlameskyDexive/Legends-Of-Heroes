@@ -63,7 +63,16 @@ namespace ET
 			}
 
 			await Task.WhenAll(listTasks.ToArray());
-		}
+            /*foreach (IConfigSingleton category in this.allConfig.Values)
+            {
+                category.Register();
+            }*/
+
+            foreach (IConfigSingleton category in this.allConfig.Values)
+            {
+                category.Resolve(allConfig);
+            }
+        }
 		
 		private void LoadOneInThread(Type configType, ByteBuf oneConfigBytes)
         {

@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 using Bright.Serialization;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System;
 
 
 namespace ET
@@ -18,7 +20,7 @@ public sealed partial class StartProcessConfig: Bright.Config.BeanBase
     {
         Id = _buf.ReadInt();
         MachineId = _buf.ReadInt();
-        InnerPort = _buf.ReadInt();
+        Port = _buf.ReadInt();
         PostInit();
     }
 
@@ -38,12 +40,12 @@ public sealed partial class StartProcessConfig: Bright.Config.BeanBase
     /// <summary>
     /// 内网端口
     /// </summary>
-    public int InnerPort { get; private set; }
+    public int Port { get; private set; }
 
     public const int __ID__ = 2140444015;
     public override int GetTypeId() => __ID__;
 
-    public  void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public  void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         PostResolve();
     }
@@ -57,7 +59,7 @@ public sealed partial class StartProcessConfig: Bright.Config.BeanBase
         return "{ "
         + "Id:" + Id + ","
         + "MachineId:" + MachineId + ","
-        + "InnerPort:" + InnerPort + ","
+        + "Port:" + Port + ","
         + "}";
     }
     

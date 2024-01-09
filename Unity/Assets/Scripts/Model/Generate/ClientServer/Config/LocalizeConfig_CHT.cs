@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 using Bright.Serialization;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System;
 
 
 namespace ET
@@ -30,7 +32,7 @@ public sealed partial class LocalizeConfig_CHT:  ALocalizeConfig
     public const int __ID__ = -887446245;
     public override int GetTypeId() => __ID__;
 
-    public override void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public override void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         base.Resolve(_tables);
         PostResolve();

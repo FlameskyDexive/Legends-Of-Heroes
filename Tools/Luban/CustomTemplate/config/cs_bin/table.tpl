@@ -1,5 +1,7 @@
 using Bright.Serialization;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System;
 
 namespace {{x.namespace_with_top_module}}
 {
@@ -57,7 +59,7 @@ public partial class {{name}}: ConfigSingleton<{{name}}>
     public {{cs_define_type value_type}} Get({{cs_define_type key_type}} key) => _dataMap[key];
     public {{cs_define_type value_type}} this[{{cs_define_type key_type}} key] => _dataMap[key];
 
-    public override void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public override void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         foreach(var v in _dataList)
         {
@@ -131,7 +133,7 @@ public partial class {{name}}: ConfigSingleton<{{name}}>
         {{~end~}}
     {{~end~}}
 
-    public override void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public override void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         foreach(var v in _dataList)
         {
@@ -174,7 +176,7 @@ public partial class {{name}}: ConfigSingleton<{{name}}>
      public {{cs_define_type field.ctype}} {{field.convention_name}} => _data.{{field.convention_name}};
     {{~end~}}
 
-    public override void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public override void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         _data.Resolve(_tables);
         PostResolve();

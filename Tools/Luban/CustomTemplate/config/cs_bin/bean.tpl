@@ -1,5 +1,7 @@
 using Bright.Serialization;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System;
 {{
     name = x.name
     parent_def_type = x.parent_def_type
@@ -72,7 +74,7 @@ public {{x.cs_class_modifier}} partial class {{name}}: {{if parent_def_type}} {{
     public override int GetTypeId() => __ID__;
 {{~end~}}
 
-    public {{x.cs_method_modifier}} void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public {{x.cs_method_modifier}} void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         {{~if parent_def_type~}}
         base.Resolve(_tables);

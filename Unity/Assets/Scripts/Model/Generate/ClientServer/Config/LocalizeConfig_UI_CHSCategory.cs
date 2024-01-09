@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 using Bright.Serialization;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System;
 
 namespace ET
 {
@@ -48,7 +50,7 @@ public partial class LocalizeConfig_UI_CHSCategory: ConfigSingleton<LocalizeConf
     public LocalizeConfig_CHS Get(string key) => _dataMap[key];
     public LocalizeConfig_CHS this[string key] => _dataMap[key];
 
-    public override void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public override void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         foreach(var v in _dataList)
         {

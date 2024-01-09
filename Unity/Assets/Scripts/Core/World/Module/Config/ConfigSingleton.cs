@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 
 namespace ET
 {
     public interface IConfigCategory
     {
-        void Resolve(Dictionary<string, IConfigSingleton> _tables);
+        void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables);
         
         void TranslateText(System.Func<string, string, string> translator);
     }
@@ -29,7 +30,6 @@ namespace ET
         {
             get
             {
-                // return instance ??= ConfigComponent.Instance.LoadOneConfig(typeof (T)) as T;
                 return instance ??= ConfigLoader.Instance.LoadOneConfig(typeof (T)) as T;
             }
         }
@@ -74,7 +74,7 @@ namespace ET
             return string.Empty;
         }
 
-        public abstract void Resolve(Dictionary<string, IConfigSingleton> _tables);
+        public abstract void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables);
 
         public abstract void TranslateText(Func<string, string, string> translator);
     }

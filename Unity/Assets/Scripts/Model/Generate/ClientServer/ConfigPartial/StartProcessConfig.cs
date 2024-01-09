@@ -26,7 +26,7 @@ namespace ET
 
         public StartMachineConfig StartMachineConfig => StartMachineConfigCategory.Instance.Get(this.MachineId);
 
-        public override void EndInit()
+        partial void PostResolve()
         {
         }
     }

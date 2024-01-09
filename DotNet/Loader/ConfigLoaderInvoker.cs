@@ -28,7 +28,7 @@ namespace ET
                 }
                 else
                 {
-                    configFilePath = $"../Config/Excel/s/{configType.Name.ToLower()}.bytes";
+                    configFilePath = $"../Config/Excel/s/GameConfig/{configType.Name.ToLower()}.bytes";
                 }
                 output[configType] = new ByteBuf(File.ReadAllBytes(configFilePath));
             }
@@ -43,7 +43,7 @@ namespace ET
     {
         public override ByteBuf Handle(ConfigLoader.GetOneConfigBytes args)
         {
-            byte[] configBytes = File.ReadAllBytes($"../Config/Excel/s/{args.ConfigName}.bytes");
+            byte[] configBytes = File.ReadAllBytes($"../Config/Excel/s/GameConfig/{args.ConfigName}.bytes");
             return new ByteBuf(configBytes);
         }
     }

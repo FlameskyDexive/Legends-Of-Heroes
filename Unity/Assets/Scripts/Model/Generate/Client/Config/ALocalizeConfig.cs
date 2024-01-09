@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 using Bright.Serialization;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System;
 
 
 namespace ET
@@ -34,7 +36,7 @@ public abstract partial class ALocalizeConfig: Bright.Config.BeanBase
     public string Key { get; private set; }
 
 
-    public virtual void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public virtual void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         PostResolve();
     }

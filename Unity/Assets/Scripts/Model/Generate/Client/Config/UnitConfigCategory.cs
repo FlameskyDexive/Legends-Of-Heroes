@@ -7,6 +7,8 @@
 //------------------------------------------------------------------------------
 using Bright.Serialization;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System;
 
 namespace ET
 {
@@ -48,7 +50,7 @@ public partial class UnitConfigCategory: ConfigSingleton<UnitConfigCategory>
     public UnitConfig Get(int key) => _dataMap[key];
     public UnitConfig this[int key] => _dataMap[key];
 
-    public override void Resolve(Dictionary<string, IConfigSingleton> _tables)
+    public override void Resolve(ConcurrentDictionary<Type, IConfigSingleton> _tables)
     {
         foreach(var v in _dataList)
         {
