@@ -28,7 +28,7 @@ namespace ET
         /// </summary>
         public bool HasTrigger;
 
-        public int[] EventData;
+        public List<int> EventData;
         
 
     }

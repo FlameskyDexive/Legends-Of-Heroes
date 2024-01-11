@@ -41,7 +41,7 @@ namespace ET
             {
                 Skill skill = self.AddChild<Skill, int, int>(configId, skillLevel);
                 self.IdSkillMap.Add(configId, skill.Id);
-                SkillConfig skillConfig = SkillConfigCategory.Instance.GetByKeys(configId, skillLevel);
+                SkillConfig skillConfig = SkillConfigCategory.Instance.Get(configId, skillLevel);
                 ESkillAbstractType abstractType = (ESkillAbstractType)skillConfig.AbstractType;
                 if (!self.AbstractTypeSkills.TryGetValue(abstractType, out List<long> skills))
                 {

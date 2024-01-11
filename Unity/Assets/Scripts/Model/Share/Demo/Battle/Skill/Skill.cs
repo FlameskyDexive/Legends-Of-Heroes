@@ -15,7 +15,7 @@ namespace ET
         public ESkillAbstractType AbstractType => (ESkillAbstractType)this.SkillConfig.AbstractType;
         
         [BsonIgnore]
-        public SkillConfig SkillConfig => SkillConfigCategory.Instance.GetByKeys(this.SkillId, this.SkillLevel);
+        public SkillConfig SkillConfig => SkillConfigCategory.Instance.Get(this.SkillId, this.SkillLevel);
 
         /// <summary>
         /// 技能释放开始时间戳

@@ -15,7 +15,7 @@ namespace ET
         private static void Awake(this SkillTimelineComponent self, int skillId, int skillLevel)
         {
             //当前测试，一个事件一个字段，可以自己换成二维数组一个字段存多条事件数据
-            self.Skillconfig = SkillConfigCategory.Instance.GetByKeys(skillId, skillLevel);
+            self.Skillconfig = SkillConfigCategory.Instance.Get(skillId, skillLevel);
             
         }
         
@@ -55,7 +55,7 @@ namespace ET
         
         public static void InitEvents(this SkillTimelineComponent self)
         {
-            if (self.Skillconfig?.Params.Length > 0)
+            if (self.Skillconfig?.Params.Count > 0)
             {
                 self.AddChild<SkillEvent, SkillConfig>(self.Skillconfig);
             }

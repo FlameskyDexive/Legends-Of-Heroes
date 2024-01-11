@@ -24,7 +24,7 @@ English: please use your browser to translate to english
 - [x] 接入[YooAsset](https://github.com/tuyoogame/YooAsset)资源管理打包热更框架，实现热更下载重载逻辑。
 - [x] 摇杆控制角色移动，相机跟随，通过服务端广播位置同步
 - [x] 实现一个比较基础版本的断线重连，返回登陆等操作。
-- [x] 配置表支持多Key（也可自行接入强大的多平台配置方案 [Luban](https://github.com/focus-creative-games/luban)，当前Demo用不到那么复杂excel就不进行接入了）。
+- [x] 配置表接入强大的多平台配置方案 [Luban](https://github.com/focus-creative-games/luban)
 - [ ] 房间大厅，匹配房友，每个房间最多20个玩家。
 - [ ] 一个Demo关卡流程：有限的2d地图，随机生成食物，吃食物会变大，碰到敌人会产生伤害（大吞小，小死亡）。
 - [x] 基础战斗技能框架设计，主动/被动技能释放(demo已经包含主动技能演示)。

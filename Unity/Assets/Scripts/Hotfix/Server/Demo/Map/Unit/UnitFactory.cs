@@ -32,7 +32,7 @@ namespace ET.Server
             }
         }
 
-        public static Unit CreateBullet(Scene scene, long id, Skill ownerSkill, int config, int[] bulletData)
+        public static Unit CreateBullet(Scene scene, long id, Skill ownerSkill, int config, List<int> bulletData)
         {
             Log.Info($"create bullet");
             UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
