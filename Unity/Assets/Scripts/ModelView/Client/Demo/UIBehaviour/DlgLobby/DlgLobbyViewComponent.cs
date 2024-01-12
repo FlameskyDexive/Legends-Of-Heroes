@@ -109,6 +109,74 @@ namespace ET.Client
      		}
      	}
 
+		public UnityEngine.UI.Button EMatchButton
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_EMatchButton == null )
+     			{
+		    		this.m_EMatchButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"EGBackGround/EMatch");
+     			}
+     			return this.m_EMatchButton;
+     		}
+     	}
+
+		public UnityEngine.UI.Image EMatchImage
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_EMatchImage == null )
+     			{
+		    		this.m_EMatchImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"EGBackGround/EMatch");
+     			}
+     			return this.m_EMatchImage;
+     		}
+     	}
+
+		public UnityEngine.UI.Button EBackToLoginButton
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_EBackToLoginButton == null )
+     			{
+		    		this.m_EBackToLoginButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"EGBackGround/EBackToLogin");
+     			}
+     			return this.m_EBackToLoginButton;
+     		}
+     	}
+
+		public UnityEngine.UI.Image EBackToLoginImage
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_EBackToLoginImage == null )
+     			{
+		    		this.m_EBackToLoginImage = UIFindHelper.FindDeepChild<UnityEngine.UI.Image>(this.uiTransform.gameObject,"EGBackGround/EBackToLogin");
+     			}
+     			return this.m_EBackToLoginImage;
+     		}
+     	}
+
 		public void DestroyWidget()
 		{
 			this.m_EGBackGroundRectTransform = null;
@@ -117,6 +185,10 @@ namespace ET.Client
 			this.m_EAvatarEUIButton = null;
 			this.m_EAvatarEUIImage = null;
 			this.m_EPlayerNameText = null;
+			this.m_EMatchButton = null;
+			this.m_EMatchImage = null;
+			this.m_EBackToLoginButton = null;
+			this.m_EBackToLoginImage = null;
 			this.uiTransform = null;
 		}
 
@@ -126,6 +198,10 @@ namespace ET.Client
 		private ET.EUIButton m_EAvatarEUIButton = null;
 		private ET.EUIImage m_EAvatarEUIImage = null;
 		private UnityEngine.UI.Text m_EPlayerNameText = null;
+		private UnityEngine.UI.Button m_EMatchButton = null;
+		private UnityEngine.UI.Image m_EMatchImage = null;
+		private UnityEngine.UI.Button m_EBackToLoginButton = null;
+		private UnityEngine.UI.Image m_EBackToLoginImage = null;
 		public Transform uiTransform = null;
 	}
 }

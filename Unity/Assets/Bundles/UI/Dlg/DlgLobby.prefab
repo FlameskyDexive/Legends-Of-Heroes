@@ -359,7 +359,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\u5355\u6311\u6A21\u5F0F 1V1"
+  m_Text: "\u5339\u914D"
 --- !u!1 &1513669610
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,7 +373,7 @@ GameObject:
   - component: {fileID: 1513669613}
   - component: {fileID: 1513669612}
   m_Layer: 5
-  m_Name: ESolo
+  m_Name: EMatch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1094,7 +1094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5968391538539483622
 RectTransform:
   m_ObjectHideFlags: 0
