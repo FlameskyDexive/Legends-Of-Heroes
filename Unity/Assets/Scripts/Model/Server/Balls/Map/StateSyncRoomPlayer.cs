@@ -1,7 +1,7 @@
 namespace ET.Server
 {
 
-    [ChildOf(typeof (RoomServerComponent))]
+    [ChildOf(typeof (StateSyncRoomServerComponent))]
     public class StateSyncRoomPlayer : Entity, IAwake
     {
         public int Progress { get; set; }

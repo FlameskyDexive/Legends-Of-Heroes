@@ -2,8 +2,8 @@
 
 namespace ET.Server
 {
-    [Invoke((long)SceneType.Match)]
-    public class FiberInit_StateSyncMatch : AInvokeHandler<FiberInit, ETTask>
+    [Invoke((long)SceneType.Map)]
+    public class FiberInit_StateSyncMap : AInvokeHandler<FiberInit, ETTask>
     {
         public override async ETTask Handle(FiberInit fiberInit)
         {
@@ -13,7 +13,9 @@ namespace ET.Server
             root.AddComponent<CoroutineLockComponent>();
             root.AddComponent<ProcessInnerSender>();
             root.AddComponent<MessageSender>();
-            root.AddComponent<StateSyncMatchComponent>();
+            root.AddComponent<UnitComponent>();
+            root.AddComponent<AOIManagerComponent>();
+            root.AddComponent<StateSyncRoomManagerComponent>();
             root.AddComponent<LocationProxyComponent>();
             root.AddComponent<MessageLocationSenderComponent>();
 

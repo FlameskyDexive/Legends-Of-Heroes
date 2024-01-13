@@ -11,7 +11,6 @@ namespace ET.Server
             room.Name = "Server";
             room.AddComponent<StateSyncRoomServerComponent, List<long>>(request.PlayerIds);
 
-            room.World = new StateSyncWorld(SceneType.Demo);
             await ETTask.CompletedTask;
         }
     }

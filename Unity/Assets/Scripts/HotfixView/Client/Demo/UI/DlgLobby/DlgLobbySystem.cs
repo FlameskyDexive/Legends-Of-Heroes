@@ -13,6 +13,7 @@ namespace ET.Client
 		public static void RegisterUIEvent(this DlgLobby self)
 		{
 			self.View.EEnterMapButton.AddListenerAsync(self.EnterMap);
+			self.View.EMatchButton.AddListenerAsync(self.EnterMap);
 		}
 
 		public static void ShowWindow(this DlgLobby self, Entity contextData = null)
@@ -23,6 +24,14 @@ namespace ET.Client
 		{
 			Scene root = self.Root();
 			await EnterMapHelper.EnterMapAsync(root);
+			root.GetComponent<UIComponent>().CloseWindow(WindowID.WindowID_Lobby);
+		}
+
+
+		public static async ETTask Match(this DlgLobby self)
+		{
+			Scene root = self.Root();
+			await EnterMapHelper.StateSyncMatch(self.Fiber());
 			root.GetComponent<UIComponent>().CloseWindow(WindowID.WindowID_Lobby);
 		}
 
