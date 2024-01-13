@@ -48,14 +48,6 @@
     "Port": 0
   },
   {
-    "Id": 200,
-    "Process": 1,
-    "Zone": 2,
-    "SceneType": "Robot",
-    "Name": "Robot01",
-    "Port": 0
-  },
-  {
     "Id": 400,
     "Process": 3,
     "Zone": 3,

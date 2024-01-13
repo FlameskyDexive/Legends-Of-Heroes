@@ -172,25 +172,23 @@ namespace ET
                 return;
             }
 
-            EditorGUILayout.BeginHorizontal();
             this.configFolder = (ConfigFolder)EditorGUILayout.EnumPopup(this.configFolder, GUILayout.Width(200f));
             if (GUILayout.Button("ExcelExporter"))
             {
                 // ToolsEditor.ExcelExporter();
-                
+
                 ToolsEditor.ExcelExporter(codeMode, this.configFolder);
-                
+
                 const string clientProtoDir = "../Unity/Assets/Bundles/Config/GameConfig";
                 if (Directory.Exists(clientProtoDir))
                 {
                     Directory.Delete(clientProtoDir, true);
                 }
                 FileHelper.CopyDirectory("../Config/Excel/c/GameConfig", clientProtoDir);
-                
+
                 AssetDatabase.Refresh();
                 return;
             }
-            EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("Proto2CS"))
             {
