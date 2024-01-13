@@ -6,6 +6,7 @@ namespace ET.Server
     public class MatchComponent: Entity, IAwake
     {
         public List<long> waitMatchPlayers = new List<long>();
+        public List<long> waitMatchStateSyncPlayers = new List<long>();
     }
 
 }

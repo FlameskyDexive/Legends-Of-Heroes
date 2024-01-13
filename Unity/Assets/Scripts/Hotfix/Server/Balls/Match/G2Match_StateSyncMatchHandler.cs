@@ -8,8 +8,8 @@ namespace ET.Server
 	{
 		protected override async ETTask Run(Scene scene, G2Match_StateSyncMatch request, Match2G_StateSyncMatch response)
 		{
-            StateSyncMatchComponent matchComponent = scene.GetComponent<StateSyncMatchComponent>();
-			matchComponent.Match(request.Id).Coroutine();
+            MatchComponent matchComponent = scene.GetComponent<MatchComponent>();
+			matchComponent.StateSyncMatch(request.Id).Coroutine();
 			await ETTask.CompletedTask;
 		}
 	}
