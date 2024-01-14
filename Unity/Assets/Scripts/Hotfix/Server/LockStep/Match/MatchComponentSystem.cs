@@ -72,7 +72,7 @@ namespace ET.Server
             Map2Match_StateSyncGetRoom map2MatchGetRoom = await root.GetComponent<MessageSender>().Call(
                 startSceneConfig.ActorId, match2MapGetRoom) as Map2Match_StateSyncGetRoom;
 
-            Match2G_NotifyMatchSuccess match2GNotifyMatchSuccess = new() { ActorId = map2MatchGetRoom.ActorId };
+            Match2G_StateSyncNotifyMatchSuccess match2GNotifyMatchSuccess = new() { ActorId = map2MatchGetRoom.ActorId };
             MessageLocationSenderComponent messageLocationSenderComponent = root.GetComponent<MessageLocationSenderComponent>();
 
             foreach (long id in match2MapGetRoom.PlayerIds) // 这里发送消息线程不会修改PlayerInfo，所以可以直接使用

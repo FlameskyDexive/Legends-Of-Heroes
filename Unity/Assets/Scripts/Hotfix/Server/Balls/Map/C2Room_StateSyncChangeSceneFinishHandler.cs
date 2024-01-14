@@ -24,7 +24,7 @@ namespace ET.Server
             await room.Fiber.Root.GetComponent<TimerComponent>().WaitAsync(1000);
 
             Room2C_StateSyncStart room2CStart = new() { StartTime = TimeInfo.Instance.ServerFrameTime() };
-            foreach (RoomPlayer rp in roomServerComponent.Children.Values)
+            foreach (StateSyncRoomPlayer rp in roomServerComponent.Children.Values)
             {
                 room2CStart.UnitInfo.Add(new UnitInfo()
                 {

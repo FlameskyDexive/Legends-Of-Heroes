@@ -38,7 +38,7 @@ namespace ET.Client
         {
             try
             {
-                G2C_StateSyncMatch g2CEnterMap = await fiber.Root.GetComponent<ClientSenderCompnent>().Call(new C2G_Match()) as G2C_StateSyncMatch;
+                G2C_StateSyncMatch g2CEnterMap = await fiber.Root.GetComponent<ClientSenderCompnent>().Call(new C2G_StateSyncMatch()) as G2C_StateSyncMatch;
             }
             catch (Exception e)
             {
