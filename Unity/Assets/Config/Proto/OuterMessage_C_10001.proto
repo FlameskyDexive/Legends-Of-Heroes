@@ -50,6 +50,27 @@ message MoveInfo
 	int32 TurnSpeed = 3;
 }
 
+message PlayerInfo
+{
+    string Account = 1;
+    int64 UnitId = 2;
+    int64 SessionId = 3;
+    int64 RoomId = 4;
+    int32 CampId = 5;
+    int64 PlayerId = 6;
+    string PlayerName = 7;
+	int32 AvatarIndex = 8;
+}
+
+message RoomInfo
+{
+    int64 RoomId = 1; //加入的房间Id
+    repeated PlayerInfo PlayerInfo = 2;
+	int32 PlayMode = 3;
+	bool IsReady = 4;//是否满人，满人开始倒计时进入战场
+	
+}
+
 message UnitInfo
 {
 	int64 UnitId = 1;

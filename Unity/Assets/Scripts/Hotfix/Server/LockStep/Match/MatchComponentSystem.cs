@@ -52,6 +52,8 @@ namespace ET.Server
             }
 
             self.waitMatchStateSyncPlayers.Add(playerId);
+            //广播消息给每个玩家，当前匹配到的信息。
+            // Match2G_StateSyncRefreshMatch re
 
             if (self.waitMatchStateSyncPlayers.Count < ConstValue.StateSyncMatchCount)
             {
