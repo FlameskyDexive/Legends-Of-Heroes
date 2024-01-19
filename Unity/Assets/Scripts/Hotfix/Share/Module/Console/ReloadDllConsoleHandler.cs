@@ -6,7 +6,7 @@ namespace ET
         public async ETTask Run(Fiber fiber, ModeContex contex, string content)
         {
             await ETTask.CompletedTask;
-            await CodeLoader.Instance.Reload();
+            CodeLoader.Instance.Reload();
         }
     }
 }

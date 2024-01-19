@@ -3,140 +3,184 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using HybridCLR;
-using LitJson;
 using UnityEngine;
 
 namespace ET
 {
     public class CodeLoader : Singleton<CodeLoader>, ISingletonAwake
     {
-        private Assembly assembly;
+        private Assembly modelAssembly;
+        private Assembly modelViewAssembly;
 
-        // private Dictionary<string, TextAsset> dlls;
-        // private Dictionary<string, TextAsset> aotDlls;
+        private Dictionary<string, TextAsset> dlls = new Dictionary<string, TextAsset>();
+        private Dictionary<string, TextAsset> aotDlls;
+        private bool enableDll;
 
         public void Awake()
         {
+            this.enableDll = Resources.Load<GlobalConfig>("GlobalConfig").EnableDll;
         }
 
-        /*public async ETTask DownloadAsync()
+        public async ETTask DownloadAsync()
         {
             if (!Define.IsEditor)
             {
-                this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/Code/Model.dll.bytes");
-                this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
+                // this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/Code/Unity.Model.dll.bytes");
+                // this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
+                this.dlls["Unity.Model.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model.dll.bytes");
+                this.dlls["Unity.Model.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model.pdb.bytes");
+                this.dlls["Unity.ModelView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView.dll.bytes");
+                this.dlls["Unity.ModelView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView.pdb.bytes");
+                
+                this.dlls["Unity.Hotfix.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix.dll.bytes");
+                this.dlls["Unity.Hotfix.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix.pdb.bytes");
+                this.dlls["Unity.HotfixView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.dll.bytes");
+                this.dlls["Unity.HotfixView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.pdb.bytes");
             }
-        }*/
+        }
 
-        public async ETTask Start()
+        public void Start()
         {
-            if (!Define.EnableDll)
+            if (!Define.IsEditor)
             {
-                GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-                if (globalConfig.CodeMode != CodeMode.ClientServer)
-                {
-                    throw new Exception("!ENABLE_DLL mode must use ClientServer code mode!");
-                }
+                byte[] modelAssBytes = this.dlls["Unity.Model.dll"].bytes;
+                byte[] modelPdbBytes = this.dlls["Unity.Model.pdb"].bytes;
+                byte[] modelViewAssBytes = this.dlls["Unity.ModelView.dll"].bytes;
+                byte[] modelViewPdbBytes = this.dlls["Unity.ModelView.pdb"].bytes;
+                // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/Unity.Model.dll.bytes，但真正打包时必须使用上面的代码
+                //modelAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.dll.bytes"));
+                //modelPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.pdb.bytes"));
+                //modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.dll.bytes"));
+                //modelViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.pdb.bytes"));
 
-                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-                foreach (Assembly ass in assemblies)
+                if (Define.EnableIL2CPP)
                 {
-                    string name = ass.GetName().Name;
-                    if (name == "Unity.Model")
+                    foreach (var kv in this.aotDlls)
                     {
-                        this.assembly = ass;
-                        break;
+                        TextAsset textAsset = kv.Value;
+                        RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
                     }
                 }
-
-                World.Instance.AddSingleton<CodeTypes, Assembly[]>(assemblies);
+                this.modelAssembly = Assembly.Load(modelAssBytes, modelPdbBytes);
+                this.modelViewAssembly = Assembly.Load(modelViewAssBytes, modelViewPdbBytes);
             }
             else
             {
-                byte[] assBytes;
-                byte[] pdbBytes;
-                if (!Define.IsEditor)
+                if (this.enableDll)
                 {
-                    // assBytes = this.dlls["Model.dll"].bytes;
-                    // pdbBytes = this.dlls["Model.pdb"].bytes;
-                    assBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Model.dll")).bytes;
-                    pdbBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Model.pdb")).bytes;
-
-
-                    // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/Model.dll.bytes，但真正打包时必须使用上面的代码
-                    //assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.dll.bytes"));
-                    //pdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.pdb.bytes"));
-
-                    if (Define.EnableIL2CPP)
-                    {
-                        // List<string> aotDlls = JsonUtility.FromJson<List<string>>("");
-                        // foreach (var kv in /*this.*/aotDlls)
-                        // {
-                        //     TextAsset textAsset = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{kv}.dll");
-                        //     RuntimeApi.LoadMetadataForAOTAssembly(textAsset.bytes, HomologousImageMode.SuperSet);
-                        // }
-                        string json = Resources.Load<TextAsset>("AotDlls").text;
-                        string[] aotDlls = JsonMapper.ToObject<string[]>(json);
-                        foreach (var dll in aotDlls)
-                        {
-                            // byte[] bytes = (kv.Value as TextAsset).bytes;
-                            Debug.Log($"load aot dll: {dll}");
-                            byte[] bytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{dll}")).bytes;
-                            RuntimeApi.LoadMetadataForAOTAssembly(bytes, HomologousImageMode.SuperSet);
-                        }
-                    }
+                    byte[] modelAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.dll.bytes"));
+                    byte[] modelPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.pdb.bytes"));
+                    byte[] modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.dll.bytes"));
+                    byte[] modelViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.pdb.bytes"));
+                    this.modelAssembly = Assembly.Load(modelAssBytes, modelPdbBytes);
+                    this.modelViewAssembly = Assembly.Load(modelViewAssBytes, modelViewPdbBytes);
                 }
                 else
                 {
-                    assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.dll.bytes"));
-                    pdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Model.pdb.bytes"));
+                    Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                    foreach (Assembly ass in assemblies)
+                    {
+                        string name = ass.GetName().Name;
+                        if (name == "Unity.Model")
+                        {
+                            this.modelAssembly = ass;
+                        }
+                        else if (name == "Unity.ModelView")
+                        {
+                            this.modelViewAssembly = ass;
+                        }
+
+                        if (this.modelAssembly != null && this.modelViewAssembly != null)
+                        {
+                            break;
+                        }
+                    }
                 }
-
-                this.assembly = Assembly.Load(assBytes, pdbBytes);
-
-                Assembly hotfixAssembly = await this.LoadHotfix();
-
-                World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof(World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
             }
 
-            IStaticMethod start = new StaticMethod(this.assembly, "ET.Entry", "Start");
+            (Assembly hotfixAssembly, Assembly hotfixViewAssembly) = this.LoadHotfix();
+
+            World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[]
+            {
+                typeof (World).Assembly, typeof (Init).Assembly, this.modelAssembly, this.modelViewAssembly, hotfixAssembly,
+                hotfixViewAssembly
+            });
+
+            IStaticMethod start = new StaticMethod(this.modelAssembly, "ET.Entry", "Start");
             start.Run();
         }
 
-        private async ETTask<Assembly> LoadHotfix()
+        private (Assembly, Assembly) LoadHotfix()
         {
-            byte[] assBytes;
-            byte[] pdbBytes;
+            byte[] hotfixAssBytes;
+            byte[] hotfixPdbBytes;
+            byte[] hotfixViewAssBytes;
+            byte[] hotfixViewPdbBytes;
+            Assembly hotfixAssembly = null;
+            Assembly hotfixViewAssembly = null;
             if (!Define.IsEditor)
             {
-                // assBytes = this.dlls["Hotfix.dll"].bytes;
-                // pdbBytes = this.dlls["Hotfix.pdb"].bytes;
-                assBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Hotfix.dll")).bytes;
-                pdbBytes = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Hotfix.pdb")).bytes;
-
+                hotfixAssBytes = this.dlls["Unity.Hotfix.dll"].bytes;
+                hotfixPdbBytes = this.dlls["Unity.Hotfix.pdb"].bytes;
+                hotfixViewAssBytes = this.dlls["Unity.HotfixView.dll"].bytes;
+                hotfixViewPdbBytes = this.dlls["Unity.HotfixView.pdb"].bytes;
                 // 如果需要测试，可替换成下面注释的代码直接加载Assets/Bundles/Code/Hotfix.dll.bytes，但真正打包时必须使用上面的代码
-                //assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Hotfix.dll.bytes"));
-                //pdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Hotfix.pdb.bytes"));
+                //hotfixAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Hotfix.dll.bytes"));
+                //hotfixPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Hotfix.pdb.bytes"));
+                //hotfixViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.HotfixView.dll.bytes"));
+                //hotfixViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.HotfixView.pdb.bytes"));
+                hotfixAssembly = Assembly.Load(hotfixAssBytes, hotfixPdbBytes);
+                hotfixViewAssembly = Assembly.Load(hotfixViewAssBytes, hotfixViewPdbBytes);
             }
             else
             {
-                assBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Hotfix.dll.bytes"));
-                pdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Hotfix.pdb.bytes"));
+                if (this.enableDll)
+                {
+                    hotfixAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Hotfix.dll.bytes"));
+                    hotfixPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Hotfix.pdb.bytes"));
+                    hotfixViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.HotfixView.dll.bytes"));
+                    hotfixViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.HotfixView.pdb.bytes"));
+                    hotfixAssembly = Assembly.Load(hotfixAssBytes, hotfixPdbBytes);
+                    hotfixViewAssembly = Assembly.Load(hotfixViewAssBytes, hotfixViewPdbBytes);
+                }
+                else
+                {
+                    Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                    foreach (Assembly ass in assemblies)
+                    {
+                        string name = ass.GetName().Name;
+                        if (name == "Unity.Hotfix")
+                        {
+                            hotfixAssembly = ass;
+                        }
+                        else if (name == "Unity.HotfixView")
+                        {
+                            hotfixViewAssembly = ass;
+                        }
+
+                        if (hotfixAssembly != null && hotfixViewAssembly != null)
+                        {
+                            break;
+                        }
+                    }
+                }
             }
 
-            Assembly hotfixAssembly = Assembly.Load(assBytes, pdbBytes);
-            return hotfixAssembly;
+            return (hotfixAssembly, hotfixViewAssembly);
         }
 
-        public async ETTask Reload()
+        public void Reload()
         {
-            Assembly hotfixAssembly = await this.LoadHotfix();
+            (Assembly hotfixAssembly, Assembly hotfixViewAssembly) = this.LoadHotfix();
 
-            CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[] { typeof(World).Assembly, typeof(Init).Assembly, this.assembly, hotfixAssembly });
+            CodeTypes codeTypes = World.Instance.AddSingleton<CodeTypes, Assembly[]>(new[]
+            {
+                typeof (World).Assembly, typeof (Init).Assembly, this.modelAssembly, this.modelViewAssembly, hotfixAssembly,
+                hotfixViewAssembly
+            });
             codeTypes.CreateCode();
 
-            Log.Debug($"reload dll finish!");
+            Log.Info($"reload dll finish!");
         }
     }
 }

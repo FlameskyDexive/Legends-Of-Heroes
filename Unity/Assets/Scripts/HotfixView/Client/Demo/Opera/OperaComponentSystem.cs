@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace ET.Client
@@ -30,10 +29,10 @@ namespace ET.Client
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                CodeLoader.Instance.Reload().Coroutine();
+                CodeLoader.Instance.Reload();
                 return;
             }
-        
+
             if (Input.GetKeyDown(KeyCode.T))
             {
                 C2M_TransferMap c2MTransferMap = new();

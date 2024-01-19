@@ -1,0 +1,20 @@
+{
+<<<<<<<< HEAD:Unity/Assets/Scripts/Model/Generate/Client/Unity.GenerateClient.asmdef
+    "name": "Unity.GenerateClient",
+========
+    "name": "Ignore.Hotfix.Client",
+>>>>>>>> 9a76b24e6 (进一步优化编译体验 (#550)):Unity/Assets/Settings/IgnoreAsmdef/Hotfix/Client/Ignore.asmdef.DISABLED
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "IGNORE"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

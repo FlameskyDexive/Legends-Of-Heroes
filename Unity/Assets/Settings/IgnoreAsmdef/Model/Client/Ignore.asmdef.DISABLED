@@ -1,0 +1,17 @@
+{
+<<<<<<<< HEAD:Unity/Packages/NaughtyAttributes/Scripts/Core/NaughtyAttributes.Core.asmdef
+    "name": "NaughtyAttributes.Core",
+========
+    "name": "Ignore.Model.Client",
+    "rootNamespace": "",
+>>>>>>>> 9a76b24e6 (进一步优化编译体验 (#550)):Unity/Assets/Settings/IgnoreAsmdef/Model/Client/Ignore.asmdef.DISABLED
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

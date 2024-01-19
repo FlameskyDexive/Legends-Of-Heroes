@@ -1,6 +1,6 @@
-﻿using System.IO;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
+using System.IO;
 using YooAsset;
 
 namespace ET
@@ -23,6 +23,19 @@ namespace ET
         Benchmark
     }
 
+    /// <summary>
+    /// ET菜单顺序
+    /// </summary>
+    public static class ETMenuItemPriority
+    {
+        public const int BuildTool = 1001;
+        public const int ChangeDefine = 1002;
+        public const int Compile = 1003;
+        public const int Reload = 1004;
+        public const int NavMesh = 1005;
+        public const int ServerTools = 1006;
+    }
+
     public class BuildEditor : EditorWindow
     {
         private PlatformType activePlatform;
@@ -34,7 +47,7 @@ namespace ET
 
         private GlobalConfig globalConfig;
 
-        [MenuItem("ET/Build Tool")]
+        [MenuItem("ET/Build Tool", false, ETMenuItemPriority.BuildTool)]
         public static void ShowWindow()
         {
             GetWindow<BuildEditor>(DockDefine.Types);
@@ -62,30 +75,11 @@ namespace ET
 
         private void OnGUI()
         {
+            EditorGUILayout.LabelField("PlatformType ");
             this.platformType = (PlatformType)EditorGUILayout.EnumPopup(platformType);
-            this.clearFolder = EditorGUILayout.Toggle("clean folder? ", clearFolder);
-            BuildType codeOptimization = (BuildType)EditorGUILayout.EnumPopup("BuildType ", this.globalConfig.BuildType);
 
-            if (codeOptimization != this.globalConfig.BuildType)
-            {
-                this.globalConfig.BuildType = codeOptimization;
-                EditorUtility.SetDirty(this.globalConfig);
-                AssetDatabase.SaveAssets();
-            }
-
-            EditorGUILayout.LabelField("BuildAssetBundleOptions ");
-            this.buildAssetBundleOptions = (BuildAssetBundleOptions)EditorGUILayout.EnumFlagsField(this.buildAssetBundleOptions);
-
-            switch (this.globalConfig.BuildType)
-            {
-                case BuildType.None:
-                case BuildType.Debug:
-                    this.buildOptions = BuildOptions.BuildScriptsOnly;
-                    break;
-                case BuildType.Release:
-                    this.buildOptions = BuildOptions.BuildScriptsOnly;
-                    break;
-            }
+            EditorGUILayout.LabelField("BuildOptions ");
+            this.buildOptions = (BuildOptions)EditorGUILayout.EnumFlagsField(this.buildOptions);
 
             GUILayout.Space(5);
 
@@ -99,13 +93,13 @@ namespace ET
 
                 if (this.globalConfig.CodeMode != CodeMode.Client)
                 {
-                    Log.Error("build package CodeMode must be CodeMode.Client, please select Client, RegenerateCSProject, then rebuild Hotfix and Model !!!");
+                    Log.Error("build package CodeMode must be CodeMode.Client, please select Client");
                     return;
                 }
 
                 if (this.globalConfig.EPlayMode == EPlayMode.EditorSimulateMode)
                 {
-                    Log.Error("build package EPlayMode must not be EPlayMode.EditorSimulateMode, please select EditorMode");
+                    Log.Error("build package EPlayMode must not be EPlayMode.EditorSimulateMode, please select HostPlayMode");
                     return;
                 }
 
@@ -123,72 +117,30 @@ namespace ET
                             break;
                     }
                 }
-                BuildHelper.Build(this.platformType, this.buildAssetBundleOptions, this.buildOptions, this.clearFolder);
+
+                BuildHelper.Build(this.platformType, this.buildOptions);
                 return;
             }
 
-            GUILayout.Label("");
-            GUILayout.Label("Code Compile：");
-            EditorGUI.BeginChangeCheck();
-            CodeMode codeMode = (CodeMode)EditorGUILayout.EnumPopup("CodeMode: ", this.globalConfig.CodeMode);
-            if (EditorGUI.EndChangeCheck())
-            {
-                EditorUtility.SetDirty(this.globalConfig);
-                AssetDatabase.SaveAssetIfDirty(this.globalConfig);
-                AssetDatabase.Refresh();
-            }
-
-            if (codeMode != this.globalConfig.CodeMode)
-            {
-                this.globalConfig.CodeMode = codeMode;
-                EditorUtility.SetDirty(this.globalConfig);
-                AssetDatabase.SaveAssets();
-                
-                BuildHelper.ReGenerateProjectFiles();
-            }
-
-            EPlayMode ePlayMode = (EPlayMode)EditorGUILayout.EnumPopup("EPlayMode: ", this.globalConfig.EPlayMode);
-            if (ePlayMode != this.globalConfig.EPlayMode)
-            {
-                this.globalConfig.EPlayMode = ePlayMode;
-                EditorUtility.SetDirty(this.globalConfig);
-                AssetDatabase.SaveAssets();
-            }
-
-            if (GUILayout.Button("ReGenerateProjectFiles"))
-            {
-                if (Define.EnableDll)
-                {
-                    // 若没有生成以下工程，则切换到非ENABLE_DLL模式进行编译，编译完再切换回来, 保证代码编辑器正常显示所有项目
-                    if (!File.Exists("./Unity.Hotfix.csproj") || !File.Exists("./Unity.HotfixView.csproj") ||
-                        !File.Exists("./Unity.Model.csproj") || !File.Exists("./Unity.ModelView.csproj"))
-                    {
-                        BuildHelper.EnableDefineSymbols("ENABLE_DLL", false);
-                        BuildHelper.EnableDefineSymbols("ENABLE_DLL", true);
-                    }
-                }
-
-                BuildHelper.ReGenerateProjectFiles();
-                return;
-            }
-
+            EditorGUILayout.BeginHorizontal();
             this.configFolder = (ConfigFolder)EditorGUILayout.EnumPopup(this.configFolder, GUILayout.Width(200f));
             if (GUILayout.Button("ExcelExporter"))
             {
                 // ToolsEditor.ExcelExporter();
-
-                ToolsEditor.ExcelExporter(codeMode, this.configFolder);
-
+                
+                ToolsEditor.ExcelExporter(this.globalConfig.CodeMode, this.configFolder);
+                
                 const string clientProtoDir = "../Unity/Assets/Bundles/Config/GameConfig";
                 if (Directory.Exists(clientProtoDir))
                 {
                     Directory.Delete(clientProtoDir, true);
                 }
                 FileHelper.CopyDirectory("../Config/Excel/c/GameConfig", clientProtoDir);
-
+                
                 AssetDatabase.Refresh();
                 return;
             }
+            EditorGUILayout.EndHorizontal();
 
             if (GUILayout.Button("Proto2CS"))
             {
