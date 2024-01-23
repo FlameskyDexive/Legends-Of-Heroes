@@ -33,15 +33,7 @@ English: please use your browser to translate to english
 - [x] 子弹碰撞系统（碰撞检测使用[Box2dSharp](https://github.com/Zonciu/Box2DSharp)）
 - [ ] 额外（有空的话）：2d moba玩法。
 
-## 补充说明
-1. 多key配置说明，表格配置多key如下，字段列头顶增加“key”标识即可，最多支持4个key，组合key最后会合并成一个long字段存储，4个key最大数值分别为：32位，16位，8位，8位。
-![image](https://user-images.githubusercontent.com/8274346/223321430-a1825695-95b1-4f15-8bba-83dad8e0b84b.png)
-
-      示例，读取技能等级表中技能id=1001，level=2的数据： 
-    
-      SkillLevelConfig skillLevel = SkillLevelConfigCategory.Instance.GetByKeys(1001, 2);
 	              
-
 ## 特别鸣谢
 
 感谢JetBrains公司提供的使用许可证！
