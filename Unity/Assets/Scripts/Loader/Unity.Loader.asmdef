@@ -8,7 +8,8 @@
         "MemoryPack",
         "BetterStreamingAssets",
         "YooAsset",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "YooAsset.Editor"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -22,20 +22,6 @@ namespace ET
     
     
     /// <summary>
-    /// 资源文件查询服务类
-    /// </summary>
-    public class GameQueryServices : IBuildinQueryServices
-    {
-        public const string RootFolderName = "yoo";
-        public bool QueryStreamingAssets(string packageName, string fileName)
-        {
-            // 注意：fileName包含文件格式
-            string filePath = Path.Combine(RootFolderName, packageName, fileName);
-            return BetterStreamingAssets.FileExists(filePath);
-        }
-    }
-    
-    /// <summary>
     /// 远端资源地址查询服务类
     /// </summary>
     public class RemoteServices : IRemoteServices
@@ -81,22 +67,22 @@ namespace ET
 
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
             EPlayMode ePlayMode = globalConfig.EPlayMode;
-            
+
             // 编辑器下的模拟模式
             switch (ePlayMode)
             {
                 case EPlayMode.EditorSimulateMode:
                 {
                     EditorSimulateModeParameters createParameters = new();
-                    createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild(packageName);
-                        await package.InitializeAsync(createParameters).Task;
+                    createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("ScriptableBuildPipeline", packageName);
+                    await package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 case EPlayMode.OfflinePlayMode:
                 {
                     OfflinePlayModeParameters createParameters = new();
                     createParameters.DecryptionServices = new GameDecryptionServices();
-                        await package.InitializeAsync(createParameters).Task;
+                    await package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 case EPlayMode.HostPlayMode:
@@ -105,9 +91,9 @@ namespace ET
                     string fallbackHostServer = GetHostServerURL();
                     HostPlayModeParameters createParameters = new();
                     createParameters.BuildinQueryServices = new GameQueryServices();
-                        createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
+                    createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
                     createParameters.DecryptionServices = new GameDecryptionServices();
-                        await package.InitializeAsync(createParameters).Task;
+                    await package.InitializeAsync(createParameters).Task;
                     break;
                 }
                 default:
@@ -124,26 +110,38 @@ namespace ET
 
 #if UNITY_EDITOR
                 if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.Android)
+                {
                     return $"{hostServerIP}/CDN/Android/{appVersion}";
+                }
                 else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.iOS)
+                {
                     return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+                }
                 else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL)
+                {
                     return $"{hostServerIP}/CDN/WebGL/{appVersion}";
-                else
-                    return $"{hostServerIP}/CDN/PC/{appVersion}";
+                }
+
+                return $"{hostServerIP}/CDN/PC/{appVersion}";
 #else
-		        if (Application.platform == RuntimePlatform.Android)
-		        	return $"{hostServerIP}/CDN/Android/{appVersion}";
-		        else if (Application.platform == RuntimePlatform.IPhonePlayer)
-		        	return $"{hostServerIP}/CDN/IPhone/{appVersion}";
-		        else if (Application.platform == RuntimePlatform.WebGLPlayer)
-		        	return $"{hostServerIP}/CDN/WebGL/{appVersion}";
-		        else
-		        	return $"{hostServerIP}/CDN/PC/{appVersion}";
+            if (Application.platform == RuntimePlatform.Android)
+            {
+                return $"{hostServerIP}/CDN/Android/{appVersion}";
+            }
+            else if (Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+            }
+            else if (Application.platform == RuntimePlatform.WebGLPlayer)
+            {
+                return $"{hostServerIP}/CDN/WebGL/{appVersion}";
+            }
+
+            return $"{hostServerIP}/CDN/PC/{appVersion}";
 #endif
             }
         }
-        
+
         public void DestroyPackage(string packageName)
         {
             ResourcePackage package = YooAssets.GetPackage(packageName);
@@ -156,7 +154,7 @@ namespace ET
         /// </summary>
         public  T LoadAssetSync<T>(string location) where T: UnityEngine.Object
         {
-            AssetOperationHandle handle = YooAssets.LoadAssetSync<T>(location);
+            AssetHandle handle = YooAssets.LoadAssetSync<T>(location);
             T t = (T)handle.AssetObject;
             handle.Release();
             return t;
@@ -164,14 +162,14 @@ namespace ET
 
         public byte[] LoadRawFile(string location)
         {
-            RawFileOperationHandle handle = YooAssets.LoadRawFileSync(location);
+            RawFileHandle handle = YooAssets.LoadRawFileSync(location);
             return handle.GetRawFileData();
         }
 
         public T LoadAsset<T>(string location) where T : UnityEngine.Object
         {
             // self.AssetsOperationHandles.TryGetValue(location, out AssetOperationHandle handle);
-            AssetOperationHandle handle;
+            AssetHandle handle;
             // if (handle == null)
             {
                 handle = YooAssets.LoadAssetSync<T>(location);
@@ -183,7 +181,7 @@ namespace ET
 
         public async ETTask<byte[]> LoadRawFileAsync(string location)
         {
-            RawFileOperationHandle handle = YooAssets.LoadRawFileAsync(location);
+            RawFileHandle handle = YooAssets.LoadRawFileAsync(location);
             await handle.Task;
             return handle.GetRawFileData();
         }
@@ -194,7 +192,7 @@ namespace ET
         /// </summary>
         public async ETTask<T> LoadAssetAsync<T>(string location) where T: UnityEngine.Object
         {
-            AssetOperationHandle handle = YooAssets.LoadAssetAsync<T>(location);
+            AssetHandle handle = YooAssets.LoadAssetAsync<T>(location);
             await handle.Task;
             T t = (T)handle.AssetObject;
             handle.Release();
@@ -207,7 +205,7 @@ namespace ET
         /// </summary>
         public async ETTask<Dictionary<string, T>> LoadAllAssetsAsync<T>(string location) where T: UnityEngine.Object
         {
-            AllAssetsOperationHandle allAssetsOperationHandle = YooAssets.LoadAllAssetsAsync<T>(location);
+            AllAssetsHandle allAssetsOperationHandle = YooAssets.LoadAllAssetsAsync<T>(location);
             await allAssetsOperationHandle.Task;
             Dictionary<string, T> dictionary = new Dictionary<string, T>();
             foreach(UnityEngine.Object assetObj in allAssetsOperationHandle.AllAssetObjects)

@@ -15,14 +15,14 @@ public class FileOffsetEncryption : IEncryptionServices
 			Buffer.BlockCopy(fileData, 0, encryptedData, offset, fileData.Length);
 
 			EncryptResult result = new EncryptResult();
-			result.LoadMethod = EBundleLoadMethod.LoadFromFileOffset;
+			// result.LoadMethod = EBundleLoadMethod.LoadFromFileOffset;
 			result.EncryptedData = encryptedData;
 			return result;
 		}
 		else
 		{
 			EncryptResult result = new EncryptResult();
-			result.LoadMethod = EBundleLoadMethod.Normal;
+			// result.LoadMethod = EBundleLoadMethod.Normal;
 			return result;
 		}
 	}
@@ -42,7 +42,7 @@ public class FileStreamEncryption : IEncryptionServices
 			}
 
 			EncryptResult result = new EncryptResult();
-			result.LoadMethod = EBundleLoadMethod.LoadFromStream;
+			// result.LoadMethod = EBundleLoadMethod.LoadFromStream;
 			result.EncryptedData = fileData;
 			return result;
 		}
@@ -50,7 +50,7 @@ public class FileStreamEncryption : IEncryptionServices
 		// Normal
 		{
 			EncryptResult result = new EncryptResult();
-			result.LoadMethod = EBundleLoadMethod.Normal;
+			// result.LoadMethod = EBundleLoadMethod.Normal;
 			return result;
 		}
 	}
