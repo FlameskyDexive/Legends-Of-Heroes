@@ -1,9 +1,5 @@
 {
-<<<<<<<< HEAD:Unity/Assets/Scripts/Model/Generate/Server/Unity.GenerateServer.asmdef
-    "name": "Unity.GenerateServer",
-========
     "name": "Ignore.Hotfix.Server",
->>>>>>>> 9a76b24e6 (进一步优化编译体验 (#550)):Unity/Assets/Settings/IgnoreAsmdef/Hotfix/Server/Ignore.asmdef.DISABLED
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],

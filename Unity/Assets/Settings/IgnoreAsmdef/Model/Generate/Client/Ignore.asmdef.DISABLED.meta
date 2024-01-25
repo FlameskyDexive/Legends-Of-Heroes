@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Unity/Assets/Config/Excel/Datas/StartConfig/Benchmark/__enums__.xlsx.meta
-guid: 22ae104e6915e064a81b8290b0c2852c
-========
 guid: 067516e3052a2af4eb641d1ffc59a8de
->>>>>>>> 9a76b24e6 (进一步优化编译体验 (#550)):Unity/Assets/Settings/IgnoreAsmdef/Model/Generate/Client/Ignore.asmdef.DISABLED.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
