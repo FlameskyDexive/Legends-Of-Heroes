@@ -62,8 +62,8 @@ namespace ET
         }
         public static void Remove(this BuffComponent self, long id)
         {
-            Unit unit = self.GetChild<Unit>(id);
-            unit?.Dispose();
+            Buff buff = self.GetChild<Buff>(id);
+            buff?.Dispose();
         }
     }
 

@@ -37,7 +37,7 @@ namespace ET
 
         public long StartTime { get; set; }
         
-        public long EndTime { get; set; }
+        public long NextTriggerTime { get; set; }
         
         
         public uint LayerCount { get; set; }

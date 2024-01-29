@@ -13,9 +13,6 @@
         public const int MoveTimer = 201;
         public const int AITimer = 202;
         public const int SessionAcceptTimeout = 203;
-        public const int BulletLifeTimeout = 204;
-        public const int BuffLifeTimeout = 205;
-        public const int BuffInterval = 206;
 
         public const int RoomUpdate = 301;
         

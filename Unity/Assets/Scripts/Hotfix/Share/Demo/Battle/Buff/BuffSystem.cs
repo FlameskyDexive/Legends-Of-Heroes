@@ -4,37 +4,6 @@ using System.Collections.Generic;
 namespace ET
 {
 
-    [Invoke(TimerInvokeType.BuffLifeTimeout)]
-    public class BuffLifeTimeout : ATimer<Buff>
-    {
-        protected override void Run(Buff self)
-        {
-            try
-            {
-                self.LifeTimeout();
-            }
-            catch (Exception e)
-            {
-                Log.Error($"move timer error: {self.Id}\n{e}");
-            }
-        }
-    }
-    [Invoke(TimerInvokeType.BuffInterval)]
-    public class BuffIntervalTimer : ATimer<Buff>
-    {
-        protected override void Run(Buff self)
-        {
-            try
-            {
-                self.TriggerBuff();
-            }
-            catch (Exception e)
-            {
-                Log.Error($"move timer error: {self.Id}\n{e}");
-            }
-        }
-    }
-
     [EntitySystemOf(typeof(Buff))]
     [FriendOf(typeof(Buff))]
     [FriendOf(typeof(NumericComponent))]
@@ -45,18 +14,21 @@ namespace ET
         public static void Awake(this Buff self, int BuffId)
         {
             self.BuffId = BuffId;
-            self.LifeTimer = self.Root().GetComponent<TimerComponent>().NewOnceTimer(TimeInfo.Instance.ServerNow() + self.BuffConfig.Duration, TimerInvokeType.BuffLifeTimeout, self);
             //常规buff添加则立即出发一次，时间到销毁。如果有触发间隔，则间隔固定的时间再次出发buff行为
-            if(self.IntervalTimer > 0)
-                self.IntervalTimer = self.Root().GetComponent<TimerComponent>().NewRepeatedTimer(self.BuffConfig.Interval, TimerInvokeType.BuffInterval, self);
-            //初始默认触发一次buff效果
-            self.TriggerBuff();
+            self.InitBuff();
         }
         [EntitySystem]
         public static void Destroy(this Buff self)
         {
-            self.Root().GetComponent<TimerComponent>().Remove(ref self.LifeTimer);
-            self.Root().GetComponent<TimerComponent>().Remove(ref self.IntervalTimer);
+
+            switch (self.BuffType)
+            {
+                //删除buff还原buff带来的数值改变
+                case EBuffType.ChangeNumeric:
+                    NumericComponent numericComponent = self.Unit.GetComponent<NumericComponent>();
+                    numericComponent[self.BuffConfig.NumericType] -= self.BuffConfig.NumericValue;
+                    break;
+            }
 
         }
         /// <summary>
@@ -66,7 +38,17 @@ namespace ET
         [EntitySystem]
         public static void FixedUpdate(this Buff self)
         {
-            
+            if (TimeInfo.Instance.ServerNow() > self.StartTime + self.BuffConfig.Duration)
+            {
+                self.LifeTimeout();
+                return;
+            }
+
+            if (TimeInfo.Instance.ServerNow() > self.NextTriggerTime)
+            {
+                self.TriggerBuff();
+                self.NextTriggerTime = TimeInfo.Instance.ServerNow() + self.BuffConfig.Interval;
+            }
         }
 
         public static void LifeTimeout(this Buff self)
@@ -75,15 +57,18 @@ namespace ET
             --self.LayerCount;
             if (self.LayerCount > 0)
             {
-                self.UpdateLayerCount();
+                self.InitBuff();
                 return;
             }
             //移除Buff
             self.GetParent<BuffComponent>().RemoveBuff(self.BuffId);
         }
-        public static void UpdateLayerCount(this Buff self)
+        public static void InitBuff(this Buff self)
         {
-            
+            //初始默认触发一次buff效果
+            self.TriggerBuff();
+            self.StartTime = TimeInfo.Instance.ServerNow();
+            self.NextTriggerTime = self.StartTime + self.BuffConfig.Interval;
         }
 
         /// <summary>
@@ -116,8 +101,6 @@ namespace ET
             
         }
         
-        
-
 
         public static Unit GetOwnerUnit(this Buff self)
         {
