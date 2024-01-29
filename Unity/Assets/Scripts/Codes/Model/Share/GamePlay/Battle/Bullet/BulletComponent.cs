@@ -12,7 +12,7 @@ namespace ET
         public Unit OwnerUnit { get; set; }
         public Skill OwnerSkill { get; set; }
 
-        public long Timer;
+        public long EndTime;
 
     }
 }
