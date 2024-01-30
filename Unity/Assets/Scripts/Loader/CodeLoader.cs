@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 using HybridCLR;
 using UnityEngine;
+using YooAsset;
 
 namespace ET
 {
@@ -15,33 +16,37 @@ namespace ET
         private Dictionary<string, TextAsset> dlls = new Dictionary<string, TextAsset>();
         private Dictionary<string, TextAsset> aotDlls;
         private bool enableDll;
+        private EPlayMode playMode;
 
         public void Awake()
         {
-            this.enableDll = Resources.Load<GlobalConfig>("GlobalConfig").EnableDll;
+            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            this.enableDll = globalConfig.EnableDll;
+            this.playMode = globalConfig.EPlayMode;
         }
 
         public async ETTask DownloadAsync()
         {
-            if (!Define.IsEditor)
+            if (!Define.IsEditor || this.playMode != EPlayMode.EditorSimulateMode)
             {
+                Log.Info($"load hotfix dlls");
                 // this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/Code/Unity.Model.dll.bytes");
                 // this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
-                this.dlls["Unity.Model.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model.dll.bytes");
-                this.dlls["Unity.Model.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model.pdb.bytes");
-                this.dlls["Unity.ModelView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView.dll.bytes");
-                this.dlls["Unity.ModelView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView.pdb.bytes");
+                this.dlls["Unity.Model.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model.dll");
+                this.dlls["Unity.Model.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model.pdb");
+                this.dlls["Unity.ModelView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView.dll");
+                this.dlls["Unity.ModelView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView.pdb");
                 
-                this.dlls["Unity.Hotfix.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix.dll.bytes");
-                this.dlls["Unity.Hotfix.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix.pdb.bytes");
-                this.dlls["Unity.HotfixView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.dll.bytes");
-                this.dlls["Unity.HotfixView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.pdb.bytes");
+                this.dlls["Unity.Hotfix.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix.dll");
+                this.dlls["Unity.Hotfix.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix.pdb");
+                this.dlls["Unity.HotfixView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.dll");
+                this.dlls["Unity.HotfixView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.pdb");
             }
         }
 
         public void Start()
         {
-            if (!Define.IsEditor)
+            if (!Define.IsEditor || this.playMode != EPlayMode.EditorSimulateMode)
             {
                 byte[] modelAssBytes = this.dlls["Unity.Model.dll"].bytes;
                 byte[] modelPdbBytes = this.dlls["Unity.Model.pdb"].bytes;

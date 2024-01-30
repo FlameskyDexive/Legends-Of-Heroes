@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Bright.Serialization;
 using UnityEngine;
+using YooAsset;
 
 namespace ET
 {
@@ -11,13 +12,15 @@ namespace ET
     {
         public override async ETTask<Dictionary<Type, ByteBuf>> Handle(ConfigLoader.GetAllConfigBytes args)
         {
+            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            EPlayMode playMode = globalConfig.EPlayMode;
             Dictionary<Type, ByteBuf> output = new Dictionary<Type, ByteBuf>();
             HashSet<Type> configTypes = CodeTypes.Instance.GetTypes(typeof (ConfigAttribute));
             
-            if (Define.IsEditor)
+            if (Define.IsEditor && playMode == EPlayMode.EditorSimulateMode)
             {
                 string ct = "cs";
-                GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+                // GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
                 CodeMode codeMode = globalConfig.CodeMode;
                 switch (codeMode)
                 {
@@ -58,7 +61,7 @@ namespace ET
             {
                 foreach (Type type in configTypes)
                 {
-                    TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{type.Name.ToLower()}.bytes");
+                    TextAsset v = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{type.Name.ToLower()}");
                     output[type] = new ByteBuf(v.bytes);
                 }
             }

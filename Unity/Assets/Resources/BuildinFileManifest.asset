@@ -1,0 +1,207 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71b02dfa7aa9d4545b3417a18477fbee, type: 3}
+  m_Name: BuildinFileManifest
+  m_EditorClassIdentifier: 
+  BuildinFiles:
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_commandline_dll_63ad83c3866d02ca4a0c9e01f73d8214.bundle
+    FileCRC32: 56d2a723
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_memorypack_dll_9e501ed4bef70be513dc623baf2c6c5f.bundle
+    FileCRC32: 12f5b3ab
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_mongodb_bson_dll_678261dad41aa640facaf9f4cbdc850c.bundle
+    FileCRC32: 86bd93d0
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_mscorlib_dll_2cdefac931bfef5f4163d90d3cda1905.bundle
+    FileCRC32: 5d1a02fe
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_nlog_dll_6fc2d5b6abfd09dac068d0d894ce5fff.bundle
+    FileCRC32: bcc2c757
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_system_core_dll_2df0a93208ace6fa1c584427b4734632.bundle
+    FileCRC32: ed1fd997
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_system_dll_40a6f9d91e59857feebe61f1305bc8bb.bundle
+    FileCRC32: 71631ea3
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_system_runtime_compilerservices_unsafe_dll_c2f4cb9aaf5c5505241c0fe15e4f19a0.bundle
+    FileCRC32: 30fffde1
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_unity_core_dll_3f8ecb7a6369378063cf4caa21c8ab11.bundle
+    FileCRC32: 2d89e2b4
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_unity_loader_dll_a0c9fdf34c3a312c05f9b66683456dad.bundle
+    FileCRC32: cb2ba149
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_aotdlls_unity_thirdparty_dll_3adb1dafa26287b9167509ad2b5bcd7e.bundle
+    FileCRC32: 9726ea99
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code_unity_hotfixview_dll_ac02aa51250dc53b686942c9f86e3640.bundle
+    FileCRC32: e4729e72
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code_unity_hotfixview_pdb_94b87e14cd3a1a85183579770be036a6.bundle
+    FileCRC32: ab698224
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code_unity_hotfix_dll_2ccd69df29f290b214181dc44a866270.bundle
+    FileCRC32: 83db7671
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code_unity_hotfix_pdb_69ce361eac6d65cddae91a01748b2f34.bundle
+    FileCRC32: 47da9914
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code_unity_modelview_dll_a5e49d671ca20a5e6ffdf2702f91c3fe.bundle
+    FileCRC32: 397ec8b1
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code_unity_modelview_pdb_2eee4a26b98492da4b57ceff28c1f3b1.bundle
+    FileCRC32: da78959c
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code_unity_model_dll_40201a1e027cc360f0ef86222879168b.bundle
+    FileCRC32: 1a2e24ed
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_code_unity_model_pdb_ffbf7cf34a8e7d65b2af22a98209352c.bundle
+    FileCRC32: 6a7c9265
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_config_gameconfig_a0528d769b1bd8ee9ca6f9a2c03b9d33.bundle
+    FileCRC32: 2bfb638e
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_scenes_map1_b4d36b3fb338647327760c2ceb54088a.bundle
+    FileCRC32: ba1b5a3f
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_scenes_map2_ba3dd304cabdb4ed15d4f6d666940c49.bundle
+    FileCRC32: c72c6f25
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_scenes_map3_59ff47b1873fd17fabb9270de5babb3a.bundle
+    FileCRC32: cdda0540
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_common_escommonui_14736de0e4c17c8617a3bfadfef6e005.bundle
+    FileCRC32: 55ced716
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_common_esreuseui_36c76668be183badf0322b91d99ecddc.bundle
+    FileCRC32: e2a6bd75
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_common_reddot_b737eb3dd21ee9095c83d933d11a524d.bundle
+    FileCRC32: a39b2c3e
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlgbattle_cdcf8cf89b06661fca4aef7eec81e5a9.bundle
+    FileCRC32: 86045d2b
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlghelper_7178540ab6f2ae2d86a31a9177b3d798.bundle
+    FileCRC32: 59a15bad
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlghotupdate_e32b98a73a4320891cccee7c03d6720d.bundle
+    FileCRC32: d7416196
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlglobby_b69f706c78a85856c7763678568b2ace.bundle
+    FileCRC32: c54334b1
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlglogin_ebe607ea386d432350b946449558e7c3.bundle
+    FileCRC32: a4b2c1e5
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlglslobby_0c4b8acd64dffcff42e03516d41bb247.bundle
+    FileCRC32: 306032e3
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlglslogin_453d6a28c0131e85dc5486c65d6a040b.bundle
+    FileCRC32: 28aa23d0
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlglsroom_143e0acb453dd85129a44258ba3b5acd.bundle
+    FileCRC32: d0abf696
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlgreddot_77ecec9423fb30ec6958192774a2a9f7.bundle
+    FileCRC32: b47ada4b
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_dlg_dlgroom_51b9394f9a40531e658d0bf3e167421d.bundle
+    FileCRC32: 39e0049b
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_item_item_role_df3017b3efdfe1885d7ec9985fffd1c6.bundle
+    FileCRC32: 5a83e8b7
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_item_item_servertest_fd4fdfa66341a02ce6834b75b1648cc9.bundle
+    FileCRC32: 126afbda
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_ui_item_item_test_bfed9319c7853624b1ddb818e7a6cdfb.bundle
+    FileCRC32: 436d5cf8
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_unit_bullet_001_66cb04566ea7db5c1afc2401d12b6350.bundle
+    FileCRC32: 98cd2edd
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_unit_foot_893caa7aa8d409aa710638e739206048.bundle
+    FileCRC32: d1c9f0ef
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_unit_player_7e368eac285b5245b248bc354d767816.bundle
+    FileCRC32: a377c80d
+  - PackageName: DefaultPackage
+    FileName: assets_bundles_unit_unit_6217da375e3d29fb5a49a8f9d15e2466.bundle
+    FileCRC32: 7933ff28
+  - PackageName: DefaultPackage
+    FileName: assets_res_ui_lol_avatar_18890bf6cfc94dbcf60f1a7422d82c88.bundle
+    FileCRC32: 33817141
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes_57dceb57caa69a709f9e6e88fef43d10.bundle
+    FileCRC32: 9f682c1f
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes_dungeon_60446fbec29d90aab8d7dd7f3864891e.bundle
+    FileCRC32: fd2d1988
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes_map1_d89eb453bc0332366da67dd5e854888d.bundle
+    FileCRC32: e366f607
+  - PackageName: DefaultPackage
+    FileName: share_assets_bundles_scenes_map2_182aab1db57d9dea1382f4cc06d278e3.bundle
+    FileCRC32: 348009c5
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_font_86d1a5efae694802ccd855a3bd6b3659.bundle
+    FileCRC32: 47ebd79f
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_mat_5056cf4cbe45b35ad216cd51207b2048.bundle
+    FileCRC32: c7bd1e82
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_ui_ball_77699824a185163344141c60a2da383d.bundle
+    FileCRC32: c2c5097b
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_ui_ball_background_425a7d6c844ba66af9c2d5171a903de1.bundle
+    FileCRC32: 5ed894f5
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_ui_ball_effect_50504c08d08657be14cb3f74a7ef7a62.bundle
+    FileCRC32: e295934c
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_ui_ball_game_78a9e917edd0b0b7cdebaeed801d98df.bundle
+    FileCRC32: fe960a92
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_ui_ball_hall_908127cb43a64770ef3ef578bb4523ee.bundle
+    FileCRC32: cc0f993b
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_ui_lol_battle_eb167c658ededd4a24a4e2a3649072f5.bundle
+    FileCRC32: 9e1177ae
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_ui_lol_bg_e21b6826be3b7296f9196f7888eb2c2d.bundle
+    FileCRC32: a7234b62
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_ui_lol_common_223916abcae6bfac41eecd01d646ca7e.bundle
+    FileCRC32: 988062a1
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_47c9c24756118418de3303b57438971c.bundle
+    FileCRC32: 81ff19c1
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_ani_5651d6452b9b6a9c7ee4277a1f399a92.bundle
+    FileCRC32: f8b3b366
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_ani_materials_5bf2e8c590df50473ecb84e47245986e.bundle
+    FileCRC32: b8456901
+  - PackageName: DefaultPackage
+    FileName: share_assets_res_unit_skeleton_texture_bb4488d058a7d16ec6601006ec5eca30.bundle
+    FileCRC32: d38173cb
+  - PackageName: DefaultPackage
+    FileName: share_assets_scripts_loader_monobehaviour_uiextention_joystick_texture_a5b65a3e46b0bfceb1baaf1ded16dd39.bundle
+    FileCRC32: e5713235
+  - PackageName: DefaultPackage
+    FileName: unityshaders_34b14a8f508b14a19c4c6ab833a21e69.bundle
+    FileCRC32: db94f8c2

@@ -8,11 +8,11 @@
       "hash": "51da1d4c433504f3171fff66217035b89c45d823"
     },
     "com.cysharp.memorypack": {
-      "version": "https://github.com/Cysharp/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",
+      "version": "https://gitee.com/flamesky/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "2554e81f0315ddf835026940ccc4ba8175edfda3"
+      "hash": "286a8caeacca6c0414b944a5ed01647a10435ec5"
     },
     "com.dbrizov.naughtyattributes": {
       "version": "file:NaughtyAttributes",
