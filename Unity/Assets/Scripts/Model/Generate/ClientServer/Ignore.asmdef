@@ -1,5 +1,5 @@
 {
-    "name": "Ignore.Generate.Client",
+    "name": "Ignore.Generate.ClientServer",
     "rootNamespace": "",
     "references": [],
     "includePlatforms": [],
