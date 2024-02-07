@@ -36,7 +36,7 @@ namespace ET
                 }
             }
 
-            string aotDllsPath = "Assets/Resources/AotDlls.json";
+            string aotDllsPath = "Assets/Bundles/Config/AotDllConfigs.json";
             File.WriteAllText(aotDllsPath, JsonMapper.ToJson(HybridCLRSettings.Instance.patchAOTAssemblies));
 
             // 设置ab包

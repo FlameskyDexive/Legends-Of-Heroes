@@ -14,7 +14,7 @@ namespace ET
         private Assembly modelViewAssembly;
 
         private Dictionary<string, TextAsset> dlls = new Dictionary<string, TextAsset>();
-        private Dictionary<string, TextAsset> aotDlls;
+        private Dictionary<string, TextAsset> aotDlls = new ();
         private bool enableDll;
         private EPlayMode playMode;
 
@@ -23,6 +23,8 @@ namespace ET
             GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
             this.enableDll = globalConfig.EnableDll;
             this.playMode = globalConfig.EPlayMode;
+            this.dlls.Clear();
+            this.aotDlls.Clear();
         }
 
         public async ETTask DownloadAsync()
@@ -41,6 +43,21 @@ namespace ET
                 this.dlls["Unity.Hotfix.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix.pdb");
                 this.dlls["Unity.HotfixView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.dll");
                 this.dlls["Unity.HotfixView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.pdb");
+                
+                if (!Define.EnableIL2CPP)
+                    return;
+                string aotDllStr = (await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"AotDllConfigs")).text;
+                Log.Info($"load aot dlls: \n{aotDllStr}");
+                if(string.IsNullOrEmpty(aotDllStr))
+                    return;
+                string[] aotDllStrings = JsonHelper.FromJson<string[]>(aotDllStr);
+                if (aotDllStrings.Length <= 0)
+                    return;
+                foreach (string aotDll in aotDllStrings)
+                {
+                    this.aotDlls[aotDll] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"{aotDll}");
+                }
+                
             }
         }
 
