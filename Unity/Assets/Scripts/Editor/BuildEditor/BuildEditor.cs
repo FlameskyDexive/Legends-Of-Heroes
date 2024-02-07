@@ -253,7 +253,7 @@ namespace ET
             if (buildResult.Success)
             {
                 Debug.Log($"构建成功 : {buildResult.OutputPackageDirectory}");
-                EditorUtility.RevealInFinder(buildResult.OutputPackageDirectory);
+                // EditorUtility.RevealInFinder(buildResult.OutputPackageDirectory);
             }
             else
             {
@@ -272,13 +272,13 @@ namespace ET
         [MenuItem("ET/Build/一键打包Windows", false, 30)]
         public static void AutomationBuild()
         {
+            AssemblyTool.DoCompile();
             if (Define.EnableIL2CPP)
             {
                 CompileDllCommand.CompileDllActiveBuildTarget();
                 PrebuildCommand.GenerateAll();
             }
 
-            AssemblyTool.DoCompile();
             if (Define.EnableIL2CPP)
                 HybridCLREditor.CopyAotDll();
             AssetDatabase.Refresh();
@@ -298,13 +298,13 @@ namespace ET
         [MenuItem("ET/Build/一键打包Android", false, 30)]
         public static void AutomationBuildAndroid()
         {
+            AssemblyTool.DoCompile();
             if (Define.EnableIL2CPP)
             {
                 CompileDllCommand.CompileDllActiveBuildTarget();
                 PrebuildCommand.GenerateAll();
             }
 
-            AssemblyTool.DoCompile();
             if (Define.EnableIL2CPP)
                 HybridCLREditor.CopyAotDll();
             AssetDatabase.Refresh();
@@ -317,13 +317,13 @@ namespace ET
         [MenuItem("ET/Build/一键打包IOS", false, 30)]
         public static void AutomationBuildIOS()
         {
+            AssemblyTool.DoCompile();
             if (Define.EnableIL2CPP)
             {
                 CompileDllCommand.CompileDllActiveBuildTarget();
                 PrebuildCommand.GenerateAll();
             }
 
-            AssemblyTool.DoCompile();
             if (Define.EnableIL2CPP)
                 HybridCLREditor.CopyAotDll();
             AssetDatabase.Refresh();
