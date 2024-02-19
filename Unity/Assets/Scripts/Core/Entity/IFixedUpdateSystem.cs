@@ -12,7 +12,7 @@ namespace ET
 	}
 
 	[EntitySystem]
-	public abstract class FixedUpdateSystem<T> : IFixedUpdateSystem where T: Entity, IFixedUpdate
+	public abstract class FixedUpdateSystem<T> : SystemObject, IFixedUpdateSystem where T: Entity, IFixedUpdate
 	{
 		void IFixedUpdateSystem.Run(Entity o)
 		{
