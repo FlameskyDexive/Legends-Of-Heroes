@@ -1,7 +1,7 @@
 syntax = "proto3";
 package ET;
 
-//ResponseType G2C_StateSyncMatch
+// ResponseType G2C_StateSyncMatch
 message C2G_StateSyncMatch // ISessionRequest
 {
 	int32 RpcId = 1;
@@ -14,32 +14,32 @@ message G2C_StateSyncMatch // ISessionResponse
 	string Message = 3;
 }
 
-// 刷新匹配信息
+/// 刷新匹配信息
 message Match2G_StateSyncRefreshMatch // IMessage
 {
 	int32 RpcId = 1;
-	// 房间的ActorId
+	/// 房间的ActorId
 	ActorId ActorId = 2;
-	//房间内玩家信息
+	/// 房间内玩家信息
 	RoomInfo RoomInfo = 3;
 }
 
-// 匹配成功，通知客户端切换场景
+/// 匹配成功，通知客户端切换场景
 message Match2G_StateSyncNotifyMatchSuccess // IMessage
 {
 	int32 RpcId = 1;
-	// 房间的ActorId
+	/// 房间的ActorId
 	ActorId ActorId = 2;
 }
 
-// 客户端通知房间切换场景完成
+/// 客户端通知房间切换场景完成
 message C2Room_StateSyncChangeSceneFinish // IRoomMessage
 {
 	int64 PlayerId = 1;
 }
 
 
-// 房间通知客户端进入战斗
+/// 房间通知客户端进入战斗
 message Room2C_StateSyncStart // IMessage
 {
 	int64 StartTime = 1;
