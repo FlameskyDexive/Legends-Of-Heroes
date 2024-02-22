@@ -3,8 +3,8 @@ using MemoryPack;
 using System.Collections.Generic;
 namespace ET
 {
-// 请求匹配
-	[ResponseType(nameof(Match2G_StateSyncMatch))]
+/// 请求匹配
+// ResponseType Match2G_StateSyncMatch
 	[Message(StateSyncInner.G2Match_StateSyncMatch)]
 	[MemoryPackable]
 	public partial class G2Match_StateSyncMatch: MessageObject, IRequest
@@ -61,7 +61,7 @@ namespace ET
 
 	}
 
-	[ResponseType(nameof(Map2Match_StateSyncGetRoom))]
+// ResponseType Map2Match_StateSyncGetRoom
 	[Message(StateSyncInner.Match2Map_StateSyncGetRoom)]
 	[MemoryPackable]
 	public partial class Match2Map_StateSyncGetRoom: MessageObject, IRequest
@@ -106,7 +106,7 @@ namespace ET
 		[MemoryPackOrder(2)]
 		public string Message { get; set; }
 
-// 房间的ActorId
+/// 房间的ActorId
 		[MemoryPackOrder(3)]
 		public ActorId ActorId { get; set; }
 
@@ -123,7 +123,7 @@ namespace ET
 
 	}
 
-	[ResponseType(nameof(Room2G_StateSyncReconnect))]
+// ResponseType Room2G_StateSyncReconnect
 	[Message(StateSyncInner.G2Room_StateSyncReconnect)]
 	[MemoryPackable]
 	public partial class G2Room_StateSyncReconnect: MessageObject, IRequest
@@ -192,7 +192,7 @@ namespace ET
 
 	}
 
-	[ResponseType(nameof(Room2RoomManager_StateSyncInit))]
+/// ResponseType Room2RoomManager_StateSyncInit
 	[Message(StateSyncInner.RoomManager2Room_StateSyncInit)]
 	[MemoryPackable]
 	public partial class RoomManager2Room_StateSyncInit: MessageObject, IRequest

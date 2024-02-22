@@ -3,7 +3,7 @@ using MemoryPack;
 using System.Collections.Generic;
 namespace ET
 {
-	[ResponseType(nameof(G2C_StateSyncMatch))]
+// ResponseType G2C_StateSyncMatch
 	[Message(StateSyncOuter.C2G_StateSyncMatch)]
 	[MemoryPackable]
 	public partial class C2G_StateSyncMatch: MessageObject, ISessionRequest
@@ -56,7 +56,7 @@ namespace ET
 
 	}
 
-// 刷新匹配信息
+/// 刷新匹配信息
 	[Message(StateSyncOuter.Match2G_StateSyncRefreshMatch)]
 	[MemoryPackable]
 	public partial class Match2G_StateSyncRefreshMatch: MessageObject, IMessage
@@ -69,11 +69,11 @@ namespace ET
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
-// 房间的ActorId
+/// 房间的ActorId
 		[MemoryPackOrder(1)]
 		public ActorId ActorId { get; set; }
 
-//房间内玩家信息
+/// 房间内玩家信息
 		[MemoryPackOrder(2)]
 		public RoomInfo RoomInfo { get; set; }
 
@@ -89,7 +89,7 @@ namespace ET
 
 	}
 
-// 匹配成功，通知客户端切换场景
+/// 匹配成功，通知客户端切换场景
 	[Message(StateSyncOuter.Match2G_StateSyncNotifyMatchSuccess)]
 	[MemoryPackable]
 	public partial class Match2G_StateSyncNotifyMatchSuccess: MessageObject, IMessage
@@ -102,7 +102,7 @@ namespace ET
 		[MemoryPackOrder(0)]
 		public int RpcId { get; set; }
 
-// 房间的ActorId
+/// 房间的ActorId
 		[MemoryPackOrder(1)]
 		public ActorId ActorId { get; set; }
 
@@ -117,7 +117,7 @@ namespace ET
 
 	}
 
-// 客户端通知房间切换场景完成
+/// 客户端通知房间切换场景完成
 	[Message(StateSyncOuter.C2Room_StateSyncChangeSceneFinish)]
 	[MemoryPackable]
 	public partial class C2Room_StateSyncChangeSceneFinish: MessageObject, IRoomMessage
@@ -140,7 +140,7 @@ namespace ET
 
 	}
 
-// 房间通知客户端进入战斗
+/// 房间通知客户端进入战斗
 	[Message(StateSyncOuter.Room2C_StateSyncStart)]
 	[MemoryPackable]
 	public partial class Room2C_StateSyncStart: MessageObject, IMessage
