@@ -18,12 +18,16 @@ namespace ET
         [EntitySystem]
         private static void Destroy(this BuffComponent self)
         {
-            foreach (var buff in self.BuffDic)
+            foreach (KeyValuePair<int, EntityRef<Buff>> valuePair in self.BuffDic)
             {
-                self.Remove(buff.Value.Id);
+                Buff buff = valuePair.Value;
+                if(buff == null)
+                    continue;
+                self.Remove(buff.Id);
             }
             self.BuffDic.Clear();
         }
+        
         private static void AddBuffS(this BuffComponent self, List<int> buffIds)
         {
             foreach (int buffId in buffIds)
@@ -40,7 +44,7 @@ namespace ET
         {
             Buff buff = null;
 
-            if (!self.BuffDic.TryGetValue(buffId, out buff))
+            if (!self.BuffDic.TryGetValue(buffId, out EntityRef<Buff> buffRef))
             {
                 buff = self.AddChild<Buff, int>(buffId);
                 buff.LayerCount = 1;
@@ -51,11 +55,11 @@ namespace ET
         public static bool RemoveBuff(this BuffComponent self, int buffId = 0)
         {
 
-            if (!self.BuffDic.TryGetValue(buffId, out Buff buff))
+            if (!self.BuffDic.TryGetValue(buffId, out EntityRef<Buff> buffRef))
             {
-
                 return false;
             }
+            Buff buff = self.BuffDic[buffId];
             self.BuffDic.Remove(buffId);
             self.Remove(buff.Id);
             return true;

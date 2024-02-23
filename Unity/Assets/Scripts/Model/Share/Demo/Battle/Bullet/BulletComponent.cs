@@ -9,9 +9,9 @@ namespace ET
     {
         [BsonIgnore]
         public Unit Unit => this.GetParent<Unit>();
-        public Unit OwnerUnit { get; set; }
-        public Skill OwnerSkill { get; set; }
 
+        public EntityRef<Unit> OwnerUnit;
+        public EntityRef<Skill> OwnerSkill;
         public long EndTime;
 
     }

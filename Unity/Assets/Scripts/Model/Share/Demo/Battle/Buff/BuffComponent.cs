@@ -10,7 +10,7 @@ namespace ET
     public class BuffComponent: Entity, IAwake, ITransfer, IDestroy
     {
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
-        public Dictionary<int, Buff> BuffDic = new Dictionary<int, Buff>();
+        public Dictionary<int, EntityRef<Buff>> BuffDic = new Dictionary<int, EntityRef<Buff>>();
 
     }
 }
