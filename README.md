@@ -9,16 +9,19 @@ English: please use your browser to translate to english
 # 觉得项目不错的话麻烦右上角给个star哈.
 #### 此游戏为ET的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
+## 国内GitHub访问异常或者速度太慢可以前往Gitee [Legends-Of-Heroes](https://gitee.com/flamesky/Legends-Of-Heroes)拉取项目
+
 ## 环境：
 - 1. 安装Unity2022.3.15f1，安装VS2022/Rider2023，安装[.Net8 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0).
 - 
 ## 运行步骤：
-- 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,然后点击BuildModelAndHotfix.
+- 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,找到GlobalConfig, 勾选EnableDll，按F6编译客户端代码
 - 2. 打开ET.sln，编译整个项目，运行DotNet.App.(服务器、客户端拆分模式才需要单独运行，默认是Client-Server模式)
 - 3. Unity运行游戏即可看到登录页面,输入账号密码登录即可
 
 # TODO && Features
 - [x] 接入UnityC#热更新框架[HybridCLR](https://github.com/focus-creative-games/hybridclr)
+- [x] 一键打包（支持HybridCLR模式一键打包，不需要分开处理，当前测过Win/Android），菜单栏：ET/Build/一键打包xxx
 - [x] 接入Unity运行时可视化Log调试组件[Debugger](https://github.com/FlameskyDexive/Debugger)
 - [x] 接入基于UGUI适配ET的UI框架[EUI](https://github.com/zzjfengqing/ET-EUI)
 - [x] 接入[YooAsset](https://github.com/tuyoogame/YooAsset)资源管理打包热更框架，实现热更下载重载逻辑。
