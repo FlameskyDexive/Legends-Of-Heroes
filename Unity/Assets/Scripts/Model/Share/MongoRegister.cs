@@ -23,9 +23,7 @@ namespace ET
             createSerializerRegistry.Invoke(null, Array.Empty<object>());
             MethodInfo registerIdGenerators = typeof (BsonSerializer).GetMethod("RegisterIdGenerators", BindingFlags.Static | BindingFlags.NonPublic);
             registerIdGenerators.Invoke(null, Array.Empty<object>());
-
-            var objectSerializer = new ObjectSerializer(type => ObjectSerializer.DefaultAllowedTypes(type) || type.FullName.StartsWith("ET"));
-            BsonSerializer.RegisterSerializer(objectSerializer);
+            
 
             // 自动注册IgnoreExtraElements
             ConventionPack conventionPack = new() { new IgnoreExtraElementsConvention(true) };

@@ -2,6 +2,7 @@ using System.Net;
 
 namespace ET
 {
+    [EnableClass]
     public partial class StartProcessConfig
     {
         public string InnerIP => this.StartMachineConfig.InnerIP;

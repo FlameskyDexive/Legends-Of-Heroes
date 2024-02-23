@@ -52,7 +52,7 @@ message Room2G_StateSyncReconnect // IResponse
 	int32 Frame = 6;
 }
 
-/// ResponseType Room2RoomManager_StateSyncInit
+// ResponseType Room2RoomManager_StateSyncInit
 message RoomManager2Room_StateSyncInit // IRequest
 {
 	int32 RpcId = 1;

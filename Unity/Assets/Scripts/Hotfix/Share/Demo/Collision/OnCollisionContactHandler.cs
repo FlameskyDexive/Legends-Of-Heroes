@@ -4,6 +4,7 @@ using Box2DSharp.Dynamics.Contacts;
 namespace ET
 {
     [Event(SceneType.Map)]
+    [FriendOf(typeof(BulletComponent))]
     public class OnCollisionContactHandler: AEvent<Scene, OnCollisionContact>
     {
         protected override async ETTask Run(Scene scene, OnCollisionContact args)

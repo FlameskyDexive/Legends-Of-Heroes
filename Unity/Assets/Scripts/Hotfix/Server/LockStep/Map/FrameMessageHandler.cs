@@ -4,12 +4,12 @@ using System.Collections.Generic;
 namespace ET.Server
 {
     [MessageHandler(SceneType.RoomRoot)]
-    public class FrameMessageHandler: MessageHandler<Scene, FrameMessage>
+    public class FrameMessageHandler : MessageHandler<Scene, FrameMessage>
     {
         protected override async ETTask Run(Scene root, FrameMessage message)
         {
             using FrameMessage _ = message;  // 让消息回到池中
-            
+
             Room room = root.GetComponent<Room>();
             FrameBuffer frameBuffer = room.FrameBuffer;
             if (message.Frame % (1000 / LSConstValue.UpdateInterval) == 0)
@@ -17,7 +17,9 @@ namespace ET.Server
                 long nowFrameTime = room.FixedTimeCounter.FrameTime(message.Frame);
                 int diffTime = (int)(nowFrameTime - TimeInfo.Instance.ServerFrameTime());
 
-                room.Root().GetComponent<MessageLocationSenderComponent>().Get(LocationType.GateSession).Send(message.PlayerId, new Room2C_AdjustUpdateTime() {DiffTime = diffTime});
+                Room2C_AdjustUpdateTime room2CAdjustUpdateTime = Room2C_AdjustUpdateTime.Create();
+                room2CAdjustUpdateTime.DiffTime = diffTime;
+                room.Root().GetComponent<MessageLocationSenderComponent>().Get(LocationType.GateSession).Send(message.PlayerId, room2CAdjustUpdateTime);
             }
 
             if (message.Frame < room.AuthorityFrame)  // 小于AuthorityFrame，丢弃
@@ -31,7 +33,7 @@ namespace ET.Server
                 Log.Warning($"FrameMessage > AuthorityFrame + 10 discard: {message}");
                 return;
             }
-            
+
             OneFrameInputs oneFrameInputs = frameBuffer.FrameInputs(message.Frame);
             if (oneFrameInputs == null)
             {

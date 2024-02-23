@@ -5,6 +5,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace ET
 {
+	[EnableClass]
 	public partial class AIConfigCategory
 	{
 		[BsonIgnore]

@@ -15,7 +15,7 @@
             // 可以订阅这个事件中创建Loading界面
             EventSystem.Instance.Publish(root, new SceneChangeStart());
 
-            root.GetComponent<ClientSenderComponent>().Send(new C2Room_StateSyncChangeSceneFinish());
+            root.GetComponent<ClientSenderComponent>().Send(C2Room_StateSyncChangeSceneFinish.Create());
 
             // 等待Room2C_EnterMap消息
             WaitType.Wait_Room2C_StateSyncStart waitRoom2CStart = await root.GetComponent<ObjectWait>().Wait<WaitType.Wait_Room2C_StateSyncStart>();

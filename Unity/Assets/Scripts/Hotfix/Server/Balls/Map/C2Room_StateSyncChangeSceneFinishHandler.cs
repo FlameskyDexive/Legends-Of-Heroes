@@ -26,10 +26,10 @@ namespace ET.Server
             Room2C_StateSyncStart room2CStart = new() { StartTime = TimeInfo.Instance.ServerFrameTime() };
             foreach (StateSyncRoomPlayer rp in roomServerComponent.Children.Values)
             {
-                room2CStart.UnitInfo.Add(new UnitInfo()
-                {
-                    UnitId = rp.Id, Position = new float3(20, 0, -10), Forward = new float3(0, 0, 1),
-                });
+                UnitInfo unitInfo = UnitInfo.Create();
+                unitInfo.UnitId = rp.Id;
+                unitInfo.Position = new float3(20, 0, -10);
+                unitInfo.Forward = new float3(0, 0, 1);
             }
 
             room.Init(room2CStart.UnitInfo, room2CStart.StartTime);

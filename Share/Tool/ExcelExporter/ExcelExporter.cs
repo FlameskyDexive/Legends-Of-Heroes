@@ -5,16 +5,13 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson.Serialization.Serializers;
 using OfficeOpenXml;
-using OfficeOpenXml.DataValidation;
 using LicenseContext = OfficeOpenXml.LicenseContext;
 
 namespace ET
@@ -57,7 +54,6 @@ namespace ET
     public static class ExcelExporter
     {
         private static string template;
-        private static string templateMultiKeys;
 
         private const string ClientClassDir = "../Unity/Assets/Scripts/Model/Generate/Client/Config";
         // 服务端因为机器人的存在必须包含客户端所有配置，所以单独的c字段没有意义,单独的c就表示cs
@@ -105,7 +101,6 @@ namespace ET
             try
             {
                 template = File.ReadAllText("Template.txt");
-                templateMultiKeys = File.ReadAllText("TemplateMultiKeys.txt");
                 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
                 if (Directory.Exists(ClientClassDir))
@@ -206,17 +201,11 @@ namespace ET
                 {
                     ExportExcel(path);
                 }
-
-                DirectoryInfo dirInfo = new DirectoryInfo(clientProtoDir);
-                FileInfo[] byteFiles = dirInfo.GetFiles("*", SearchOption.TopDirectoryOnly);
-                for (int i = 0; i < byteFiles.Length; i++)
-                {
-                    File.Delete(byteFiles[i].FullName);
-                }
-                /*if (Directory.Exists(clientProtoDir))
+                
+                if (Directory.Exists(clientProtoDir))
                 {
                     Directory.Delete(clientProtoDir, true);
-                }*/
+                }
                 FileHelper.CopyDirectory("../Config/Excel/c", clientProtoDir);
                 
                 Log.Console("Export Excel Sucess!");
@@ -372,21 +361,17 @@ namespace ET
 
 
         #region 导出class
-        private static Dictionary<string, List<string>> keyDic = new Dictionary<string, List<string>>();
 
         static void ExportExcelClass(ExcelPackage p, string name, Table table)
         {
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
-                if (worksheet.Name.Contains("#"))
-                    continue;
-                ExportSheetClass(worksheet, table, name);
+                ExportSheetClass(worksheet, table);
             }
         }
 
-        static void ExportSheetClass(ExcelWorksheet worksheet, Table table, string excelName)
+        static void ExportSheetClass(ExcelWorksheet worksheet, Table table)
         {
-            List<string> configKeys = new List<string>();
             const int row = 2;
             for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
             {
@@ -412,13 +397,8 @@ namespace ET
                     table.HeadInfos[fieldName] = null;
                     continue;
                 }
-                if (fieldCS.Contains("key"))
-                {
-                    // Log.Console($"find key: {excelName}: {fieldName}");
-                    configKeys.Add(fieldName);
-                }
-
-                if (fieldCS == "" || fieldCS.Contains("key"))
+                
+                if (fieldCS == "")
                 {
                     fieldCS = "cs";
                 }
@@ -438,9 +418,6 @@ namespace ET
 
                 table.HeadInfos[fieldName] = new HeadInfo(fieldCS, fieldDesc, fieldName, fieldType, ++table.Index);
             }
-
-            keyDic[excelName] = configKeys;
-            // Log.Console($"000 :{excelName}, key count:{keyDic[excelName].Count}");
         }
 
         static void ExportClass(string protoName, Dictionary<string, HeadInfo> classField, ConfigType configType)
@@ -474,38 +451,7 @@ namespace ET
                 sb.Append($"\t\tpublic {fieldType} {headInfo.FieldName} {{ get; set; }}\n");
             }
 
-            string content = template.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString()); ;
-
-            bool isMultiKeys = (keyDic.TryGetValue(protoName, out List<string> keys) && keys.Count > 1);
-            if (isMultiKeys)
-            {
-                if (keys.Count > 1)
-                {
-                    content = templateMultiKeys.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
-                    // Log.Console($"multiple key excel:{protoName}");
-                    string str = "";
-                    string keyLog = "";
-                    foreach (string key in keys)
-                    {
-                        str += $"config.{key}, ";
-                        keyLog += $"{{config.{key}}}, ";
-                    }
-                    str = str.Substring(0, str.Length - 2);
-                    content = content.Replace("config.Id", $"GetMultiKeyMerge({str})");
-                    content = content.Replace("{key}", keyLog);
-                    // Log.Console($"{content}");
-                }
-                else if (keys.Count == 1)
-                {
-                    content = content.Replace("config.Id", $"config.{keys[0]}");
-                }
-            }
-            else
-            {
-                
-            }
-
-
+            string content = template.Replace("(ConfigName)", protoName).Replace(("(Fields)"), sb.ToString());
             sw.Write(content);
         }
 
@@ -517,16 +463,7 @@ namespace ET
         static void ExportExcelJson(ExcelPackage p, string name, Table table, ConfigType configType, string relativeDir)
         {
             StringBuilder sb = new StringBuilder();
-            bool isMultiKeys = (keyDic.TryGetValue(name, out List<string> keys) && keys.Count > 1);
-
-            if (!isMultiKeys)
-            {
-                sb.Append("{\"dict\": [\n");
-            }
-            else
-            {
-                sb.Append("{\"list\":[\n");
-            }
+            sb.Append("{\"dict\": [\n");
             foreach (ExcelWorksheet worksheet in p.Workbook.Worksheets)
             {
                 if (worksheet.Name.StartsWith("#"))
@@ -534,12 +471,12 @@ namespace ET
                     continue;
                 }
 
-                ExportSheetJson(worksheet, name, table.HeadInfos, configType, sb, isMultiKeys);
+                ExportSheetJson(worksheet, name, table.HeadInfos, configType, sb);
             }
 
             sb.Append("]}\n");
 
-            string dir = string.Format(jsonDir, configType.ToString(), relativeDir);    
+            string dir = string.Format(jsonDir, configType.ToString(), relativeDir);
             if (!Directory.Exists(dir))
             {
                 Directory.CreateDirectory(dir);
@@ -552,7 +489,7 @@ namespace ET
         }
 
         static void ExportSheetJson(ExcelWorksheet worksheet, string name, 
-                Dictionary<string, HeadInfo> classField, ConfigType configType, StringBuilder sb, bool isMultiKeys = false)
+                Dictionary<string, HeadInfo> classField, ConfigType configType, StringBuilder sb)
         {
             string configTypeStr = configType.ToString();
             for (int row = 6; row <= worksheet.Dimension.End.Row; ++row)
@@ -578,76 +515,37 @@ namespace ET
                     continue;
                 }
 
-                if (!isMultiKeys)
+                sb.Append($"[{worksheet.Cells[row, 3].Text.Trim()}, {{\"_t\":\"{name}\"");
+                for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
                 {
-                    sb.Append($"[{worksheet.Cells[row, 3].Text.Trim()}, {{\"_t\":\"{name}\"");
-                    for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
+                    string fieldName = worksheet.Cells[4, col].Text.Trim();
+                    if (!classField.ContainsKey(fieldName))
                     {
-                        string fieldName = worksheet.Cells[4, col].Text.Trim();
-                        if (!classField.ContainsKey(fieldName))
-                        {
-                            continue;
-                        }
-
-                        HeadInfo headInfo = classField[fieldName];
-
-                        if (headInfo == null)
-                        {
-                            continue;
-                        }
-
-                        if (configType != ConfigType.cs && !headInfo.FieldCS.Contains(configTypeStr))
-                        {
-                            continue;
-                        }
-
-                        string fieldN = headInfo.FieldName;
-                        if (fieldN == "Id")
-                        {
-                            fieldN = "_id";
-                        }
-
-                        sb.Append($",\"{fieldN}\":{Convert(headInfo.FieldType, worksheet.Cells[row, col].Text.Trim())}");
+                        continue;
                     }
 
-                    sb.Append("}],\n");
-                }
-                else
-                {
-                    sb.Append("{");
-                    sb.Append($"\"_t\":\"{name}\"");
-                    for (int col = 3; col <= worksheet.Dimension.End.Column; ++col)
+                    HeadInfo headInfo = classField[fieldName];
+
+                    if (headInfo == null)
                     {
-                        string fieldName = worksheet.Cells[4, col].Text.Trim();
-                        if (!classField.ContainsKey(fieldName))
-                        {
-                            continue;
-                        }
-
-                        HeadInfo headInfo = classField[fieldName];
-
-                        if (headInfo == null)
-                        {
-                            continue;
-                        }
-
-                        if (configType != ConfigType.cs && !headInfo.FieldCS.Contains(configTypeStr))
-                        {
-                            continue;
-                        }
-
-                        string fieldN = headInfo.FieldName;
-                        if (fieldN == "Id")
-                        {
-                            fieldN = "_id";
-                        }
-
-                        sb.Append($",\"{fieldN}\":{Convert(headInfo.FieldType, worksheet.Cells[row, col].Text.Trim())}");
+                        continue;
                     }
 
-                    sb.Append("},\n");
+                    if (configType != ConfigType.cs && !headInfo.FieldCS.Contains(configTypeStr))
+                    {
+                        continue;
+                    }
+
+                    string fieldN = headInfo.FieldName;
+                    if (fieldN == "Id")
+                    {
+                        fieldN = "_id";
+                    }
+
+                    sb.Append($",\"{fieldN}\":{Convert(headInfo.FieldType, worksheet.Cells[row, col].Text.Trim())}");
                 }
-                
+
+                sb.Append("}],\n");
             }
         }
 
@@ -715,8 +613,6 @@ namespace ET
                 try
                 {
                     object deserialize = BsonSerializer.Deserialize(json, type);
-                    // object deserialize = MongoHelper.Deserialize(json, type);
-                    
                     final.Merge(deserialize);
                 }
                 catch (Exception e)
