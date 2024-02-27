@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
+﻿using System.IO;
 
+/// <summary>
+/// 资源文件解密流
+/// </summary>
 public class BundleStream : FileStream
 {
     public const byte KEY = 64;
-    
+
     public BundleStream(string path, FileMode mode, FileAccess access, FileShare share) : base(path, mode, access, share)
     {
     }

@@ -6,7 +6,7 @@ using YooAsset;
 
 namespace ET
 {
-    
+
     // 用于字符串转换，减少GC
     [FriendOf(typeof(ResourcesComponent))]
     public static class AssetBundleHelper
@@ -14,13 +14,13 @@ namespace ET
         public static string StringToAB(this string value)
         {
             // string result =  $"Assets/Bundles/UI/Dlg/{value}.prefab";
-            string result =  $"{value}.prefab";
+            string result = $"{value}.prefab";
             return result;
         }
 
     }
-    
-    
+
+
     /// <summary>
     /// 远端资源地址查询服务类
     /// </summary>
@@ -43,8 +43,8 @@ namespace ET
             return $"{_fallbackHostServer}/{fileName}";
         }
     }
-    
-    public class ResourcesComponent: Singleton<ResourcesComponent>, ISingletonAwake
+
+    public class ResourcesComponent : Singleton<ResourcesComponent>, ISingletonAwake
     {
         public void Awake()
         {
@@ -72,30 +72,30 @@ namespace ET
             switch (ePlayMode)
             {
                 case EPlayMode.EditorSimulateMode:
-                {
-                    EditorSimulateModeParameters createParameters = new();
-                    createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("ScriptableBuildPipeline", packageName);
-                    await package.InitializeAsync(createParameters).Task;
-                    break;
-                }
+                    {
+                        EditorSimulateModeParameters createParameters = new();
+                        createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("ScriptableBuildPipeline", packageName);
+                        await package.InitializeAsync(createParameters).Task;
+                        break;
+                    }
                 case EPlayMode.OfflinePlayMode:
-                {
-                    OfflinePlayModeParameters createParameters = new();
-                    createParameters.DecryptionServices = new GameDecryptionServices();
-                    await package.InitializeAsync(createParameters).Task;
-                    break;
-                }
+                    {
+                        OfflinePlayModeParameters createParameters = new();
+                        createParameters.DecryptionServices = new FileStreamDecryption();
+                        await package.InitializeAsync(createParameters).Task;
+                        break;
+                    }
                 case EPlayMode.HostPlayMode:
-                {
-                    string defaultHostServer = GetHostServerURL();
-                    string fallbackHostServer = GetHostServerURL();
-                    HostPlayModeParameters createParameters = new();
-                    createParameters.BuildinQueryServices = new GameQueryServices();
-                    createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
-                    createParameters.DecryptionServices = new GameDecryptionServices();
-                    await package.InitializeAsync(createParameters).Task;
-                    break;
-                }
+                    {
+                        string defaultHostServer = GetHostServerURL();
+                        string fallbackHostServer = GetHostServerURL();
+                        HostPlayModeParameters createParameters = new();
+                        createParameters.BuildinQueryServices = new GameQueryServices();
+                        createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
+                        createParameters.DecryptionServices = new FileStreamDecryption();
+                        await package.InitializeAsync(createParameters).Task;
+                        break;
+                    }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -147,12 +147,12 @@ namespace ET
             ResourcePackage package = YooAssets.GetPackage(packageName);
             package.UnloadUnusedAssets();
         }
-        
+
         /// <summary>
         /// 主要用来加载dll config aotdll，因为这时候纤程还没创建，无法使用ResourcesLoaderComponent。
         /// 游戏中的资源应该使用ResourcesLoaderComponent来加载
         /// </summary>
-        public  T LoadAssetSync<T>(string location) where T: UnityEngine.Object
+        public T LoadAssetSync<T>(string location) where T : UnityEngine.Object
         {
             AssetHandle handle = YooAssets.LoadAssetSync<T>(location);
             T t = (T)handle.AssetObject;
@@ -190,7 +190,7 @@ namespace ET
         /// 主要用来加载dll config aotdll，因为这时候纤程还没创建，无法使用ResourcesLoaderComponent。
         /// 游戏中的资源应该使用ResourcesLoaderComponent来加载
         /// </summary>
-        public async ETTask<T> LoadAssetAsync<T>(string location) where T: UnityEngine.Object
+        public async ETTask<T> LoadAssetAsync<T>(string location) where T : UnityEngine.Object
         {
             AssetHandle handle = YooAssets.LoadAssetAsync<T>(location);
             await handle.Task;
@@ -198,18 +198,18 @@ namespace ET
             handle.Release();
             return t;
         }
-        
+
         /// <summary>
         /// 主要用来加载dll config aotdll，因为这时候纤程还没创建，无法使用ResourcesLoaderComponent。
         /// 游戏中的资源应该使用ResourcesLoaderComponent来加载
         /// </summary>
-        public async ETTask<Dictionary<string, T>> LoadAllAssetsAsync<T>(string location) where T: UnityEngine.Object
+        public async ETTask<Dictionary<string, T>> LoadAllAssetsAsync<T>(string location) where T : UnityEngine.Object
         {
             AllAssetsHandle allAssetsOperationHandle = YooAssets.LoadAllAssetsAsync<T>(location);
             await allAssetsOperationHandle.Task;
             Dictionary<string, T> dictionary = new Dictionary<string, T>();
-            foreach(UnityEngine.Object assetObj in allAssetsOperationHandle.AllAssetObjects)
-            {    
+            foreach (UnityEngine.Object assetObj in allAssetsOperationHandle.AllAssetObjects)
+            {
                 T t = assetObj as T;
                 dictionary.Add(t.name, t);
             }
