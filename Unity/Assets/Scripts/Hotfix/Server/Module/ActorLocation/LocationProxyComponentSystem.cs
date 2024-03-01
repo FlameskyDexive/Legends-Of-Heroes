@@ -48,7 +48,7 @@ namespace ET.Server
         public static async ETTask Remove(this LocationProxyComponent self, int type, long key)
         {
             Fiber fiber = self.Fiber();
-            Log.Info($"location proxy add {key}, {TimeInfo.Instance.ServerNow()}");
+            Log.Info($"location proxy remove {key}, {TimeInfo.Instance.ServerNow()}");
 
             ObjectRemoveRequest objectRemoveRequest = ObjectRemoveRequest.Create();
             objectRemoveRequest.Type = type;
@@ -68,7 +68,7 @@ namespace ET.Server
             objectGetRequest.Type = type;
             objectGetRequest.Key = key;
             ObjectGetResponse response =
-                    (ObjectGetResponse)await self.Root().GetComponent<MessageSender>().Call(GetLocationSceneId(key), objectGetRequest);
+                    (ObjectGetResponse) await self.Root().GetComponent<MessageSender>().Call(GetLocationSceneId(key), objectGetRequest);
             return response.ActorId;
         }
 
