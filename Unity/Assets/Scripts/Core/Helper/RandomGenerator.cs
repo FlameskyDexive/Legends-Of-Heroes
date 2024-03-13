@@ -20,7 +20,6 @@ namespace ET
         {
             int r1 = RandInt32();
             int r2 = RandInt32();
-            
             return ((ulong)r1 << 32) | (uint)r2;
         }
 

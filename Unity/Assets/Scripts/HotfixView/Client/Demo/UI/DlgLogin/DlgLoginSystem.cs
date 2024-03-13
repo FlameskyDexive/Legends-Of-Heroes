@@ -24,9 +24,10 @@ namespace ET.Client
 		}
 
 		public static void OnLoop(this DlgLogin self, Transform transform, int index)
-		{
-			Scroll_Item_test test = self.Dictionary[index].BindTrans(transform);
-			test.ELabel_ContentText.text = index.ToString();
+        {
+            Scroll_Item_test test = self.Dictionary[index];
+            test = test.BindTrans(transform);
+            test.ELabel_ContentText.text = index.ToString();
 		}
 
 		public static void OnLogin(this DlgLogin self)

@@ -23,13 +23,13 @@ namespace ET.Server
                 unit.SendStop(3);
                 return;
             }
-
+                
             // 广播寻路路径
             m2CPathfindingResult.Id = unit.Id;
             MapMessageHelper.Broadcast(unit, m2CPathfindingResult);
 
             MoveComponent moveComponent = unit.GetComponent<MoveComponent>();
-
+            
             bool ret = await moveComponent.MoveToAsync(m2CPathfindingResult.Points, speed);
             if (ret) // 如果返回false，说明被其它移动取消了，这时候不需要通知客户端stop
             {
@@ -51,7 +51,7 @@ namespace ET.Server
             m2CStop.Id = unit.Id;
             m2CStop.Position = unit.Position;
             m2CStop.Rotation = unit.Rotation;
-
+            
             MapMessageHelper.Broadcast(unit, m2CStop);
         }
     }

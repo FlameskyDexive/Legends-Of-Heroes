@@ -21,7 +21,7 @@ namespace ET.Client
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit, 1000, self.mapMask))
                 {
-                    C2M_PathfindingResult c2MPathfindingResult = new C2M_PathfindingResult();
+                    C2M_PathfindingResult c2MPathfindingResult = C2M_PathfindingResult.Create();
                     c2MPathfindingResult.Position = hit.point;
                     self.Root().GetComponent<ClientSenderComponent>().Send(c2MPathfindingResult);
                 }

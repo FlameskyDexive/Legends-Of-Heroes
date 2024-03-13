@@ -8,7 +8,7 @@ namespace ET.Client
 
 		public DlgLoginViewComponent View { get => this.GetComponent<DlgLoginViewComponent>();}
 
-		public Dictionary<int, Scroll_Item_test> Dictionary;
+		public Dictionary<int, EntityRef<Scroll_Item_test>> Dictionary;
 
 	}
 }

@@ -7,7 +7,6 @@ namespace ET.Server
 
         public override async ETTask Handle(RobotInvokeArgs a)
         {
-            Log.Console($"robot case invoke:{a.Content}");
             using RobotCase robotCase = await a.Fiber.Root.GetComponent<RobotCaseComponent>().New();
             try
             {
