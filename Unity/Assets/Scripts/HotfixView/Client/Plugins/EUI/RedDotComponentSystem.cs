@@ -297,6 +297,12 @@ namespace ET.Client
             }
         }
 
+        public static async ETTask PreLoadGameObject(this RedDotComponent self)
+        {
+           await GameObjectPoolHelper.InitPoolFormGamObjectAsync("RedDot", 5);
+        }
+        
+        
         public static GameObject GetORedDotGameObjectFromPool(this RedDotComponent self)
         {
             return GameObjectPoolHelper.GetObjectFromPool("RedDot", true, 5);

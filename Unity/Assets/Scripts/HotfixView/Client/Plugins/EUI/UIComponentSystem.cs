@@ -324,12 +324,14 @@ namespace ET.Client
                     {
                         baseWindow = self.AddChild<UIBaseWindow>();
                         baseWindow.WindowID = id;
+                        await self.PreLoadWindowsItemAsync(baseWindow.WindowID);
                         await self.LoadBaseWindowsAsync(baseWindow);
                     }
                 }
 
                 if (!baseWindow.IsPreLoad)
                 {
+                    await self.PreLoadWindowsItemAsync(baseWindow.WindowID);
                     await self.LoadBaseWindowsAsync(baseWindow);
                 }
                 return baseWindow;
@@ -532,6 +534,38 @@ namespace ET.Client
             self.AllWindowsDic[(int)baseWindow.WindowID] = baseWindow;
         }
        
+        
+        private static async ETTask PreLoadWindowsItemAsync(this UIComponent self,  WindowID windowID)
+        {
+            if (!WindowItemRes.WindowItemResDictionary.ContainsKey(windowID))
+            {
+                return;
+            }
+            
+            List<string> ItemResNames = WindowItemRes.WindowItemResDictionary[windowID];
+
+            if (ItemResNames.Count <= 0)
+            {
+                return;
+            }
+            
+            using ListComponent<ETTask> list = ListComponent<ETTask>.Create();
+            
+            foreach (var poolName in ItemResNames)
+            {
+                Log.Info($"开始预加载页面Item  {windowID} -> {poolName}");
+                list.Add(GameObjectPoolHelper.InitPoolFormGamObjectAsync(poolName, 3));
+            }
+            
+            try
+            {
+                await ETTaskHelper.WaitAll(list);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
 
     }
 }

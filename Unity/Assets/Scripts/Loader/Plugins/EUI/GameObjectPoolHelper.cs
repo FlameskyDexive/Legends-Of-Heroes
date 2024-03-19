@@ -36,9 +36,8 @@ namespace ET.Client
             }
         }
         
-        public static async ETTask InitPoolFormGamObjectAsync(  GameObject pb, int size, PoolInflationType type = PoolInflationType.DOUBLE)
+        public static async ETTask InitPoolFormGamObjectAsync(string poolName, int size, PoolInflationType type = PoolInflationType.DOUBLE)
         {
-            string poolName = pb.name;
             if (poolDict.ContainsKey(poolName))
             {
                 return;
@@ -47,6 +46,7 @@ namespace ET.Client
             {
                 try
                 {
+                    GameObject pb = await GetGameObjectByResTypeAsync(poolName);
                     if (pb == null)
                     {
                         Debug.LogError("[ResourceManager] Invalide prefab name for pooling :" + poolName);
@@ -150,6 +150,21 @@ namespace ET.Client
         {
             // GameObject pb = ResourcesComponent.Instance.LoadAssetSync<GameObject>( $"Assets/Bundles/UI/Item/{poolName}.prefab");
             GameObject pb = ResourcesComponent.Instance.LoadAssetSync<GameObject>( poolName);
+            return pb;
+        }
+        
+        public static async  ETTask<GameObject> GetGameObjectByResTypeAsync( string poolName)
+        {
+            GameObject pb = null; 
+            if (poolName.StartsWith("Item"))
+            {
+                pb = await ResourcesComponent.Instance.LoadAssetAsync<GameObject>( $"Assets/Bundles/UI/Item/{poolName}.prefab");
+            }
+            else
+            {
+                pb = await ResourcesComponent.Instance.LoadAssetAsync<GameObject>( $"Assets/Bundles/UI/Common/{poolName}.prefab");
+
+            }
             return pb;
         }
     }

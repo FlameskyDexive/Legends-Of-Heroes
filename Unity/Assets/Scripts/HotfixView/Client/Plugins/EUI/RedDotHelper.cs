@@ -8,13 +8,13 @@ namespace ET.Client
         /// <summary>
         /// 增加逻辑红点节点
         /// </summary>
-        /// <param name="ZoneScene"></param>
+        /// <param name="scene"></param>
         /// <param name="parent"></param>
         /// <param name="target"></param>
         /// <param name="isNeedShowNum"></param>
-        public static void AddRedDotNode(Scene ZoneScene, string parent, string target,bool isNeedShowNum)
+        public static void AddRedDotNode(Scene scene, string parent, string target,bool isNeedShowNum)
         {
-            RedDotComponent RedDotComponent = ZoneScene.GetComponent<RedDotComponent>();
+            RedDotComponent RedDotComponent = scene.GetComponent<RedDotComponent>();
             if (RedDotComponent == null)
             {
                 return;
@@ -31,12 +31,12 @@ namespace ET.Client
         /// <summary>
         /// 移除逻辑红点
         /// </summary>
-        /// <param name="ZoneScene"></param>
+        /// <param name="scene"></param>
         /// <param name="target"></param>
         /// <param name="isRemoveView"></param>
-        public static void RemoveRedDotNode(Scene ZoneScene, string target, bool isRemoveView = true)
+        public static void RemoveRedDotNode(Scene scene, string target, bool isRemoveView = true)
         {
-            RedDotComponent RedDotComponent = ZoneScene.GetComponent<RedDotComponent>();
+            RedDotComponent RedDotComponent = scene.GetComponent<RedDotComponent>();
             if (RedDotComponent == null)
             {
                 return;
@@ -56,9 +56,9 @@ namespace ET.Client
         /// <param name="ZoneScene"></param>
         /// <param name="target"></param>
         /// <param name="monoView"></param>
-        public static void AddRedDotNodeView(Scene ZoneScene, string target, GameObject gameObject,Vector3 RedDotScale,Vector2 PositionOffset )
+        public static void AddRedDotNodeView(Scene scene, string target, GameObject gameObject,Vector3 RedDotScale,Vector2 PositionOffset )
         {
-            RedDotComponent RedDotComponent = ZoneScene.GetComponent<RedDotComponent>();
+            RedDotComponent RedDotComponent = scene.GetComponent<RedDotComponent>();
             if (RedDotComponent == null)
             {
                 return;
@@ -76,9 +76,9 @@ namespace ET.Client
         /// <param name="ZoneScene"></param>
         /// <param name="target"></param>
         /// <param name="monoView"></param>
-        public static void AddRedDotNodeView(Scene ZoneScene, string target, RedDotMonoView monoView)
+        public static void AddRedDotNodeView(Scene scene, string target, RedDotMonoView monoView)
         {
-            RedDotComponent RedDotComponent = ZoneScene.GetComponent<RedDotComponent>();
+            RedDotComponent RedDotComponent = scene.GetComponent<RedDotComponent>();
             if (RedDotComponent == null)
             {
                 return;
@@ -92,10 +92,10 @@ namespace ET.Client
         /// <param name="ZoneScene"></param>
         /// <param name="target"></param>
         /// <param name="monoView"></param>
-        public static void RemoveRedDotView(Scene ZoneScene, string target, out RedDotMonoView monoView)
+        public static void RemoveRedDotView(Scene scene, string target, out RedDotMonoView monoView)
         {
             monoView = null;
-            RedDotComponent RedDotComponent = ZoneScene?.GetComponent<RedDotComponent>();
+            RedDotComponent RedDotComponent = scene?.GetComponent<RedDotComponent>();
             if (RedDotComponent == null)
             {
                 return;
@@ -110,9 +110,9 @@ namespace ET.Client
         /// <param name="ZoneScene"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static bool HideRedDotNode(Scene ZoneScene, string target)
+        public static bool HideRedDotNode(Scene scene, string target)
         {
-            RedDotComponent redDotComponent = ZoneScene.GetComponent<RedDotComponent>();
+            RedDotComponent redDotComponent = scene.GetComponent<RedDotComponent>();
             if (redDotComponent == null)
             {
                 return false;
@@ -126,13 +126,13 @@ namespace ET.Client
         /// <param name="ZoneScene"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static bool ShowRedDotNode(Scene ZoneScene, string target)
+        public static bool ShowRedDotNode(Scene scene, string target)
         {
-            if (IsLogicAlreadyShow(ZoneScene, target))
+            if (IsLogicAlreadyShow(scene, target))
             {
                 return false;
             }
-            RedDotComponent redDotComponent = ZoneScene.GetComponent<RedDotComponent>();
+            RedDotComponent redDotComponent = scene.GetComponent<RedDotComponent>();
             if (redDotComponent == null)
             {
                 return false;
@@ -146,9 +146,9 @@ namespace ET.Client
         /// <param name="ZoneScene"></param>
         /// <param name="target"></param>
         /// <returns></returns>
-        public static bool IsLogicAlreadyShow(Scene ZoneScene, string target)
+        public static bool IsLogicAlreadyShow(Scene scene, string target)
         {
-            RedDotComponent redDotComponent = ZoneScene.GetComponent<RedDotComponent>();
+            RedDotComponent redDotComponent = scene.GetComponent<RedDotComponent>();
             if (redDotComponent == null)
             {
                 Log.Error("redDotComponent is not exist!");
@@ -169,9 +169,9 @@ namespace ET.Client
         /// <param name="zoneScene"></param>
         /// <param name="target"></param>
         /// <param name="Count"></param>
-        public static void RefreshRedDotViewCount(Scene zoneScene, string target, int Count)
+        public static void RefreshRedDotViewCount(Scene scene, string target, int Count)
         {
-            RedDotComponent redDotComponent = zoneScene.GetComponent<RedDotComponent>();
+            RedDotComponent redDotComponent = scene.GetComponent<RedDotComponent>();
             if (redDotComponent == null)
             {
                 return;
