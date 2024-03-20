@@ -129,7 +129,7 @@ public partial class UICodeSpawner
         }
         else
         {
-	        if (findIndex == -1)
+	        if (!isDelete && findIndex == -1)
 	        {
 		        // 在倒数第三行后插入新行
 		        int insertionIndex = lines.Length - 3;   // 倒数第三行的索引
