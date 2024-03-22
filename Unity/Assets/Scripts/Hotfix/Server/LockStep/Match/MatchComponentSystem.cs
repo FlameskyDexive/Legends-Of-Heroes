@@ -63,7 +63,7 @@ namespace ET.Server
 
             // 申请一个房间
             StartSceneConfig startSceneConfig = RandomGenerator.RandomArray(StartSceneConfigCategory.Instance.Maps);
-            Match2Map_StateSyncGetRoom match2MapGetRoom = new();
+            Match2Map_StateSyncGetRoom match2MapGetRoom = Match2Map_StateSyncGetRoom.Create();
             foreach (long id in self.waitMatchStateSyncPlayers)
             {
                 match2MapGetRoom.PlayerIds.Add(id);

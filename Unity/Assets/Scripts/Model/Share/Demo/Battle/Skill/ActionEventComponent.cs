@@ -7,11 +7,11 @@ namespace ET
     /// 技能事件组件,分发监听
     /// </summary>
     [ComponentOf(typeof(Scene))]
-    public class SkillWatcherComponent : Entity, IAwake/*, ILoad*/
+    public class ActionEventComponent : Entity, IAwake/*, ILoad*/
     {
         [StaticField]
-        public static SkillWatcherComponent Instance { get; set; }
+        public static ActionEventComponent Instance { get; set; }
 		
-        public Dictionary<ESkillEventType, List<ISkillWatcher>> allWatchers;
+        public Dictionary<EActionEventType, List<IActionEvent>> allWatchers;
     }
 }

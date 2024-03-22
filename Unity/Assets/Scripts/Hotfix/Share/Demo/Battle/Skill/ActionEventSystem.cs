@@ -3,26 +3,26 @@ using System.Collections.Generic;
 
 namespace ET
 {
-    [EntitySystemOf(typeof(SkillEvent))]
-    [FriendOf(typeof(SkillEvent))]
-    public static partial class SkillEventSystem
+    [EntitySystemOf(typeof(ActionEvent))]
+    [FriendOf(typeof(ActionEvent))]
+    public static partial class ActionEventSystem
     {
         
         [EntitySystem]
-        public static void Awake(this SkillEvent self, SkillConfig skillConfig)
+        public static void Awake(this ActionEvent self, SkillConfig skillConfig)
         {
             self.EventData = skillConfig.Params;
             //触发时间 = 事件触发百分比 * 技能时长 + 技能触发时间
             self.EventTriggerTime = skillConfig.Params[0] * self.EventData[2] / 100 + TimeInfo.Instance.ServerNow();
-            self.SkillEventType = (ESkillEventType)skillConfig.Params[1];
+            self.actionEventType = (EActionEventType)skillConfig.Params[1];
         }
 
-        public static void Transfer(this SkillEvent self)
+        public static void Transfer(this ActionEvent self)
         {
             
         }
         [EntitySystem]
-        public static void Destroy(this SkillEvent self)
+        public static void Destroy(this ActionEvent self)
         {
             
         }

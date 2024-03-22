@@ -7,7 +7,7 @@ namespace ET
     [FriendOf(typeof(SkillComponent))]
     [EntitySystemOf(typeof(SkillTimelineComponent))]
     [FriendOf(typeof(SkillTimelineComponent))]
-    [FriendOf(typeof(SkillEvent))]
+    [FriendOf(typeof(ActionEvent))]
     public static partial class SkillTimelineComponentSystem
     {
         
@@ -31,11 +31,11 @@ namespace ET
                 long timeNow = TimeInfo.Instance.ServerNow();
                 foreach ((long key, Entity value) in self.Children)
                 {
-                    SkillEvent skillEvent = (SkillEvent)value;
+                    ActionEvent actionEvent = (ActionEvent)value;
 
-                    if (timeNow > skillEvent.EventTriggerTime)
+                    if (timeNow > actionEvent.EventTriggerTime)
                     {
-                        SkillWatcherComponent.Instance.Run(skillEvent, new SkillEventType(){skillEventType = skillEvent.SkillEventType, owner = skillEvent.Unit});
+                        ActionEventComponent.Instance.Run(actionEvent, new ActionEventData(){actionEventType = actionEvent.actionEventType, owner = actionEvent.Unit});
                         list.Add(key);
                     }
                 }
@@ -57,7 +57,7 @@ namespace ET
         {
             if (self.Skillconfig?.Params.Count > 0)
             {
-                self.AddChild<SkillEvent, SkillConfig>(self.Skillconfig);
+                self.AddChild<ActionEvent, SkillConfig>(self.Skillconfig);
             }
         }
 

@@ -7,9 +7,9 @@ namespace ET
    
     namespace EventType
     {
-        public struct SkillEventType
+        public struct ActionEventData
         {
-			public ESkillEventType skillEventType;
+			public EActionEventType actionEventType;
             public Unit owner;
             public Unit target;
             //技能数据来源放在此处，如果有技能编辑器，对接编辑器数据；如果是表格配置技能数据则来源表格。

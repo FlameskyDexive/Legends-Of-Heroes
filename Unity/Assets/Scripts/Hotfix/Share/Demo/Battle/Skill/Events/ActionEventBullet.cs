@@ -5,19 +5,19 @@ namespace ET
 	/// <summary>
 	/// 技能发射子弹
 	/// </summary>
-	[SkillWatcher(ESkillEventType.Bullet)]
-	[FriendOf(typeof(SkillEvent))]
-	public class SkillWatcher_Bullet : ISkillWatcher
+	[ActionEvent(EActionEventType.Bullet)]
+	[FriendOf(typeof(ActionEvent))]
+	public class ActionEventBullet : IActionEvent
 	{
-		public void Run(SkillEvent skillEvent, EventType.SkillEventType args)
+		public void Run(ActionEvent actionEvent, EventType.ActionEventData args)
 		{
             Unit owner = args.owner;
             Log.Info($"emit a bullet");
             if (owner == null)
                 return;
 #if DOTNET
-			Scene scene = skillEvent.Scene();
-            Unit bullet = Server.UnitFactory.CreateBullet(scene, IdGenerater.Instance.GenerateId(), skillEvent.Skill, -1000, skillEvent.EventData);
+			Scene scene = actionEvent.Scene();
+            Unit bullet = Server.UnitFactory.CreateBullet(scene, IdGenerater.Instance.GenerateId(), actionEvent.Skill, -1000, actionEvent.EventData);
 
             // 通知客户端创建子弹Unit
             M2C_CreateUnits m2CCreateUnits = M2C_CreateUnits.Create();

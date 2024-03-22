@@ -18,7 +18,7 @@
     }
 
 
-    public static class Define
+    public static partial class Define
     {
         /// <summary>
         /// 编辑器下加载热更dll的目录

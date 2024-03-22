@@ -1,9 +1,14 @@
 ﻿namespace ET
 {
+    public static partial class BattleDefine
+    {
+        
+    }
+    
     /// <summary>
 	/// 技能事件类型
 	/// </summary>
-    public enum ESkillEventType : byte
+    public enum EActionEventType : byte
     {
         /// <summary>
 		/// 范围伤害
