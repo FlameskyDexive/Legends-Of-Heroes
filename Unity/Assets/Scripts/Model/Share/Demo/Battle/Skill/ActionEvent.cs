@@ -7,7 +7,7 @@ namespace ET
     /// <summary>
     /// 技能事件实体，作为技能事件时间轴组件的child
     /// </summary>
-    [ChildOf(typeof(SkillTimelineComponent))]
+    [ChildOf()]
     public class ActionEvent : Entity,IAwake<SkillConfig>,IDestroy,ITransfer
     {
         [BsonIgnore]

@@ -5,7 +5,7 @@
         
     }
     
-    /// <summary>
+    /*/// <summary>
 	/// 技能事件类型
 	/// </summary>
     public enum EActionEventType : byte
@@ -58,6 +58,7 @@
         /// </summary>
         MountSkill = 5,
     }
+    */
 
     /// <summary>
     /// 输入操作类型
@@ -86,11 +87,11 @@
         Skill4,
     }
 
-    public enum EColliderType: byte
+    /*public enum EColliderType: byte
     {
         Circle,
         Box,
-    }
+    }*/
 
 
     public enum EHitFromType: byte

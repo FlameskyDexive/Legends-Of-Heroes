@@ -19,7 +19,7 @@ public sealed partial class UnitConfig: Bright.Config.BeanBase
     public UnitConfig(ByteBuf _buf) 
     {
         Id = _buf.ReadInt();
-        Type = _buf.ReadInt();
+        Type = (EUnitType)_buf.ReadInt();
         Name_l10n_key = _buf.ReadString(); Name = _buf.ReadString();
         Position = _buf.ReadInt();
         Height = _buf.ReadInt();
@@ -36,9 +36,9 @@ public sealed partial class UnitConfig: Bright.Config.BeanBase
     /// </summary>
     public int Id { get; private set; }
     /// <summary>
-    /// Type
+    /// 类型
     /// </summary>
-    public int Type { get; private set; }
+    public EUnitType Type { get; private set; }
     /// <summary>
     /// 名字
     /// </summary>

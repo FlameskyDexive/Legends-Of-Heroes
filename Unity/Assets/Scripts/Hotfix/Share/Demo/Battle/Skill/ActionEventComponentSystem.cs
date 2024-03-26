@@ -47,9 +47,9 @@ namespace ET
                 return;
             }
 
-            foreach (IActionEvent SkillWatcher in list)
+            foreach (IActionEvent iActionEvent in list)
             {
-                SkillWatcher.Run(actionEvent, args);
+                iActionEvent.Run(actionEvent, args);
             }
         }
     }

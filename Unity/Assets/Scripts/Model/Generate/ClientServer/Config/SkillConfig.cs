@@ -26,6 +26,7 @@ public sealed partial class SkillConfig: Bright.Config.BeanBase
         Life = _buf.ReadInt();
         CD = _buf.ReadInt();
         {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);Params = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); Params.Add(_e0);}}
+        ActionEventId = _buf.ReadInt();
         PostInit();
     }
 
@@ -66,6 +67,10 @@ public sealed partial class SkillConfig: Bright.Config.BeanBase
     /// 技能参数
     /// </summary>
     public System.Collections.Generic.List<int> Params { get; private set; }
+    /// <summary>
+    /// 行为事件id
+    /// </summary>
+    public int ActionEventId { get; private set; }
 
     public const int __ID__ = -844226349;
     public override int GetTypeId() => __ID__;
@@ -90,6 +95,7 @@ public sealed partial class SkillConfig: Bright.Config.BeanBase
         + "Life:" + Life + ","
         + "CD:" + CD + ","
         + "Params:" + Bright.Common.StringUtil.CollectionToString(Params) + ","
+        + "ActionEventId:" + ActionEventId + ","
         + "}";
     }
     

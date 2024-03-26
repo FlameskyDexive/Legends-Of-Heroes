@@ -1,0 +1,18 @@
+[
+  {
+    "Id": 1,
+    "Name": "normal bullet",
+    "Desc": "emit a bullet",
+    "ActionEventType": 1,
+    "TestType": 1,
+    "Params": []
+  },
+  {
+    "Id": 2,
+    "Name": "normal bullet",
+    "Desc": "emit a bullet",
+    "ActionEventType": 2,
+    "TestType": 2,
+    "Params": []
+  }
+]
