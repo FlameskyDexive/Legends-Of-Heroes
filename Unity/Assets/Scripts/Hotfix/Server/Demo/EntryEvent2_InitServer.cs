@@ -8,6 +8,7 @@ namespace ET.Server
     {
         protected override async ETTask Run(Scene root, EntryEvent2 args)
         {
+            Log.Console($"11111");
             switch (Options.Instance.AppType)
             {
                 case AppType.Server:
@@ -26,6 +27,7 @@ namespace ET.Server
                         await FiberManager.Instance.Create(SchedulerType.ThreadPool, startConfig.Id, startConfig.Zone, startConfig.Type, startConfig.Name);
                     }
 
+                    Log.Console($"22222");
                     root.AddComponent<RobotCaseComponent>();
                     break;
                 }

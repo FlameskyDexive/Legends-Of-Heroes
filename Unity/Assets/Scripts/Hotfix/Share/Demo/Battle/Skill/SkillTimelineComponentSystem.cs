@@ -35,7 +35,7 @@ namespace ET
 
                     if (timeNow > actionEvent.EventTriggerTime)
                     {
-                        ActionEventComponent.Instance.Run(actionEvent, new ActionEventData(){actionEventType = actionEvent.actionEventType, owner = actionEvent.Unit});
+                        ActionEventComponent.Instance.Run(actionEvent, new ActionEventData(){actionEventType = actionEvent.ActionEventType, owner = actionEvent.Unit});
                         list.Add(key);
                     }
                 }

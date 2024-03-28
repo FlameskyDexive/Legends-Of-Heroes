@@ -42,7 +42,7 @@ namespace ET
         public static void Run(this ActionEventComponent self, ActionEvent actionEvent, ActionEventData args)
         {
             List<IActionEvent> list;
-            if (!self.allWatchers.TryGetValue(actionEvent.actionEventType, out list))
+            if (!self.allWatchers.TryGetValue(actionEvent.ActionEventType, out list))
             {
                 return;
             }

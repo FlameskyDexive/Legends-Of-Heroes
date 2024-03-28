@@ -5,10 +5,12 @@ using MongoDB.Bson.Serialization.Options;
 namespace ET
 {
     /// <summary>
-    /// 技能事件实体，作为技能事件时间轴组件的child
+    /// 行为事件实体，
+    /// 由技能触发的时候作为技能事件时间轴组件的child
+    /// 由buff触发的时候作为buff的child
     /// </summary>
     [ChildOf()]
-    public class ActionEvent : Entity,IAwake<SkillConfig>,IDestroy,ITransfer
+    public class ActionEvent : Entity,IAwake<SkillConfig>,IAwake<BuffConfig>,IAwake<BulletComponent>,IDestroy,ITransfer
     {
         [BsonIgnore]
         public Unit Unit => this.GetParent<SkillTimelineComponent>().Unit;
@@ -17,10 +19,12 @@ namespace ET
 
         public SkillConfig SkillConfig => this.Skill.SkillConfig;
 
+        public EActionEventSourceType SourceType;
 
-        public EActionEventType actionEventType;
+        public EActionEventType ActionEventType;
         /// <summary>
-        /// 技能事件出发的时间戳，拿当前事件对比，每次释放技能会重置时间戳
+        /// 行为事件出发的时间戳，拿当前事件对比，每次释放技能会重置时间戳
+        /// buff等触发时间未0
         /// </summary>
         public long EventTriggerTime;
         /// <summary>

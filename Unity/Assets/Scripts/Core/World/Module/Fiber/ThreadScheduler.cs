@@ -6,15 +6,21 @@ using System.Threading;
 namespace ET
 {
     // 一个Fiber一个固定的线程
-    internal class ThreadScheduler: IScheduler
+    internal class ThreadScheduler : IScheduler
     {
         private readonly ConcurrentDictionary<int, Thread> dictionary = new();
-        
+
         private readonly FiberManager fiberManager;
+        private DateTime dt1970;
+        private long lastTimeTicks = 0;
+        private long totalTicksSinceStart = 0;
 
         public ThreadScheduler(FiberManager fiberManager)
         {
             this.fiberManager = fiberManager;
+            this.dt1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            this.lastTimeTicks = this.dt1970.Ticks;
+            this.totalTicksSinceStart = 0;
         }
 
         private void Loop(int fiberId)
@@ -22,30 +28,37 @@ namespace ET
             Fiber fiber = fiberManager.Get(fiberId);
             Fiber.Instance = fiber;
             SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
-            
+
             while (true)
             {
                 if (this.fiberManager.IsDisposed())
                 {
                     return;
                 }
-                
+
                 fiber = fiberManager.Get(fiberId);
                 if (fiber == null)
                 {
                     this.dictionary.Remove(fiberId, out _);
                     return;
                 }
-                
+
                 if (fiber.IsDisposed)
                 {
                     this.dictionary.Remove(fiberId, out _);
                     return;
                 }
-                
+
                 fiber.Update();
                 fiber.LateUpdate();
-                fiber.FixedUpdate();
+                long timeNow = (DateTime.UtcNow.Ticks - this.dt1970.Ticks);
+                this.totalTicksSinceStart += (timeNow - this.lastTimeTicks);
+                this.lastTimeTicks = timeNow;
+                while (this.totalTicksSinceStart >= DefineCore.FixedDeltaTicks)
+                {
+                    this.totalTicksSinceStart -= DefineCore.FixedDeltaTicks;
+                    fiber.FixedUpdate();
+                }
 
                 Thread.Sleep(1);
             }

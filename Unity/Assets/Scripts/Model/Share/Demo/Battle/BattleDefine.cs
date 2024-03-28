@@ -4,6 +4,13 @@
     {
         
     }
+
+    public enum EActionEventSourceType
+    {
+        Skill = 0,
+        Buff = 1,
+        Bullet = 2,
+    }
     
     /*/// <summary>
 	/// 技能事件类型
