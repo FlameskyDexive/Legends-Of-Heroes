@@ -6,11 +6,21 @@ using System.IO;
 
 using System.Text;
 using ET;
+using UnityEngine.UI;
 
 public partial class UICodeSpawner
 {
     static public void SpawnLoopItemCode(GameObject gameObject)
     {
+        if (gameObject.GetComponent<LayoutElement>() == null)
+        {
+            Log.Error("哦吼！ 生成Item UI代码失败");
+            Log.Error($"请不要犯贱，请给{gameObject.name}加上LayoutElement组件,并根据预设物宽高设置好组件的Preferred Width和Preferred Height 参数");
+            Log.Error("请不要大着脸质疑EUI的循环列表有BUG,对于你这种不认真上课的菜鸡,你踏马的哪来的脸问出这种傻逼问题？");
+            return;
+        }
+        
+        
         Path2WidgetCachedDict?.Clear();
         Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
         FindAllWidgets(gameObject.transform, "");
