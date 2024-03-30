@@ -7,12 +7,14 @@
     "Desc": "爆发混沌之力，吸食2m附近食物",
     "Life": 1000,
     "CD": 3000,
-    "Params": [
-      0,
+    "ActionEventIds": [
       1,
-      2000
+      2
     ],
-    "ActionEventId": 2
+    "ActionEventTriggerPercent": [
+      10,
+      20
+    ]
   },
   {
     "Id": 1001,
@@ -22,12 +24,14 @@
     "Desc": "爆发混沌之力，吸食3m附近食物",
     "Life": 1000,
     "CD": 3000,
-    "Params": [
-      0,
+    "ActionEventIds": [
       1,
-      3000
+      2
     ],
-    "ActionEventId": 2
+    "ActionEventTriggerPercent": [
+      10,
+      20
+    ]
   },
   {
     "Id": 1001,
@@ -37,12 +41,14 @@
     "Desc": "爆发混沌之力，吸食4m附近食物",
     "Life": 1000,
     "CD": 3000,
-    "Params": [
-      0,
+    "ActionEventIds": [
       1,
-      4000
+      2
     ],
-    "ActionEventId": 2
+    "ActionEventTriggerPercent": [
+      10,
+      20
+    ]
   },
   {
     "Id": 1001,
@@ -52,12 +58,14 @@
     "Desc": "爆发混沌之力，吸食5m附近食物",
     "Life": 1000,
     "CD": 3000,
-    "Params": [
-      0,
+    "ActionEventIds": [
       1,
-      5000
+      2
     ],
-    "ActionEventId": 2
+    "ActionEventTriggerPercent": [
+      10,
+      20
+    ]
   },
   {
     "Id": 1002,
@@ -67,14 +75,14 @@
     "Desc": "随机方向间隔发射1颗子弹",
     "Life": 1000,
     "CD": 2000,
-    "Params": [
-      0,
-      2,
-      300,
-      1500,
-      1
+    "ActionEventIds": [
+      1,
+      2
     ],
-    "ActionEventId": 2
+    "ActionEventTriggerPercent": [
+      10,
+      20
+    ]
   },
   {
     "Id": 1002,
@@ -84,14 +92,14 @@
     "Desc": "随机方向间隔发射2颗子弹",
     "Life": 1000,
     "CD": 2000,
-    "Params": [
-      0,
-      2,
-      300,
-      1500,
+    "ActionEventIds": [
+      1,
       2
     ],
-    "ActionEventId": 2
+    "ActionEventTriggerPercent": [
+      10,
+      20
+    ]
   },
   {
     "Id": 1002,
@@ -101,14 +109,14 @@
     "Desc": "随机方向间隔发射3颗子弹",
     "Life": 1000,
     "CD": 2000,
-    "Params": [
-      0,
-      2,
-      300,
-      1500,
-      3
+    "ActionEventIds": [
+      1,
+      2
     ],
-    "ActionEventId": 2
+    "ActionEventTriggerPercent": [
+      10,
+      20
+    ]
   },
   {
     "Id": 1002,
@@ -118,13 +126,13 @@
     "Desc": "随机方向间隔发射4颗子弹",
     "Life": 1000,
     "CD": 2000,
-    "Params": [
-      0,
-      2,
-      300,
-      1500,
-      4
+    "ActionEventIds": [
+      1,
+      2
     ],
-    "ActionEventId": 2
+    "ActionEventTriggerPercent": [
+      10,
+      20
+    ]
   }
 ]

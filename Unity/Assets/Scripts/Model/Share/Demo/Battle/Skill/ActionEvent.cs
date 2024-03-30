@@ -10,14 +10,30 @@ namespace ET
     /// 由buff触发的时候作为buff的child
     /// </summary>
     [ChildOf()]
-    public class ActionEvent : Entity,IAwake<SkillConfig>,IAwake<BuffConfig>,IAwake<BulletComponent>,IDestroy,ITransfer
+    public class ActionEvent : Entity,IAwake<int, int, EActionEventSourceType>,IDestroy,ITransfer
     {
         [BsonIgnore]
-        public Unit Unit => this.GetParent<SkillTimelineComponent>().Unit;
+        public Unit OwnerUnit
+        {
+            get
+            {
+                switch (this.SourceType)
+                {
+                    case EActionEventSourceType.Skill:
+                        return this.GetParent<SkillTimelineComponent>().Unit;
+                    case EActionEventSourceType.Buff:
+                        return this.GetParent<SkillTimelineComponent>().Unit;
+                    case EActionEventSourceType.Bullet:
+                        return this.GetParent<SkillTimelineComponent>().Unit;
+                }
+                
+                return this.GetParent<SkillTimelineComponent>().Unit;
+            }
+        }
 
-        public Skill Skill => this.GetParent<SkillTimelineComponent>().GetParent<Skill>();
+        public Skill OwnerSkill => this.GetParent<SkillTimelineComponent>().GetParent<Skill>();
 
-        public SkillConfig SkillConfig => this.Skill.SkillConfig;
+        public SkillConfig SkillConfig => this.OwnerSkill.SkillConfig;
 
         public EActionEventSourceType SourceType;
 
@@ -32,7 +48,16 @@ namespace ET
         /// </summary>
         public bool HasTrigger;
 
-        public List<int> EventData;
+        public int ConfigId;
+
+        public ActionEventConfig ActionEventConfig
+        {
+            get
+            {
+                return ActionEventConfigCategory.Instance.Get(this.ConfigId);
+            }
+        }
+
         
 
     }

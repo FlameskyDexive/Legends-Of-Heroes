@@ -35,7 +35,7 @@ namespace ET
 
                     if (timeNow > actionEvent.EventTriggerTime)
                     {
-                        ActionEventComponent.Instance.Run(actionEvent, new ActionEventData(){actionEventType = actionEvent.ActionEventType, owner = actionEvent.Unit});
+                        ActionEventComponent.Instance.Run(actionEvent, new ActionEventData(){actionEventType = actionEvent.ActionEventType, owner = actionEvent.OwnerUnit});
                         list.Add(key);
                     }
                 }
@@ -55,10 +55,29 @@ namespace ET
         
         public static void InitEvents(this SkillTimelineComponent self)
         {
-            if (self.Skillconfig?.Params.Count > 0)
+            try
             {
-                self.AddChild<ActionEvent, SkillConfig>(self.Skillconfig);
+                for (int i = 0; i < self.Skillconfig.ActionEventIds.Count; i++)
+                {
+                    int actionEventId = self.Skillconfig.ActionEventIds[i];
+                    ActionEventConfig actionEventConfig = ActionEventConfigCategory.Instance.Get(actionEventId);
+                    if (actionEventConfig == null)
+                        continue;
+#if !DOTNET
+                    //客户端渲染层的事件服务端不处理
+                    if (actionEventConfig.IsClientOnly)
+                        continue;
+#endif
+
+                    int triggerTime = self.Skillconfig.ActionEventTriggerPercent[i] * self.Skillconfig.Life / 100;
+                    self.AddChild<ActionEvent, int, int, EActionEventSourceType>(actionEventId, triggerTime, EActionEventSourceType.Skill);
+                }
             }
+            catch (Exception e)
+            {
+                Log.Error($"事件id与事件触发时间百分比数量不一致， 技能id：{self.Skillconfig.Id}, lv:{self.Skillconfig.Level} \n{e}");
+            }
+            
         }
 
         private static void Remove(this SkillTimelineComponent self, long id)

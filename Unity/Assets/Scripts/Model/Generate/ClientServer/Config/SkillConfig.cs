@@ -25,8 +25,8 @@ public sealed partial class SkillConfig: Bright.Config.BeanBase
         Desc = _buf.ReadString();
         Life = _buf.ReadInt();
         CD = _buf.ReadInt();
-        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);Params = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); Params.Add(_e0);}}
-        ActionEventId = _buf.ReadInt();
+        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);ActionEventIds = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); ActionEventIds.Add(_e0);}}
+        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);ActionEventTriggerPercent = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); ActionEventTriggerPercent.Add(_e0);}}
         PostInit();
     }
 
@@ -64,13 +64,13 @@ public sealed partial class SkillConfig: Bright.Config.BeanBase
     /// </summary>
     public int CD { get; private set; }
     /// <summary>
-    /// 技能参数
-    /// </summary>
-    public System.Collections.Generic.List<int> Params { get; private set; }
-    /// <summary>
     /// 行为事件id
     /// </summary>
-    public int ActionEventId { get; private set; }
+    public System.Collections.Generic.List<int> ActionEventIds { get; private set; }
+    /// <summary>
+    /// 行为事件触发百分比，跟左边id一一对应
+    /// </summary>
+    public System.Collections.Generic.List<int> ActionEventTriggerPercent { get; private set; }
 
     public const int __ID__ = -844226349;
     public override int GetTypeId() => __ID__;
@@ -94,8 +94,8 @@ public sealed partial class SkillConfig: Bright.Config.BeanBase
         + "Desc:" + Desc + ","
         + "Life:" + Life + ","
         + "CD:" + CD + ","
-        + "Params:" + Bright.Common.StringUtil.CollectionToString(Params) + ","
-        + "ActionEventId:" + ActionEventId + ","
+        + "ActionEventIds:" + Bright.Common.StringUtil.CollectionToString(ActionEventIds) + ","
+        + "ActionEventTriggerPercent:" + Bright.Common.StringUtil.CollectionToString(ActionEventTriggerPercent) + ","
         + "}";
     }
     

@@ -11,11 +11,62 @@ namespace ET
 { 
     public enum EActionEventType
     {
+        /// <summary>
+        /// 范围伤害
+        /// </summary>
         RangeDamage = 1,
+        /// <summary>
+        /// 子弹
+        /// </summary>
         Bullet = 2,
+        /// <summary>
+        /// 添加buff
+        /// </summary>
         AddBuff = 3,
+        /// <summary>
+        /// 移除buff
+        /// </summary>
         RemoveBuff = 4,
+        /// <summary>
+        /// 隐身
+        /// </summary>
         Stealth = 5,
+        /// <summary>
+        /// 无敌
+        /// </summary>
+        Invincible = 6,
+        /// <summary>
+        /// 修改数值
+        /// </summary>
+        ChangeNumeric = 7,
+        /// <summary>
+        /// 播动画
+        /// </summary>
+        PlayAnimation = 100,
+        /// <summary>
+        /// 震屏
+        /// </summary>
+        ShakeCamera = 101,
+        /// <summary>
+        /// 播特效
+        /// </summary>
+        PlayEffect = 102,
+        /// <summary>
+        /// 播音效
+        /// </summary>
+        PlaySound = 103,
+        /// <summary>
+        /// 隐藏武器
+        /// </summary>
+        HideWeapon = 104,
+        /// <summary>
+        /// 播放材质（金身/石化）
+        /// </summary>
+        PlayMaterial = 105,
+        /// <summary>
+        /// 恢复材质
+        /// </summary>
+        RecoverMaterial = 106,
     }
 
 } 

@@ -27,7 +27,7 @@ namespace ET
                     continue;
                 float dis = math.distance(owner.Position, unit.Position);
                 //满足范围伤害，则进行命中伤害结算
-                if (dis <= actionEvent.EventData[1] / 1000f)
+                if (dis <= actionEvent.ActionEventConfig.Params[1] / 1000f)
                 {
                     BattleHelper.HitSettle(owner, unit);
                 }

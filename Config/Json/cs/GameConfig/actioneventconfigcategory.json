@@ -4,15 +4,19 @@
     "Name": "normal bullet",
     "Desc": "emit a bullet",
     "ActionEventType": 1,
-    "TestType": 1,
-    "Params": []
+    "IsClientOnly": false,
+    "Params": [
+      2000
+    ]
   },
   {
     "Id": 2,
     "Name": "normal bullet",
     "Desc": "emit a bullet",
     "ActionEventType": 2,
-    "TestType": 2,
-    "Params": []
+    "IsClientOnly": false,
+    "Params": [
+      5001
+    ]
   }
 ]
