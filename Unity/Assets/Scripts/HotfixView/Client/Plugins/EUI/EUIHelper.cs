@@ -156,9 +156,9 @@ namespace ET.Client
             toggle.isOn = isSelected;
             toggle.onValueChanged?.Invoke(isSelected);
         }
+        
 
-
-        public static void RemoveUIScrollItems<K, T>(this K self, ref Dictionary<int, EntityRef<T>> dictionary) where K : Entity, IUILogic where T : Entity, IAwake, IUIScrollItem<T>
+        public static void RemoveUIScrollItems<K,T>(this K self, ref Dictionary<int,  EntityRef<T>> dictionary) where K : Entity,IUILogic  where T : Entity,IAwake,IUIScrollItem<T>
         {
             if (dictionary == null)
             {
@@ -172,7 +172,7 @@ namespace ET.Client
             dictionary.Clear();
             dictionary = null;
         }
-
+        
         public static void GetUIComponent<T>(this ReferenceCollector rf, string key, ref T t) where T : class
         {
             GameObject obj = rf.Get<GameObject>(key);

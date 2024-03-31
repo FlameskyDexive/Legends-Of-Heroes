@@ -45,7 +45,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("{");
         strBuilder.AppendFormat("\t[EntitySystemOf(typeof({0}))]\n",strDlgName);
         strBuilder.AppendFormat("\t[FriendOfAttribute(typeof({0}))]\n",strDlgName);
-        strBuilder.AppendFormat("\tpublic static partial class {0}System \r\n", strDlgName, strDlgName);
+        strBuilder.AppendFormat("\tpublic static partial class {0}ViewSystem \r\n", strDlgName, strDlgName);
         strBuilder.AppendLine("\t{");
         strBuilder.AppendLine("\t\t[EntitySystem]");
         strBuilder.AppendFormat("\t\tprivate static void Awake(this {0} self,Transform transform)\n",strDlgName);
@@ -95,7 +95,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("{");
 	strBuilder.AppendLine("\t[ChildOf]");
         strBuilder.AppendLine("\t[EnableMethod]");
-        strBuilder.AppendFormat("\tpublic  class {0} : Entity,ET.IAwake<UnityEngine.Transform>,IDestroy \r\n", strDlgName)
+        strBuilder.AppendFormat("\tpublic  class {0} : Entity,ET.IAwake<UnityEngine.Transform>,IDestroy,IUILogic \r\n", strDlgName)
             .AppendLine("\t{");
         
        

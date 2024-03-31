@@ -643,7 +643,16 @@ public partial class UICodeSpawner
 			{
 				List<Component> rectTransfomrComponents = new List<Component>(); 
 				rectTransfomrComponents.Add(child.GetComponent<RectTransform>());
-				Path2WidgetCachedDict.Add(child.name,rectTransfomrComponents);
+
+				if (Path2WidgetCachedDict.ContainsKey(child.name))
+				{
+					Log.Warning($"当前存在重复的Key:{strTemp}");
+				}
+				else
+				{
+					Path2WidgetCachedDict.Add(child.name,rectTransfomrComponents);
+				}
+				
 			}
 			else if (child.name.StartsWith(UIWidgetPrefix))
 			{
@@ -726,6 +735,7 @@ public partial class UICodeSpawner
         WidgetInterfaceList.Add("Button");
         WidgetInterfaceList.Add( "Text");
         WidgetInterfaceList.Add("TMPro.TextMeshProUGUI");
+        WidgetInterfaceList.Add( "TMPro.TMP_InputField");
         WidgetInterfaceList.Add("Input");
         WidgetInterfaceList.Add("InputField");
         WidgetInterfaceList.Add( "Scrollbar");
@@ -741,6 +751,7 @@ public partial class UICodeSpawner
         WidgetInterfaceList.Add("LoopVerticalScrollRect");
         WidgetInterfaceList.Add("LoopHorizontalScrollRect");
         WidgetInterfaceList.Add("UnityEngine.EventSystems.EventTrigger");
+        WidgetInterfaceList = WidgetInterfaceList.Distinct().ToList();
     }
 
     private static Dictionary<string, List<Component> > Path2WidgetCachedDict =null;

@@ -21,6 +21,7 @@ public partial class UICodeSpawner
         }
         
         
+        
         Path2WidgetCachedDict?.Clear();
         Path2WidgetCachedDict = new Dictionary<string, List<Component>>();
         FindAllWidgets(gameObject.transform, "");
@@ -55,7 +56,7 @@ public partial class UICodeSpawner
         
         
         strBuilder.AppendFormat("\t[EntitySystemOf(typeof(Scroll_{0}))]\n",strDlgName);
-        strBuilder.AppendFormat("\tpublic static partial class Scroll_{0}System \r\n", strDlgName);
+        strBuilder.AppendFormat("\tpublic static partial class Scroll_{0}ViewSystem \r\n", strDlgName);
         strBuilder.AppendLine("\t{");
         
         strBuilder.AppendLine("\t\t[EntitySystem]");
@@ -105,7 +106,7 @@ public partial class UICodeSpawner
         strBuilder.AppendLine("namespace ET.Client");
         strBuilder.AppendLine("{");
         strBuilder.AppendLine("\t[EnableMethod]");
-        strBuilder.AppendFormat("\tpublic  class Scroll_{0} : Entity,IAwake,IDestroy,IUIScrollItem \r\n", strDlgName)
+        strBuilder.AppendFormat("\tpublic  class Scroll_{0} : Entity,IAwake,IDestroy,IUIScrollItem<Scroll_{1}>,IUILogic \r\n", strDlgName,strDlgName)
             .AppendLine("\t{");
         
         strBuilder.AppendLine("\t\tpublic long DataId {get;set;}");

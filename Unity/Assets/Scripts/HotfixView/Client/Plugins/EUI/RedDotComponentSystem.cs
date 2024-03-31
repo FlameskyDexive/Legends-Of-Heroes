@@ -299,7 +299,7 @@ namespace ET.Client
 
         public static async ETTask PreLoadGameObject(this RedDotComponent self)
         {
-           await GameObjectPoolHelper.InitPoolFormGamObjectAsync("RedDot", 5);
+           await GameObjectPoolHelper.InitPoolWithPathAsync("RedDot","Assets/Bundles/UI/Common/RedDot.prefab" ,5);
         }
         
         

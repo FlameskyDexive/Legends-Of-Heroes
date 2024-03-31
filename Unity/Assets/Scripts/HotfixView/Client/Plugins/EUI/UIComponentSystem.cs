@@ -554,7 +554,7 @@ namespace ET.Client
             foreach (var poolName in ItemResNames)
             {
                 Log.Info($"开始预加载页面Item  {windowID} -> {poolName}");
-                list.Add(GameObjectPoolHelper.InitPoolFormGamObjectAsync(poolName, 3));
+                list.Add(GameObjectPoolHelper.InitPoolWithPathAsync(poolName,$"Assets/Bundles/UI/Item/{poolName}.prefab", 3));
             }
             
             try
