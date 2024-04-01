@@ -3,325 +3,248 @@
     "Id": 8001,
     "Name": "测试-标记buff",
     "Desc": "纯标记",
-    "BuffType": 0,
-    "NumericType": 0,
-    "NumericValue": 0,
+    "StartEvents": [],
+    "EndEvents": [],
     "Duration": 15000,
-    "Interval": 0,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect01",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "TriggerInterval": 0,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   },
   {
     "Id": 8002,
     "Name": "测试-加攻击%",
     "Desc": "攻击+50%",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 5000,
-    "Duration": 10000,
-    "Interval": 0,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      1
+    "StartEvents": [
+      1001
     ],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect02",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      5000
+    ],
+    "Duration": 10000,
+    "TriggerInterval": 0,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   },
   {
     "Id": 8003,
     "Name": "测试-加攻击",
     "Desc": "攻击+100",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 100,
-    "Duration": 12000,
-    "Interval": 0,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      1
+    "StartEvents": [
+      1001
     ],
-    "Goup": 1,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect03",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      100
+    ],
+    "Duration": 12000,
+    "TriggerInterval": 0,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 1
   },
   {
     "Id": 8004,
     "Name": "测试-加攻击",
     "Desc": "攻击+200",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 200,
-    "Duration": 12000,
-    "Interval": 0,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      1
+    "StartEvents": [
+      1001
     ],
-    "Goup": 1,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect04",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      200
+    ],
+    "Duration": 12000,
+    "TriggerInterval": 0,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 1
   },
   {
     "Id": 8005,
     "Name": "测试-减攻击",
     "Desc": "攻击-100",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": -100,
-    "Duration": 10000,
-    "Interval": 0,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      2
+    "StartEvents": [
+      1001
     ],
-    "Goup": 2,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect05",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      -100
+    ],
+    "Duration": 10000,
+    "TriggerInterval": 0,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 2
   },
   {
     "Id": 8006,
     "Name": "测试-减攻击",
     "Desc": "攻击-300",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": -300,
-    "Duration": 10000,
-    "Interval": 0,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      2
+    "StartEvents": [
+      1001
     ],
-    "Goup": 2,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect06",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      -300
+    ],
+    "Duration": 10000,
+    "TriggerInterval": 0,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 2
   },
   {
     "Id": 8007,
     "Name": "测试-加速",
     "Desc": "速度+50",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 50,
-    "Duration": 5000,
-    "Interval": 0,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      1
+    "StartEvents": [
+      1001
     ],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect07",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      50
+    ],
+    "Duration": 5000,
+    "TriggerInterval": 0,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   },
   {
     "Id": 8008,
     "Name": "测试-减速%",
     "Desc": "速度-100%",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": -10000,
-    "Duration": 7500,
-    "Interval": 0,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      2,
-      3
+    "StartEvents": [
+      1001
     ],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect08",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      -10000
+    ],
+    "Duration": 7500,
+    "TriggerInterval": 0,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   },
   {
     "Id": 8009,
     "Name": "测试-持续伤害",
     "Desc": "500伤害/秒",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 500,
-    "Duration": 10000,
-    "Interval": 1000,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      2
+    "StartEvents": [
+      1001
     ],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect09",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      500
+    ],
+    "Duration": 10000,
+    "TriggerInterval": 1000,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   },
   {
     "Id": 8010,
     "Name": "测试-持续伤害%",
     "Desc": "血量上限5%伤害/5秒",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 500,
-    "Duration": 25000,
-    "Interval": 5000,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      2
+    "StartEvents": [
+      1001
     ],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect10",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      500
+    ],
+    "Duration": 25000,
+    "TriggerInterval": 5000,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   },
   {
     "Id": 8011,
     "Name": "测试-持续回血",
     "Desc": "回复200点/3秒",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 200,
-    "Duration": 15000,
-    "Interval": 3000,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      1,
-      4
+    "StartEvents": [
+      1001
     ],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect11",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      200
+    ],
+    "Duration": 15000,
+    "TriggerInterval": 3000,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   },
   {
     "Id": 8012,
     "Name": "测试-持续回血%",
     "Desc": "回复血量上限10%点/3秒",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 1000,
-    "Duration": 15000,
-    "Interval": 3000,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      1,
-      4
+    "StartEvents": [
+      1001
     ],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect12",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      1000
+    ],
+    "Duration": 15000,
+    "TriggerInterval": 3000,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   },
   {
     "Id": 8013,
     "Name": "测试-持续回护盾",
     "Desc": "加100盾/2秒",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 100,
-    "Duration": 10000,
-    "Interval": 2000,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      1,
-      4
+    "StartEvents": [
+      1001
     ],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect13",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      100
+    ],
+    "Duration": 10000,
+    "TriggerInterval": 2000,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   },
   {
     "Id": 8014,
     "Name": "测试-持续回护盾%",
     "Desc": "加10%盾/2秒",
-    "BuffType": 1,
-    "NumericType": 1001,
-    "NumericValue": 1000,
-    "Duration": 10000,
-    "Interval": 2000,
-    "AddType": 0,
-    "MaxNum": 1,
-    "ReduceType": 0,
-    "Tags": [
-      1,
-      4
+    "StartEvents": [
+      1001
     ],
-    "Goup": 0,
-    "EffectRoot": "",
-    "EffectRes": "BuffEffect14",
-    "EffectScale": 100,
-    "TriggerEffectRoot": "",
-    "TriggerEffectRes": "",
-    "TriggerEffectScale": 0
+    "EndEvents": [
+      1000
+    ],
+    "Duration": 10000,
+    "TriggerInterval": 2000,
+    "TriggerEvents": [
+      0
+    ],
+    "MaxLayer": 1,
+    "Goup": 0
   }
 ]

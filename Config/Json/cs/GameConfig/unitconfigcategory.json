@@ -44,6 +44,17 @@
     "Weight": 78
   },
   {
+    "Id": 2001,
+    "Type": 5,
+    "Name": {
+      "key": "UnitConfig.Name.2001",
+      "text": "米克尔"
+    },
+    "Position": 1,
+    "Height": 178,
+    "Weight": 68
+  },
+  {
     "Id": 5001,
     "Type": 4,
     "Name": {

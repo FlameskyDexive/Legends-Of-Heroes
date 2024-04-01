@@ -21,22 +21,13 @@ public sealed partial class BuffConfig: Bright.Config.BeanBase
         Id = _buf.ReadInt();
         Name = _buf.ReadString();
         Desc = _buf.ReadString();
-        BuffType = _buf.ReadInt();
-        NumericType = _buf.ReadInt();
-        NumericValue = _buf.ReadInt();
+        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);StartEvents = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); StartEvents.Add(_e0);}}
+        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);EndEvents = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); EndEvents.Add(_e0);}}
         Duration = _buf.ReadInt();
-        Interval = _buf.ReadInt();
-        AddType = _buf.ReadInt();
-        MaxNum = _buf.ReadInt();
-        ReduceType = _buf.ReadInt();
-        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);Tags = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); Tags.Add(_e0);}}
+        TriggerInterval = _buf.ReadInt();
+        {int n0 = System.Math.Min(_buf.ReadSize(), _buf.Size);TriggerEvents = new System.Collections.Generic.List<int>(n0);for(var i0 = 0 ; i0 < n0 ; i0++) { int _e0;  _e0 = _buf.ReadInt(); TriggerEvents.Add(_e0);}}
+        MaxLayer = _buf.ReadInt();
         Goup = _buf.ReadInt();
-        EffectRoot = _buf.ReadString();
-        EffectRes = _buf.ReadString();
-        EffectScale = _buf.ReadInt();
-        TriggerEffectRoot = _buf.ReadString();
-        TriggerEffectRes = _buf.ReadString();
-        TriggerEffectScale = _buf.ReadInt();
         PostInit();
     }
 
@@ -58,17 +49,13 @@ public sealed partial class BuffConfig: Bright.Config.BeanBase
     /// </summary>
     public string Desc { get; private set; }
     /// <summary>
-    /// 效果类型
+    /// 开始事件
     /// </summary>
-    public int BuffType { get; private set; }
+    public System.Collections.Generic.List<int> StartEvents { get; private set; }
     /// <summary>
-    /// 效果参数
+    /// 结束事件
     /// </summary>
-    public int NumericType { get; private set; }
-    /// <summary>
-    /// 效果值
-    /// </summary>
-    public int NumericValue { get; private set; }
+    public System.Collections.Generic.List<int> EndEvents { get; private set; }
     /// <summary>
     /// 持续时间
     /// </summary>
@@ -76,51 +63,19 @@ public sealed partial class BuffConfig: Bright.Config.BeanBase
     /// <summary>
     /// 触发间隔
     /// </summary>
-    public int Interval { get; private set; }
+    public int TriggerInterval { get; private set; }
     /// <summary>
-    /// 叠加方式
+    /// 触发事件id
     /// </summary>
-    public int AddType { get; private set; }
+    public System.Collections.Generic.List<int> TriggerEvents { get; private set; }
     /// <summary>
     /// 最大叠加层数
     /// </summary>
-    public int MaxNum { get; private set; }
-    /// <summary>
-    /// 减少方式
-    /// </summary>
-    public int ReduceType { get; private set; }
-    /// <summary>
-    /// 标签
-    /// </summary>
-    public System.Collections.Generic.List<int> Tags { get; private set; }
+    public int MaxLayer { get; private set; }
     /// <summary>
     /// 分组
     /// </summary>
     public int Goup { get; private set; }
-    /// <summary>
-    /// 特效挂点
-    /// </summary>
-    public string EffectRoot { get; private set; }
-    /// <summary>
-    /// 特效
-    /// </summary>
-    public string EffectRes { get; private set; }
-    /// <summary>
-    /// 特效缩放(100倍)
-    /// </summary>
-    public int EffectScale { get; private set; }
-    /// <summary>
-    /// 触发时的特效挂点
-    /// </summary>
-    public string TriggerEffectRoot { get; private set; }
-    /// <summary>
-    /// 触发时的特效
-    /// </summary>
-    public string TriggerEffectRes { get; private set; }
-    /// <summary>
-    /// 触发时的特效缩放
-    /// </summary>
-    public int TriggerEffectScale { get; private set; }
 
     public const int __ID__ = -1370631787;
     public override int GetTypeId() => __ID__;
@@ -140,22 +95,13 @@ public sealed partial class BuffConfig: Bright.Config.BeanBase
         + "Id:" + Id + ","
         + "Name:" + Name + ","
         + "Desc:" + Desc + ","
-        + "BuffType:" + BuffType + ","
-        + "NumericType:" + NumericType + ","
-        + "NumericValue:" + NumericValue + ","
+        + "StartEvents:" + Bright.Common.StringUtil.CollectionToString(StartEvents) + ","
+        + "EndEvents:" + Bright.Common.StringUtil.CollectionToString(EndEvents) + ","
         + "Duration:" + Duration + ","
-        + "Interval:" + Interval + ","
-        + "AddType:" + AddType + ","
-        + "MaxNum:" + MaxNum + ","
-        + "ReduceType:" + ReduceType + ","
-        + "Tags:" + Bright.Common.StringUtil.CollectionToString(Tags) + ","
+        + "TriggerInterval:" + TriggerInterval + ","
+        + "TriggerEvents:" + Bright.Common.StringUtil.CollectionToString(TriggerEvents) + ","
+        + "MaxLayer:" + MaxLayer + ","
         + "Goup:" + Goup + ","
-        + "EffectRoot:" + EffectRoot + ","
-        + "EffectRes:" + EffectRes + ","
-        + "EffectScale:" + EffectScale + ","
-        + "TriggerEffectRoot:" + TriggerEffectRoot + ","
-        + "TriggerEffectRes:" + TriggerEffectRes + ","
-        + "TriggerEffectScale:" + TriggerEffectScale + ","
         + "}";
     }
     

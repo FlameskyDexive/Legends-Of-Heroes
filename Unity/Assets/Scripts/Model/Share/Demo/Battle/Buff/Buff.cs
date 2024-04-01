@@ -53,7 +53,6 @@ namespace ET
             }
         }
 
-        public EBuffType BuffType => ((EBuffType)this.BuffConfig.BuffType);
 
     }
 }

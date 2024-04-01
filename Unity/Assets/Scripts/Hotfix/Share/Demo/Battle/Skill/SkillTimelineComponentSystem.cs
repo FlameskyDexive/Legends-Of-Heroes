@@ -63,7 +63,7 @@ namespace ET
                     ActionEventConfig actionEventConfig = ActionEventConfigCategory.Instance.Get(actionEventId);
                     if (actionEventConfig == null)
                         continue;
-#if !DOTNET
+#if DOTNET
                     //客户端渲染层的事件服务端不处理
                     if (actionEventConfig.IsClientOnly)
                         continue;

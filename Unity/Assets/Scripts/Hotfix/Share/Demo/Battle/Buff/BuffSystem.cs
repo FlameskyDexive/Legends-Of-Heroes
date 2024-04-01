@@ -21,13 +21,12 @@ namespace ET
         public static void Destroy(this Buff self)
         {
 
-            switch (self.BuffType)
+            if (self.BuffConfig?.EndEvents?.Count > 0)
             {
-                //删除buff还原buff带来的数值改变
-                case EBuffType.ChangeNumeric:
-                    NumericComponent numericComponent = self.Unit.GetComponent<NumericComponent>();
-                    numericComponent[self.BuffConfig.NumericType] -= self.BuffConfig.NumericValue;
-                    break;
+                foreach (int eventId in self.BuffConfig.EndEvents)
+                {
+                    
+                }
             }
 
         }
@@ -47,7 +46,7 @@ namespace ET
             if (TimeInfo.Instance.ServerNow() > self.NextTriggerTime)
             {
                 self.TriggerBuff();
-                self.NextTriggerTime = TimeInfo.Instance.ServerNow() + self.BuffConfig.Interval;
+                self.NextTriggerTime = TimeInfo.Instance.ServerNow() + self.BuffConfig.TriggerInterval;
             }
         }
 
@@ -65,10 +64,18 @@ namespace ET
         }
         public static void InitBuff(this Buff self)
         {
+
+            if (self.BuffConfig?.EndEvents?.Count > 0)
+            {
+                foreach (int eventId in self.BuffConfig.StartEvents)
+                {
+
+                }
+            }
             //初始默认触发一次buff效果
-            self.TriggerBuff();
+            // self.TriggerBuff();
             self.StartTime = TimeInfo.Instance.ServerNow();
-            self.NextTriggerTime = self.StartTime + self.BuffConfig.Interval;
+            self.NextTriggerTime = self.StartTime + self.BuffConfig.TriggerInterval;
         }
 
         /// <summary>
@@ -77,19 +84,16 @@ namespace ET
         /// <param name="self"></param>
         public static void TriggerBuff(this Buff self)
         {
-            //常规buff只修改属性
-            switch (self.BuffType)
-            {
-                case EBuffType.ChangeNumeric:
-                    NumericComponent numericComponent = self.Unit.GetComponent<NumericComponent>();
-                    numericComponent[self.BuffConfig.NumericType] += self.BuffConfig.NumericValue;
-                    break;
-            }
-            
-            //buff修改状态
-            
             //如果buff携带可触发技能事件，则触发事件
-            
+
+            if (self.BuffConfig?.TriggerEvents?.Count > 0)
+            {
+                foreach (int eventId in self.BuffConfig.TriggerEvents)
+                {
+                    self.CreateActionEvent(eventId);
+                }
+            }
+
         }
 
         /// <summary>
