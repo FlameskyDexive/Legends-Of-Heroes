@@ -25,7 +25,7 @@ namespace ET
             {
                 foreach (int eventId in self.BuffConfig.EndEvents)
                 {
-                    
+                    self.CreateActionEvent(eventId);
                 }
             }
 
@@ -69,7 +69,7 @@ namespace ET
             {
                 foreach (int eventId in self.BuffConfig.StartEvents)
                 {
-
+                    self.CreateActionEvent(eventId);
                 }
             }
             //初始默认触发一次buff效果

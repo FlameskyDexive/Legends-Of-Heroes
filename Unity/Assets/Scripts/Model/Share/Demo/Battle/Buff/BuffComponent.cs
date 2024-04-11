@@ -6,7 +6,7 @@ namespace ET
 {
 
 
-    [ComponentOf(typeof (SkillComponent))]
+    [ComponentOf(typeof (Unit))]
     public class BuffComponent: Entity, IAwake, ITransfer, IDestroy
     {
         [BsonDictionaryOptions(DictionaryRepresentation.ArrayOfArrays)]
