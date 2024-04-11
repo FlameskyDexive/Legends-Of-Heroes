@@ -6,7 +6,7 @@ namespace ET
 
     [EntitySystemOf(typeof(BuffComponent))]
     [FriendOf(typeof(BuffComponent))]
-    [FriendOf(typeof(BattleUnitComponent))]
+    [FriendOf(typeof(SkillComponent))]
     public static partial class BuffComponentSystem
     {
 

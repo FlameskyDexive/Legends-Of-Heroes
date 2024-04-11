@@ -4,11 +4,11 @@ using MongoDB.Bson.Serialization.Options;
 
 namespace ET
 {
-    [ChildOf(typeof(BattleUnitComponent))]
+    [ChildOf(typeof(SkillComponent))]
     public class Skill:Entity,IAwake<int, int>,IDestroy,ITransfer
     {
         [BsonIgnore]
-        public Unit Unit => this.GetParent<BattleUnitComponent>().Unit;
+        public Unit Unit => this.GetParent<Unit>();
         public int SkillId;
         public int SkillLevel;
         // public int AbstractIndex;

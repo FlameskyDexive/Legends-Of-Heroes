@@ -25,7 +25,7 @@ namespace ET
     public class Buff:Entity,IAwake<int>, IFixedUpdate, IDestroy,ITransfer
     {
         [BsonIgnore]
-        public Unit Unit => this.GetParent<BattleUnitComponent>().Unit;
+        public Unit Unit => this.GetParent<Unit>();
 
         public long LifeTimer;
         public long IntervalTimer;

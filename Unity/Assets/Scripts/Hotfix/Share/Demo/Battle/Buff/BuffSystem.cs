@@ -108,7 +108,7 @@ namespace ET
 
         public static Unit GetOwnerUnit(this Buff self)
         {
-            return self.GetParent<BattleUnitComponent>().Unit;
+            return self.GetParent<Unit>();
         }
         
     }
