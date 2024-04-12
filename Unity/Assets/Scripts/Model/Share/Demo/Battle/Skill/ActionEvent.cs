@@ -40,13 +40,9 @@ namespace ET
         public EActionEventType ActionEventType;
         /// <summary>
         /// 行为事件出发的时间戳，拿当前事件对比，每次释放技能会重置时间戳
-        /// buff等触发时间未0
+        /// buff等触发时间为0
         /// </summary>
         public long EventTriggerTime;
-        /// <summary>
-        /// 当前事件是否已经触发
-        /// </summary>
-        public bool HasTrigger;
 
         public int ConfigId;
 

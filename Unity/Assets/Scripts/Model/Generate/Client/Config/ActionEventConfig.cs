@@ -33,7 +33,7 @@ public sealed partial class ActionEventConfig: Bright.Config.BeanBase
     }
 
     /// <summary>
-    /// buffID
+    /// 行为事件ID
     /// </summary>
     public int Id { get; private set; }
     /// <summary>
