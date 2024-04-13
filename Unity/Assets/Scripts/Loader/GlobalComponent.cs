@@ -17,7 +17,7 @@ namespace ET
             self.OtherRoot = GameObject.Find("/Global/UI/OtherRoot").transform;
             self.PoolRoot =  GameObject.Find("/Global/PoolRoot").transform;
             
-            self.GlobalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            // self.GlobalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
         }
     }
     
@@ -28,7 +28,7 @@ namespace ET
         public Transform Unit { get; set; }
         public Transform UI;
 
-        public GlobalConfig GlobalConfig { get; set; }
+        // public GlobalConfig GlobalConfig { get; set; }
         
         public Transform NormalRoot{ get; set; }
         public Transform PopUpRoot{ get; set; }

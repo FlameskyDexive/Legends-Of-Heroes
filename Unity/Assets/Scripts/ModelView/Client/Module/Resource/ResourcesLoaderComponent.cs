@@ -28,7 +28,105 @@ namespace ET.Client
             {
                 self.ReleaseHandler(kv.Value);
             }
+            self.ForceUnloadAllAssets();
+
+            self.PackageVersion = string.Empty;
+            self.Downloader = null;
+            self.AssetsOperationHandles.Clear();
+            self.SubAssetsOperationHandles.Clear();
+            self.SceneOperationHandles.Clear();
+            self.RawFileOperationHandles.Clear();
+            self.HandleProgresses.Clear();
+            self.DoneHandleQueue.Clear();
         }
+
+        public static void ForceUnloadAllAssets(this ResourcesLoaderComponent self)
+        {
+            ResourcePackage package = YooAssets.GetPackage("DefaultPackage");
+            package.ForceUnloadAllAssets();
+        }
+
+
+        #region 热更相关
+
+        public static async ETTask<int> UpdateVersionAsync(this ResourcesLoaderComponent self, int timeout = 30)
+        {
+            var package = YooAssets.GetPackage("DefaultPackage");
+            var operation = package.UpdatePackageVersionAsync();
+
+            await operation.GetAwaiter();
+
+            if (operation.Status != EOperationStatus.Succeed)
+            {
+                return ErrorCode.ERR_ResourceUpdateVersionError;
+            }
+
+            self.PackageVersion = operation.PackageVersion;
+            return ErrorCode.ERR_Success;
+        }
+
+        public static async ETTask<int> UpdateManifestAsync(this ResourcesLoaderComponent self)
+        {
+            var package = YooAssets.GetPackage("DefaultPackage");
+            var operation = package.UpdatePackageManifestAsync(self.PackageVersion);
+
+            await operation.GetAwaiter();
+
+            if (operation.Status != EOperationStatus.Succeed)
+            {
+                return ErrorCode.ERR_ResourceUpdateManifestError;
+            }
+
+            return ErrorCode.ERR_Success;
+        }
+
+        public static int CreateDownloader(this ResourcesLoaderComponent self)
+        {
+            int downloadingMaxNum = 10;
+            int failedTryAgain = 3;
+            ResourceDownloaderOperation downloader = YooAssets.CreateResourceDownloader(downloadingMaxNum, failedTryAgain);
+            if (downloader.TotalDownloadCount == 0)
+            {
+                Log.Info("没有发现需要下载的资源");
+            }
+            else
+            {
+                Log.Info("一共发现了{0}个资源需要更新下载。".Fmt(downloader.TotalDownloadCount));
+                self.Downloader = downloader;
+            }
+
+            return ErrorCode.ERR_Success;
+        }
+
+        public static async ETTask<int> DonwloadWebFilesAsync(this ResourcesLoaderComponent self,
+        DownloaderOperation.OnStartDownloadFile onStartDownloadFileCallback = null,
+        DownloaderOperation.OnDownloadProgress onDownloadProgress = null,
+        DownloaderOperation.OnDownloadError onDownloadError = null,
+        DownloaderOperation.OnDownloadOver onDownloadOver = null)
+        {
+            if (self.Downloader == null)
+            {
+                return ErrorCode.ERR_Success;
+            }
+
+            // 注册下载回调
+            self.Downloader.OnStartDownloadFileCallback = onStartDownloadFileCallback;
+            self.Downloader.OnDownloadProgressCallback = onDownloadProgress;
+            self.Downloader.OnDownloadErrorCallback = onDownloadError;
+            self.Downloader.OnDownloadOverCallback = onDownloadOver;
+            self.Downloader.BeginDownload();
+            await self.Downloader.GetAwaiter();
+
+            // 检测下载结果
+            if (self.Downloader.Status != EOperationStatus.Succeed)
+            {
+                return ErrorCode.ERR_ResourceUpdateDownloadError;
+            }
+
+            return ErrorCode.ERR_Success;
+        }
+
+        #endregion
 
 
         public static void ReleaseHandler(this ResourcesLoaderComponent self,HandleBase handleBase)
@@ -144,5 +242,22 @@ namespace ET.Client
     {
         public ResourcePackage package;
         public Dictionary<string, HandleBase> handlers = new();
+
+        
+        public string PackageVersion { get; set; }
+
+        public ResourceDownloaderOperation Downloader { get; set; }
+
+        public Dictionary<string, AssetHandle> AssetsOperationHandles = new Dictionary<string, AssetHandle>(100);
+
+        public Dictionary<string, SubAssetsHandle> SubAssetsOperationHandles = new Dictionary<string, SubAssetsHandle>();
+
+        public Dictionary<string, SceneHandle> SceneOperationHandles = new Dictionary<string, SceneHandle>();
+
+        public Dictionary<string, RawFileHandle> RawFileOperationHandles = new Dictionary<string, RawFileHandle>(100);
+
+        public Dictionary<HandleBase, Action<float>> HandleProgresses = new Dictionary<HandleBase, Action<float>>();
+
+        public Queue<HandleBase> DoneHandleQueue = new Queue<HandleBase>();
     }
 }

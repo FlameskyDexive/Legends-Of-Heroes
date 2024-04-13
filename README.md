@@ -5,7 +5,7 @@ English: please use your browser to translate to english
 ![loh22023532242551](https://user-images.githubusercontent.com/8274346/235951176-f96efa8f-d3e5-4089-a1c9-56643859b487.gif)
 
 ## Main
-#### 基于C#双端框架[ET框架](https://github.com/egametang/ET)，[ETPlus](https://github.com/FlameskyDexive/ETPlus) ET8加强版(EUI+YooAsset+Luban)。 注意：当前Master正在同步ET8升级修改，跑Demo请切换到ET7.2+分支。
+#### 基于C#双端框架[ET框架](https://github.com/egametang/ET)，[ETPlus](https://github.com/FlameskyDexive/ETPlus) ET8加强版(EUI+YooAsset+Luban)。 注意：当前Master正在同步ET8.1升级修改（基础热更，技能/Buff系统已经迁移完毕，差开房间组队），跑Demo请切换到ET7.2+分支。
 # 觉得项目不错的话麻烦右上角给个star哈.
 #### 此游戏为ET的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
@@ -20,7 +20,7 @@ English: please use your browser to translate to english
 - 3. Unity运行游戏即可看到登录页面,输入账号密码登录即可
 
 # TODO && Features
-- [x] 接入UnityC#热更新框架[HybridCLR](https://github.com/focus-creative-games/hybridclr)
+- [x] 接入UnityC#热更新框架[HybridCLR](https://github.com/focus-creative-games/hybridclr)，包含热更新资源检测下载流程。
 - [x] 一键打包（支持HybridCLR模式一键打包，不需要分开处理，当前测过Win/Android），菜单栏：ET/Build/一键打包xxx
 - [x] 接入Unity运行时可视化Log调试组件[Debugger](https://github.com/FlameskyDexive/Debugger)
 - [x] 接入基于UGUI适配ET的UI框架[EUI](https://github.com/zzjfengqing/ET-EUI)
@@ -45,7 +45,7 @@ English: please use your browser to translate to english
 <img src="https://user-images.githubusercontent.com/8274346/223466125-611c027a-61f3-4ea0-a96d-4052283da746.png" alt="JetBrains的Logo" width="20%" height="20%"></a></p>
 
 ## 友情链接/鸣谢
-### [UniJoystick](https://github.com/Bian-Sh/UniJoystick) 一个基于UGUI通用遥感组件
+### [UniJoystick](https://github.com/Bian-Sh/UniJoystick) 一个基于UGUI通用摇杆组件
 ### [X-ET7](https://github.com/IcePower/X-ET7) ET7的一个分支，集成FGUI+YooAsset+Luban 
 ### [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET) 烟雨的开源moba案例，基于ET5.X魔改
 ### [XAsset](https://github.com/xasset/xasset) 一个很高效易用强大的资源管理系统（打包/加载/热更）

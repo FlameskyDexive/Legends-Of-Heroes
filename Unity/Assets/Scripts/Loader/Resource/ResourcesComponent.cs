@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -46,27 +47,54 @@ namespace ET
 
     public class ResourcesComponent : Singleton<ResourcesComponent>, ISingletonAwake
     {
+        private ResourcePackage defaultPackage;
+        private EPlayMode playMode;
         public void Awake()
         {
             YooAssets.Initialize();
             BetterStreamingAssets.Initialize();
+            // this.LoadGlobalConfigAsync().Coroutine();
         }
 
         protected override void Destroy()
         {
             YooAssets.Destroy();
         }
+        
+        private IEnumerator LoadGlobalConfig()
+        {
+            AssetHandle handler = YooAssets.LoadAssetAsync<GlobalConfig>("GlobalConfig");
+            yield return handler;
+            GlobalConfig.Instance = handler.AssetObject as GlobalConfig;
+            handler.Release();
+            defaultPackage.UnloadUnusedAssets();
+        }
+
+        private async ETTask LoadGlobalConfigAsync()
+        {
+            AssetHandle handler = YooAssets.LoadAssetAsync<GlobalConfig>("GlobalConfig");
+            await handler;
+            GlobalConfig.Instance = handler.AssetObject as GlobalConfig;
+            handler.Release();
+            defaultPackage.UnloadUnusedAssets();
+        }
+
+        public async ETTask RestartAsync()
+        {
+            await this.LoadGlobalConfigAsync();
+        }
 
         public async ETTask CreatePackageAsync(string packageName, bool isDefault = false)
         {
-            ResourcePackage package = YooAssets.CreatePackage(packageName);
+            defaultPackage = YooAssets.TryGetPackage(packageName);
+            if(this.defaultPackage == null)
+                defaultPackage = YooAssets.CreatePackage(packageName);
             if (isDefault)
             {
-                YooAssets.SetDefaultPackage(package);
+                YooAssets.SetDefaultPackage(defaultPackage);
             }
 
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
-            EPlayMode ePlayMode = globalConfig.EPlayMode;
+            EPlayMode ePlayMode = Define.PlayMode;
 
             // 编辑器下的模拟模式
             switch (ePlayMode)
@@ -75,14 +103,14 @@ namespace ET
                     {
                         EditorSimulateModeParameters createParameters = new();
                         createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("ScriptableBuildPipeline", packageName);
-                        await package.InitializeAsync(createParameters).Task;
+                        await defaultPackage.InitializeAsync(createParameters).Task;
                         break;
                     }
                 case EPlayMode.OfflinePlayMode:
                     {
                         OfflinePlayModeParameters createParameters = new();
                         createParameters.DecryptionServices = new FileStreamDecryption();
-                        await package.InitializeAsync(createParameters).Task;
+                        await defaultPackage.InitializeAsync(createParameters).Task;
                         break;
                     }
                 case EPlayMode.HostPlayMode:
@@ -93,12 +121,14 @@ namespace ET
                         createParameters.BuildinQueryServices = new GameQueryServices();
                         createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
                         createParameters.DecryptionServices = new FileStreamDecryption();
-                        await package.InitializeAsync(createParameters).Task;
+                        await defaultPackage.InitializeAsync(createParameters).Task;
                         break;
                     }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            await this.LoadGlobalConfigAsync();
 
             return;
 
@@ -140,6 +170,7 @@ namespace ET
             return $"{hostServerIP}/CDN/PC/{appVersion}";
 #endif
             }
+
         }
 
         public void DestroyPackage(string packageName)

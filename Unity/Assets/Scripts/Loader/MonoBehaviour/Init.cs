@@ -1,17 +1,40 @@
 ﻿using System;
 using CommandLine;
 using UnityEngine;
+using YooAsset;
 
 namespace ET
 {
 	public class Init: MonoBehaviour
-	{
-		private void Start()
-		{
+    {
+        public EPlayMode PlayMode;
+        private void Start()
+        {
+            Define.PlayMode = this.PlayMode;
 			this.StartAsync().Coroutine();
 		}
-		
-		private async ETTask StartAsync()
+
+        public async ETTask Restart()
+        {
+            World.Instance.Dispose();
+
+            World.Instance.AddSingleton<Logger>().Log = new UnityLogger();
+            ETTask.ExceptionHandler += Log.Error;
+
+            World.Instance.AddSingleton<TimeInfo>();
+            World.Instance.AddSingleton<FiberManager>();
+            World.Instance.AddSingleton<FixedUpdate, Action>(CustomFixedUpdate);
+
+            await World.Instance.AddSingleton<ResourcesComponent>().CreatePackageAsync("DefaultPackage", true);
+
+            CodeLoader codeLoader = World.Instance.AddSingleton<CodeLoader>();
+            await codeLoader.DownloadAsync();
+
+            codeLoader.Start();
+        }
+
+
+        private async ETTask StartAsync()
 		{
 			DontDestroyOnLoad(gameObject);
 			
@@ -47,7 +70,8 @@ namespace ET
 			TimeInfo.Instance.Update();
 			FiberManager.Instance.Update();
             FixedUpdate.Instance.Tick();
-		}
+
+        }
 
 		private void LateUpdate()
 		{

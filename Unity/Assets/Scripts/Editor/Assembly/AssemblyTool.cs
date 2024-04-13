@@ -1,4 +1,8 @@
+using HybridCLR.Editor;
+using HybridCLR.Editor.Settings;
+using System;
 using System.IO;
+using System.Reflection;
 using System.Threading;
 using UnityEditor;
 using UnityEditor.Build.Player;
@@ -71,7 +75,7 @@ namespace ET
         static void RefreshCodeMode()
         {
             CodeMode codeMode = CodeMode.ClientServer;
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig.asset");
             if (globalConfig)
                 codeMode = globalConfig.CodeMode;
 
@@ -97,7 +101,7 @@ namespace ET
         static void RefreshBuildType()
         {
             BuildType buildType = BuildType.Release;
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig.asset");
             if (globalConfig)
                 buildType = globalConfig.BuildType;
             EditorUserBuildSettings.development = buildType == BuildType.Debug;
@@ -145,12 +149,23 @@ namespace ET
         static void CopyHotUpdateDlls()
         {
             FileHelper.CleanDirectory(Define.CodeDir);
+            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig.asset");
+            ++globalConfig.CodeVersion;
+            EditorUtility.SetDirty(globalConfig);
+
+            // 修改 HybridCLR 设置里的热更程序集名
+            for (int i = 0; i < DllNames.Length; i++)
+            {
+                SettingsUtil.HybridCLRSettings.hotUpdateAssemblies[i] = $"{DllNames[i]}_{globalConfig.CodeVersion}";
+            }
+
+            AssetDatabase.SaveAssets();
             foreach (string dllName in DllNames)
             {
                 string sourceDll = $"{Define.BuildOutputDir}/{dllName}.dll";
                 string sourcePdb = $"{Define.BuildOutputDir}/{dllName}.pdb";
-                File.Copy(sourceDll, $"{Define.CodeDir}/{dllName}.dll.bytes", true);
-                File.Copy(sourcePdb, $"{Define.CodeDir}/{dllName}.pdb.bytes", true);
+                File.Copy(sourceDll, $"{Define.CodeDir}/{dllName}_{globalConfig.CodeVersion}.dll.bytes", true);
+                File.Copy(sourcePdb, $"{Define.CodeDir}/{dllName}_{globalConfig.CodeVersion}.pdb.bytes", true);
             }
 
             AssetDatabase.Refresh();

@@ -14,7 +14,8 @@ namespace ET
         /// </summary>
         public static string OnGeneratedCSProject(string path, string content)
         {
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            // GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig.asset");
             // 判空原因:初次打开工程时会加载失败, 因为此时Unity的资源数据库(AssetDatabase)还未完成初始化
             BuildType buildType = globalConfig != null ? globalConfig.BuildType : BuildType.Release;
             if (buildType == BuildType.Release)

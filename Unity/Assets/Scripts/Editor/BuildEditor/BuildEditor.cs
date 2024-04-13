@@ -60,7 +60,8 @@ namespace ET
 
         private void OnEnable()
         {
-            globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Resources/GlobalConfig.asset");
+            // globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Resources/GlobalConfig.asset");
+            globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig.asset");
 
 #if UNITY_ANDROID
             activePlatform = PlatformType.Android;
@@ -102,11 +103,11 @@ namespace ET
                     return;
                 }
 
-                if (this.globalConfig.EPlayMode == EPlayMode.EditorSimulateMode)
-                {
-                    Log.Error("build package EPlayMode must not be EPlayMode.EditorSimulateMode, please select HostPlayMode");
-                    return;
-                }
+                // if (this.globalConfig.EPlayMode == EPlayMode.EditorSimulateMode)
+                // {
+                //     Log.Error("build package EPlayMode must not be EPlayMode.EditorSimulateMode, please select HostPlayMode");
+                //     return;
+                // }
 
                 if (platformType != activePlatform)
                 {

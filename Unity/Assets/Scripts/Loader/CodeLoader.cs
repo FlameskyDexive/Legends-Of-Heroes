@@ -20,29 +20,28 @@ namespace ET
 
         public void Awake()
         {
-            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
+            GlobalConfig globalConfig = GlobalConfig.Instance;
             this.enableDll = globalConfig.EnableDll;
-            this.playMode = globalConfig.EPlayMode;
+            this.playMode = Define.PlayMode;
             this.dlls.Clear();
             this.aotDlls.Clear();
         }
 
         public async ETTask DownloadAsync()
         {
+            int codeVersion = GlobalConfig.Instance.CodeVersion;
             if (!Define.IsEditor || this.playMode != EPlayMode.EditorSimulateMode)
             {
                 Log.Info($"load hotfix dlls");
-                // this.dlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/Code/Unity.Model.dll.bytes");
-                // this.aotDlls = await ResourcesComponent.Instance.LoadAllAssetsAsync<TextAsset>($"Assets/Bundles/AotDlls/mscorlib.dll.bytes");
-                this.dlls["Unity.Model.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model.dll");
-                this.dlls["Unity.Model.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model.pdb");
-                this.dlls["Unity.ModelView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView.dll");
-                this.dlls["Unity.ModelView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView.pdb");
+                this.dlls["Unity.Model.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model_{codeVersion}.dll");
+                this.dlls["Unity.Model.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Model_{codeVersion}.pdb");
+                this.dlls["Unity.ModelView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView_{codeVersion}.dll");
+                this.dlls["Unity.ModelView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.ModelView_{codeVersion}.pdb");
                 
-                this.dlls["Unity.Hotfix.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix.dll");
-                this.dlls["Unity.Hotfix.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix.pdb");
-                this.dlls["Unity.HotfixView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.dll");
-                this.dlls["Unity.HotfixView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView.pdb");
+                this.dlls["Unity.Hotfix.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix_{codeVersion}.dll");
+                this.dlls["Unity.Hotfix.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.Hotfix_{codeVersion}.pdb");
+                this.dlls["Unity.HotfixView.dll"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView_{codeVersion}.dll");
+                this.dlls["Unity.HotfixView.pdb"] = await ResourcesComponent.Instance.LoadAssetAsync<TextAsset>($"Unity.HotfixView_{codeVersion}.pdb");
                 
                 if (!Define.EnableIL2CPP)
                     return;
@@ -63,6 +62,7 @@ namespace ET
 
         public void Start()
         {
+            int codeVersion = GlobalConfig.Instance.CodeVersion;
             if (!Define.IsEditor || this.playMode != EPlayMode.EditorSimulateMode)
             {
                 byte[] modelAssBytes = this.dlls["Unity.Model.dll"].bytes;
@@ -90,10 +90,10 @@ namespace ET
             {
                 if (this.enableDll)
                 {
-                    byte[] modelAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.dll.bytes"));
-                    byte[] modelPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Model.pdb.bytes"));
-                    byte[] modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.dll.bytes"));
-                    byte[] modelViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.ModelView.pdb.bytes"));
+                    byte[] modelAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, $"Unity.Model_{codeVersion}.dll.bytes"));
+                    byte[] modelPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, $"Unity.Model_{codeVersion}.pdb.bytes"));
+                    byte[] modelViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, $"Unity.ModelView_{codeVersion}.dll.bytes"));
+                    byte[] modelViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, $"Unity.ModelView_{codeVersion}.pdb.bytes"));
                     this.modelAssembly = Assembly.Load(modelAssBytes, modelPdbBytes);
                     this.modelViewAssembly = Assembly.Load(modelViewAssBytes, modelViewPdbBytes);
                 }
@@ -134,6 +134,7 @@ namespace ET
 
         private (Assembly, Assembly) LoadHotfix()
         {
+            int codeVersion = GlobalConfig.Instance.CodeVersion;
             byte[] hotfixAssBytes;
             byte[] hotfixPdbBytes;
             byte[] hotfixViewAssBytes;
@@ -158,10 +159,10 @@ namespace ET
             {
                 if (this.enableDll)
                 {
-                    hotfixAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Hotfix.dll.bytes"));
-                    hotfixPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.Hotfix.pdb.bytes"));
-                    hotfixViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.HotfixView.dll.bytes"));
-                    hotfixViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, "Unity.HotfixView.pdb.bytes"));
+                    hotfixAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, $"Unity.Hotfix_{codeVersion}.dll.bytes"));
+                    hotfixPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, $"Unity.Hotfix_{codeVersion}.pdb.bytes"));
+                    hotfixViewAssBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, $"Unity.HotfixView_{codeVersion}.dll.bytes"));
+                    hotfixViewPdbBytes = File.ReadAllBytes(Path.Combine(Define.CodeDir, $"Unity.HotfixView_{codeVersion}.pdb.bytes"));
                     hotfixAssembly = Assembly.Load(hotfixAssBytes, hotfixPdbBytes);
                     hotfixViewAssembly = Assembly.Load(hotfixViewAssBytes, hotfixViewPdbBytes);
                 }
