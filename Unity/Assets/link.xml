@@ -15,4 +15,5 @@
     <assembly fullname="NLog" preserve="all" />
     <assembly fullname="UnityEngine.CoreModule" preserve="all" />
     <assembly fullname="UnityEngine.InputLegacyModule" preserve="all" />
+    <assembly fullname="YooAsset" preserve="all" />
 </linker>

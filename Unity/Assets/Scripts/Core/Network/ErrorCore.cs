@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    [UniqueId(100000, 500000)]
+    [UniqueId(0, 500000)]
     public static class ErrorCore
     {
         public const int ERR_MyErrorCode = 110000;

@@ -24,8 +24,8 @@ Unity/ProjectSettings/RiderScriptEditorPersistedState.asset
 Unity/HybridCLRData
 
 #Unity/Assets
-Unity/Assets/Bundles/Code/*
-Unity/Assets/Bundles/AotDlls/*
+#Unity/Assets/Bundles/Code/*
+#Unity/Assets/Bundles/AotDlls/*
 Unity/Assets/StreamingAssets/
 Unity/Assets/StreamingAssets.meta
 

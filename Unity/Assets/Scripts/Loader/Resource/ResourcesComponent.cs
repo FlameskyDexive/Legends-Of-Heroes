@@ -109,7 +109,7 @@ namespace ET
                 case EPlayMode.OfflinePlayMode:
                     {
                         OfflinePlayModeParameters createParameters = new();
-                        createParameters.DecryptionServices = new FileStreamDecryption();
+                        createParameters.DecryptionServices = new FileOffsetDecryption();
                         await defaultPackage.InitializeAsync(createParameters).Task;
                         break;
                     }
@@ -120,7 +120,7 @@ namespace ET
                         HostPlayModeParameters createParameters = new();
                         createParameters.BuildinQueryServices = new GameQueryServices();
                         createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
-                        createParameters.DecryptionServices = new FileStreamDecryption();
+                        createParameters.DecryptionServices = new FileOffsetDecryption();
                         await defaultPackage.InitializeAsync(createParameters).Task;
                         break;
                     }

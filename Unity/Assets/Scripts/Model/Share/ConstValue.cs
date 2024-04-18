@@ -9,7 +9,7 @@ namespace ET
         /// <summary>
         /// 不同玩法匹配人数配表即可
         /// </summary>
-        public const int StateSyncMatchCount = 1;
+        public const int StateSyncMatchCount = 2;
 
     }
 }
