@@ -66,27 +66,21 @@ namespace ET
     /// 刷新匹配信息
     /// </summary>
     [MemoryPackable]
-    [Message(StateSyncOuter.Match2G_StateSyncRefreshMatch)]
-    public partial class Match2G_StateSyncRefreshMatch : MessageObject, IMessage
+    [Message(StateSyncOuter.G2C_StateSyncRefreshMatch)]
+    public partial class G2C_StateSyncRefreshMatch : MessageObject, IMessage
     {
-        public static Match2G_StateSyncRefreshMatch Create(bool isFromPool = false)
+        public static G2C_StateSyncRefreshMatch Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(Match2G_StateSyncRefreshMatch), isFromPool) as Match2G_StateSyncRefreshMatch;
+            return ObjectPool.Instance.Fetch(typeof(G2C_StateSyncRefreshMatch), isFromPool) as G2C_StateSyncRefreshMatch;
         }
 
         [MemoryPackOrder(0)]
         public int RpcId { get; set; }
 
         /// <summary>
-        /// 房间的ActorId
+        /// 房间信息
         /// </summary>
         [MemoryPackOrder(1)]
-        public ActorId ActorId { get; set; }
-
-        /// <summary>
-        /// 房间内玩家信息
-        /// </summary>
-        [MemoryPackOrder(2)]
         public RoomInfo RoomInfo { get; set; }
 
         public override void Dispose()
@@ -97,7 +91,6 @@ namespace ET
             }
 
             this.RpcId = default;
-            this.ActorId = default;
             this.RoomInfo = default;
 
             ObjectPool.Instance.Recycle(this);
@@ -261,7 +254,7 @@ namespace ET
     {
         public const ushort C2G_StateSyncMatch = 12002;
         public const ushort G2C_StateSyncMatch = 12003;
-        public const ushort Match2G_StateSyncRefreshMatch = 12004;
+        public const ushort G2C_StateSyncRefreshMatch = 12004;
         public const ushort Match2G_StateSyncNotifyMatchSuccess = 12005;
         public const ushort C2Room_StateSyncChangeSceneFinish = 12006;
         public const ushort Room2C_StateSyncStart = 12007;

@@ -277,6 +277,78 @@ namespace ET
         }
     }
 
+    /// <summary>
+    /// 刷新匹配信息
+    /// </summary>
+    [MemoryPackable]
+    [Message(StateSyncInner.Match2G_StateSyncRefreshMatch)]
+    [ResponseType(nameof(G2Match_StateSyncRefreshMatch))]
+    public partial class Match2G_StateSyncRefreshMatch : MessageObject, IMessage
+    {
+        public static Match2G_StateSyncRefreshMatch Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(Match2G_StateSyncRefreshMatch), isFromPool) as Match2G_StateSyncRefreshMatch;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        /// <summary>
+        /// 房间的ActorId
+        /// </summary>
+        [MemoryPackOrder(1)]
+        public ActorId ActorId { get; set; }
+
+        /// <summary>
+        /// 房间内玩家信息
+        /// </summary>
+        [MemoryPackOrder(2)]
+        public List<long> PlayerIds { get; set; } = new();
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.ActorId = default;
+            this.PlayerIds.Clear();
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(StateSyncInner.G2Match_StateSyncRefreshMatch)]
+    public partial class G2Match_StateSyncRefreshMatch : MessageObject, IResponse
+    {
+        public static G2Match_StateSyncRefreshMatch Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2Match_StateSyncRefreshMatch), isFromPool) as G2Match_StateSyncRefreshMatch;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        [MemoryPackOrder(1)]
+        public string Message { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.Message = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
     public static class StateSyncInner
     {
         public const ushort G2Match_StateSyncMatch = 22002;
@@ -287,5 +359,7 @@ namespace ET
         public const ushort Room2G_StateSyncReconnect = 22007;
         public const ushort RoomManager2Room_StateSyncInit = 22008;
         public const ushort Room2RoomManager_StateSyncInit = 22009;
+        public const ushort Match2G_StateSyncRefreshMatch = 22010;
+        public const ushort G2Match_StateSyncRefreshMatch = 22011;
     }
 }

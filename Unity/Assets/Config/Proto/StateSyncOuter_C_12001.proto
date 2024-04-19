@@ -15,14 +15,13 @@ message G2C_StateSyncMatch // ISessionResponse
 }
 
 /// 刷新匹配信息
-message Match2G_StateSyncRefreshMatch // IMessage
+message G2C_StateSyncRefreshMatch // IMessage
 {
 	int32 RpcId = 1;
-	/// 房间的ActorId
-	ActorId ActorId = 2;
-	/// 房间内玩家信息
-	RoomInfo RoomInfo = 3;
+	/// 房间信息
+	RoomInfo RoomInfo = 2;
 }
+
 
 /// 匹配成功，通知客户端切换场景
 message Match2G_StateSyncNotifyMatchSuccess // IMessage

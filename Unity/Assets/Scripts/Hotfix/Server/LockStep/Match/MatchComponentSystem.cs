@@ -51,11 +51,15 @@ namespace ET.Server
             {
                 return;
             }
+            Scene root = self.Root();
 
             self.waitMatchStateSyncPlayers.Add(playerId);
             //广播消息给每个玩家，当前匹配到的信息。
-            // Match2G_StateSyncRefreshMatch re
-
+            Match2G_StateSyncRefreshMatch refreshMatch = Match2G_StateSyncRefreshMatch.Create();
+            //内网通信传playerids给Gate，Gate获取到PlayerId对应的Player信息再广播到客户端
+            refreshMatch.PlayerIds.AddRange(self.waitMatchStateSyncPlayers);
+            
+            
             if (self.waitMatchStateSyncPlayers.Count < ConstValue.StateSyncMatchCount)
             {
                 return;
@@ -71,7 +75,6 @@ namespace ET.Server
 
             self.waitMatchStateSyncPlayers.Clear();
 
-            Scene root = self.Root();
             Map2Match_StateSyncGetRoom map2MatchGetRoom = await root.GetComponent<MessageSender>().Call(
                 startSceneConfig.ActorId, match2MapGetRoom) as Map2Match_StateSyncGetRoom;
 

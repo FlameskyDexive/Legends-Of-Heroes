@@ -65,3 +65,20 @@ message Room2RoomManager_StateSyncInit // IResponse
 	int32 Error = 2;
 	string Message = 3;
 }
+
+/// 刷新匹配信息
+// ResponseType G2Match_StateSyncRefreshMatch
+message Match2G_StateSyncRefreshMatch // IMessage
+{
+	int32 RpcId = 1;
+	/// 房间的ActorId
+	ActorId ActorId = 2;
+	/// 房间内玩家信息
+	repeated int64 PlayerIds = 3;
+}
+
+message G2Match_StateSyncRefreshMatch // IResponse
+{
+	int32 RpcId = 1;
+	string Message = 2;
+}
