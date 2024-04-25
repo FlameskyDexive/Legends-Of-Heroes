@@ -1,4 +1,4 @@
-
+using System;
 
 namespace ET
 {
@@ -23,7 +23,8 @@ namespace ET
         {
             get
             {
-                if (LogicFrame == 20)
+                //如果想省一个除法计算，直接用预算值也可以
+                /*if (LogicFrame == 20)
                 {
                     return 500000;
                 }
@@ -42,9 +43,10 @@ namespace ET
                 else if (LogicFrame == 60)
                 {
                     return 166666;
-                }
+                }*/
 
-                return 500000;
+                return (int)(TimeSpan.TicksPerSecond / LogicFrame);
+                // return 500000;
             }
         }
         
