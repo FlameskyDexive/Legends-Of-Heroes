@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ET.Client
@@ -10,5 +10,8 @@ namespace ET.Client
         public Vector3 ClickPoint;
 
 	    public int mapMask;
+
+        public List<OperateInfo> OperateInfos = new List<OperateInfo>();
+        public List<OperateInfo> OperateInfosTemp = new List<OperateInfo>();
     }
 }

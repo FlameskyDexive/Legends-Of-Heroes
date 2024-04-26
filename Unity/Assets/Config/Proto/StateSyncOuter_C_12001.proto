@@ -58,3 +58,59 @@ message G2C_StateSyncReconnect // IMessage
 	int32 Frame = 3;
 }
 
+
+///////////////////////////////// Map Start ///////////////////////////////////
+
+//ResponseType M2C_JoystickMove
+message C2M_JoystickMove // ILocationRequest
+{
+	int32 RpcId = 1;
+	Unity.Mathematics.float3 MoveForward = 2;
+}
+
+message M2C_JoystickMove // IMessage
+{
+	int64 Id = 1;
+	Unity.Mathematics.float3 Position = 2;
+	Unity.Mathematics.float3 MoveForward = 3;
+}
+
+
+//ResponseType M2C_Operation
+message C2M_Operation // ILocationRequest
+{
+	int32 RpcId = 1;
+	int64 Id = 2;
+	repeated OperateInfo OperateInfos = 3;
+	
+}
+
+message M2C_Operation // IMessage
+{
+	int64 Id = 1;
+	repeated OperateReplyInfo OperateInfos = 2;
+}
+
+message OperateInfo
+{
+    int32 OperateType = 1; //操作类型
+    int32 InputType = 2; //输入类型，按下/抬起
+	Unity.Mathematics.float3 Vec3 = 3; //v3参数
+	int64 Value1 = 4;
+	int64 Value2 = 5;
+}
+message OperateReplyInfo
+{
+    int32 OperateType = 1; //操作类型
+	int32 Status = 2;
+}
+
+message M2C_SyncUnits // IMessage
+{
+	repeated UnitInfo Units = 1;
+}
+
+
+///////////////////////////////// Map End ///////////////////////////////////
+
+

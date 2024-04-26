@@ -618,7 +618,8 @@ public partial class UICodeSpawner
 
     static UICodeSpawner()
     {
-        WidgetInterfaceList = new List<string>();        
+        WidgetInterfaceList = new List<string>();
+        WidgetInterfaceList.Add("Joystick");
         WidgetInterfaceList.Add("Button");
         WidgetInterfaceList.Add( "Text");
         WidgetInterfaceList.Add("TMPro.TextMeshProUGUI");
