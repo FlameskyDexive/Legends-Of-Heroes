@@ -40,7 +40,7 @@ namespace ET.Server
             // 1711609212017
             // 1711609212067
             // 1711609212117
-            Log.Console($"{TimeInfo.Instance.ClientNow()}");
+            // Log.Console($"{TimeInfo.Instance.ClientNow()}");
         }
         [EntitySystem]
         public static void Destroy(this RobotCaseComponent self)

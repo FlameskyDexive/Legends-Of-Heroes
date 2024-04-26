@@ -24,6 +24,23 @@ namespace ET.Client
      		}
      	}
 
+		public UnityEngine.UI.Joystick E_JoystickJoystick
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_E_JoystickJoystick == null )
+     			{
+		    		this.m_E_JoystickJoystick = UIFindHelper.FindDeepChild<UnityEngine.UI.Joystick>(this.uiTransform.gameObject,"Bottom/Joy/E_Joystick");
+     			}
+     			return this.m_E_JoystickJoystick;
+     		}
+     	}
+
 		public UnityEngine.UI.Image E_JoystickImage
      	{
      		get
@@ -214,6 +231,7 @@ namespace ET.Client
 		public void DestroyWidget()
 		{
 			this.m_E_PlayerNameText = null;
+			this.m_E_JoystickJoystick = null;
 			this.m_E_JoystickImage = null;
 			this.m_EBtnSkill1Button = null;
 			this.m_EIconSkill1Image = null;
@@ -229,6 +247,7 @@ namespace ET.Client
 		}
 
 		private UnityEngine.UI.Text m_E_PlayerNameText = null;
+		private UnityEngine.UI.Joystick m_E_JoystickJoystick = null;
 		private UnityEngine.UI.Image m_E_JoystickImage = null;
 		private UnityEngine.UI.Button m_EBtnSkill1Button = null;
 		private UnityEngine.UI.Image m_EIconSkill1Image = null;

@@ -80,5 +80,6 @@ message Match2G_StateSyncRefreshMatch // IMessage
 message G2Match_StateSyncRefreshMatch // IResponse
 {
 	int32 RpcId = 1;
-	string Message = 2;
+	int32 Error = 2;
+	string Message = 3;
 }

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 namespace ET.Client
 {
 	[FriendOf(typeof(DlgBattle))]
+	[FriendOf(typeof(SkillComponent))]
 	public static  class DlgBattleSystem
 	{
 
@@ -32,15 +33,15 @@ namespace ET.Client
         public static void RefreshSkillView(this DlgBattle self)
         {
             //刷新技能显示
-            self.MyUnit = UnitHelper.GetMyUnitFromCurrentScene(self.Scene());
+            Unit unit = UnitHelper.GetMyUnitFromCurrentScene(self.Scene());
             Skill skill1 = null;
-            if (self.MyUnit.GetComponent<BattleUnitComponent>().TryGetSkill(ESkillAbstractType.ActiveSkill, 0, out skill1))
+            if (unit.GetComponent<SkillComponent>().TryGetSkill(ESkillAbstractType.ActiveSkill, 0, out skill1))
             {
                 self.Skill1 = skill1;
                 self.InitSkill(self.Skill1, self.View.EIconSkill1Image);
             }
             Skill skill2 = null;
-            if (self.MyUnit.GetComponent<BattleUnitComponent>().TryGetSkill(ESkillAbstractType.ActiveSkill, 1, out skill2))
+            if (unit.GetComponent<SkillComponent>().TryGetSkill(ESkillAbstractType.ActiveSkill, 1, out skill2))
             {
                 self.Skill2 = skill2;
                 self.InitSkill(self.Skill2, self.View.EIconSkill2Image);
@@ -77,14 +78,16 @@ namespace ET.Client
         public static void OnClickSkill1(this DlgBattle self)
         {
             Log.Info($"click skil1, {self.Skill1 == null}");
-            if (self.Skill1 == null || self.Skill1.IsInCd())
+            Skill skill = self.Skill1;
+            if (skill == null || skill.IsInCd())
                 return;
             self.Scene().GetComponent<OperaComponent>()?.OnClickSkill1();
         }
         public static void OnClickSkill2(this DlgBattle self)
         {
             Log.Info($"click skil2, {self.Skill2 == null}");
-            if (self.Skill2 == null || self.Skill2.IsInCd())
+            Skill skill = self.Skill2;
+            if (skill == null || skill.IsInCd())
                 return;
             self.Scene().GetComponent<OperaComponent>()?.OnClickSkill2();
         }
