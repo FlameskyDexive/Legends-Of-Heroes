@@ -1,4 +1,17 @@
-# Legends-Of-Heroes
+<div align="center">
+  <h2 href="https://github.com/FlameskyDexive/Legends-Of-Heroes">
+    <!-- <img src="./SamplePictures/CrazyCarIcon.png"  width="80px" height="80px"> -->
+  </h2>
+  <h2 align="center">
+    Legends-Of-Heroes
+  </h2>  
+    <img src="https://img.shields.io/github/stars/FlameskyDexive/Legends-Of-Heroes?style=plastic" alt="">
+    <img src="https://img.shields.io/github/forks/FlameskyDexive/Legends-Of-Heroes?color=09F709&label=forks&style=plastic" alt="">
+    <img src="https://img.shields.io/github/license/FlameskyDexive/Legends-Of-Heroes?color=22DDB8&label=license&style=plastic" alt="">
+    <img src="https://img.shields.io/github/commit-activity/m/FlameskyDexive/Legends-Of-Heroes?color=AA8855&label=commit-activity&style=plasticc"alt="">
+    <img src="https://img.shields.io/github/last-commit/FlameskyDexive/Legends-Of-Heroes?color=%231AE66B&label=last-commit&style=plastic" alt="">
+</div>
+
 English: please use your browser to translate to english
 
 一个LOL风格的球球大作战游戏，基于ET，使用状态同步
@@ -15,7 +28,7 @@ English: please use your browser to translate to english
 - 1. 安装Unity2022.3.15f1，安装VS2022/Rider2023，安装[.Net8 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0).
 - 
 ## 运行步骤：
-- 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,找到GlobalConfig, 勾选EnableDll，按F6编译客户端代码
+- 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,找到GlobalConfig, 勾选EnableDll，按F6编译客户端代码，Init场景找到Global上的Init脚本选择YooAsset运行模式为EditorSimulate
 - 2. 打开ET.sln，编译整个项目，运行DotNet.App.(服务器、客户端拆分模式才需要单独运行，默认是Client-Server模式)
 - 3. Unity运行游戏即可看到登录页面,输入账号密码登录即可
 
@@ -51,3 +64,6 @@ English: please use your browser to translate to english
 ### [XAsset](https://github.com/xasset/xasset) 一个很高效易用强大的资源管理系统（打包/加载/热更）
 ### [ETPro](https://github.com/526077247/ETPro) ET加强版，基于ET6.0，自带技能系统、UI框架、镜像版无缝大世界。
 
+## Star History
+
+![Star History Chart](https://api.star-history.com/svg?repos=FlameskyDexive/Legends-Of-Heroes)

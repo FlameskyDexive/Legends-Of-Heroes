@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
+	[EntitySystemOf(typeof(DlgBattle))]
 	[FriendOf(typeof(DlgBattle))]
 	[FriendOf(typeof(SkillComponent))]
-	public static  class DlgBattleSystem
+	public static partial class DlgBattleSystem
 	{
 
 		public static void RegisterUIEvent(this DlgBattle self)
@@ -92,6 +93,13 @@ namespace ET.Client
             self.Scene().GetComponent<OperaComponent>()?.OnClickSkill2();
         }
 
+        [EntitySystem]
+        public static void Awake(this DlgBattle self)
+        {
+            
+        }
+        
+        [EntitySystem]
         public static void Update(this DlgBattle self)
         {
             if (self.Skill1 != null)

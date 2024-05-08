@@ -1,7 +1,7 @@
 ﻿namespace ET.Client
 {
 	 [ComponentOf(typeof(UIBaseWindow))]
-	public  class DlgBattle :Entity,IAwake,IUILogic
+	public  class DlgBattle :Entity,IAwake,IUILogic,IUpdate
 	{
 
 		public DlgBattleViewComponent View { get => this.GetComponent<DlgBattleViewComponent>();}
