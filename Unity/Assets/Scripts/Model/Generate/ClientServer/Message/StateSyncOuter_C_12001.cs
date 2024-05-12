@@ -256,7 +256,7 @@ namespace ET
     [MemoryPackable]
     [Message(StateSyncOuter.C2M_JoystickMove)]
     [ResponseType(nameof(M2C_JoystickMove))]
-    public partial class C2M_JoystickMove : MessageObject, ILocationRequest
+    public partial class C2M_JoystickMove : MessageObject, ILocationMessage
     {
         public static C2M_JoystickMove Create(bool isFromPool = false)
         {
@@ -319,7 +319,7 @@ namespace ET
     [MemoryPackable]
     [Message(StateSyncOuter.C2M_Operation)]
     [ResponseType(nameof(M2C_Operation))]
-    public partial class C2M_Operation : MessageObject, ILocationRequest
+    public partial class C2M_Operation : MessageObject, ILocationMessage
     {
         public static C2M_Operation Create(bool isFromPool = false)
         {

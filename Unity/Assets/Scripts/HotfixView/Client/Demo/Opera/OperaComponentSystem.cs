@@ -80,7 +80,8 @@ namespace ET.Client
             }
             Log.Debug($"Croutine 2 end2");
         }
-        
+
+        [EntitySystem]
         private static void LateUpdate(this OperaComponent self)
         {
             //每帧把当前帧收集的操作发送给服务端，随后清除
