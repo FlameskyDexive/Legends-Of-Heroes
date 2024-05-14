@@ -61,7 +61,6 @@ message G2C_StateSyncReconnect // IMessage
 
 ///////////////////////////////// Map Start ///////////////////////////////////
 
-//ResponseType M2C_JoystickMove
 message C2M_JoystickMove // ILocationMessage
 {
 	int32 RpcId = 1;
@@ -76,7 +75,6 @@ message M2C_JoystickMove // IMessage
 }
 
 
-//ResponseType M2C_Operation
 message C2M_Operation // ILocationMessage
 {
 	int32 RpcId = 1;
