@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace ET.Client
 {
@@ -6,22 +7,20 @@ namespace ET.Client
     {
         
     }
-
-    public interface IUIScrollItem
-    {
-        
-    }
     
+    public interface IUIScrollItem<T> where T : Entity, IAwake
+    {
+        public T BindTrans(Transform trans);
+    }
 
     [ComponentOf()]
-    [ChildOf(typeof(UIBaseWindow))]
     public class UIComponent : Entity,IAwake,IDestroy
     {
-        public Dictionary<int, UIBaseWindow> AllWindowsDic     = new Dictionary<int, UIBaseWindow>();
-        public List<WindowID> UIBaseWindowlistCached           = new List<WindowID>();
-        public Dictionary<int, UIBaseWindow> VisibleWindowsDic = new Dictionary<int, UIBaseWindow>();
-        public Queue<WindowID> StackWindowsQueue               = new Queue<WindowID>();
-        public bool IsPopStackWndStatus                        = false;
+        public Dictionary<int, EntityRef<UIBaseWindow>> AllWindowsDic = new Dictionary<int, EntityRef<UIBaseWindow>>();
+        public List<WindowID> UIBaseWindowlistCached = new List<WindowID>();
+        public Dictionary<int, EntityRef<UIBaseWindow>> VisibleWindowsDic = new Dictionary<int, EntityRef<UIBaseWindow>>();
+        public Queue<WindowID> StackWindowsQueue = new Queue<WindowID>();
+        public bool IsPopStackWndStatus = false;
 
     }
 }

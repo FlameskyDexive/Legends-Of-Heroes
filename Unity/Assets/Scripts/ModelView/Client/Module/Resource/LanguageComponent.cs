@@ -12,7 +12,7 @@ namespace ET
        
         public ELanguageType curLangType;
         public Dictionary<string, string> langTextKeyDic;
-        public Dictionary<long, Entity> I18NEntity;
+        // public Dictionary<long, Entity> I18NEntity;
     }
 
 }

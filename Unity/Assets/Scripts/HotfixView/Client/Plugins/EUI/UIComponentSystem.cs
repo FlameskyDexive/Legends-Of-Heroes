@@ -398,7 +398,7 @@ namespace ET.Client
             WindowID hideWindowId = self.GetWindowIdByGeneric<T>();
             self.CloseWindow(hideWindowId);
         }
-        
+
         /// <summary>
         /// 关闭并卸载所有的窗口实例
         /// </summary>
@@ -410,15 +410,15 @@ namespace ET.Client
             {
                 return;
             }
-            foreach (KeyValuePair<int, UIBaseWindow> window in self.AllWindowsDic)
+            foreach (KeyValuePair<int, EntityRef<UIBaseWindow>> window in self.AllWindowsDic)
             {
                 UIBaseWindow baseWindow = window.Value;
-                if (baseWindow == null|| baseWindow.IsDisposed)
+                if (baseWindow == null || baseWindow.IsDisposed)
                 {
                     continue;
                 }
                 self.HideWindow(baseWindow.WindowID);
-                self.UnLoadWindow(baseWindow.WindowID,false);
+                self.UnLoadWindow(baseWindow.WindowID, false);
                 baseWindow?.Dispose();
             }
             self.AllWindowsDic.Clear();
@@ -426,28 +426,29 @@ namespace ET.Client
             self.StackWindowsQueue.Clear();
             self.UIBaseWindowlistCached.Clear();
         }
-        
+
         /// <summary>
         /// 隐藏所有已显示的窗口
         /// </summary>
         /// <param name="self"></param>
         /// <param name="includeFixed"></param>
-        public static void HideAllShownWindow(this UIComponent self,bool includeFixed = false)
+        public static void HideAllShownWindow(this UIComponent self, bool includeFixed = false)
         {
             self.IsPopStackWndStatus = false;
             self.UIBaseWindowlistCached.Clear();
-            foreach (KeyValuePair<int, UIBaseWindow> window in self.VisibleWindowsDic)
+            foreach (KeyValuePair<int, EntityRef<UIBaseWindow>> windowBase in self.VisibleWindowsDic)
             {
-                if (window.Value.windowType == UIWindowType.Fixed && !includeFixed)
+                UIBaseWindow window = windowBase.Value;
+                if (window.windowType == UIWindowType.Fixed && !includeFixed)
                     continue;
-                if (window.Value.IsDisposed)
+                if (window.IsDisposed)
                 {
                     continue;
                 }
-                
-                self.UIBaseWindowlistCached.Add((WindowID)window.Key);
-                window.Value.UIPrefabGameObject?.SetActive(false);
-                UIEventComponent.Instance.GetUIEventHandler(window.Value.WindowID).OnHideWindow(window.Value);
+
+                self.UIBaseWindowlistCached.Add((WindowID)windowBase.Key);
+                window.UIPrefabGameObject?.SetActive(false);
+                UIEventComponent.Instance.GetUIEventHandler(window.WindowID).OnHideWindow(window);
             }
             if (self.UIBaseWindowlistCached.Count > 0)
             {
@@ -458,8 +459,8 @@ namespace ET.Client
             }
             self.StackWindowsQueue.Clear();
         }
-        
-        
+
+
         /// <summary>
         /// 同步加载UI窗口实例
         /// </summary>

@@ -8,7 +8,7 @@ namespace ET.Client
 
 		public DlgRoomViewComponent View { get => this.GetComponent<DlgRoomViewComponent>();}
         
-        public Dictionary<int, Scroll_Item_role> ScrollItemRoles;
+        public Dictionary<int, EntityRef<Scroll_Item_role>> ScrollItemRoles;
 
         public RoomInfo RoomInfo;
 

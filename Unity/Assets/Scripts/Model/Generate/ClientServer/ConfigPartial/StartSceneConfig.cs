@@ -4,6 +4,7 @@ using System.Net;
 
 namespace ET
 {
+    [EnableClass]
     public partial class StartSceneConfigCategory
     {
         public MultiMap<int, StartSceneConfig> Gates = new();
@@ -73,7 +74,8 @@ namespace ET
             }
         }
     }
-    
+
+    [EnableClass]
     public partial class StartSceneConfig
     {
         public ActorId ActorId;

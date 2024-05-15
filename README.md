@@ -14,7 +14,7 @@
 
 English: please use your browser to translate to english
 
-一个LOL风格的球球大作战游戏，基于ET，使用状态同步
+一个LOL风格的[球球大作战游戏](https://github.com/FlameskyDexive/Legends-Of-Heroes)，基于ET，使用状态同步
 ![loh22023532242551](https://user-images.githubusercontent.com/8274346/235951176-f96efa8f-d3e5-4089-a1c9-56643859b487.gif)
 
 ## Main
@@ -28,7 +28,7 @@ English: please use your browser to translate to english
 - 1. 安装Unity2022.3.15f1，安装VS2022/Rider2023，安装[.Net8 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0).
 - 
 ## 运行步骤：
-- 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,找到GlobalConfig, 勾选EnableDll，按F6编译客户端代码，Init场景找到Global上的Init脚本选择YooAsset运行模式为EditorSimulate
+- 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,找到GlobalConfig, 勾选EnableDll，按F6编译客户端代码（请不要用IDE编译dll，当前仅支持Unity编译递增dll），Init场景找到Global上的Init脚本选择YooAsset运行模式为EditorSimulate
 - 2. 打开ET.sln，编译整个项目，运行DotNet.App.(服务器、客户端拆分模式才需要单独运行，默认是Client-Server模式)
 - 3. Unity运行游戏即可看到登录页面,输入账号密码登录即可
 
