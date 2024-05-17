@@ -38,7 +38,7 @@ namespace ET
             {
                 if (GameQueryServices.CompareFileCRC)
                 {
-                    string crc32 = YooAsset.Editor.EditorTools.GetFileCRC32(filePath);
+                    string crc32 = HashUtility.FileCRC32(filePath);
                     return crc32 == fileCRC;
                 }
 
@@ -158,7 +158,7 @@ namespace ET
                     continue;
                 }
 
-                BuildinFileManifest.Element element = new() { PackageName = fileInfo.Directory.Name, FileCRC32 = YooAsset.Editor.EditorTools.GetFileCRC32(fileInfo.FullName), FileName = fileInfo.Name };
+                BuildinFileManifest.Element element = new() { PackageName = fileInfo.Directory.Name, FileCRC32 = HashUtility.FileCRC32(fileInfo.FullName), FileName = fileInfo.Name };
                 manifest.BuildinFiles.Add(element);
             }
 
