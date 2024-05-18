@@ -717,7 +717,7 @@ public partial class UICodeSpawner
 	    strBuilder.AppendFormat("     			if( this.m_{0} == null )\n" , widget.ToLower());
 	    strBuilder.AppendLine("     			{");
 	    strBuilder.AppendFormat("		    	   Transform subTrans = UIFindHelper.FindDeepChild<Transform>(this.uiTransform.gameObject,\"{0}\");\r\n",  strPath);
-	    strBuilder.AppendFormat("		    	   this.m_{0} = this.AddChild<{1},Transform>(subTrans);\r\n", widget.ToLower(),subUIClassType);
+	    strBuilder.AppendFormat("		    	   this.m_{0} = this.AddChild<{1},Transform>(subTrans,true);\r\n", widget.ToLower(),subUIClassType);
 	    strBuilder.AppendLine("     			}");
 	    strBuilder.AppendFormat("     			return this.m_{0};\n" , widget.ToLower());
 	    strBuilder.AppendLine("     		}");

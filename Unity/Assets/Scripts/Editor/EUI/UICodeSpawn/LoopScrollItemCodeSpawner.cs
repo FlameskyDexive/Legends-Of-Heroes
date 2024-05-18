@@ -119,6 +119,7 @@ public partial class UICodeSpawner
         strBuilder.AppendFormat("\t\tpublic Scroll_{0} BindTrans(Transform trans)\r\n",strDlgName);
         strBuilder.AppendLine("\t\t{");
         strBuilder.AppendLine("\t\t\tthis.uiTransform = trans;");
+        CreateESUIReleaseCode(ref strBuilder, gameObject.transform);
         strBuilder.AppendLine("\t\t\treturn this;");
         strBuilder.AppendLine("\t\t}\n");
         
@@ -135,5 +136,29 @@ public partial class UICodeSpawner
         sw.Flush();
         sw.Close();
     }
+    
+    public static void CreateESUIReleaseCode(ref StringBuilder strBuilder, Transform transRoot)
+    {
+        foreach (KeyValuePair<string, List<Component>> pair in Path2WidgetCachedDict)
+        {
+	        foreach (var info in pair.Value)
+	        {
+		        Component widget = info;
+				if (pair.Key.StartsWith(CommonUIPrefix))
+				{
+					var subUIClassPrefab = PrefabUtility.GetCorrespondingObjectFromOriginalSource(widget);
+					if (subUIClassPrefab==null)
+					{
+						Debug.LogError($"公共UI找不到所属的Prefab! {pair.Key}");
+						continue;
+					}
+                    strBuilder.AppendFormat("\t\t\tthis.{0}?.Dispose();\r\n",pair.Key );
+				}
+	        }
+        }
+    }
+    
+    
+
 
 }

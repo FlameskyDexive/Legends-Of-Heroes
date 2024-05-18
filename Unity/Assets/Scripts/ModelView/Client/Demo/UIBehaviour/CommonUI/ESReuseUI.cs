@@ -47,7 +47,8 @@ namespace ET.Client
 			this.m_ELabel_testText = null;
 			this.uiTransform = null;
 		}
-
+		
+		
 		private UnityEngine.UI.Image m_EImage_testImage = null;
 		private UnityEngine.UI.Text m_ELabel_testText = null;
 		public Transform uiTransform = null;
