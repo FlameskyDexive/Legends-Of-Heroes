@@ -73,8 +73,13 @@ namespace ET
                 SynchronizationContext.SetSynchronizationContext(fiber.ThreadSynchronizationContext);
                 fiber.Update();
                 fiber.LateUpdate();
-                long timeNow = (DateTime.UtcNow.Ticks - this.dt1970.Ticks);
-                this.totalTicksSinceStart += (timeNow - this.lastTimeTicks);
+                long timeNow = DateTime.UtcNow.Ticks - this.dt1970.Ticks;
+                long deltaTime = timeNow - this.lastTimeTicks;
+                if (this.lastTimeTicks == this.dt1970.Ticks)
+                {
+                    deltaTime = 0;
+                }
+                this.totalTicksSinceStart += deltaTime;
                 this.lastTimeTicks = timeNow;
                 while (this.totalTicksSinceStart >= DefineCore.FixedDeltaTicks)
                 {
