@@ -12,7 +12,7 @@ namespace ET.Client
 
 		public static void RegisterUIEvent(this DlgLogin self)
 		{
-			self.View.ELoginButton.AddListener(self.OnLogin);
+			self.View.ELoginButton.AddListener(self.Root(), self.OnLogin);
 			// self.View.ELoopTestLoopHorizontalScrollRect.AddItemRefreshListener(self.OnLoop);
 		}
 

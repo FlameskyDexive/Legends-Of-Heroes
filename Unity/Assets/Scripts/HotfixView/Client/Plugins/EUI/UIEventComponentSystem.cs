@@ -9,7 +9,6 @@ namespace ET.Client
         [EntitySystem]
         private static void Awake(this UIEventComponent self)
         {
-            UIEventComponent.Instance = self;
             self.UIEventHandlers.Clear();
 
             var AUIEventAttributeSets =  CodeTypes.Instance.GetTypes(typeof (AUIEventAttribute));
@@ -25,7 +24,6 @@ namespace ET.Client
         {
             self.UIEventHandlers.Clear();
             self.IsClicked = false;
-            UIEventComponent.Instance = null;
         }
         
         public static IAUIEventHandler GetUIEventHandler(this UIEventComponent self,WindowID windowID)

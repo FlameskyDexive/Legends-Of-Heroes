@@ -14,11 +14,11 @@ namespace ET.Client
 
 		public static void RegisterUIEvent(this DlgBattle self)
         {
-            self.View.EBtnSkill1Button.AddListener(() =>
+            self.View.EBtnSkill1Button.AddListener(self.Root(), () =>
             {
                 self.OnClickSkill1();
             });
-            self.View.EBtnSkill2Button.AddListener(() =>
+            self.View.EBtnSkill2Button.AddListener(self.Root(), () =>
             {
                 self.OnClickSkill2();
             });

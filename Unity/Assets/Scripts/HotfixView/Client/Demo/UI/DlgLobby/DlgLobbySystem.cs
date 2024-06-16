@@ -12,8 +12,8 @@ namespace ET.Client
 
 		public static void RegisterUIEvent(this DlgLobby self)
 		{
-			self.View.EEnterMapButton.AddListenerAsync(self.EnterMap);
-			self.View.EMatchButton.AddListenerAsync(self.Match);
+			self.View.EEnterMapButton.AddListenerAsync(self.Root(), self.EnterMap);
+			self.View.EMatchButton.AddListenerAsync(self.Root(), self.Match);
 		}
 
 		public static void ShowWindow(this DlgLobby self, Entity contextData = null)

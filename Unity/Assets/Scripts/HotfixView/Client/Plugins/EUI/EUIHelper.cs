@@ -190,25 +190,25 @@ namespace ET.Client
         
   #region UI按钮事件
 
-      public static void AddListenerAsyncWithId(this Button button, Func<int, ETTask> action,int id)
+      public static void AddListenerAsyncWithId(this Button button,Scene rootScene, Func<int, ETTask> action,int id)
       { 
           button.onClick.RemoveAllListeners();
 
           async ETTask clickActionAsync()
           {
-              UIEventComponent.Instance?.SetUIClicked(true);
+              rootScene?.GetComponent<UIEventComponent>()?.SetUIClicked(true);
               await action(id);
-              UIEventComponent.Instance?.SetUIClicked(false);
+              rootScene?.GetComponent<UIEventComponent>()?.SetUIClicked(false);
           }
                    
           button.onClick.AddListener(() =>
           {
-              if ( UIEventComponent.Instance == null)
+              if ( rootScene?.GetComponent<UIEventComponent>() == null)
               {
                   return;
               }
 
-              if (UIEventComponent.Instance.IsClicked)
+              if (rootScene.GetComponent<UIEventComponent>().IsClicked)
               {
                   return;
               }
@@ -217,25 +217,25 @@ namespace ET.Client
           });
       }
       
-      public static void AddListenerAsync(this Button button, Func<ETTask> action)
+      public static void AddListenerAsync(this Button button,Scene rootScene, Func<ETTask> action)
       { 
           button.onClick.RemoveAllListeners();
 
           async ETTask clickActionAsync()
           {
-              UIEventComponent.Instance?.SetUIClicked(true);
+              rootScene?.GetComponent<UIEventComponent>()?.SetUIClicked(true);
               await action();
-              UIEventComponent.Instance?.SetUIClicked(false);
+              rootScene?.GetComponent<UIEventComponent>()?.SetUIClicked(false);
           }
                
           button.onClick.AddListener(() =>
           {
-              if ( UIEventComponent.Instance == null)
+              if ( rootScene?.GetComponent<UIEventComponent>() == null)
               {
                   return;
               }
 
-              if (UIEventComponent.Instance.IsClicked)
+              if (rootScene.GetComponent<UIEventComponent>().IsClicked)
               {
                   return;
               }
@@ -244,50 +244,50 @@ namespace ET.Client
           });
       }
 
-        public static void AddListener(this Toggle toggle, UnityAction<bool> selectEventHandler)
+        public static void AddListener(this Toggle toggle,Scene rootScene, UnityAction<bool> selectEventHandler)
         {
             toggle.onValueChanged.RemoveAllListeners();
             toggle.onValueChanged.AddListener(selectEventHandler);
         }
         
-        public static void AddListener(this Button button,UnityAction clickEventHandler )
+        public static void AddListener(this Button button,Scene rootScene, UnityAction clickEventHandler )
         {
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(clickEventHandler);
         }
 
-        public static void AddListenerWithId(this Button button,Action<int> clickEventHandler ,int id)
+        public static void AddListenerWithId(this Button button,Scene rootScene,Action<int> clickEventHandler ,int id)
         {
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => { clickEventHandler(id);  });
         }
         
-        public static void AddListenerWithId(this Button button,Action<long> clickEventHandler ,long id)
+        public static void AddListenerWithId(this Button button,Scene rootScene,Action<long> clickEventHandler ,long id)
         {
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => { clickEventHandler(id);  });
         }
 
-        public static void AddListenerWithParam<T>(this Button button, Action<T> clickEventHandler, T param)
+        public static void AddListenerWithParam<T>(this Button button,Scene rootScene, Action<T> clickEventHandler, T param)
         {
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => { clickEventHandler(param);  });
         }
         
-        public static void AddListenerWithParam<T,A>(this Button button, Action<T,A> clickEventHandler, T param1 , A param2)
+        public static void AddListenerWithParam<T,A>(this Button button,Scene rootScene, Action<T,A> clickEventHandler, T param1 , A param2)
         {
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => { clickEventHandler(param1 , param2);  });
         }
 
 
-       public static void AddListener(this ToggleGroup toggleGroup, UnityAction<int> selectEventHandler)
+       public static void AddListener(this ToggleGroup toggleGroup,Scene rootScene, UnityAction<int> selectEventHandler)
        {
            var togglesList = toggleGroup.GetComponentsInChildren<Toggle>();
            for (int i = 0; i < togglesList.Length; i++)
            {
                int index = i;
-               togglesList[i].AddListener((isOn) => 
+               togglesList[i].AddListener(rootScene,(isOn) => 
                {
                    if (isOn)
                    {
@@ -303,7 +303,7 @@ namespace ET.Client
         /// </summary>
         /// <OtherParam name="self"></OtherParam>
         /// <OtherParam name="closeButton"></OtherParam>
-        public static void RegisterCloseEvent<T>(this Entity self,Button closeButton,bool isClose = false)  where T : Entity,IAwake,IUILogic
+        public static void RegisterCloseEvent<T>(this Entity self,Scene rootScene,Button closeButton,bool isClose = false)  where T : Entity,IAwake,IUILogic
         {
             closeButton.onClick.RemoveAllListeners();
             if (isClose)
@@ -319,7 +319,7 @@ namespace ET.Client
 
 
 
-        public static void RegisterEvent(this EventTrigger trigger, EventTriggerType eventType, UnityAction<BaseEventData> callback)
+        public static void RegisterEvent(this EventTrigger trigger,Scene rootScene, EventTriggerType eventType, UnityAction<BaseEventData> callback)
         {
             EventTrigger.Entry entry = null;
 

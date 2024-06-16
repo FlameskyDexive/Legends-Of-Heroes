@@ -12,11 +12,11 @@ namespace ET.Client
 
 		public static void RegisterUIEvent(this DlgRoom self)
         {
-            self.View.E_ConfirmButton.AddListener(() =>
+            self.View.E_ConfirmButton.AddListener(self.Root(), () =>
             {
                 // self.OnEnterMapClickHandler().Coroutine();
             });
-            self.View.E_CancelButton.AddListener(() =>
+            self.View.E_CancelButton.AddListener(self.Root(), () =>
             {
                 self.OnCancelClickHandler().Coroutine();
             });

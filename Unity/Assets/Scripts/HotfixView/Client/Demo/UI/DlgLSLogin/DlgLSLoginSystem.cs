@@ -12,7 +12,7 @@ namespace ET.Client
 
 		public static void RegisterUIEvent(this DlgLSLogin self)
 		{
-			self.View.ELoginBtnButton.AddListener(self.OnLogin);
+			self.View.ELoginBtnButton.AddListener(self.Root(),self.OnLogin);
 					
 		}
 

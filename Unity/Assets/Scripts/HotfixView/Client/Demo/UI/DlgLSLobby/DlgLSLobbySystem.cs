@@ -13,8 +13,8 @@ namespace ET.Client
 
 		public static void RegisterUIEvent(this DlgLSLobby self)
 		{
-		   self.View.EMatchButton.AddListenerAsync(self.EnterMap);
-		   self.View.EReplayButton.AddListener(self.Replay);
+		   self.View.EMatchButton.AddListenerAsync(self.Root(), self.EnterMap);
+		   self.View.EReplayButton.AddListener(self.Root(),self.Replay);
 		}
 
 		public static void ShowWindow(this DlgLSLobby self, Entity contextData = null)

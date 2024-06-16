@@ -236,7 +236,7 @@ namespace ET.Client
             }
             
             baseWindow.UIPrefabGameObject?.SetActive(false);
-            UIEventComponent.Instance.GetUIEventHandler(id).OnHideWindow(baseWindow);
+            self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(id).OnHideWindow(baseWindow);
             
             self.VisibleWindowsDic.Remove((int)id);
             
@@ -267,7 +267,7 @@ namespace ET.Client
               Log.Error($"UIBaseWindow WindowId {id} is null!!!");
               return;
             }
-            UIEventComponent.Instance.GetUIEventHandler(id).BeforeUnload(baseWindow);
+            self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(id).BeforeUnload(baseWindow);
             if(baseWindow.IsPreLoad)
             {
                 self.Scene().GetComponent<ResourcesLoaderComponent>().UnLoadAssetSync(baseWindow.UIPrefabGameObject.name/*.StringToAB()*/);
@@ -351,7 +351,7 @@ namespace ET.Client
         {
             Entity contextData = showData == null ? null : showData;
             baseWindow.UIPrefabGameObject?.SetActive(true);
-            UIEventComponent.Instance.GetUIEventHandler(id).OnShowWindow(baseWindow,contextData);
+            self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(id).OnShowWindow(baseWindow,contextData);
             
             self.VisibleWindowsDic[(int)id] = baseWindow;
             Debug.Log("<color=magenta>### current Navigation window </color>" + baseWindow.WindowID.ToString());
@@ -450,7 +450,7 @@ namespace ET.Client
 
                 self.UIBaseWindowlistCached.Add((WindowID)windowBase.Key);
                 window.UIPrefabGameObject?.SetActive(false);
-                UIEventComponent.Instance.GetUIEventHandler(window.WindowID).OnHideWindow(window);
+                self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(window.WindowID).OnHideWindow(window);
             }
             if (self.UIBaseWindowlistCached.Count > 0)
             {
@@ -487,13 +487,13 @@ namespace ET.Client
             baseWindow.UIPrefabGameObject      = UnityEngine.Object.Instantiate(go);
             baseWindow.UIPrefabGameObject.name = go.name;
             
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
+            self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
             
             baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(self.Root(), baseWindow.windowType));
             baseWindow.uiTransform.SetAsLastSibling();
             
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
+            self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
+            self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
             
             self.AllWindowsDic[(int)baseWindow.WindowID] = baseWindow;
         }
@@ -523,13 +523,13 @@ namespace ET.Client
             baseWindow.UIPrefabGameObject      = UnityEngine.Object.Instantiate(go);
             baseWindow.UIPrefabGameObject.name = go.name;
             
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
+            self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(baseWindow.WindowID).OnInitWindowCoreData(baseWindow);
             
             baseWindow?.SetRoot(EUIRootHelper.GetTargetRoot(self.Root(),baseWindow.windowType));
             baseWindow.uiTransform.SetAsLastSibling();
             
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
-            UIEventComponent.Instance.GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
+            self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(baseWindow.WindowID).OnInitComponent(baseWindow);
+            self.Root().GetComponent<UIEventComponent>().GetUIEventHandler(baseWindow.WindowID).OnRegisterUIEvent(baseWindow);
             
             self.AllWindowsDic[(int)baseWindow.WindowID] = baseWindow;
         }

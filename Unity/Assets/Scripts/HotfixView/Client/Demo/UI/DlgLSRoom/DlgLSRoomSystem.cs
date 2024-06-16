@@ -25,15 +25,15 @@ namespace ET.Client
                 self.View.EGReplayRectTransform.gameObject.SetActive(true);
                 self.View.EGPlayRectTransform.gameObject.SetActive(false);
            
-                self.View.EjumpButton.AddListener(self.JumpReplay);
-                self.View.EspeedButton.AddListener(self.OnReplaySpeedClicked);
+                self.View.EjumpButton.AddListener(self.Root(), self.JumpReplay);
+                self.View.EspeedButton.AddListener(self.Root(),self.OnReplaySpeedClicked);
                 self.View.EframecountText.text = self.Room().Replay.FrameInputs.Count.ToString();
             }
             else
             {
                 self.View.EGReplayRectTransform.gameObject.SetActive(false);
                 self.View.EGPlayRectTransform.gameObject.SetActive(true);
-                self.View.E_SaveReplayButton.AddListener(self.OnSaveReplay);
+                self.View.E_SaveReplayButton.AddListener(self.Root(),self.OnSaveReplay);
             }
         }
 
