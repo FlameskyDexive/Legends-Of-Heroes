@@ -154,10 +154,10 @@ namespace ET
             EditorUtility.SetDirty(globalConfig);
 
             // 修改 HybridCLR 设置里的热更程序集名
-            for (int i = 0; i < DllNames.Length; i++)
-            {
-                SettingsUtil.HybridCLRSettings.hotUpdateAssemblies[i] = $"{DllNames[i]}_{globalConfig.CodeVersion}";
-            }
+            // for (int i = 0; i < DllNames.Length; i++)
+            // {
+            //     SettingsUtil.HybridCLRSettings.hotUpdateAssemblies[i] = $"{DllNames[i]}_{globalConfig.CodeVersion}";
+            // }
 
             AssetDatabase.SaveAssets();
             foreach (string dllName in DllNames)
