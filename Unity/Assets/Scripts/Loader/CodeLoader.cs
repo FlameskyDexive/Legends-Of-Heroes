@@ -141,7 +141,7 @@ namespace ET
             byte[] hotfixViewPdbBytes;
             Assembly hotfixAssembly = null;
             Assembly hotfixViewAssembly = null;
-            if (!Define.IsEditor)
+            if (!Define.IsEditor || this.playMode != EPlayMode.EditorSimulateMode)
             {
                 hotfixAssBytes = this.dlls["Unity.Hotfix.dll"].bytes;
                 hotfixPdbBytes = this.dlls["Unity.Hotfix.pdb"].bytes;
