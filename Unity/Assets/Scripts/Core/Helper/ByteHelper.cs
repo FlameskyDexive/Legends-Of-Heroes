@@ -3,8 +3,44 @@
 namespace ET
 {
 	public static class ByteHelper
-	{
-		public static string ToHex(this byte b)
+    {
+		[StaticField]
+        private static readonly double[] byteUnits =
+        {
+            1073741824.0, 1048576.0, 1024.0, 1
+        };
+
+		[StaticField]
+        private static readonly string[] byteUnitsNames =
+        {
+            "GB", "MB", "KB", "B"
+        };
+
+
+        public static string FormatBytes(long bytes)
+        {
+            var size = "0 字节";
+            if (bytes == 0)
+            {
+                return size;
+            }
+
+            for (var index = 0; index < byteUnits.Length; index++)
+            {
+                var unit = byteUnits[index];
+                if (!(bytes >= unit))
+                {
+                    continue;
+                }
+
+                size = $"{bytes / unit:##.##} {byteUnitsNames[index]}";
+                break;
+            }
+
+            return size;
+        }
+
+        public static string ToHex(this byte b)
 		{
 			return b.ToString("X2");
 		}
