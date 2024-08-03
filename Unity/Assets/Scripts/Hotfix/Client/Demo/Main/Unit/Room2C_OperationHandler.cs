@@ -1,9 +1,9 @@
 ﻿namespace ET.Client
 {
 	[MessageHandler(SceneType.Demo)]
-	public class M2C_OperationHandler : MessageHandler<Scene, M2C_Operation>
+	public class Room2C_OperationHandler : MessageHandler<Scene, Room2C_Operation>
 	{
-		protected override async ETTask Run(Scene root, M2C_Operation message)
+		protected override async ETTask Run(Scene root, Room2C_Operation message)
         {
             Scene currentScene = root.CurrentScene();
             Log.Info($" operation back:{message?.OperateInfos?.Count}");

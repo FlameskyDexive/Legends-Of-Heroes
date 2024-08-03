@@ -3,10 +3,10 @@ using Unity.Mathematics;
 
 namespace ET.Server
 {
-    [MessageLocationHandler(SceneType.Map)]
-    public class C2M_OperationHandler : MessageLocationHandler<Unit, C2M_Operation>
+    [MessageLocationHandler(SceneType.RoomRoot)]
+    public class C2Room_OperationHandler : MessageLocationHandler<Unit, C2Room_Operation>
     {
-        protected override async ETTask Run(Unit unit, C2M_Operation message)
+        protected override async ETTask Run(Unit unit, C2Room_Operation message)
         {
             if (message.OperateInfos == null || message.OperateInfos.Count == 0)
             {
@@ -14,8 +14,8 @@ namespace ET.Server
                 return;
             }
 
-            M2C_Operation m2COperation = M2C_Operation.Create();
-            m2COperation.OperateInfos = new List<OperateReplyInfo>();
+            Room2C_Operation room2COperation = Room2C_Operation.Create();
+            room2COperation.OperateInfos = new List<OperateReplyInfo>();
             
             foreach (OperateInfo operateInfo in message.OperateInfos)
             {
@@ -30,9 +30,8 @@ namespace ET.Server
                         float3 v3 = unit.Position + operateInfo.Vec3 * speed / 30f;
                         unit.Position = v3;
                         unit.Forward = operateInfo.Vec3;
-                        // unit.Forward = new float3(0, message.MoveForward.y, message.MoveForward.x);
-                        M2C_JoystickMove m2CJoystickMove = M2C_JoystickMove.Create();
-
+                            // unit.Forward = new float3(0, message.MoveForward.y, message.MoveForward.x);
+                        Room2C_JoystickMove m2CJoystickMove = Room2C_JoystickMove.Create();
                         m2CJoystickMove.Position = unit.Position;
                         m2CJoystickMove.MoveForward = unit.Forward; 
                         m2CJoystickMove.Id = unit.Id;
@@ -53,7 +52,7 @@ namespace ET.Server
                             OperateReplyInfo info = OperateReplyInfo.Create();
                             info.OperateType = (int)operateType;
                             info.Status = 0;
-                            m2COperation.OperateInfos.Add(info);
+                            room2COperation.OperateInfos.Add(info);
                         }
                         break;
                     }
@@ -64,14 +63,14 @@ namespace ET.Server
                         {
                             OperateReplyInfo info = OperateReplyInfo.Create();
                             info.OperateType = (int)operateType; info.Status = 0;
-                            m2COperation.OperateInfos.Add(info);
+                            room2COperation.OperateInfos.Add(info);
                         }
                         break;
                     }
                 }
             }
-            if(m2COperation.OperateInfos?.Count > 0)
-                MapMessageHelper.SendToClient(unit, m2COperation);
+            if(room2COperation.OperateInfos?.Count > 0)
+                MapMessageHelper.SendToClient(unit, room2COperation);
 
             await ETTask.CompletedTask;
         }

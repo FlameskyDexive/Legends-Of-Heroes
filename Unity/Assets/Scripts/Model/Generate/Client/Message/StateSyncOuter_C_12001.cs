@@ -254,12 +254,12 @@ namespace ET
     /// Map Start ///////////////////////////////////
     /// </summary>
     [MemoryPackable]
-    [Message(StateSyncOuter.C2M_JoystickMove)]
-    public partial class C2M_JoystickMove : MessageObject, ILocationMessage
+    [Message(StateSyncOuter.C2Room_JoystickMove)]
+    public partial class C2Room_JoystickMove : MessageObject, ILocationMessage
     {
-        public static C2M_JoystickMove Create(bool isFromPool = false)
+        public static C2Room_JoystickMove Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(C2M_JoystickMove), isFromPool) as C2M_JoystickMove;
+            return ObjectPool.Instance.Fetch(typeof(C2Room_JoystickMove), isFromPool) as C2Room_JoystickMove;
         }
 
         [MemoryPackOrder(0)]
@@ -283,12 +283,12 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(StateSyncOuter.M2C_JoystickMove)]
-    public partial class M2C_JoystickMove : MessageObject, IMessage
+    [Message(StateSyncOuter.Room2C_JoystickMove)]
+    public partial class Room2C_JoystickMove : MessageObject, IMessage
     {
-        public static M2C_JoystickMove Create(bool isFromPool = false)
+        public static Room2C_JoystickMove Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(M2C_JoystickMove), isFromPool) as M2C_JoystickMove;
+            return ObjectPool.Instance.Fetch(typeof(Room2C_JoystickMove), isFromPool) as Room2C_JoystickMove;
         }
 
         [MemoryPackOrder(0)]
@@ -316,12 +316,12 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(StateSyncOuter.C2M_Operation)]
-    public partial class C2M_Operation : MessageObject, ILocationMessage
+    [Message(StateSyncOuter.C2Room_Operation)]
+    public partial class C2Room_Operation : MessageObject, ILocationMessage
     {
-        public static C2M_Operation Create(bool isFromPool = false)
+        public static C2Room_Operation Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(C2M_Operation), isFromPool) as C2M_Operation;
+            return ObjectPool.Instance.Fetch(typeof(C2Room_Operation), isFromPool) as C2Room_Operation;
         }
 
         [MemoryPackOrder(0)]
@@ -349,12 +349,12 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(StateSyncOuter.M2C_Operation)]
-    public partial class M2C_Operation : MessageObject, IMessage
+    [Message(StateSyncOuter.Room2C_Operation)]
+    public partial class Room2C_Operation : MessageObject, IMessage
     {
-        public static M2C_Operation Create(bool isFromPool = false)
+        public static Room2C_Operation Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(M2C_Operation), isFromPool) as M2C_Operation;
+            return ObjectPool.Instance.Fetch(typeof(Room2C_Operation), isFromPool) as Room2C_Operation;
         }
 
         [MemoryPackOrder(0)]
@@ -460,12 +460,12 @@ namespace ET
     }
 
     [MemoryPackable]
-    [Message(StateSyncOuter.M2C_SyncUnits)]
-    public partial class M2C_SyncUnits : MessageObject, IMessage
+    [Message(StateSyncOuter.Room2C_SyncUnits)]
+    public partial class Room2C_SyncUnits : MessageObject, IMessage
     {
-        public static M2C_SyncUnits Create(bool isFromPool = false)
+        public static Room2C_SyncUnits Create(bool isFromPool = false)
         {
-            return ObjectPool.Instance.Fetch(typeof(M2C_SyncUnits), isFromPool) as M2C_SyncUnits;
+            return ObjectPool.Instance.Fetch(typeof(Room2C_SyncUnits), isFromPool) as Room2C_SyncUnits;
         }
 
         [MemoryPackOrder(0)]
@@ -497,12 +497,12 @@ namespace ET
         public const ushort Room2C_StateSyncStart = 12007;
         public const ushort Room2C_StateSyncAdjustUpdateTime = 12008;
         public const ushort G2C_StateSyncReconnect = 12009;
-        public const ushort C2M_JoystickMove = 12010;
-        public const ushort M2C_JoystickMove = 12011;
-        public const ushort C2M_Operation = 12012;
-        public const ushort M2C_Operation = 12013;
+        public const ushort C2Room_JoystickMove = 12010;
+        public const ushort Room2C_JoystickMove = 12011;
+        public const ushort C2Room_Operation = 12012;
+        public const ushort Room2C_Operation = 12013;
         public const ushort OperateInfo = 12014;
         public const ushort OperateReplyInfo = 12015;
-        public const ushort M2C_SyncUnits = 12016;
+        public const ushort Room2C_SyncUnits = 12016;
     }
 }

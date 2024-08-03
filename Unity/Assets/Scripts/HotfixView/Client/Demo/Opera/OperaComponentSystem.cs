@@ -89,9 +89,9 @@ namespace ET.Client
                 return;
             self.OperateInfosTemp.Clear();
             self.OperateInfosTemp.AddRange(self.OperateInfos);
-            C2M_Operation c2MOperation = C2M_Operation.Create();
-            c2MOperation.OperateInfos = self.OperateInfosTemp;
-            self.Root().GetComponent<ClientSenderComponent>().Send(c2MOperation);
+            C2Room_Operation c2RoomOperation = C2Room_Operation.Create();
+            c2RoomOperation.OperateInfos = self.OperateInfosTemp;
+            self.Root().GetComponent<ClientSenderComponent>().Send(c2RoomOperation);
             self.OperateInfos.Clear();
         }
 

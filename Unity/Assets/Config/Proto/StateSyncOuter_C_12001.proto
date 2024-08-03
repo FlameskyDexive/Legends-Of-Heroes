@@ -61,13 +61,13 @@ message G2C_StateSyncReconnect // IMessage
 
 ///////////////////////////////// Map Start ///////////////////////////////////
 
-message C2M_JoystickMove // ILocationMessage
+message C2Room_JoystickMove // ILocationMessage
 {
 	int32 RpcId = 1;
 	Unity.Mathematics.float3 MoveForward = 2;
 }
 
-message M2C_JoystickMove // IMessage
+message Room2C_JoystickMove // IMessage
 {
 	int64 Id = 1;
 	Unity.Mathematics.float3 Position = 2;
@@ -75,7 +75,7 @@ message M2C_JoystickMove // IMessage
 }
 
 
-message C2M_Operation // ILocationMessage
+message C2Room_Operation // ILocationMessage
 {
 	int32 RpcId = 1;
 	int64 Id = 2;
@@ -83,7 +83,7 @@ message C2M_Operation // ILocationMessage
 	
 }
 
-message M2C_Operation // IMessage
+message Room2C_Operation // IMessage
 {
 	int64 Id = 1;
 	repeated OperateReplyInfo OperateInfos = 2;
@@ -103,7 +103,7 @@ message OperateReplyInfo
 	int32 Status = 2;
 }
 
-message M2C_SyncUnits // IMessage
+message Room2C_SyncUnits // IMessage
 {
 	repeated UnitInfo Units = 1;
 }
