@@ -4,19 +4,20 @@ using Unity.Mathematics;
 namespace ET.Server
 {
     [MessageLocationHandler(SceneType.RoomRoot)]
-    public class C2Room_OperationHandler : MessageLocationHandler<Unit, C2Room_Operation>
+    public class C2Room_OperationHandler : MessageHandler<Scene, C2Room_Operation>
     {
-        protected override async ETTask Run(Unit unit, C2Room_Operation message)
+        protected override async ETTask Run(Scene root, C2Room_Operation message)
         {
             if (message.OperateInfos == null || message.OperateInfos.Count == 0)
             {
                 Log.Error($"reveice null operate info");
                 return;
             }
-
+            Room room = root.GetComponent<Room>();
+            Log.Info($"rev C2Room_Operation");
             Room2C_Operation room2COperation = Room2C_Operation.Create();
             room2COperation.OperateInfos = new List<OperateReplyInfo>();
-            
+            Unit unit = root.GetComponent<UnitComponent>().Get(message.PlayerId);
             foreach (OperateInfo operateInfo in message.OperateInfos)
             {
                 EOperateType operateType = (EOperateType)operateInfo.OperateType;

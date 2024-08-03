@@ -255,7 +255,7 @@ namespace ET
     /// </summary>
     [MemoryPackable]
     [Message(StateSyncOuter.C2Room_JoystickMove)]
-    public partial class C2Room_JoystickMove : MessageObject, ILocationMessage
+    public partial class C2Room_JoystickMove : MessageObject, IRoomMessage
     {
         public static C2Room_JoystickMove Create(bool isFromPool = false)
         {
@@ -263,7 +263,7 @@ namespace ET
         }
 
         [MemoryPackOrder(0)]
-        public int RpcId { get; set; }
+        public long PlayerId { get; set; }
 
         [MemoryPackOrder(1)]
         public Unity.Mathematics.float3 MoveForward { get; set; }
@@ -275,7 +275,7 @@ namespace ET
                 return;
             }
 
-            this.RpcId = default;
+            this.PlayerId = default;
             this.MoveForward = default;
 
             ObjectPool.Instance.Recycle(this);
@@ -317,7 +317,7 @@ namespace ET
 
     [MemoryPackable]
     [Message(StateSyncOuter.C2Room_Operation)]
-    public partial class C2Room_Operation : MessageObject, ILocationMessage
+    public partial class C2Room_Operation : MessageObject, IRoomMessage
     {
         public static C2Room_Operation Create(bool isFromPool = false)
         {
@@ -325,7 +325,7 @@ namespace ET
         }
 
         [MemoryPackOrder(0)]
-        public int RpcId { get; set; }
+        public long PlayerId { get; set; }
 
         [MemoryPackOrder(1)]
         public long Id { get; set; }
@@ -340,7 +340,7 @@ namespace ET
                 return;
             }
 
-            this.RpcId = default;
+            this.PlayerId = default;
             this.Id = default;
             this.OperateInfos.Clear();
 
