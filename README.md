@@ -18,7 +18,7 @@ English: please use your browser to translate to english
 ![loh22023532242551](https://user-images.githubusercontent.com/8274346/235951176-f96efa8f-d3e5-4089-a1c9-56643859b487.gif)
 
 ## Main
-#### 基于C#双端框架[ET框架](https://github.com/egametang/ET)，[ETPlus](https://github.com/FlameskyDexive/ETPlus) ET8加强版(EUI+YooAsset+Luban)。 注意：当前Master正在同步ET8.1升级修改（基础热更，技能/Buff系统已经迁移完毕，差开房间组队），跑Demo请切换到ET7.2+分支。
+#### 基于C#双端框架[ET框架](https://github.com/egametang/ET)，[ETPlus](https://github.com/FlameskyDexive/ETPlus) ET8.1加强版(EUI+YooAsset+Luban)。 注意：当前Master正在同步ET8.1升级修改（基础热更流程，技能/Buff系统已经迁移完毕，开房间匹配跟ET8.1一样修改ConstValue数量即可，当前房间内已经支持玩家移动同步，尚缺技能、子弹同步）。
 # 觉得项目不错的话麻烦右上角给个star哈.
 #### 此游戏为ET的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
