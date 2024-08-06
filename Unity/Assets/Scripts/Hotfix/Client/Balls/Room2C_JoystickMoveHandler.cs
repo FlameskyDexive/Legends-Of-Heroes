@@ -1,6 +1,4 @@
-﻿using ET.Server;
-
-namespace ET.Client
+﻿namespace ET.Client
 {
 	[MessageHandler(SceneType.Demo)]
 	public class Room2C_JoystickMoveHandler : MessageHandler<Scene, Room2C_JoystickMove>

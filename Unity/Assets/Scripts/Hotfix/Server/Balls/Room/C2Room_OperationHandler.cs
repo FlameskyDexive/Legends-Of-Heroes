@@ -24,7 +24,7 @@ namespace ET.Server
             Unit unit = roomPlayer.Unit;
             if (unit == null)
             {
-                Log.Error($"not find unit, player id : {message.Id}");
+                Log.Error($"cant not find unit, player id : {message.PlayerId}");
                 return;
             }
             foreach (OperateInfo operateInfo in message.OperateInfos)
