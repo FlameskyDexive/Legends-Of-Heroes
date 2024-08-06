@@ -145,6 +145,7 @@ namespace ET
                 FileHelper.CopyDirectory("../Config/Excel/c/GameConfig", clientProtoDir);
                 
                 AssetDatabase.Refresh();
+                EditorGUILayout.EndHorizontal();
                 return;
             }
             EditorGUILayout.EndHorizontal();

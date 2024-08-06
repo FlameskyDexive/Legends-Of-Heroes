@@ -13,11 +13,20 @@ namespace ET.Server
                 Log.Error($"reveice null operate info");
                 return;
             }
-            Room room = root.GetComponent<Room>();
+            StateSyncRoom room = root.GetComponent<StateSyncRoom>();
+            StateSyncRoomServerComponent roomServerComponent = room.GetComponent<StateSyncRoomServerComponent>();
+            StateSyncRoomPlayer roomPlayer = roomServerComponent.GetChild<StateSyncRoomPlayer>(message.PlayerId);
+
             Log.Info($"rev C2Room_Operation");
             Room2C_Operation room2COperation = Room2C_Operation.Create();
             room2COperation.OperateInfos = new List<OperateReplyInfo>();
-            Unit unit = root.GetComponent<UnitComponent>().Get(message.PlayerId);
+            
+            Unit unit = roomPlayer.Unit;
+            if (unit == null)
+            {
+                Log.Error($"not find unit, player id : {message.Id}");
+                return;
+            }
             foreach (OperateInfo operateInfo in message.OperateInfos)
             {
                 EOperateType operateType = (EOperateType)operateInfo.OperateType;
@@ -31,7 +40,6 @@ namespace ET.Server
                         float3 v3 = unit.Position + operateInfo.Vec3 * speed / 30f;
                         unit.Position = v3;
                         unit.Forward = operateInfo.Vec3;
-                            // unit.Forward = new float3(0, message.MoveForward.y, message.MoveForward.x);
                         Room2C_JoystickMove m2CJoystickMove = Room2C_JoystickMove.Create();
                         m2CJoystickMove.Position = unit.Position;
                         m2CJoystickMove.MoveForward = unit.Forward; 

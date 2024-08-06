@@ -7,5 +7,7 @@ namespace ET.Server
         public int Progress { get; set; }
 
         public bool IsOnline { get; set; } = true;
+        
+        public EntityRef<Unit> Unit { get; set; }
     }
 }

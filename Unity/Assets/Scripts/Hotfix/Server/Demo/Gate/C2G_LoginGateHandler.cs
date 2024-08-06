@@ -23,8 +23,10 @@ namespace ET.Server
             Player player = playerComponent.GetByAccount(account);
             if (player == null)
             {
+                //正式读取数据库
                 player = playerComponent.AddChild<Player, string>(account);
                 playerComponent.Add(player);
+                player.AvatarIndex = RandomGenerator.RandomNumber(0, 9);
                 PlayerSessionComponent playerSessionComponent = player.AddComponent<PlayerSessionComponent>();
                 playerSessionComponent.AddComponent<MailBoxComponent, MailBoxType>(MailBoxType.GateSession);
                 await playerSessionComponent.AddLocation(LocationType.GateSession);
