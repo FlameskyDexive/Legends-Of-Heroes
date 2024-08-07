@@ -9,7 +9,7 @@ namespace ET
 	/// 执行范围伤害技能事件
 	/// </summary>
 	[FriendOf(typeof(ActionEvent))]
-	[ActionEvent(EActionEventType.RangeDamage)]
+	[ActionEvent(SceneType.RoomRoot, EActionEventType.RangeDamage)]
 	public class ActionEventRangeDamage : IActionEvent
 	{
 		public void Run(ActionEvent actionEvent, EventType.ActionEventData args)

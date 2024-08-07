@@ -5,7 +5,7 @@ namespace ET
 	/// <summary>
 	/// 技能发射子弹
 	/// </summary>
-	[ActionEvent(EActionEventType.Bullet)]
+	[ActionEvent(SceneType.RoomRoot, EActionEventType.Bullet)]
 	[FriendOf(typeof(ActionEvent))]
 	public class ActionEventBullet : IActionEvent
 	{

@@ -1,12 +1,14 @@
 ﻿namespace ET
 {
 	public class ActionEventAttribute : BaseAttribute
-	{
-		
-		public EActionEventType ActionEventType { get; }
+    {
+        public SceneType SceneType { get; }
 
-		public ActionEventAttribute(EActionEventType eventType)
+        public EActionEventType ActionEventType { get; }
+
+		public ActionEventAttribute(SceneType sceneType, EActionEventType eventType)
 		{
+            this.SceneType = sceneType;
 			this.ActionEventType = eventType;
 		}
 	}

@@ -34,6 +34,10 @@ namespace ET
     {
         public Unit Unit;
     }
+    public struct AfterMyUnitCreate
+    {
+        public Unit unit;
+    }
 
     public struct OnCollisionContact
     {

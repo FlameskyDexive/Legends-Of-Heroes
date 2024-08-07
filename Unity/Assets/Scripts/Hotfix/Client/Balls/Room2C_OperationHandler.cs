@@ -9,7 +9,7 @@
             Log.Info($" operation back:{message?.OperateInfos?.Count}");
             if (message?.OperateInfos?.Count > 0)
             {
-                Unit unit = UnitHelper.GetMyUnitFromClientScene(currentScene);
+                Unit unit = UnitHelper.GetMyUnitFromCurrentScene(currentScene);
                 foreach (OperateReplyInfo info in message.OperateInfos)
                 {
                     EOperateType operateType = (EOperateType)info.OperateType;

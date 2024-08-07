@@ -38,6 +38,11 @@ namespace ET.Client
             // unit.AddComponent<XunLuoPathComponent>();
 
             EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreate() {Unit = unit});
+            if (currentScene.Root().GetComponent<PlayerComponent>().MyId == unit.Id)
+            {
+                Log.Info($"~~~~init my unit, ui battle");
+                EventSystem.Instance.Publish(currentScene, new AfterMyUnitCreate() { unit = unit });
+            }
             return unit;
         }
     }

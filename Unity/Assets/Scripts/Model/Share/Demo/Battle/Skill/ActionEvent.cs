@@ -10,6 +10,7 @@ namespace ET
     /// 由buff触发的时候作为buff的child
     /// </summary>
     [ChildOf()]
+    [FriendOf(typeof(ActionEventComponent))]
     public class ActionEvent : Entity,IAwake<int, int, EActionEventSourceType>,IDestroy,ITransfer
     {
         [BsonIgnore]
