@@ -353,6 +353,12 @@ namespace ET
         [MemoryPackOrder(6)]
         public MoveInfo MoveInfo { get; set; }
 
+        [MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
+        [MemoryPackOrder(7)]
+        public Dictionary<int, int> SkillInfo { get; set; } = new();
+        [MemoryPackOrder(8)]
+        public PlayerInfo PlayerInfo { get; set; }
+
         public override void Dispose()
         {
             if (!this.IsFromPool)
@@ -367,6 +373,8 @@ namespace ET
             this.Forward = default;
             this.KV.Clear();
             this.MoveInfo = default;
+            this.SkillInfo.Clear();
+            this.PlayerInfo = default;
 
             ObjectPool.Instance.Recycle(this);
         }

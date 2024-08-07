@@ -37,7 +37,7 @@ namespace ET.Server
                         //收到移动消息，往前移动，如果有地形，需要判定前方位置是否可以移动。
                         float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
                         speed = speed == 0 ? 3 : speed;
-                        float3 v3 = unit.Position + operateInfo.Vec3 * speed / 30f;
+                        float3 v3 = unit.Position + operateInfo.Vec3 * speed / DefineCore.LogicFrame;
                         unit.Position = v3;
                         unit.Forward = operateInfo.Vec3;
                         Room2C_JoystickMove m2CJoystickMove = Room2C_JoystickMove.Create();

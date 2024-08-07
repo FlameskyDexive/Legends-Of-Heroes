@@ -23,7 +23,6 @@ namespace ET.Client
                 self.OnClickSkill2();
             });
             self.View.E_JoystickJoystick.OnValueChanged.AddListener(self.OnPressJoystick);
-            // self.View.E_JoystickJoystick.OnSwipeEvent.AddListener(self.OnSwipeJoystick);
 
         }
 

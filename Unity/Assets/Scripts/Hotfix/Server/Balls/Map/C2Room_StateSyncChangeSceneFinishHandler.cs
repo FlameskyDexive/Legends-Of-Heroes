@@ -31,9 +31,13 @@ namespace ET.Server
                 unitInfo.UnitId = rp.Id;
                 unitInfo.Position = new float3(RandomGenerator.RandomNumber(-3, 3), 0, RandomGenerator.RandomNumber(-3, 3));
                 unitInfo.Forward = new float3(0, 0, 1);
+                unitInfo.PlayerInfo.PlayerId = rp.Id;
+                unitInfo.PlayerInfo.AvatarIndex = RandomGenerator.RandomNumber(0, 9);
                 //初始化角色属性，名字，头像id，阵营，
                 // unitInfo.KV
                 Unit unit = UnitFactory.Create(root, rp.Id, EUnitType.Player);
+                unit.Position = unitInfo.Position;
+                unit.Forward = unitInfo.Forward;
                 rp.Unit = unit;
                 room2CStart.UnitInfo.Add(unitInfo);
             }

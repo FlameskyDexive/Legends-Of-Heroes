@@ -1,4 +1,6 @@
-﻿using Unity.Mathematics;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Unity.Mathematics;
 
 namespace ET.Client
 {
@@ -20,7 +22,7 @@ namespace ET.Client
 				numericComponent.Set(kv.Key, kv.Value);
 			}
 	        
-	        unit.AddComponent<MoveComponent>();
+	        /*unit.AddComponent<MoveComponent>();
 	        if (unitInfo.MoveInfo != null)
 	        {
 		        if (unitInfo.MoveInfo.Points.Count > 0)
@@ -28,13 +30,14 @@ namespace ET.Client
 					unitInfo.MoveInfo.Points[0] = unit.Position;
 					unit.MoveToAsync(unitInfo.MoveInfo.Points).Coroutine();
 				}
-	        }
+	        }*/
 
 	        unit.AddComponent<ObjectWait>();
+            unit.AddComponent<SkillComponent, List<int>>(unitInfo.SkillInfo.Keys.ToList());
 
-	        unit.AddComponent<XunLuoPathComponent>();
-	        
-	        EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreate() {Unit = unit});
+            // unit.AddComponent<XunLuoPathComponent>();
+
+            EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreate() {Unit = unit});
             return unit;
         }
     }
