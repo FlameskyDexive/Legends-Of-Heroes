@@ -75,6 +75,8 @@ namespace ET
         public static void SyncColliderBody(this CollisionComponent self)
         {
             Unit unit = self.GetParent<Unit>();
+            if (self.Body == null)
+                return;
             self.Body.SetTransform(new Vector2(unit.Position.x, unit.Position.z), MathHelper.Angle(new float3(0, 0, 1), unit.Forward));
         }
 

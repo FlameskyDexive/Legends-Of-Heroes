@@ -88,6 +88,7 @@ namespace ET
             }
 
             skillEvent.Dispose();
+            self.Children.Remove(id);
         }
     }
 

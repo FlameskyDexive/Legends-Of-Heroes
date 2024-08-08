@@ -33,7 +33,8 @@ namespace ET.Client
 	        }*/
 
 	        unit.AddComponent<ObjectWait>();
-            unit.AddComponent<SkillComponent, List<int>>(unitInfo.SkillInfo.Keys.ToList());
+            if(unit.Type() == EUnitType.Player)
+                unit.AddComponent<SkillComponent, List<int>>(unitInfo.SkillInfo.Keys.ToList());
 
             // unit.AddComponent<XunLuoPathComponent>();
 

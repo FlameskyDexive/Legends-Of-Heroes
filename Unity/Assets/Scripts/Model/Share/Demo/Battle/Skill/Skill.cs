@@ -8,7 +8,7 @@ namespace ET
     public class Skill:Entity,IAwake<int, int>,IDestroy,ITransfer
     {
         [BsonIgnore]
-        public Unit Unit => this.GetParent<Unit>();
+        public Unit Unit => this.GetParent<SkillComponent>().Unit;
         public int SkillId;
         public int SkillLevel;
         // public int AbstractIndex;

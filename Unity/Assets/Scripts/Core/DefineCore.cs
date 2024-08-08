@@ -12,7 +12,7 @@ namespace ET
         public static int LogicFrame = 50;
 #else
         [StaticField]
-        public static int LogicFrame = 20;
+        public static int LogicFrame = 30;
 #endif
         /// <summary>
         /// you can alse use dynamic calculate below

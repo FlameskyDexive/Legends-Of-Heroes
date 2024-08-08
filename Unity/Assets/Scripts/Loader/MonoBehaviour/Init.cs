@@ -10,6 +10,7 @@ namespace ET
         public EPlayMode PlayMode;
         private void Start()
         {
+            Application.targetFrameRate = 60;
             Define.PlayMode = this.PlayMode;
 			this.StartAsync().Coroutine();
 		}
