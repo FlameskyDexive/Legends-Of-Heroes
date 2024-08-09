@@ -84,6 +84,29 @@ message UnitInfo
 	PlayerInfo PlayerInfo = 9;
 }
 
+message AttributeInfo
+{
+	int64 UnitId = 1;
+	map<int32, int64> KV = 6;
+}
+
+message M2C_SyncUnitAttributes // IMessage
+{
+	repeated AttributeInfo AttributeInfos = 1;
+}
+
+message TransformInfo
+{
+	int64 UnitId = 1;
+	Unity.Mathematics.float3 Position = 4;
+	Unity.Mathematics.float3 Forward = 5;
+}
+
+message M2C_SyncUnitTransforms // IMessage
+{
+	repeated TransformInfo TransformInfos = 1;
+}
+
 message M2C_CreateUnits // IMessage
 {
 	repeated UnitInfo Units = 1;

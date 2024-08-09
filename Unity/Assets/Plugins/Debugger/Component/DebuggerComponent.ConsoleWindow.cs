@@ -568,7 +568,7 @@ namespace ET.Debugger
 
             private string LogFileName
             {
-                get { return $"/Log_{System.DateTime.Now.ToString("yyyy-MM-dd")}.txt"; }
+                get { return $"/Log_{System.DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss")}.txt"; }
             }
         }
     }

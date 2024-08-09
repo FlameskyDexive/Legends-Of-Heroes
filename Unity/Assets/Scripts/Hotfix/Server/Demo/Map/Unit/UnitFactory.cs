@@ -15,7 +15,7 @@ namespace ET.Server
                 case EUnitType.Player:
                 {
                     Unit unit = unitComponent.AddChildWithId<Unit, int>(id, 1001);
-                    unit.AddComponent<MoveComponent>();
+                    unit.AddComponent<PlayerMoveComponent>();
 			
                     NumericComponent numericComponent = unit.AddComponent<NumericComponent>();
                     numericComponent.Set(NumericType.Speed, 5f); // 速度是5米每秒

@@ -23,6 +23,7 @@ namespace ET.Client
                 self.OnClickSkill2();
             });
             self.View.E_JoystickJoystick.OnValueChanged.AddListener(self.OnPressJoystick);
+            self.View.E_JoystickJoystick.OnPointerUp.AddListener(self.OnUpJoystick);
 
         }
 
@@ -72,6 +73,12 @@ namespace ET.Client
             if (v == Vector2.zero)
                 return;
             self.Scene().GetComponent<OperaComponent>().OnMove(v);
+            self.LastJoyPos = v;
+
+        }
+        public static void OnUpJoystick(this DlgBattle self, Vector2 v)
+        {
+            self.Scene().GetComponent<OperaComponent>().StopMove();
 
         }
 

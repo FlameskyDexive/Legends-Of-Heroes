@@ -381,6 +381,118 @@ namespace ET
     }
 
     [MemoryPackable]
+    [Message(OuterMessage.AttributeInfo)]
+    public partial class AttributeInfo : MessageObject
+    {
+        public static AttributeInfo Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(AttributeInfo), isFromPool) as AttributeInfo;
+        }
+
+        [MemoryPackOrder(0)]
+        public long UnitId { get; set; }
+
+        [MongoDB.Bson.Serialization.Attributes.BsonDictionaryOptions(MongoDB.Bson.Serialization.Options.DictionaryRepresentation.ArrayOfArrays)]
+        [MemoryPackOrder(5)]
+        public Dictionary<int, long> KV { get; set; } = new();
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.UnitId = default;
+            this.KV.Clear();
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.M2C_SyncUnitAttributes)]
+    public partial class M2C_SyncUnitAttributes : MessageObject, IMessage
+    {
+        public static M2C_SyncUnitAttributes Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(M2C_SyncUnitAttributes), isFromPool) as M2C_SyncUnitAttributes;
+        }
+
+        [MemoryPackOrder(0)]
+        public List<AttributeInfo> AttributeInfos { get; set; } = new();
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.AttributeInfos.Clear();
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.TransformInfo)]
+    public partial class TransformInfo : MessageObject
+    {
+        public static TransformInfo Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(TransformInfo), isFromPool) as TransformInfo;
+        }
+
+        [MemoryPackOrder(0)]
+        public long UnitId { get; set; }
+
+        [MemoryPackOrder(3)]
+        public Unity.Mathematics.float3 Position { get; set; }
+
+        [MemoryPackOrder(4)]
+        public Unity.Mathematics.float3 Forward { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.UnitId = default;
+            this.Position = default;
+            this.Forward = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.M2C_SyncUnitTransforms)]
+    public partial class M2C_SyncUnitTransforms : MessageObject, IMessage
+    {
+        public static M2C_SyncUnitTransforms Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(M2C_SyncUnitTransforms), isFromPool) as M2C_SyncUnitTransforms;
+        }
+
+        [MemoryPackOrder(0)]
+        public List<TransformInfo> TransformInfos { get; set; } = new();
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.TransformInfos.Clear();
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
     [Message(OuterMessage.M2C_CreateUnits)]
     public partial class M2C_CreateUnits : MessageObject, IMessage
     {
@@ -1198,31 +1310,35 @@ namespace ET
         public const ushort PlayerInfo = 10009;
         public const ushort RoomInfo = 10010;
         public const ushort UnitInfo = 10011;
-        public const ushort M2C_CreateUnits = 10012;
-        public const ushort M2C_CreateMyUnit = 10013;
-        public const ushort M2C_StartSceneChange = 10014;
-        public const ushort M2C_RemoveUnits = 10015;
-        public const ushort C2M_PathfindingResult = 10016;
-        public const ushort C2M_Stop = 10017;
-        public const ushort M2C_PathfindingResult = 10018;
-        public const ushort M2C_Stop = 10019;
-        public const ushort C2G_Ping = 10020;
-        public const ushort G2C_Ping = 10021;
-        public const ushort G2C_Test = 10022;
-        public const ushort C2M_Reload = 10023;
-        public const ushort M2C_Reload = 10024;
-        public const ushort C2R_Login = 10025;
-        public const ushort R2C_Login = 10026;
-        public const ushort C2G_LoginGate = 10027;
-        public const ushort G2C_LoginGate = 10028;
-        public const ushort G2C_TestHotfixMessage = 10029;
-        public const ushort C2M_TestRobotCase = 10030;
-        public const ushort M2C_TestRobotCase = 10031;
-        public const ushort C2M_TestRobotCase2 = 10032;
-        public const ushort M2C_TestRobotCase2 = 10033;
-        public const ushort C2M_TransferMap = 10034;
-        public const ushort M2C_TransferMap = 10035;
-        public const ushort C2G_Benchmark = 10036;
-        public const ushort G2C_Benchmark = 10037;
+        public const ushort AttributeInfo = 10012;
+        public const ushort M2C_SyncUnitAttributes = 10013;
+        public const ushort TransformInfo = 10014;
+        public const ushort M2C_SyncUnitTransforms = 10015;
+        public const ushort M2C_CreateUnits = 10016;
+        public const ushort M2C_CreateMyUnit = 10017;
+        public const ushort M2C_StartSceneChange = 10018;
+        public const ushort M2C_RemoveUnits = 10019;
+        public const ushort C2M_PathfindingResult = 10020;
+        public const ushort C2M_Stop = 10021;
+        public const ushort M2C_PathfindingResult = 10022;
+        public const ushort M2C_Stop = 10023;
+        public const ushort C2G_Ping = 10024;
+        public const ushort G2C_Ping = 10025;
+        public const ushort G2C_Test = 10026;
+        public const ushort C2M_Reload = 10027;
+        public const ushort M2C_Reload = 10028;
+        public const ushort C2R_Login = 10029;
+        public const ushort R2C_Login = 10030;
+        public const ushort C2G_LoginGate = 10031;
+        public const ushort G2C_LoginGate = 10032;
+        public const ushort G2C_TestHotfixMessage = 10033;
+        public const ushort C2M_TestRobotCase = 10034;
+        public const ushort M2C_TestRobotCase = 10035;
+        public const ushort C2M_TestRobotCase2 = 10036;
+        public const ushort M2C_TestRobotCase2 = 10037;
+        public const ushort C2M_TransferMap = 10038;
+        public const ushort M2C_TransferMap = 10039;
+        public const ushort C2G_Benchmark = 10040;
+        public const ushort G2C_Benchmark = 10041;
     }
 }

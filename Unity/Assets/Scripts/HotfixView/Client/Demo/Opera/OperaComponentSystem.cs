@@ -126,6 +126,15 @@ namespace ET.Client
             operateInfo.Vec3 = new float3(v2.x, 0, v2.y);
             self.OperateInfos.Add(operateInfo);
         }
+        public static void StopMove(this OperaComponent self)
+        {
+            // C2M_JoystickMove c2mJoystickMove = new C2M_JoystickMove() { MoveForward = new float3(v2.x, 0, v2.y) };
+            // self.ClientScene().GetComponent<PlayerSessionComponent>().Session.Send(c2mJoystickMove);
+            OperateInfo operateInfo = OperateInfo.Create();
+            operateInfo.OperateType = (int)EOperateType.Move;
+            operateInfo.InputType = (int)EInputType.KeyUp;
+            self.OperateInfos.Add(operateInfo);
+        }
 
     }
 }

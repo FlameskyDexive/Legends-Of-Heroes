@@ -35,17 +35,26 @@ namespace ET.Server
                     case EOperateType.Move:
                     {
                         //收到移动消息，往前移动，如果有地形，需要判定前方位置是否可以移动。
-                        float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
-                        speed = speed == 0 ? 3 : speed;
-                        float3 v3 = unit.Position + operateInfo.Vec3 * speed / DefineCore.LogicFrame;
-                        unit.Position = v3;
-                        unit.Forward = operateInfo.Vec3;
-                        Room2C_JoystickMove m2CJoystickMove = Room2C_JoystickMove.Create();
-                        m2CJoystickMove.Position = unit.Position;
-                        m2CJoystickMove.MoveForward = unit.Forward; 
-                        m2CJoystickMove.Id = unit.Id;
-
-                        MapMessageHelper.Broadcast(unit, m2CJoystickMove);
+                        //移动逻辑挪到移动组件处理
+                        // float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
+                        // speed = speed == 0 ? 3 : speed;
+                        // float3 v3 = unit.Position + operateInfo.Vec3 * speed / DefineCore.LogicFrame;
+                        // unit.Position = v3;
+                        if ((EInputType)operateInfo.InputType == EInputType.KeyUp)
+                        {
+                            unit.GetComponent<PlayerMoveComponent>().StopMove();
+                        }
+                        else
+                        {
+                            unit.Forward = operateInfo.Vec3;
+                            unit.GetComponent<PlayerMoveComponent>().StartMove();
+                        }
+                        // Room2C_JoystickMove m2CJoystickMove = Room2C_JoystickMove.Create();
+                        // m2CJoystickMove.Position = unit.Position;
+                        // m2CJoystickMove.MoveForward = unit.Forward; 
+                        // m2CJoystickMove.Id = unit.Id;
+                        //
+                        // MapMessageHelper.Broadcast(unit, m2CJoystickMove);
                         break;
                     }
                     case EOperateType.Attack:
