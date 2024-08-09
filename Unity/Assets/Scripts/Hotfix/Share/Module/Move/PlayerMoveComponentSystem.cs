@@ -33,8 +33,8 @@ namespace ET
                 return;
             float speed = unit.GetComponent<NumericComponent>().GetAsFloat(NumericType.Speed);
             speed = speed == 0 ? 3 : speed;
-            float3 v3 = unit.Position + unit.Forward * speed / DefineCore.LogicFrame;
-            unit.Position = v3;
+            float3 deltaPos = unit.Forward * speed / DefineCore.LogicFrame;
+            unit.Position += deltaPos;
         }
         
         public static void StartMove(this PlayerMoveComponent self)

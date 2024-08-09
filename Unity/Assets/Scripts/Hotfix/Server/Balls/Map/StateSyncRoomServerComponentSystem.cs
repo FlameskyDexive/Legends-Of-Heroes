@@ -39,7 +39,10 @@ namespace ET.Server
                 if (roomPlayer.IsOnline)
                 {
                     Unit unit = roomPlayer.Unit;
+                    if (unit == null)
+                        continue;
                     TransformInfo info = TransformInfo.Create();
+                    info.UnitId = unit.Id;
                     info.Forward = unit.Forward;
                     info.Position = unit.Position;
                     sync.TransformInfos.Add(info);
