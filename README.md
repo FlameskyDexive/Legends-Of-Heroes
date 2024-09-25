@@ -58,6 +58,7 @@ English: please use your browser to translate to english
 <img src="https://user-images.githubusercontent.com/8274346/223466125-611c027a-61f3-4ea0-a96d-4052283da746.png" alt="JetBrains的Logo" width="20%" height="20%"></a></p>
 
 ## 友情链接/鸣谢
+### [Fantasy](https://github.com/qq362946/Fantasy) Fantasy是基于.NET的高性能网络开发框架，支持主流协议，前后端分离
 ### [UniJoystick](https://github.com/Bian-Sh/UniJoystick) 一个基于UGUI通用摇杆组件
 ### [X-ET7](https://github.com/IcePower/X-ET7) ET7的一个分支，集成FGUI+YooAsset+Luban 
 ### [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET) 烟雨的开源moba案例，基于ET5.X魔改
