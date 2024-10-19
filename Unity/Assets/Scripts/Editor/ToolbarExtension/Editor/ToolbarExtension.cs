@@ -6,12 +6,12 @@ using UnityEngine;
 namespace ToolbarExtension
 {
     [InitializeOnLoad]
-    internal static class ToolbarExtention
+    internal static class ToolbarExtension
     {
         private static readonly List<(int, Action)> s_LeftToolbarGUI = new List<(int, Action)>();
         private static readonly List<(int, Action)> s_RightToolbarGUI = new List<(int, Action)>();
 
-        static ToolbarExtention()
+        static ToolbarExtension()
         {
             ToolbarCallback.OnToolbarGUILeft = GUILeft;
             ToolbarCallback.OnToolbarGUIRight = GUIRight;

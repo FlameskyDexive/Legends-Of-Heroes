@@ -25,7 +25,7 @@ namespace ET.Debugger
         /// </summary>
         internal static readonly float DefaultWindowScale = 1f;
 
-        private static readonly TextEditor s_TextEditor = new TextEditor();
+        private static TextEditor s_TextEditor;
         private IDebuggerManager m_DebuggerManager = null;
         private Rect m_DragRect = new Rect(0f, 0f, float.MaxValue, 25f);
         private Rect m_IconRect = DefaultIconRect;
@@ -144,6 +144,7 @@ namespace ET.Debugger
 
             m_DebuggerManager = new DebuggerManager();
             m_FpsCounter = new FpsCounter(0.5f);
+            s_TextEditor = new TextEditor();
         }
 
         private void Start()
