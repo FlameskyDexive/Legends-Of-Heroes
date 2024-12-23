@@ -14,18 +14,18 @@
 
 English: please use your browser to translate to english
 
-一个LOL风格的[球球大作战游戏](https://github.com/FlameskyDexive/Legends-Of-Heroes)，基于ET，使用状态同步
+此项目为基于ET搭建的一个前后端游戏框架，包含基础热更流程，较为完善的战斗系统（当前已有ECS技能+Buff系统，技能编辑器/行为树编辑器开发中）。[英雄传说](https://github.com/FlameskyDexive/Legends-Of-Heroes)，基于ET，使用状态同步
 ![loh22023532242551](https://user-images.githubusercontent.com/8274346/235951176-f96efa8f-d3e5-4089-a1c9-56643859b487.gif)
 
 ## Main
 #### 基于C#双端框架[ET框架](https://github.com/egametang/ET)，[ETPlus](https://github.com/FlameskyDexive/ETPlus) ET8.1加强版(EUI+YooAsset+Luban)。 注意：当前Master正在同步ET8.1升级修改（基础热更流程，技能/Buff系统已经迁移完毕，开房间匹配跟ET8.1一样修改ConstValue数量即可，当前房间内已经支持玩家移动同步，尚缺技能、子弹同步）。
 # 觉得项目不错的话麻烦右上角给个star哈.
-#### 此游戏为ET的一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
+#### 内置一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
 ## 国内GitHub访问异常或者速度太慢可以前往Gitee [Legends-Of-Heroes](https://gitee.com/flamesky/Legends-Of-Heroes)拉取项目
 
 ## 环境：
-- 1. 安装Unity2022.3.15f1，安装VS2022/Rider2023，安装[.Net8 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0).
+- 1. 安装Unity6000.0.28f1，安装VS2022/Rider2023，安装[.Net8 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/8.0).
 - 
 ## 运行步骤：
 - 1. Unity打开编辑器菜单：ET/BuildTool,CodeMode选择Client,找到GlobalConfig, 勾选EnableDll，按F6编译客户端代码（请不要用IDE编译dll，当前仅支持Unity编译递增dll），Init场景找到Global上的Init脚本选择YooAsset运行模式为EditorSimulate
@@ -33,6 +33,8 @@ English: please use your browser to translate to english
 - 3. Unity运行游戏即可看到登录页面,输入账号密码登录即可
 
 # TODO && Features
+- [ ] 时间轴技能编辑器配套战斗系统（进行中，预估2025实现）
+- [ ] 行为树编辑器配套战斗系统（进行中，预估2025实现）
 - [x] 接入UnityC#热更新框架[HybridCLR](https://github.com/focus-creative-games/hybridclr)，包含热更新资源检测下载流程。
 - [x] 一键打包（支持HybridCLR模式一键打包，不需要分开处理，当前测过Win/Android），菜单栏：ET/Build/一键打包xxx
 - [x] 接入Unity运行时可视化Log调试组件[Debugger](https://github.com/FlameskyDexive/Debugger)
