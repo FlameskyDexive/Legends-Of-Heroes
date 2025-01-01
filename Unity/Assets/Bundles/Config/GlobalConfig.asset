@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GlobalConfig
   m_EditorClassIdentifier: 
   CodeMode: 3
-  EnableDll: 1
+  EnableDll: 0
   BuildType: 1
   AppType: 7
-  CodeVersion: 1
+  CodeVersion: 2
