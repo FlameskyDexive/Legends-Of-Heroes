@@ -12,7 +12,7 @@
     <img src="https://img.shields.io/github/last-commit/FlameskyDexive/Legends-Of-Heroes?color=%231AE66B&label=last-commit&style=plastic" alt="">
 </div>
 
-English: please use your browser to translate to english
+English: Please translate it by your browser.
 
 此项目为基于ET搭建的一个前后端游戏框架，包含基础热更流程，较为完善的战斗系统（当前已有ECS技能+Buff系统，技能编辑器/行为树编辑器开发中）。[英雄传说](https://github.com/FlameskyDexive/Legends-Of-Heroes)，基于ET，使用状态同步
 ![loh22023532242551](https://user-images.githubusercontent.com/8274346/235951176-f96efa8f-d3e5-4089-a1c9-56643859b487.gif)
