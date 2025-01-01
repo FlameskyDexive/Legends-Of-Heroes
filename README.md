@@ -20,6 +20,7 @@ English: Please translate it by your browser.
 ## Main
 #### 基于C#双端框架[ET框架](https://github.com/egametang/ET)，[ETPlus](https://github.com/FlameskyDexive/ETPlus) ET8.1加强版(EUI+YooAsset+Luban)。 注意：当前Master正在同步ET8.1升级修改（基础热更流程，技能/Buff系统已经迁移完毕，开房间匹配跟ET8.1一样修改ConstValue数量即可，当前房间内已经支持玩家移动同步，尚缺技能、子弹同步）。
 # 觉得项目不错的话麻烦右上角给个star哈.
+# 视频解说，当前暂时只录了一个演示[实操/打包匹配](https://www.bilibili.com/video/BV1sP6fY2EQU/)视频，后续会把每个模块都出对应一个视频来解说下设计思路跟使用方式。
 #### 内置一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
 
 ## 国内GitHub访问异常或者速度太慢可以前往Gitee [Legends-Of-Heroes](https://gitee.com/flamesky/Legends-Of-Heroes)拉取项目
