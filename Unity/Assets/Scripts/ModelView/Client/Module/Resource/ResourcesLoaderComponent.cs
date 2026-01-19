@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using YooAsset;
+using SceneHandle = YooAsset.SceneHandle;
 
 namespace ET.Client
 {
