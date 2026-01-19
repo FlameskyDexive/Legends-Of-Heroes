@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(dotnet build:*)",
+      "Bash(mv:*)",
+      "Bash(rm:*)",
+      "Bash(dotnet:*)",
+      "Bash(find:*)",
+      "Bash(pwsh:*)",
+      "mcp__ide__getDiagnostics",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(pwsh -Command \"dotnet build ET.sln 2>&1 | grep TargetComponent\")",
+      "Bash(touch:*)",
+      "Bash(/dev/null)",
+      "Bash(echo:*)",
+      "Bash(rg:*)",
+      "Bash(for pkg in core excel proto unit ai behaviortree http startconfig aoi numeric move recast netinner router actorlocation map)",
+      "Bash(do)",
+      "Bash(then)",
+      "Bash(fi)",
+      "Bash(done)",
+      "Bash(pkill:*)",
+      "Bash(true)",
+      "Bash(timeout:*)",
+      "Bash(git checkout:*)",
+      "Bash(chmod:*)",
+      "Bash(./view_analyzer_log.sh:*)",
+      "Bash(bash:*)",
+      "Bash(pwsh -Command \"New-Item -ItemType Directory -Path ''Packages/cn.etetet.achievement'' -Force\")",
+      "Bash(git add:*)",
+      "Bash(tree:*)",
+      "Bash(printf:*)"
+    ],
+    "deny": []
+  }
+}
