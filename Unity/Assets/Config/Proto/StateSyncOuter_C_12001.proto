@@ -58,6 +58,88 @@ message G2C_StateSyncReconnect // IMessage
 	int32 Frame = 3;
 }
 
+///////////////////////////////// Match Start ///////////////////////////////////
+
+// ResponseType Match2G_CreateRoom
+message G2Match_CreateRoom // ILocationRequest
+{
+	int32 RpcId = 1;
+	int64 PlayerId = 2;
+	string RoomName = 3;
+	RoomMode Mode = 4;
+	int32 MaxPlayers = 5;
+	string Password = 6;
+}
+
+message Match2G_CreateRoom // ILocationResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	RoomInfo RoomInfo = 4;
+}
+
+// ResponseType Match2G_JoinRoom
+message G2Match_JoinRoom // ILocationRequest
+{
+	int32 RpcId = 1;
+	int64 PlayerId = 2;
+	int64 RoomId = 3;
+	string Password = 4;
+}
+
+message Match2G_JoinRoom // ILocationResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	RoomInfo RoomInfo = 4;
+}
+
+// ResponseType Match2G_LeaveRoom
+message G2Match_LeaveRoom // ILocationRequest
+{
+	int32 RpcId = 1;
+	int64 PlayerId = 2;
+}
+
+message Match2G_LeaveRoom // ILocationResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+// ResponseType Match2G_CancelMatch
+message G2Match_CancelMatch // ILocationRequest
+{
+	int32 RpcId = 1;
+	int64 PlayerId = 2;
+}
+
+message Match2G_CancelMatch // ILocationResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+// ResponseType Match2G_GetRoomList
+message G2Match_GetRoomList // ILocationRequest
+{
+	int32 RpcId = 1;
+	RoomMode Mode = 2;
+}
+
+message Match2G_GetRoomList // ILocationResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	repeated RoomInfo RoomList = 4;
+}
+
+///////////////////////////////// Match End ///////////////////////////////////
 
 ///////////////////////////////// Map Start ///////////////////////////////////
 

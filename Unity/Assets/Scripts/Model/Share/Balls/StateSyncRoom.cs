@@ -8,10 +8,24 @@ namespace ET
         public Fiber Fiber { get; set; }
         public SceneType SceneType { get; set; } = SceneType.Room;
         public string Name { get; set; }
-        
+
         public long StartTime { get; set; }
 
-        // 玩家id列表
-        public List<long> PlayerIds { get; } = new(ConstValue.StateSyncMatchCount);
+        public long RoomId { get; set; }
+
+        public string RoomName { get; set; }
+
+        public RoomMode Mode { get; set; }
+
+        public int MaxPlayers { get; set; }
+
+        public long CreatorId { get; set; }
+
+        public string Password { get; set; }
+
+        public RoomStatus Status { get; set; }
+
+        public bool IsReady { get; set; }
+        public List<long> PlayerIds { get; set; }
     }
 }

@@ -280,6 +280,42 @@ namespace ET
         }
     }
 
+    public enum RoomStatus
+    {
+        /// <summary>
+        /// 等待玩家
+        /// </summary>
+        Waiting = 0,
+        /// <summary>
+        /// 准备就绪，开始倒计时
+        /// </summary>
+        Ready = 1,
+        /// <summary>
+        /// 游戏进行中
+        /// </summary>
+        Playing = 2,
+        /// <summary>
+        /// 游戏结束
+        /// </summary>
+        Finished = 3,
+    }
+
+    public enum RoomMode
+    {
+        /// <summary>
+        /// 1v1模式
+        /// </summary>
+        Mode1v1 = 0,
+        /// <summary>
+        /// 2v2模式
+        /// </summary>
+        Mode2v2 = 1,
+        /// <summary>
+        /// 自由模式
+        /// </summary>
+        ModeFree = 2,
+    }
+
     [MemoryPackable]
     [Message(OuterMessage.RoomInfo)]
     public partial class RoomInfo : MessageObject
@@ -307,6 +343,42 @@ namespace ET
         [MemoryPackOrder(3)]
         public bool IsReady { get; set; }
 
+        /// <summary>
+        /// 房间状态
+        /// </summary>
+        [MemoryPackOrder(4)]
+        public RoomStatus Status { get; set; }
+
+        /// <summary>
+        /// 房间模式
+        /// </summary>
+        [MemoryPackOrder(5)]
+        public RoomMode Mode { get; set; }
+
+        /// <summary>
+        /// 最大玩家数
+        /// </summary>
+        [MemoryPackOrder(6)]
+        public int MaxPlayers { get; set; }
+
+        /// <summary>
+        /// 房间创建者ID
+        /// </summary>
+        [MemoryPackOrder(7)]
+        public long CreatorId { get; set; }
+
+        /// <summary>
+        /// 房间名称
+        /// </summary>
+        [MemoryPackOrder(8)]
+        public string RoomName { get; set; }
+
+        /// <summary>
+        /// 房间密码（可选）
+        /// </summary>
+        [MemoryPackOrder(9)]
+        public string Password { get; set; }
+
         public override void Dispose()
         {
             if (!this.IsFromPool)
@@ -318,6 +390,464 @@ namespace ET
             this.PlayerInfo.Clear();
             this.PlayMode = default;
             this.IsReady = default;
+            this.Status = default;
+            this.Mode = default;
+            this.MaxPlayers = default;
+            this.CreatorId = default;
+            this.RoomName = default;
+            this.Password = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.C2G_CreateRoom)]
+    [ResponseType(nameof(G2C_CreateRoom))]
+    public partial class C2G_CreateRoom : MessageObject, ISessionRequest
+    {
+        public static C2G_CreateRoom Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(C2G_CreateRoom), isFromPool) as C2G_CreateRoom;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        /// <summary>
+        /// 房间名称
+        /// </summary>
+        [MemoryPackOrder(1)]
+        public string RoomName { get; set; }
+
+        /// <summary>
+        /// 房间模式
+        /// </summary>
+        [MemoryPackOrder(2)]
+        public RoomMode Mode { get; set; }
+
+        /// <summary>
+        /// 最大玩家数
+        /// </summary>
+        [MemoryPackOrder(3)]
+        public int MaxPlayers { get; set; }
+
+        /// <summary>
+        /// 房间密码（可选）
+        /// </summary>
+        [MemoryPackOrder(4)]
+        public string Password { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.RoomName = default;
+            this.Mode = default;
+            this.MaxPlayers = default;
+            this.Password = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.G2C_CreateRoom)]
+    public partial class G2C_CreateRoom : MessageObject, ISessionResponse
+    {
+        public static G2C_CreateRoom Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2C_CreateRoom), isFromPool) as G2C_CreateRoom;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        [MemoryPackOrder(1)]
+        public int Error { get; set; }
+
+        [MemoryPackOrder(2)]
+        public string Message { get; set; }
+
+        /// <summary>
+        /// 创建的房间信息
+        /// </summary>
+        [MemoryPackOrder(3)]
+        public RoomInfo RoomInfo { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.Error = default;
+            this.Message = default;
+            this.RoomInfo = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.C2G_JoinRoom)]
+    [ResponseType(nameof(G2C_JoinRoom))]
+    public partial class C2G_JoinRoom : MessageObject, ISessionRequest
+    {
+        public static C2G_JoinRoom Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(C2G_JoinRoom), isFromPool) as C2G_JoinRoom;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        /// <summary>
+        /// 房间ID
+        /// </summary>
+        [MemoryPackOrder(1)]
+        public long RoomId { get; set; }
+
+        /// <summary>
+        /// 房间密码（如果需要）
+        /// </summary>
+        [MemoryPackOrder(2)]
+        public string Password { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.RoomId = default;
+            this.Password = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.G2C_JoinRoom)]
+    public partial class G2C_JoinRoom : MessageObject, ISessionResponse
+    {
+        public static G2C_JoinRoom Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2C_JoinRoom), isFromPool) as G2C_JoinRoom;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        [MemoryPackOrder(1)]
+        public int Error { get; set; }
+
+        [MemoryPackOrder(2)]
+        public string Message { get; set; }
+
+        /// <summary>
+        /// 加入的房间信息
+        /// </summary>
+        [MemoryPackOrder(3)]
+        public RoomInfo RoomInfo { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.Error = default;
+            this.Message = default;
+            this.RoomInfo = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.C2G_GetRoomList)]
+    [ResponseType(nameof(G2C_GetRoomList))]
+    public partial class C2G_GetRoomList : MessageObject, ISessionRequest
+    {
+        public static C2G_GetRoomList Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(C2G_GetRoomList), isFromPool) as C2G_GetRoomList;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        /// <summary>
+        /// 筛选模式（可选）
+        /// </summary>
+        [MemoryPackOrder(1)]
+        public RoomMode Mode { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.Mode = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.G2C_GetRoomList)]
+    public partial class G2C_GetRoomList : MessageObject, ISessionResponse
+    {
+        public static G2C_GetRoomList Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2C_GetRoomList), isFromPool) as G2C_GetRoomList;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        [MemoryPackOrder(1)]
+        public int Error { get; set; }
+
+        [MemoryPackOrder(2)]
+        public string Message { get; set; }
+
+        /// <summary>
+        /// 房间列表
+        /// </summary>
+        [MemoryPackOrder(3)]
+        public List<RoomInfo> RoomList { get; set; } = new();
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.Error = default;
+            this.Message = default;
+            this.RoomList.Clear();
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.C2G_LeaveRoom)]
+    [ResponseType(nameof(G2C_LeaveRoom))]
+    public partial class C2G_LeaveRoom : MessageObject, ISessionRequest
+    {
+        public static C2G_LeaveRoom Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(C2G_LeaveRoom), isFromPool) as C2G_LeaveRoom;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.G2C_LeaveRoom)]
+    public partial class G2C_LeaveRoom : MessageObject, ISessionResponse
+    {
+        public static G2C_LeaveRoom Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2C_LeaveRoom), isFromPool) as G2C_LeaveRoom;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        [MemoryPackOrder(1)]
+        public int Error { get; set; }
+
+        [MemoryPackOrder(2)]
+        public string Message { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.Error = default;
+            this.Message = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.C2G_CancelMatch)]
+    [ResponseType(nameof(G2C_CancelMatch))]
+    public partial class C2G_CancelMatch : MessageObject, ISessionRequest
+    {
+        public static C2G_CancelMatch Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(C2G_CancelMatch), isFromPool) as C2G_CancelMatch;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(OuterMessage.G2C_CancelMatch)]
+    public partial class G2C_CancelMatch : MessageObject, ISessionResponse
+    {
+        public static G2C_CancelMatch Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2C_CancelMatch), isFromPool) as G2C_CancelMatch;
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+
+        [MemoryPackOrder(1)]
+        public int Error { get; set; }
+
+        [MemoryPackOrder(2)]
+        public string Message { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RpcId = default;
+            this.Error = default;
+            this.Message = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    // 房间信息变化通知（广播给房间内玩家）
+    [MemoryPackable]
+    [Message(OuterMessage.G2C_RoomInfoChanged)]
+    public partial class G2C_RoomInfoChanged : MessageObject, ISessionMessage
+    {
+        public static G2C_RoomInfoChanged Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2C_RoomInfoChanged), isFromPool) as G2C_RoomInfoChanged;
+        }
+
+        /// <summary>
+        /// 更新的房间信息
+        /// </summary>
+        [MemoryPackOrder(0)]
+        public RoomInfo RoomInfo { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.RoomInfo = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    // 玩家加入房间通知（广播给房间内其他玩家）
+    [MemoryPackable]
+    [Message(OuterMessage.G2C_PlayerJoinRoom)]
+    public partial class G2C_PlayerJoinRoom : MessageObject, ISessionMessage
+    {
+        public static G2C_PlayerJoinRoom Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2C_PlayerJoinRoom), isFromPool) as G2C_PlayerJoinRoom;
+        }
+
+        /// <summary>
+        /// 加入的玩家信息
+        /// </summary>
+        [MemoryPackOrder(0)]
+        public PlayerInfo PlayerInfo { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.PlayerInfo = default;
+
+            ObjectPool.Instance.Recycle(this);
+        }
+    }
+
+    // 玩家离开房间通知（广播给房间内其他玩家）
+    [MemoryPackable]
+    [Message(OuterMessage.G2C_PlayerLeaveRoom)]
+    public partial class G2C_PlayerLeaveRoom : MessageObject, ISessionMessage
+    {
+        public static G2C_PlayerLeaveRoom Create(bool isFromPool = false)
+        {
+            return ObjectPool.Instance.Fetch(typeof(G2C_PlayerLeaveRoom), isFromPool) as G2C_PlayerLeaveRoom;
+        }
+
+        /// <summary>
+        /// 离开的玩家ID
+        /// </summary>
+        [MemoryPackOrder(0)]
+        public long PlayerId { get; set; }
+
+        public override void Dispose()
+        {
+            if (!this.IsFromPool)
+            {
+                return;
+            }
+
+            this.PlayerId = default;
 
             ObjectPool.Instance.Recycle(this);
         }
@@ -1309,36 +1839,49 @@ namespace ET
         public const ushort MoveInfo = 10008;
         public const ushort PlayerInfo = 10009;
         public const ushort RoomInfo = 10010;
-        public const ushort UnitInfo = 10011;
-        public const ushort AttributeInfo = 10012;
-        public const ushort M2C_SyncUnitAttributes = 10013;
-        public const ushort TransformInfo = 10014;
-        public const ushort M2C_SyncUnitTransforms = 10015;
-        public const ushort M2C_CreateUnits = 10016;
-        public const ushort M2C_CreateMyUnit = 10017;
-        public const ushort M2C_StartSceneChange = 10018;
-        public const ushort M2C_RemoveUnits = 10019;
-        public const ushort C2M_PathfindingResult = 10020;
-        public const ushort C2M_Stop = 10021;
-        public const ushort M2C_PathfindingResult = 10022;
-        public const ushort M2C_Stop = 10023;
-        public const ushort C2G_Ping = 10024;
-        public const ushort G2C_Ping = 10025;
-        public const ushort G2C_Test = 10026;
-        public const ushort C2M_Reload = 10027;
-        public const ushort M2C_Reload = 10028;
-        public const ushort C2R_Login = 10029;
-        public const ushort R2C_Login = 10030;
-        public const ushort C2G_LoginGate = 10031;
-        public const ushort G2C_LoginGate = 10032;
-        public const ushort G2C_TestHotfixMessage = 10033;
-        public const ushort C2M_TestRobotCase = 10034;
-        public const ushort M2C_TestRobotCase = 10035;
-        public const ushort C2M_TestRobotCase2 = 10036;
-        public const ushort M2C_TestRobotCase2 = 10037;
-        public const ushort C2M_TransferMap = 10038;
-        public const ushort M2C_TransferMap = 10039;
-        public const ushort C2G_Benchmark = 10040;
-        public const ushort G2C_Benchmark = 10041;
+        public const ushort C2G_CreateRoom = 10011;
+        public const ushort G2C_CreateRoom = 10012;
+        public const ushort C2G_JoinRoom = 10013;
+        public const ushort G2C_JoinRoom = 10014;
+        public const ushort C2G_GetRoomList = 10015;
+        public const ushort G2C_GetRoomList = 10016;
+        public const ushort C2G_LeaveRoom = 10017;
+        public const ushort G2C_LeaveRoom = 10018;
+        public const ushort C2G_CancelMatch = 10019;
+        public const ushort G2C_CancelMatch = 10020;
+        public const ushort G2C_RoomInfoChanged = 10021;
+        public const ushort G2C_PlayerJoinRoom = 10022;
+        public const ushort G2C_PlayerLeaveRoom = 10023;
+        public const ushort UnitInfo = 10024;
+        public const ushort AttributeInfo = 10025;
+        public const ushort M2C_SyncUnitAttributes = 10026;
+        public const ushort TransformInfo = 10027;
+        public const ushort M2C_SyncUnitTransforms = 10028;
+        public const ushort M2C_CreateUnits = 10029;
+        public const ushort M2C_CreateMyUnit = 10030;
+        public const ushort M2C_StartSceneChange = 10031;
+        public const ushort M2C_RemoveUnits = 10032;
+        public const ushort C2M_PathfindingResult = 10033;
+        public const ushort C2M_Stop = 10034;
+        public const ushort M2C_PathfindingResult = 10035;
+        public const ushort M2C_Stop = 10036;
+        public const ushort C2G_Ping = 10037;
+        public const ushort G2C_Ping = 10038;
+        public const ushort G2C_Test = 10039;
+        public const ushort C2M_Reload = 10040;
+        public const ushort M2C_Reload = 10041;
+        public const ushort C2R_Login = 10042;
+        public const ushort R2C_Login = 10043;
+        public const ushort C2G_LoginGate = 10044;
+        public const ushort G2C_LoginGate = 10045;
+        public const ushort G2C_TestHotfixMessage = 10046;
+        public const ushort C2M_TestRobotCase = 10047;
+        public const ushort M2C_TestRobotCase = 10048;
+        public const ushort C2M_TestRobotCase2 = 10049;
+        public const ushort M2C_TestRobotCase2 = 10050;
+        public const ushort C2M_TransferMap = 10051;
+        public const ushort M2C_TransferMap = 10052;
+        public const ushort C2G_Benchmark = 10053;
+        public const ushort G2C_Benchmark = 10054;
     }
 }

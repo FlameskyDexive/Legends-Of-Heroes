@@ -26,7 +26,7 @@ namespace ET
         [EntitySystem]
         public static void Awake(this StateSyncRoom self)
         {
-            
+            self.PlayerIds = new List<long>();
         }
 
         [EntitySystem]

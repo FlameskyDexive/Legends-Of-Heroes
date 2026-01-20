@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
@@ -14,6 +14,8 @@ namespace ET.Client
 		{
 			self.View.EEnterMapButton.AddListenerAsync(self.Root(), self.EnterMap);
 			self.View.EMatchButton.AddListenerAsync(self.Root(), self.Match);
+			self.View.ECreateRoomButton.AddListener(self.Root(), self.OnCreateRoomClick);
+			self.View.ERoomListButton.AddListener(self.Root(), self.OnRoomListClick);
 		}
 
 		public static void ShowWindow(this DlgLobby self, Entity contextData = null)
@@ -33,6 +35,16 @@ namespace ET.Client
 			Scene root = self.Root();
 			await EnterMapHelper.StateSyncMatch(self.Fiber());
 			root.GetComponent<UIComponent>().CloseWindow(WindowID.WindowID_Lobby);
+		}
+
+		public static void OnCreateRoomClick(this DlgLobby self)
+		{
+			self.Root().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_CreateRoom);
+		}
+
+		public static void OnRoomListClick(this DlgLobby self)
+		{
+			self.Root().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_RoomList);
 		}
 
 	}

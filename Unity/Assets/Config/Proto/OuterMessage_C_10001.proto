@@ -62,13 +62,126 @@ message PlayerInfo
 	int32 AvatarIndex = 8;
 }
 
+enum RoomStatus
+{
+    Waiting = 0; // 等待玩家
+    Ready = 1; // 准备就绪，开始倒计时
+    Playing = 2; // 游戏进行中
+    Finished = 3; // 游戏结束
+}
+
+enum RoomMode
+{
+    Mode1v1 = 0; // 1v1模式
+    Mode2v2 = 1; // 2v2模式
+    ModeFree = 2; // 自由模式
+}
+
 message RoomInfo
 {
     int64 RoomId = 1; //加入的房间Id
     repeated PlayerInfo PlayerInfo = 2;
 	int32 PlayMode = 3;
 	bool IsReady = 4;//是否满人，满人开始倒计时进入战场
-	
+	RoomStatus Status = 5; // 房间状态
+	RoomMode Mode = 6; // 房间模式
+	int32 MaxPlayers = 7; // 最大玩家数
+	int64 CreatorId = 8; // 房间创建者ID
+	string RoomName = 9; // 房间名称
+	string Password = 10; // 房间密码（可选）
+}
+
+// ResponseType G2C_CreateRoom
+message C2G_CreateRoom // ISessionRequest
+{
+	int32 RpcId = 1;
+	string RoomName = 2; // 房间名称
+	RoomMode Mode = 3; // 房间模式
+	int32 MaxPlayers = 4; // 最大玩家数
+	string Password = 5; // 房间密码（可选）
+}
+
+message G2C_CreateRoom // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	RoomInfo RoomInfo = 4; // 创建的房间信息
+}
+
+// ResponseType G2C_JoinRoom
+message C2G_JoinRoom // ISessionRequest
+{
+	int32 RpcId = 1;
+	int64 RoomId = 2; // 房间ID
+	string Password = 3; // 房间密码（如果需要）
+}
+
+message G2C_JoinRoom // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	RoomInfo RoomInfo = 4; // 加入的房间信息
+}
+
+// ResponseType G2C_GetRoomList
+message C2G_GetRoomList // ISessionRequest
+{
+	int32 RpcId = 1;
+	RoomMode Mode = 2; // 筛选模式（可选）
+}
+
+message G2C_GetRoomList // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+	repeated RoomInfo RoomList = 4; // 房间列表
+}
+
+// ResponseType G2C_LeaveRoom
+message C2G_LeaveRoom // ISessionRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_LeaveRoom // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+// ResponseType G2C_CancelMatch
+message C2G_CancelMatch // ISessionRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_CancelMatch // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}
+
+// 房间信息变化通知（广播给房间内玩家）
+message G2C_RoomInfoChanged // ISessionMessage
+{
+	RoomInfo RoomInfo = 1; // 更新的房间信息
+}
+
+// 玩家加入房间通知（广播给房间内其他玩家）
+message G2C_PlayerJoinRoom // ISessionMessage
+{
+	PlayerInfo PlayerInfo = 1; // 加入的玩家信息
+}
+
+// 玩家离开房间通知（广播给房间内其他玩家）
+message G2C_PlayerLeaveRoom // ISessionMessage
+{
+	int64 PlayerId = 1; // 离开的玩家ID
 }
 
 message UnitInfo

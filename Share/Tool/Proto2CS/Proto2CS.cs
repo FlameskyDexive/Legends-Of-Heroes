@@ -73,7 +73,9 @@ namespace ET
             sb.Append("{\n");
 
             bool isMsgStart = false;
+            bool isEnumStart = false;
             string msgName = "";
+            string enumName = "";
             string responseType = "";
             StringBuilder sbDispose = new();
             Regex responseTypeRegex = ResponseTypeRegex();
@@ -92,7 +94,7 @@ namespace ET
                     continue;
                 }
 
-                if (!isMsgStart && newline.StartsWith("//"))
+                if (!isMsgStart && !isEnumStart && newline.StartsWith("//"))
                 {
                     if (newline.StartsWith("///"))
                     {
@@ -105,6 +107,14 @@ namespace ET
                         sb.Append($"\t// {newline.TrimStart('/', ' ')}\n");
                     }
 
+                    continue;
+                }
+
+                if (newline.StartsWith("enum"))
+                {
+                    isEnumStart = true;
+                    enumName = newline.Split(splitChars, StringSplitOptions.RemoveEmptyEntries)[1];
+                    sb.Append($"\tpublic enum {enumName}\n");
                     continue;
                 }
 
@@ -142,6 +152,55 @@ namespace ET
                     else
                     {
                         sb.Append('\n');
+                    }
+
+                    continue;
+                }
+
+                if (isEnumStart)
+                {
+                    if (newline.StartsWith('{'))
+                    {
+                        sb.Append("\t{\n");
+                        continue;
+                    }
+
+                    if (newline.StartsWith('}'))
+                    {
+                        isEnumStart = false;
+                        sb.Append("\t}\n\n");
+                        continue;
+                    }
+
+                    if (newline.StartsWith("//"))
+                    {
+                        sb.Append("\t\t/// <summary>\n");
+                        sb.Append($"\t\t/// {newline.TrimStart('/', ' ')}\n");
+                        sb.Append("\t\t/// </summary>\n");
+                        continue;
+                    }
+
+                    string memberStr;
+                    if (newline.Contains("//"))
+                    {
+                        string[] lineSplit = newline.Split("//");
+                        memberStr = lineSplit[0].Trim();
+                        sb.Append("\t\t/// <summary>\n");
+                        sb.Append($"\t\t/// {lineSplit[1].Trim()}\n");
+                        sb.Append("\t\t/// </summary>\n");
+                    }
+                    else
+                    {
+                        memberStr = newline;
+                    }
+
+                    if (memberStr.EndsWith(";"))
+                    {
+                        memberStr = memberStr.TrimEnd(';');
+                        string[] parts = memberStr.Split(['='], StringSplitOptions.RemoveEmptyEntries);
+                        string name = parts[0].Trim();
+                        string value = parts.Length > 1 ? parts[1].Trim() : "";
+                        sb.Append($"\t\t{name} = {value},\n");
                     }
 
                     continue;

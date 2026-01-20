@@ -14,5 +14,8 @@ namespace ET.Client
 		WindowID_LSRoom,
         WindowID_Battle,            //战斗界面
         WindowID_Room,              //房间界面
+        
+        WindowID_CreateRoom = 1000,
+        WindowID_RoomList = 1001,
     }
 }

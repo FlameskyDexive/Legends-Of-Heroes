@@ -1,4 +1,4 @@
-﻿
+
 using UnityEngine;
 using UnityEngine.UI;
 namespace ET.Client
@@ -143,6 +143,40 @@ namespace ET.Client
      		}
      	}
 
+	public UnityEngine.UI.Button ECreateRoomButton
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_ECreateRoomButton == null )
+     			{
+		    		this.m_ECreateRoomButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"EGBackGround/ECreateRoom");
+     			}
+     			return this.m_ECreateRoomButton;
+     		}
+     	}
+
+	public UnityEngine.UI.Button ERoomListButton
+     	{
+     		get
+     		{
+     			if (this.uiTransform == null)
+     			{
+     				Log.Error("uiTransform is null.");
+     				return null;
+     			}
+     			if( this.m_ERoomListButton == null )
+     			{
+		    		this.m_ERoomListButton = UIFindHelper.FindDeepChild<UnityEngine.UI.Button>(this.uiTransform.gameObject,"EGBackGround/ERoomList");
+     			}
+     			return this.m_ERoomListButton;
+     		}
+     	}
+
 		public UnityEngine.UI.Button EBackToLoginButton
      	{
      		get
@@ -187,6 +221,8 @@ namespace ET.Client
 			this.m_EPlayerNameText = null;
 			this.m_EMatchButton = null;
 			this.m_EMatchImage = null;
+			this.m_ECreateRoomButton = null;
+			this.m_ERoomListButton = null;
 			this.m_EBackToLoginButton = null;
 			this.m_EBackToLoginImage = null;
 			this.uiTransform = null;
@@ -200,6 +236,8 @@ namespace ET.Client
 		private UnityEngine.UI.Text m_EPlayerNameText = null;
 		private UnityEngine.UI.Button m_EMatchButton = null;
 		private UnityEngine.UI.Image m_EMatchImage = null;
+		private UnityEngine.UI.Button m_ECreateRoomButton = null;
+		private UnityEngine.UI.Button m_ERoomListButton = null;
 		private UnityEngine.UI.Button m_EBackToLoginButton = null;
 		private UnityEngine.UI.Image m_EBackToLoginImage = null;
 		public Transform uiTransform = null;

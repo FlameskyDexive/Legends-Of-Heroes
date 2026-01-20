@@ -7,7 +7,11 @@ namespace ET.Server
         public int Progress { get; set; }
 
         public bool IsOnline { get; set; } = true;
-        
+
+        public bool IsCreator { get; set; }
+
+        public bool IsReady { get; set; }
+
         public EntityRef<Unit> Unit { get; set; }
     }
 }
