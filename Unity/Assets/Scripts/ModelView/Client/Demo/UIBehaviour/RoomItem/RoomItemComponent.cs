@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace ET.Client
 {
-    [EnableMethod]
+    [EnableClass]
     public class RoomItemComponent : MonoBehaviour
     {
         public Text RoomNameText;

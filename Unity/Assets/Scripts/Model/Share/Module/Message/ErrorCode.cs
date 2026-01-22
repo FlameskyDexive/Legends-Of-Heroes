@@ -22,5 +22,6 @@ namespace ET
 
 
         public const int ERR_LoginError = 400003;  // 登录失败
+        public const int ERR_PlayerNotFound = 400004;  // 登录失败
     }
 }
