@@ -14,12 +14,6 @@
       "dependencies": {},
       "hash": "286a8caeacca6c0414b944a5ed01647a10435ec5"
     },
-    "com.dbrizov.naughtyattributes": {
-      "version": "file:NaughtyAttributes",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
-    },
     "com.gwiazdorrr.betterstreamingassets": {
       "version": "file:betterstreamingassets",
       "depth": 0,
@@ -97,12 +91,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "com.wooshii.hierarchydecorator": {
-      "version": "file:HierarchyDecorator",
-      "depth": 0,
-      "source": "embedded",
-      "dependencies": {}
     },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
