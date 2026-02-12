@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.code-philosophy.hybridclr": "https://gitee.com/focus-creative-games/hybridclr_unity.git",
+    "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
     "com.cysharp.memorypack": "https://gitee.com/flamesky/MemoryPack.git?path=src/MemoryPack.Unity/Assets/Plugins/MemoryPack",
     "com.gwiazdorrr.betterstreamingassets": "https://github.com/gwiazdorrr/BetterStreamingAssets.git",
     "com.tuyoogame.yooasset": "2.1.2",
