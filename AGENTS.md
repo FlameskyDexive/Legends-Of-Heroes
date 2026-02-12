@@ -117,6 +117,24 @@ Legends-Of-Heroes/
 
 **注意**：详细编写规范请查看 `Packages/cn.etetet.test/README.md`
 
+### et-eui - EUI流程与UnityMCP自动化专家
+
+**使用场景**：
+- 分析 EUI 的 prefab 创建/命名/绑定/生成代码/运行链路
+- 使用 UnityMCP 自动化执行 UI 业务流程（生成、编译、Play 冒烟、日志验收）
+- 排查 UI 打不开、控件绑定为 null、循环列表不刷新等问题
+
+**调用方式**：
+```
+/et-eui
+```
+
+**配套文档**：
+- 入口导航：`Agents/skills/et-eui-index.md`
+- 机制说明：`Agents/skills/et-eui.md`
+- 执行手册：`Agents/skills/et-eui-runbook.md`
+- 提测清单：`Agents/skills/et-eui-checklist.md`
+
 ## Claude AI 使用规范
 
 ### 命令执行规范
