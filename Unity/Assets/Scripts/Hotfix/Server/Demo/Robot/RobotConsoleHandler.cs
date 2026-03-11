@@ -55,6 +55,20 @@ namespace ET.Server
                     }
                     break;
                 }
+                case "LoadTree":
+                {
+                    string treeName = ss.Length > 1 ? ss[1] : "AITest";
+                    BehaviorTreePackage package = BehaviorTreeLoader.Instance.LoadPackage(treeName, false);
+                    if (package == null)
+                    {
+                        Log.Debug($"load behavior tree failed: {treeName}");
+                        break;
+                    }
+
+                    BehaviorTreeDefinition entryTree = package.GetEntryTree();
+                    Log.Debug($"behavior tree loaded: {treeName}, package={package.PackageName}, treeCount={package.Trees.Count}, entry={entryTree?.TreeName}, nodeCount={entryTree?.Nodes.Count ?? 0}");
+                    break;
+                }
             }
             await ETTask.CompletedTask;
         }
