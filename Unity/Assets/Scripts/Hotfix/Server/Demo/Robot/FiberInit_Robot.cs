@@ -22,7 +22,7 @@
             
             await EnterMapHelper.EnterMapAsync(root);
             
-            root.AddComponent<AIComponent, int>(1);
+            await ETTask.CompletedTask;
         }
     }
 }

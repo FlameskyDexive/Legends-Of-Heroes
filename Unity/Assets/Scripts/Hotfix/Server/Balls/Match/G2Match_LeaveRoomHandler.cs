@@ -40,7 +40,7 @@ namespace ET.Server
                 return;
             }
 
-            matchComponent.waitMatchStateSyncPlayers.Remove(playerId);
+            // matchComponent.waitMatchStateSyncPlayers.Remove(playerId);
 
             response.Error = ErrorCode.ERR_Success;
             response.Message = "Leave room success";
