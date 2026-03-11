@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -54,12 +55,18 @@ namespace ET
                 return null;
             }
 
-            if (this.selectedRuntimeId != 0)
+            BehaviorTreeDebugHub debugHub = BehaviorTreeDebugHub.Instance;
+            if (debugHub == null)
             {
-                return BehaviorTreeDebugHub.Instance.GetSnapshot(this.selectedRuntimeId);
+                return null;
             }
 
-            return BehaviorTreeDebugHub.Instance.GetSnapshots(this.asset.TreeId).FirstOrDefault();
+            if (this.selectedRuntimeId != 0)
+            {
+                return debugHub.GetSnapshot(this.selectedRuntimeId);
+            }
+
+            return debugHub.GetSnapshots(this.asset.TreeId).FirstOrDefault();
         }
 
         public void MarkAssetDirty()
@@ -218,7 +225,10 @@ namespace ET
 
             EditorGUILayout.Space(8);
             EditorGUILayout.LabelField("Runtime Debug", EditorStyles.boldLabel);
-            var snapshots = BehaviorTreeDebugHub.Instance.GetSnapshots(this.asset.TreeId);
+            BehaviorTreeDebugHub debugHub = BehaviorTreeDebugHub.Instance;
+            List<BehaviorTreeDebugSnapshot> snapshots = debugHub != null
+                    ? debugHub.GetSnapshots(this.asset.TreeId)
+                    : new List<BehaviorTreeDebugSnapshot>();
             if (snapshots.Count == 0)
             {
                 EditorGUILayout.HelpBox("No running tree instance found for this TreeId.", MessageType.None);

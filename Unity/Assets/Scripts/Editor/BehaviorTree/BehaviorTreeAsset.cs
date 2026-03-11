@@ -47,7 +47,7 @@ namespace ET
         public string TreeId = Guid.NewGuid().ToString("N");
         public string TreeName = "NewBehaviorTree";
         public string Description = string.Empty;
-        public string ExportRelativePath = "Config/BehaviorTree/NewBehaviorTree.bytes";
+        public string ExportRelativePath = "Assets/Bundles/AI/Bytes/NewBehaviorTree.bytes";
         public List<BehaviorTreeBlackboardEntryDefinition> BlackboardEntries = new();
         public List<BehaviorTreeEditorNodeData> Nodes = new();
         public string RootNodeId = string.Empty;
@@ -66,7 +66,7 @@ namespace ET
             BehaviorTreeAsset asset = CreateInstance<BehaviorTreeAsset>();
             asset.name = System.IO.Path.GetFileNameWithoutExtension(path);
             asset.TreeName = asset.name;
-            asset.ExportRelativePath = $"Config/BehaviorTree/{asset.name}.bytes";
+            asset.ExportRelativePath = $"Assets/Bundles/AI/Bytes/{asset.name}.bytes";
             asset.EnsureInitialized();
             AssetDatabase.CreateAsset(asset, path);
             AssetDatabase.SaveAssets();
@@ -93,7 +93,7 @@ namespace ET
 
             if (string.IsNullOrWhiteSpace(this.ExportRelativePath))
             {
-                this.ExportRelativePath = $"Config/BehaviorTree/{this.TreeName}.bytes";
+                this.ExportRelativePath = $"Assets/Bundles/AI/Bytes/{this.TreeName}.bytes";
             }
 
             foreach (BehaviorTreeEditorNodeData node in this.Nodes)

@@ -24,9 +24,21 @@ namespace ET.Client
                 unit.AddComponent<XunLuoPathComponent>();
             }
 
-            if (unit.GetComponent<BehaviorTreeComponent>() == null)
+            byte[] behaviorTreeBytes = await BehaviorTreeLoader.Instance.LoadBytesAsync("AITest");
+            if (behaviorTreeBytes == null || behaviorTreeBytes.Length == 0)
             {
-                unit.AddComponent<BehaviorTreeComponent, byte[], string>(BehaviorTreeClientDemoFactory.CreateRobotPatrolBytes(), "RobotPatrol");
+                await ETTask.CompletedTask;
+                return;
+            }
+
+            BehaviorTreeComponent behaviorTreeComponent = unit.GetComponent<BehaviorTreeComponent>();
+            if (behaviorTreeComponent == null)
+            {
+                unit.AddComponent<BehaviorTreeComponent, byte[], string>(behaviorTreeBytes, "AITest");
+            }
+            else
+            {
+                behaviorTreeComponent.Reload(behaviorTreeBytes, "AITest");
             }
 
             await ETTask.CompletedTask;

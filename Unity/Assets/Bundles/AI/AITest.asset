@@ -15,7 +15,7 @@ MonoBehaviour:
   TreeId: 26921c4c2bf245a89f470feda62148a5
   TreeName: AITest
   Description: 
-  ExportRelativePath: Config/BehaviorTree/AITest.bytes
+  ExportRelativePath: Assets/Bundles/AI/Bytes/AITest.bytes
   BlackboardEntries: []
   Nodes:
   - NodeId: 81e5cb47a9da44568e5c7543a6319e8e
@@ -23,13 +23,149 @@ MonoBehaviour:
     NodeKind: 0
     Position:
       serializedVersion: 2
-      x: 80
-      y: 80
-      width: 220
-      height: 120
+      x: 147.20001
+      y: 51.29599
+      width: 73.599976
+      height: 77.600006
+    ChildIds:
+    - 7db310645bf64864b157765f38d98730
+    HandlerName: 
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    SubTreeAsset: {fileID: 0}
+  - NodeId: c7056ee8296f43ef8360b0b68a794ae1
+    Title: Sequence
+    NodeKind: 1
+    Position:
+      serializedVersion: 2
+      x: 95.20001
+      y: 245.6
+      width: 104
+      height: 77.599976
+    ChildIds:
+    - 1af05a99dfc64aad8e8c12b62bc4fc5c
+    - f29912f852f54d91aec3ed646d3b6fcb
+    HandlerName: 
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    SubTreeAsset: {fileID: 0}
+  - NodeId: 1af05a99dfc64aad8e8c12b62bc4fc5c
+    Title: Wait
+    NodeKind: 12
+    Position:
+      serializedVersion: 2
+      x: 57.600037
+      y: 384.416
+      width: 88
+      height: 91.20001
     ChildIds: []
     HandlerName: 
     Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 2000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    SubTreeAsset: {fileID: 0}
+  - NodeId: 7db310645bf64864b157765f38d98730
+    Title: Repeater
+    NodeKind: 7
+    Position:
+      serializedVersion: 2
+      x: 133.07199
+      y: 128.79999
+      width: 99.19998
+      height: 91.2
+    ChildIds:
+    - c7056ee8296f43ef8360b0b68a794ae1
+    HandlerName: 
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    SubTreeAsset: {fileID: 0}
+  - NodeId: f29912f852f54d91aec3ed646d3b6fcb
+    Title: Action
+    NodeKind: 10
+    Position:
+      serializedVersion: 2
+      x: 172.14398
+      y: 384.00003
+      width: 149.59998
+      height: 91.20001
+    ChildIds: []
+    HandlerName: Log
+    Arguments:
+    - Name: logtest
+      Value:
+        ValueType: 5
+        IntValue: 0
+        LongValue: 0
+        FloatValue: 0
+        BoolValue: 0
+        StringValue: logtest
     BlackboardKey: 
     CompareOperator: 0
     CompareValue:

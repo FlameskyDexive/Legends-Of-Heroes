@@ -4,6 +4,7 @@
     "references": [
         "Unity.ThirdParty",
         "Unity.Core",
+        "Unity.Model",
         "HybridCLR.Runtime",
         "MemoryPack",
         "BetterStreamingAssets",

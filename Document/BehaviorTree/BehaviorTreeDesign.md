@@ -6,7 +6,7 @@
 - 运行时执行：`Unity/Assets/Scripts/Hotfix/Share/Module/BehaviorTree`
 - 编辑器代码：`Unity/Assets/Scripts/Editor/BehaviorTree`
 - 本地编辑资产：建议放 `Unity/Assets/Editor/BehaviorTrees`
-- 导出二进制：默认导出到 `Config/BehaviorTree/*.bytes`
+- 导出二进制：默认导出到 `Unity/Assets/Bundles/AI/Bytes/*.bytes`
 
 ## 为什么这样拆
 
@@ -40,6 +40,11 @@
 - 运行时访问：`unit.GetComponent<BehaviorTreeComponent>()?.SetBlackboardValue("HasTarget", true)`
 - 黑板初始覆盖：往 `BehaviorTreeComponent.BlackboardOverrides` 填值后再 `Restart()`
 - 服务端加载：业务层自行读取导出的 `Config/BehaviorTree/*.bytes`，再把 `bytes` 传给组件；运行时本身不依赖 `ScriptableObject`
+- 客户端本地加载：`await BehaviorTreeLoader.Instance.LoadBytesAsync("AITest")`
+- 加载分发方式：参考 `ConfigLoader`，通过 `BehaviorTreeLoader.GetOneBehaviorTreeBytes` 走 `Invoke` 分发到 Loader 层读取 bytes；编辑器模拟模式下若 `bytes` 不存在，会回退读取 `Assets/Bundles/AI/{TreeName}.asset` 并现场导出为 bytes 返回
+- 服务端纯逻辑加载：`byte[] bytes = BehaviorTreeLoader.Instance.LoadBytes("AITest")`
+- 服务端直接反序列化：`BehaviorTreePackage package = BehaviorTreeLoader.Instance.LoadPackage("AITest")`
+- Demo 导出菜单：`ET/AI/Export Demo AITest.bytes`
 
 ## 已知边界
 
