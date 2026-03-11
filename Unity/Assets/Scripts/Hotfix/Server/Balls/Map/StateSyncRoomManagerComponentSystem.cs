@@ -34,7 +34,7 @@ namespace ET.Server
         public static long GenerateRoomId(this StateSyncRoomManagerComponent self)
         {
             self.RoomIdGenerator++;
-            return TimeInfo.Instance.ServerFrame() * 10000 + self.RoomIdGenerator;
+            return TimeInfo.Instance.FrameTime * 10000 + self.RoomIdGenerator;
         }
 
         public static StateSyncRoom GetRoom(this StateSyncRoomManagerComponent self, long roomId)
@@ -46,33 +46,33 @@ namespace ET.Server
             return roomRef;
         }
 
-        public static StateSyncRoom CreateRoom(this StateSyncRoomManagerComponent self, string roomName, RoomMode mode, int maxPlayers, string password, long creatorId)
-        {
-            long roomId = self.GenerateRoomId();
+        // public static StateSyncRoom CreateRoom(this StateSyncRoomManagerComponent self, string roomName, RoomMode mode, int maxPlayers, string password, long creatorId)
+        // {
+        //     long roomId = self.GenerateRoomId();
 
-            StateSyncRoom room = self.AddChildWithId<StateSyncRoom>(roomId);
-            room.Name = "Server";
-            room.RoomId = roomId;
-            room.RoomName = roomName;
-            room.Mode = mode;
-            room.MaxPlayers = maxPlayers;
-            room.Password = password;
-            room.CreatorId = creatorId;
-            room.Status = RoomStatus.Waiting;
-            room.IsReady = false;
-            room.StartTime = TimeInfo.Instance.ServerNow();
+            // StateSyncRoom room = self.AddChildWithId<StateSyncRoom>(roomId);
+            // room.Name = "Server";
+            // room.RoomId = roomId;
+            // room.RoomName = roomName;
+            // room.Mode = mode;
+            // room.MaxPlayers = maxPlayers;
+            // room.Password = password;
+            // room.CreatorId = creatorId;
+            // room.Status = RoomStatus.Waiting;
+            // room.IsReady = false;
+            // room.StartTime = TimeInfo.Instance.ServerNow();
 
-            StateSyncRoomServerComponent serverComponent = room.AddComponent<StateSyncRoomServerComponent>();
-            StateSyncRoomPlayer creatorPlayer = serverComponent.AddChildWithId<StateSyncRoomPlayer>(creatorId);
-            creatorPlayer.IsCreator = true;
-            creatorPlayer.IsOnline = true;
-            creatorPlayer.IsReady = false;
+            // StateSyncRoomServerComponent serverComponent = room.AddComponent<StateSyncRoomServerComponent>();
+            // StateSyncRoomPlayer creatorPlayer = serverComponent.AddChildWithId<StateSyncRoomPlayer>(creatorId);
+            // creatorPlayer.IsCreator = true;
+            // creatorPlayer.IsOnline = true;
+            // creatorPlayer.IsReady = false;
 
-            self.Rooms[roomId] = room;
-            self.PlayerToRoom[creatorId] = roomId;
+            // self.Rooms[roomId] = room;
+            // self.PlayerToRoom[creatorId] = roomId;
 
-            return room;
-        }
+            // return room;
+        // }
 
         public static bool JoinRoom(this StateSyncRoomManagerComponent self, long roomId, long playerId)
         {

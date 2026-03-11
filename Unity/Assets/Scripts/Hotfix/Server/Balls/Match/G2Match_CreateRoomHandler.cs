@@ -15,12 +15,12 @@ namespace ET.Server
 
             long playerId = request.PlayerId;
 
-            if (matchComponent.waitMatchStateSyncPlayers.Contains(playerId))
-            {
-                response.Error = ErrorCode.ERR_AlreadyInMatching;
-                response.Message = "Player is already in matching";
-                return;
-            }
+            // if (matchComponent.waitMatchStateSyncPlayers.Contains(playerId))
+            // {
+            //     response.Error = ErrorCode.ERR_AlreadyInMatching;
+            //     response.Message = "Player is already in matching";
+            //     return;
+            // }
 
             if (string.IsNullOrEmpty(request.RoomName))
             {
@@ -38,24 +38,24 @@ namespace ET.Server
                 roomManagerComponent = scene.AddComponent<StateSyncRoomManagerComponent>();
             }
 
-            StateSyncRoom room = roomManagerComponent.CreateRoom(
-                request.RoomName,
-                request.Mode,
-                request.MaxPlayers,
-                request.Password,
-                playerId
-            );
-
-            if (room == null)
-            {
-                response.Error = ErrorCode.ERR_CreateRoomFailed;
-                response.Message = "Failed to create room";
-                return;
-            }
-
-            response.Error = ErrorCode.ERR_Success;
-            response.Message = "Create room success";
-            response.RoomInfo = roomManagerComponent.GetRoomInfo(room.RoomId);
+            // StateSyncRoom room = roomManagerComponent.CreateRoom(
+            //     request.RoomName,
+            //     request.Mode,
+            //     request.MaxPlayers,
+            //     request.Password,
+            //     playerId
+            // );
+            //
+            // if (room == null)
+            // {
+            //     response.Error = ErrorCode.ERR_CreateRoomFailed;
+            //     response.Message = "Failed to create room";
+            //     return;
+            // }
+            //
+            // response.Error = ErrorCode.ERR_Success;
+            // response.Message = "Create room success";
+            // response.RoomInfo = roomManagerComponent.GetRoomInfo(room.RoomId);
         }
     }
 }

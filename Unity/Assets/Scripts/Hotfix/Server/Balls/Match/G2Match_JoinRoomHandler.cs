@@ -23,44 +23,44 @@ namespace ET.Server
 
             long playerId = request.PlayerId;
 
-            if (matchComponent.waitMatchStateSyncPlayers.Contains(playerId))
-            {
-                response.Error = ErrorCode.ERR_AlreadyInMatching;
-                response.Message = "Player is already in matching";
-                return;
-            }
+            // if (matchComponent.waitMatchStateSyncPlayers.Contains(playerId))
+            // {
+            //     response.Error = ErrorCode.ERR_AlreadyInMatching;
+            //     response.Message = "Player is already in matching";
+            //     return;
+            // }
+            //
+            // if (roomManagerComponent.PlayerToRoom.ContainsKey(playerId))
+            // {
+            //     response.Error = ErrorCode.ERR_AlreadyInRoom;
+            //     response.Message = "Player is already in a room";
+            //     return;
+            // }
 
-            if (roomManagerComponent.PlayerToRoom.ContainsKey(playerId))
-            {
-                response.Error = ErrorCode.ERR_AlreadyInRoom;
-                response.Message = "Player is already in a room";
-                return;
-            }
-
-            StateSyncRoom room = roomManagerComponent.GetRoom(request.RoomId);
-            if (room == null)
-            {
-                response.Error = ErrorCode.ERR_RoomNotFound;
-                response.Message = "Room not found";
-                return;
-            }
-
-            if (!string.IsNullOrEmpty(room.Password) && room.Password != request.Password)
-            {
-                response.Error = ErrorCode.ERR_RoomPasswordWrong;
-                response.Message = "Room password is wrong";
-                return;
-            }
-
-            bool success = roomManagerComponent.JoinRoom(request.RoomId, playerId);
-            if (!success)
-            {
-                response.Error = ErrorCode.ERR_JoinRoomFailed;
-                response.Message = "Failed to join room";
-                return;
-            }
-
-            matchComponent.waitMatchStateSyncPlayers.Add(playerId);
+            // StateSyncRoom room = roomManagerComponent.GetRoom(request.RoomId);
+            // if (room == null)
+            // {
+            //     response.Error = ErrorCode.ERR_RoomNotFound;
+            //     response.Message = "Room not found";
+            //     return;
+            // }
+            //
+            // if (!string.IsNullOrEmpty(room.Password) && room.Password != request.Password)
+            // {
+            //     response.Error = ErrorCode.ERR_RoomPasswordWrong;
+            //     response.Message = "Room password is wrong";
+            //     return;
+            // }
+            //
+            // bool success = roomManagerComponent.JoinRoom(request.RoomId, playerId);
+            // if (!success)
+            // {
+            //     response.Error = ErrorCode.ERR_JoinRoomFailed;
+            //     response.Message = "Failed to join room";
+            //     return;
+            // }
+            //
+            // matchComponent.waitMatchStateSyncPlayers.Add(playerId);
 
             response.Error = ErrorCode.ERR_Success;
             response.Message = "Join room success";

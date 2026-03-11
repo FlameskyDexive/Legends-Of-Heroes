@@ -23,5 +23,13 @@ namespace ET
 
         public const int ERR_LoginError = 400003;  // 登录失败
         public const int ERR_PlayerNotFound = 400004;  // 登录失败
+        
+        
+        
+        public const int ERR_NotFoundComponent = 500001;  // 
+        public const int ERR_NotInMatching = 500002;  // 
+        public const int ERR_RoomManagerNotFound = 500003;  // 
+        public const int ERR_NotInRoom = 500004;  // 
+        public const int ERR_LeaveRoomFailed = 500005;  // 
     }
 }

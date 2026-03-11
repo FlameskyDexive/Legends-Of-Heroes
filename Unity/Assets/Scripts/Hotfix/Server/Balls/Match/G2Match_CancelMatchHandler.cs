@@ -15,12 +15,12 @@ namespace ET.Server
 
             long playerId = request.PlayerId;
 
-            if (!matchComponent.waitMatchStateSyncPlayers.Contains(playerId))
-            {
-                response.Error = ErrorCode.ERR_NotInMatching;
-                response.Message = "Player is not in matching";
-                return;
-            }
+            // if (!matchComponent.waitMatchStateSyncPlayers.Contains(playerId))
+            // {
+            //     response.Error = ErrorCode.ERR_NotInMatching;
+            //     response.Message = "Player is not in matching";
+            //     return;
+            // }
 
             StateSyncRoomManagerComponent roomManagerComponent = scene.GetComponent<StateSyncRoomManagerComponent>();
             if (roomManagerComponent != null && roomManagerComponent.PlayerToRoom.ContainsKey(playerId))
@@ -29,7 +29,7 @@ namespace ET.Server
                 roomManagerComponent.LeaveRoom(playerId);
             }
 
-            matchComponent.waitMatchStateSyncPlayers.Remove(playerId);
+            // matchComponent.waitMatchStateSyncPlayers.Remove(playerId);
 
             response.Error = ErrorCode.ERR_Success;
             response.Message = "Cancel match success";

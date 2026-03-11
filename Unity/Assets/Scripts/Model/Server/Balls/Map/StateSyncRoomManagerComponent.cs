@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace ET.Server
 {
     [ComponentOf(typeof(Scene))]
-    public class StateSyncRoomManagerComponent : Entity, IAwake
+    public class StateSyncRoomManagerComponent : Entity, IAwake, IDestroy
     {
         public Dictionary<long, EntityRef<StateSyncRoom>> Rooms { get; set; }
 

@@ -33,8 +33,7 @@ namespace ET.Client
 		public static async ETTask Match(this DlgLobby self)
 		{
 			Scene root = self.Root();
-			await EnterMapHelper.StateSyncMatch(self.Fiber());
-			root.GetComponent<UIComponent>().CloseWindow(WindowID.WindowID_Lobby);
+			root.GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_MatchTeam);
 		}
 
 		public static void OnCreateRoomClick(this DlgLobby self)
