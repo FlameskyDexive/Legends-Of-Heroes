@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Callbacks;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,29 +12,39 @@ namespace ET
 {
     public sealed class BehaviorTreeEditorWindow : EditorWindow
     {
-        private BehaviorTreeAsset asset;
-        private BehaviorTreeGraphView graphView;
-        private IMGUIContainer leftPanel;
-        private IMGUIContainer rightPanel;
-        private BehaviorTreeNodeView selectedNodeView;
-        private Vector2 leftScroll;
-        private Vector2 rightScroll;
-        private long selectedRuntimeId;
+        private const string MiniMapEditorPrefKey = "ET.BehaviorTreeEditor.ShowMiniMap";
 
-        [MenuItem("ET/AI/Behavior Tree Editor", false, 1007)]
+        private BehaviorTreeAsset asset;
+        private Toolbar toolbar;
+        private BehaviorTreeGraphView graphView;
+        private ToolbarMenu assetMenu;
+        private IMGUIContainer inspectorPanel;
+        private IMGUIContainer blackboardPanel;
+        private BehaviorTreeNodeView selectedNodeView;
+        private Vector2 inspectorScroll;
+        private Vector2 blackboardScroll;
+        private string blackboardSearchText = string.Empty;
+        private long selectedRuntimeId;
+        private long lastSnapshotRuntimeId;
+        private long lastSnapshotUpdatedAt;
+        private bool showMiniMap = true;
+
+        [MenuItem("ET/AI/BehaviorTreeEditor", false, 1007)]
         public static void ShowWindow()
         {
-            Open();
+            Open(GetSelectedAsset());
         }
 
         public static void Open(BehaviorTreeAsset asset = null)
         {
             BehaviorTreeEditorWindow window = GetWindow<BehaviorTreeEditorWindow>(DockDefine.Types);
-            window.titleContent = new GUIContent("BehaviorTree");
-            if (asset != null)
+            window.titleContent = new GUIContent("BehaviourTreeEditor");
+            BehaviorTreeAsset selectedAsset = asset ?? GetSelectedAsset();
+            if (selectedAsset != null)
             {
-                window.LoadAsset(asset);
+                window.LoadAsset(selectedAsset);
             }
+            window.Focus();
         }
 
         [OnOpenAsset]
@@ -46,6 +57,24 @@ namespace ET
 
             Open(asset);
             return true;
+        }
+
+        private static BehaviorTreeAsset GetSelectedAsset()
+        {
+            if (Selection.activeObject is BehaviorTreeAsset behaviorTreeAsset)
+            {
+                return behaviorTreeAsset;
+            }
+
+            foreach (UnityEngine.Object selectedObject in Selection.objects)
+            {
+                if (selectedObject is BehaviorTreeAsset asset)
+                {
+                    return asset;
+                }
+            }
+
+            return null;
         }
 
         public BehaviorTreeDebugSnapshot GetActiveSnapshot()
@@ -69,6 +98,18 @@ namespace ET
             return debugHub.GetSnapshots(this.asset.TreeId).FirstOrDefault();
         }
 
+        public BehaviorTreeRunner GetActiveRunner()
+        {
+            long runtimeId = this.GetActiveSnapshot()?.RuntimeId ?? 0;
+            if (runtimeId == 0)
+            {
+                return null;
+            }
+
+            BehaviorTreeRuntimeManager runtimeManager = BehaviorTreeRuntimeManager.Instance;
+            return runtimeManager?.Get(runtimeId);
+        }
+
         public void MarkAssetDirty()
         {
             if (this.asset == null)
@@ -77,40 +118,107 @@ namespace ET
             }
 
             EditorUtility.SetDirty(this.asset);
-            this.leftPanel?.MarkDirtyRepaint();
-            this.rightPanel?.MarkDirtyRepaint();
+            this.inspectorPanel?.MarkDirtyRepaint();
+            this.blackboardPanel?.MarkDirtyRepaint();
         }
 
         public void SelectNode(BehaviorTreeNodeView nodeView)
         {
             this.selectedNodeView = nodeView;
-            this.rightPanel?.MarkDirtyRepaint();
+            this.inspectorPanel?.MarkDirtyRepaint();
+        }
+
+        private void OnEnable()
+        {
+            this.showMiniMap = EditorPrefs.GetBool(MiniMapEditorPrefKey, true);
         }
 
         private void CreateGUI()
         {
             this.rootVisualElement.Clear();
+            this.rootVisualElement.style.flexDirection = FlexDirection.Column;
+            this.rootVisualElement.style.flexGrow = 1;
 
-            TwoPaneSplitView rootSplit = new(0, 320, TwoPaneSplitViewOrientation.Horizontal);
-            TwoPaneSplitView workSplit = new(1, Mathf.Max((int)this.position.width - 360, 400), TwoPaneSplitViewOrientation.Horizontal);
+            this.rootVisualElement.Add(this.CreateToolbar());
 
-            this.leftPanel = new IMGUIContainer(this.DrawLeftPanel);
-            this.rightPanel = new IMGUIContainer(this.DrawRightPanel);
-            this.graphView = new BehaviorTreeGraphView(this);
+            VisualElement mainContainer = new();
+            mainContainer.style.flexDirection = FlexDirection.Row;
+            mainContainer.style.flexGrow = 1;
+            mainContainer.style.backgroundColor = new Color(0.14f, 0.14f, 0.14f);
 
-            rootSplit.Add(this.leftPanel);
-            workSplit.Add(this.graphView);
-            workSplit.Add(this.rightPanel);
-            rootSplit.Add(workSplit);
-            this.rootVisualElement.Add(rootSplit);
+            VisualElement leftContainer = new();
+            leftContainer.style.width = 320;
+            leftContainer.style.minWidth = 280;
+            leftContainer.style.flexDirection = FlexDirection.Column;
+            leftContainer.style.flexShrink = 0;
+            leftContainer.style.backgroundColor = new Color(0.18f, 0.18f, 0.18f);
+            leftContainer.style.borderRightWidth = 2;
+            leftContainer.style.borderRightColor = new Color(0.10f, 0.10f, 0.10f);
+
+            VisualElement rightContainer = new();
+            rightContainer.style.flexGrow = 1;
+            rightContainer.style.flexDirection = FlexDirection.Column;
+            rightContainer.style.backgroundColor = new Color(0.12f, 0.12f, 0.12f);
+
+            this.inspectorPanel = new IMGUIContainer(this.DrawInspectorPanel);
+            this.inspectorPanel.style.flexGrow = 1;
+            this.blackboardPanel = new IMGUIContainer(this.DrawBlackboardPanel);
+            this.blackboardPanel.style.flexGrow = 1;
+
+            VisualElement inspectorContainer = this.CreatePanel("Inspector", this.inspectorPanel);
+            inspectorContainer.style.flexGrow = 1;
+            inspectorContainer.style.minHeight = 260;
+
+            VisualElement blackboardContainer = this.CreatePanel("Blackboard", this.blackboardPanel);
+            blackboardContainer.style.flexGrow = 1;
+            blackboardContainer.style.minHeight = 220;
+
+            leftContainer.Add(inspectorContainer);
+            leftContainer.Add(blackboardContainer);
+
+            try
+            {
+                this.graphView = new BehaviorTreeGraphView(this);
+            }
+            catch (Exception exception)
+            {
+                Label errorLabel = new($"BehaviorTreeGraphView init failed:\n{exception}");
+                errorLabel.style.whiteSpace = WhiteSpace.Normal;
+                errorLabel.style.color = new Color(1f, 0.45f, 0.45f);
+                errorLabel.style.paddingLeft = 12;
+                errorLabel.style.paddingTop = 12;
+                rightContainer.Add(errorLabel);
+                this.rootVisualElement.Add(mainContainer);
+                return;
+            }
+
+            this.graphView.SetMiniMapVisible(this.showMiniMap);
+            VisualElement treeViewPanel = this.CreatePanel("Tree View", this.graphView);
+            treeViewPanel.style.flexGrow = 1;
+
+            rightContainer.Add(treeViewPanel);
+
+            mainContainer.Add(leftContainer);
+            mainContainer.Add(rightContainer);
+            this.rootVisualElement.Add(mainContainer);
+
+            this.PopulateAssetMenu();
 
             if (this.asset == null && Selection.activeObject is BehaviorTreeAsset selectedAsset)
             {
                 this.LoadAsset(selectedAsset);
+                this.graphView?.Focus();
                 return;
             }
 
             this.graphView.PopulateView(this.asset);
+            this.graphView?.FrameAllNodes();
+            this.graphView?.Focus();
+        }
+
+        private void OnFocus()
+        {
+            this.PopulateAssetMenu();
         }
 
         private void OnSelectionChange()
@@ -123,7 +231,118 @@ namespace ET
 
         private void Update()
         {
-            this.graphView?.RefreshDebugStates(this.GetActiveSnapshot());
+            BehaviorTreeDebugSnapshot snapshot = this.GetActiveSnapshot();
+            this.graphView?.RefreshDebugStates(snapshot);
+
+            long runtimeId = snapshot?.RuntimeId ?? 0;
+            long updatedAt = snapshot?.UpdatedAt ?? 0;
+            if (runtimeId != this.lastSnapshotRuntimeId || updatedAt != this.lastSnapshotUpdatedAt)
+            {
+                this.lastSnapshotRuntimeId = runtimeId;
+                this.lastSnapshotUpdatedAt = updatedAt;
+                this.blackboardPanel?.MarkDirtyRepaint();
+                this.inspectorPanel?.MarkDirtyRepaint();
+            }
+
+            if (this.GetActiveRunner() != null)
+            {
+                this.blackboardPanel?.MarkDirtyRepaint();
+            }
+        }
+
+        private Toolbar CreateToolbar()
+        {
+            this.toolbar = new Toolbar();
+
+            this.assetMenu = this.CreateAssetMenu();
+            this.toolbar.Add(this.assetMenu);
+
+            this.toolbar.Add(this.CreateToolbarButton("New", BehaviorTreeAsset.CreateAsset));
+            this.toolbar.Add(this.CreateToolbarButton("Save", () => AssetDatabase.SaveAssets()));
+            this.toolbar.Add(this.CreateToolbarButton("Export", this.ExportCurrentAsset));
+            this.toolbar.Add(this.CreateToolbarButton("Reveal", this.RevealCurrentAsset));
+            this.toolbar.Add(this.CreateToolbarButton("Frame", () => this.graphView?.FrameAllNodes()));
+            this.toolbar.Add(this.CreateToolbarButton("Layout", () => this.graphView?.AutoLayoutTree()));
+            this.toolbar.Add(this.CreateToolbarButton("Refresh", this.RefreshToolbar));
+
+            ToolbarMenu arrangeMenu = new()
+            {
+                text = "Arrange",
+            };
+            arrangeMenu.menu.AppendAction("Align Left", _ => this.graphView?.AlignSelectionLeft());
+            arrangeMenu.menu.AppendAction("Align Right", _ => this.graphView?.AlignSelectionRight());
+            arrangeMenu.menu.AppendAction("Align Top", _ => this.graphView?.AlignSelectionTop());
+            arrangeMenu.menu.AppendAction("Align Bottom", _ => this.graphView?.AlignSelectionBottom());
+            arrangeMenu.menu.AppendAction("Align Horizontal Center", _ => this.graphView?.AlignSelectionHorizontalCenter());
+            arrangeMenu.menu.AppendAction("Align Vertical Center", _ => this.graphView?.AlignSelectionVerticalCenter());
+            arrangeMenu.menu.AppendSeparator();
+            arrangeMenu.menu.AppendAction("Distribute Horizontal", _ => this.graphView?.DistributeSelectionHorizontal());
+            arrangeMenu.menu.AppendAction("Distribute Vertical", _ => this.graphView?.DistributeSelectionVertical());
+            this.toolbar.Add(arrangeMenu);
+
+            ToolbarToggle miniMapToggle = new()
+            {
+                text = "MiniMap",
+                value = this.showMiniMap,
+            };
+            miniMapToggle.RegisterValueChangedCallback(evt => this.SetMiniMapVisible(evt.newValue));
+            this.toolbar.Add(miniMapToggle);
+
+            VisualElement spacer = new();
+            spacer.style.flexGrow = 1;
+            this.toolbar.Add(spacer);
+
+            Label selectionLabel = new();
+            selectionLabel.name = "SelectionLabel";
+            selectionLabel.style.unityTextAlign = TextAnchor.MiddleRight;
+            selectionLabel.style.marginRight = 8;
+            selectionLabel.text = this.asset == null ? "No Tree Selected" : this.asset.TreeName;
+            this.toolbar.Add(selectionLabel);
+
+            return this.toolbar;
+        }
+
+        private void SetMiniMapVisible(bool visible)
+        {
+            this.showMiniMap = visible;
+            EditorPrefs.SetBool(MiniMapEditorPrefKey, visible);
+            this.graphView?.SetMiniMapVisible(visible);
+        }
+
+        private Button CreateToolbarButton(string text, Action onClick)
+        {
+            Button button = new(onClick)
+            {
+                text = text,
+            };
+            return button;
+        }
+
+        private VisualElement CreatePanel(string title, VisualElement content)
+        {
+            VisualElement panel = new();
+            panel.style.flexDirection = FlexDirection.Column;
+            panel.style.flexGrow = 1;
+            panel.style.borderBottomWidth = 1;
+            panel.style.borderLeftWidth = 1;
+            panel.style.borderRightWidth = 1;
+            panel.style.borderTopWidth = 1;
+            panel.style.borderBottomColor = new Color(0.15f, 0.15f, 0.15f);
+            panel.style.borderLeftColor = new Color(0.15f, 0.15f, 0.15f);
+            panel.style.borderRightColor = new Color(0.15f, 0.15f, 0.15f);
+            panel.style.borderTopColor = new Color(0.15f, 0.15f, 0.15f);
+
+            Label header = new(title);
+            header.style.unityFontStyleAndWeight = FontStyle.Bold;
+            header.style.paddingLeft = 8;
+            header.style.paddingTop = 4;
+            header.style.paddingBottom = 4;
+            header.style.backgroundColor = new Color(0.18f, 0.18f, 0.18f);
+            panel.Add(header);
+
+            content.style.flexGrow = 1;
+            panel.Add(content);
+            return panel;
         }
 
         private void LoadAsset(BehaviorTreeAsset newAsset)
@@ -137,14 +356,72 @@ namespace ET
                 this.asset.EnsureInitialized();
             }
 
+            this.PopulateAssetMenu();
             this.graphView?.PopulateView(this.asset);
-            this.leftPanel?.MarkDirtyRepaint();
-            this.rightPanel?.MarkDirtyRepaint();
+            this.inspectorPanel?.MarkDirtyRepaint();
+            this.blackboardPanel?.MarkDirtyRepaint();
+
+            Label selectionLabel = this.rootVisualElement.Q<Label>("SelectionLabel");
+            if (selectionLabel != null)
+            {
+                selectionLabel.text = this.asset == null ? "No Tree Selected" : this.asset.TreeName;
+            }
         }
 
-        private void DrawLeftPanel()
+        private void PopulateAssetMenu()
         {
-            this.leftScroll = EditorGUILayout.BeginScrollView(this.leftScroll);
+            if (this.toolbar == null || this.assetMenu == null)
+            {
+                return;
+            }
+
+            ToolbarMenu newAssetMenu = this.CreateAssetMenu();
+            int index = this.toolbar.IndexOf(this.assetMenu);
+            if (index < 0)
+            {
+                index = 0;
+            }
+
+            this.toolbar.Remove(this.assetMenu);
+            this.assetMenu = newAssetMenu;
+            this.toolbar.Insert(index, this.assetMenu);
+        }
+
+        private ToolbarMenu CreateAssetMenu()
+        {
+            ToolbarMenu menu = new();
+            menu.text = this.asset == null ? "Assets" : this.asset.TreeName;
+
+            string[] guids = AssetDatabase.FindAssets("t:BehaviorTreeAsset");
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                BehaviorTreeAsset behaviorTreeAsset = AssetDatabase.LoadAssetAtPath<BehaviorTreeAsset>(path);
+                if (behaviorTreeAsset == null)
+                {
+                    continue;
+                }
+
+                menu.menu.AppendAction(path, _ => this.LoadAsset(behaviorTreeAsset),
+                    _ => this.asset == behaviorTreeAsset ? DropdownMenuAction.Status.Checked : DropdownMenuAction.Status.Normal);
+            }
+
+            menu.menu.AppendSeparator();
+            menu.menu.AppendAction("Refresh Assets", _ => this.RefreshToolbar());
+            return menu;
+        }
+
+        private void RefreshToolbar()
+        {
+            this.PopulateAssetMenu();
+            this.graphView?.RefreshNodeViews();
+            this.inspectorPanel?.MarkDirtyRepaint();
+            this.blackboardPanel?.MarkDirtyRepaint();
+        }
+
+        private void DrawInspectorPanel()
+        {
+            this.inspectorScroll = EditorGUILayout.BeginScrollView(this.inspectorScroll);
             EditorGUI.BeginChangeCheck();
 
             BehaviorTreeAsset selectedAsset = (BehaviorTreeAsset)EditorGUILayout.ObjectField("Asset", this.asset, typeof(BehaviorTreeAsset), false);
@@ -158,58 +435,141 @@ namespace ET
 
             if (this.asset == null)
             {
-                EditorGUILayout.HelpBox("Select a BehaviorTree asset to start editing.", MessageType.Info);
+                EditorGUILayout.HelpBox("Select a behavior tree asset from the Assets menu or Project window.", MessageType.Info);
                 EditorGUI.EndChangeCheck();
                 EditorGUILayout.EndScrollView();
                 return;
             }
 
+            if (this.selectedNodeView == null)
+            {
+                this.DrawTreeInspector();
+            }
+            else
+            {
+                this.DrawNodeInspector(this.selectedNodeView.Data);
+            }
+
+            if (EditorGUI.EndChangeCheck())
+            {
+                this.MarkAssetDirty();
+                this.graphView?.RefreshNodeViews();
+            }
+
+            EditorGUILayout.EndScrollView();
+        }
+
+        private void DrawTreeInspector()
+        {
+            EditorGUILayout.LabelField("Script", this.asset.GetType().Name);
+            this.asset.TreeName = EditorGUILayout.TextField("Tree Name", this.asset.TreeName);
+            EditorGUILayout.LabelField("Tree Id", this.asset.TreeId);
+            EditorGUILayout.LabelField("Client Bytes", this.asset.ExportRelativePath);
+            EditorGUILayout.LabelField("Server Bytes", Path.Combine("Config/AI", Path.GetFileName(this.asset.ExportRelativePath)));
+            EditorGUILayout.Space(4);
+            EditorGUILayout.LabelField("Description");
+            this.asset.Description = EditorGUILayout.TextArea(this.asset.Description, GUILayout.MinHeight(70));
             EditorGUILayout.Space(8);
 
-            this.asset.TreeName = EditorGUILayout.TextField("TreeName", this.asset.TreeName);
-            EditorGUILayout.LabelField("TreeId", this.asset.TreeId);
-            this.asset.Description = EditorGUILayout.TextArea(this.asset.Description, GUILayout.MinHeight(50));
-            this.asset.ExportRelativePath = EditorGUILayout.TextField("Export Path", this.asset.ExportRelativePath);
-
-            EditorGUILayout.BeginHorizontal();
-            if (GUILayout.Button("Save"))
+            if (GUILayout.Button("Select Root Node"))
             {
-                AssetDatabase.SaveAssets();
+                this.graphView?.SelectNode(this.asset.RootNodeId);
             }
 
-            if (GUILayout.Button("Export"))
+            BehaviorTreeDebugSnapshot snapshot = this.GetActiveSnapshot();
+            if (snapshot != null)
             {
-                try
-                {
-                    string outputPath = BehaviorTreeExporter.ExportToFile(this.asset);
-                    EditorUtility.DisplayDialog("BehaviorTree Export", $"Exported to:\n{outputPath}", "OK");
-                }
-                catch (Exception exception)
-                {
-                    EditorUtility.DisplayDialog("BehaviorTree Export Failed", exception.Message, "OK");
-                }
+                EditorGUILayout.Space(8);
+                EditorGUILayout.LabelField("Runtime", EditorStyles.boldLabel);
+                EditorGUILayout.LabelField("Runtime Id", snapshot.RuntimeId.ToString());
+                EditorGUILayout.LabelField("Updated At", snapshot.UpdatedAt.ToString());
+                EditorGUILayout.LabelField("Active Nodes", snapshot.NodeStates.Count.ToString());
+            }
+        }
+
+        private void DrawNodeInspector(BehaviorTreeEditorNodeData node)
+        {
+            EditorGUILayout.LabelField("Script", node.NodeKind.ToString());
+            node.Title = EditorGUILayout.TextField("Title", node.Title);
+            EditorGUILayout.LabelField("Node Id", node.NodeId);
+            EditorGUILayout.LabelField("Description");
+            node.Comment = EditorGUILayout.TextArea(node.Comment, GUILayout.MinHeight(56));
+            EditorGUILayout.Space(6);
+
+            switch (node.NodeKind)
+            {
+                case BehaviorTreeNodeKind.Action:
+                    DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetActionHandlerNames(), node, value => node.HandlerName = value);
+                    DrawArguments(node);
+                    break;
+                case BehaviorTreeNodeKind.Condition:
+                    DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetConditionHandlerNames(), node, value => node.HandlerName = value);
+                    DrawArguments(node);
+                    break;
+                case BehaviorTreeNodeKind.Service:
+                    DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetServiceHandlerNames(), node, value => node.HandlerName = value);
+                    node.IntervalMilliseconds = EditorGUILayout.IntField("Interval (ms)", node.IntervalMilliseconds);
+                    DrawArguments(node);
+                    break;
+                case BehaviorTreeNodeKind.Wait:
+                    node.WaitMilliseconds = EditorGUILayout.IntField("Delay (ms)", node.WaitMilliseconds);
+                    break;
+                case BehaviorTreeNodeKind.Repeater:
+                    node.MaxLoopCount = EditorGUILayout.IntField("Repeat Count", node.MaxLoopCount);
+                    break;
+                case BehaviorTreeNodeKind.BlackboardCondition:
+                    DrawBlackboardKeyPopup(node);
+                    node.CompareOperator = (BehaviorTreeCompareOperator)EditorGUILayout.EnumPopup("Operator", node.CompareOperator);
+                    node.AbortMode = (BehaviorTreeAbortMode)EditorGUILayout.EnumFlagsField("Abort Mode", node.AbortMode);
+                    DrawSerializedValueEditor("Compare Value", node.CompareValue);
+                    break;
+                case BehaviorTreeNodeKind.Parallel:
+                    node.SuccessPolicy = (BehaviorTreeParallelPolicy)EditorGUILayout.EnumPopup("Success Policy", node.SuccessPolicy);
+                    node.FailurePolicy = (BehaviorTreeParallelPolicy)EditorGUILayout.EnumPopup("Failure Policy", node.FailurePolicy);
+                    break;
+                case BehaviorTreeNodeKind.SubTree:
+                    node.SubTreeAsset = (BehaviorTreeAsset)EditorGUILayout.ObjectField("SubTree", node.SubTreeAsset, typeof(BehaviorTreeAsset), false);
+                    node.SyncSubTreeInfo();
+                    EditorGUILayout.LabelField("SubTree Id", node.SubTreeId);
+                    EditorGUILayout.LabelField("SubTree Name", node.SubTreeName);
+                    break;
             }
 
-            if (GUILayout.Button("Reveal"))
+            if (GUILayout.Button("Deselect Node"))
             {
-                string projectRoot = Path.GetDirectoryName(Application.dataPath) ?? string.Empty;
-                string fullPath = Path.GetFullPath(Path.Combine(projectRoot, this.asset.ExportRelativePath));
-                EditorUtility.RevealInFinder(fullPath);
+                this.selectedNodeView = null;
+            }
+        }
+
+        private void DrawBlackboardPanel()
+        {
+            this.blackboardScroll = EditorGUILayout.BeginScrollView(this.blackboardScroll);
+            EditorGUI.BeginChangeCheck();
+
+            if (this.asset == null)
+            {
+                EditorGUILayout.HelpBox("Blackboard values will appear here once a tree asset is selected.", MessageType.Info);
+                EditorGUI.EndChangeCheck();
+                EditorGUILayout.EndScrollView();
+                return;
             }
 
-            EditorGUILayout.EndHorizontal();
+            this.blackboardSearchText = EditorGUILayout.TextField("Search", this.blackboardSearchText);
 
-            EditorGUILayout.Space(8);
-            EditorGUILayout.LabelField("Blackboard", EditorStyles.boldLabel);
             for (int index = 0; index < this.asset.BlackboardEntries.Count; ++index)
             {
                 BehaviorTreeBlackboardEntryDefinition entry = this.asset.BlackboardEntries[index];
+                if (!this.IsBlackboardEntryVisible(entry?.Key))
+                {
+                    continue;
+                }
+
                 EditorGUILayout.BeginVertical("box");
                 entry.Key = EditorGUILayout.TextField("Key", entry.Key);
                 entry.Description = EditorGUILayout.TextField("Description", entry.Description);
-                entry.ValueType = (BehaviorTreeValueType)EditorGUILayout.EnumPopup("ValueType", entry.ValueType);
-                DrawSerializedValueEditor("Default", entry.DefaultValue, entry.ValueType);
-                if (GUILayout.Button("Remove Blackboard Entry"))
+                entry.ValueType = (BehaviorTreeValueType)EditorGUILayout.EnumPopup("Type", entry.ValueType);
+                DrawSerializedValueEditor("Value", entry.DefaultValue, entry.ValueType);
+                if (GUILayout.Button("Remove"))
                 {
                     this.asset.BlackboardEntries.RemoveAt(index);
                     --index;
@@ -231,7 +591,7 @@ namespace ET
                     : new List<BehaviorTreeDebugSnapshot>();
             if (snapshots.Count == 0)
             {
-                EditorGUILayout.HelpBox("No running tree instance found for this TreeId.", MessageType.None);
+                EditorGUILayout.HelpBox("No running tree instance found for this tree.", MessageType.None);
             }
             else
             {
@@ -241,85 +601,165 @@ namespace ET
                 this.selectedRuntimeId = snapshots[selectedIndex].RuntimeId;
             }
 
+            BehaviorTreeRunner runner = this.GetActiveRunner();
+            if (runner != null)
+            {
+                EditorGUILayout.Space(8);
+                EditorGUILayout.LabelField("Runtime Blackboard", EditorStyles.boldLabel);
+                this.DrawRuntimeBlackboard(runner.Blackboard);
+            }
+
             if (EditorGUI.EndChangeCheck())
             {
                 this.MarkAssetDirty();
                 this.graphView?.RefreshNodeViews();
             }
+
             EditorGUILayout.EndScrollView();
         }
 
-        private void DrawRightPanel()
+        private void DrawRuntimeBlackboard(BehaviorTreeBlackboard blackboard)
         {
-            this.rightScroll = EditorGUILayout.BeginScrollView(this.rightScroll);
-            EditorGUI.BeginChangeCheck();
+            if (blackboard == null)
+            {
+                EditorGUILayout.HelpBox("Runtime blackboard is not available.", MessageType.None);
+                return;
+            }
+
+            HashSet<string> drawnKeys = new(StringComparer.OrdinalIgnoreCase);
+            foreach (BehaviorTreeBlackboardEntryDefinition entry in this.asset.BlackboardEntries)
+            {
+                if (entry == null || string.IsNullOrWhiteSpace(entry.Key))
+                {
+                    continue;
+                }
+
+                drawnKeys.Add(entry.Key);
+                EditorGUILayout.BeginVertical("box");
+                EditorGUILayout.LabelField(entry.Key, EditorStyles.boldLabel);
+                object currentValue = blackboard.GetBoxed(entry.Key) ?? BehaviorTreeValueUtility.GetValue(entry.DefaultValue);
+                object newValue = DrawRuntimeValueField(entry.ValueType, currentValue);
+                if (!Equals(currentValue, newValue))
+                {
+                    blackboard.SetBoxed(entry.Key, newValue);
+                }
+
+                if (!string.IsNullOrWhiteSpace(entry.Description))
+                {
+                    EditorGUILayout.LabelField(entry.Description, EditorStyles.wordWrappedMiniLabel);
+                }
+                EditorGUILayout.EndVertical();
+            }
+
+            List<KeyValuePair<string, object>> extraValues = blackboard.Values.Where(valuePair => !drawnKeys.Contains(valuePair.Key)).ToList();
+            if (extraValues.Count > 0)
+            {
+                EditorGUILayout.Space(4);
+                EditorGUILayout.LabelField("Extra Runtime Keys", EditorStyles.boldLabel);
+                foreach ((string key, object value) in extraValues)
+                {
+                    if (!this.IsBlackboardEntryVisible(key))
+                    {
+                        continue;
+                    }
+
+                    EditorGUILayout.BeginVertical("box");
+                    EditorGUILayout.LabelField(key, EditorStyles.boldLabel);
+                    EditorGUILayout.LabelField(value?.ToString() ?? "null");
+                    EditorGUILayout.EndVertical();
+                }
+            }
+        }
+
+        private bool IsBlackboardEntryVisible(string key)
+        {
+            if (string.IsNullOrWhiteSpace(this.blackboardSearchText))
+            {
+                return true;
+            }
+
+            return !string.IsNullOrWhiteSpace(key) && key.IndexOf(this.blackboardSearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static object DrawRuntimeValueField(BehaviorTreeValueType valueType, object currentValue)
+        {
+            switch (valueType)
+            {
+                case BehaviorTreeValueType.Integer:
+                    return EditorGUILayout.IntField("Value", currentValue is int intValue ? intValue : 0);
+                case BehaviorTreeValueType.Long:
+                    return EditorGUILayout.LongField("Value", currentValue is long longValue ? longValue : 0L);
+                case BehaviorTreeValueType.Float:
+                    return EditorGUILayout.FloatField("Value", currentValue is float floatValue ? floatValue : 0f);
+                case BehaviorTreeValueType.Boolean:
+                    return EditorGUILayout.Toggle("Value", currentValue is bool boolValue && boolValue);
+                case BehaviorTreeValueType.String:
+                    return EditorGUILayout.TextField("Value", currentValue?.ToString() ?? string.Empty);
+                default:
+                    EditorGUILayout.LabelField("Value", currentValue?.ToString() ?? "null");
+                    return currentValue;
+            }
+        }
+
+        private void DrawBlackboardKeyPopup(BehaviorTreeEditorNodeData node)
+        {
+            string[] options = this.GetBlackboardKeyOptions();
+            if (options.Length == 0)
+            {
+                node.BlackboardKey = EditorGUILayout.TextField("Key", node.BlackboardKey);
+                return;
+            }
+
+            int selectedIndex = Mathf.Max(0, Array.IndexOf(options, node.BlackboardKey));
+            int newIndex = EditorGUILayout.Popup("Key", selectedIndex, options);
+            node.BlackboardKey = options[newIndex];
+        }
+
+        private string[] GetBlackboardKeyOptions()
+        {
+            if (this.asset == null || this.asset.BlackboardEntries.Count == 0)
+            {
+                return Array.Empty<string>();
+            }
+
+            return this.asset.BlackboardEntries
+                    .Where(entry => !string.IsNullOrWhiteSpace(entry.Key))
+                    .Select(entry => entry.Key)
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(key => key, StringComparer.OrdinalIgnoreCase)
+                    .ToArray();
+        }
+
+        private void ExportCurrentAsset()
+        {
             if (this.asset == null)
             {
-                EditorGUI.EndChangeCheck();
-                EditorGUILayout.EndScrollView();
                 return;
             }
 
-            if (this.selectedNodeView == null)
+            try
             {
-                EditorGUILayout.HelpBox("Select a node to edit its properties.", MessageType.Info);
-                EditorGUI.EndChangeCheck();
-                EditorGUILayout.EndScrollView();
+                BehaviorTreeExporter.BehaviorTreeExportResult result = BehaviorTreeExporter.ExportToFiles(this.asset);
+                EditorUtility.DisplayDialog("BehaviorTree Export",
+                    $"Client:\n{result.ClientFullPath}\n\nServer:\n{result.ServerFullPath}",
+                    "OK");
+            }
+            catch (Exception exception)
+            {
+                EditorUtility.DisplayDialog("BehaviorTree Export Failed", exception.Message, "OK");
+            }
+        }
+
+        private void RevealCurrentAsset()
+        {
+            if (this.asset == null)
+            {
                 return;
             }
 
-            BehaviorTreeEditorNodeData node = this.selectedNodeView.Data;
-            node.Title = EditorGUILayout.TextField("Title", node.Title);
-            EditorGUILayout.LabelField("NodeId", node.NodeId);
-            EditorGUILayout.LabelField("NodeKind", node.NodeKind.ToString());
-            node.Comment = EditorGUILayout.TextArea(node.Comment, GUILayout.MinHeight(48));
-
-            switch (node.NodeKind)
-            {
-                case BehaviorTreeNodeKind.Action:
-                    DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetActionHandlerNames(), node, value => node.HandlerName = value);
-                    DrawArguments(node);
-                    break;
-                case BehaviorTreeNodeKind.Condition:
-                    DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetConditionHandlerNames(), node, value => node.HandlerName = value);
-                    DrawArguments(node);
-                    break;
-                case BehaviorTreeNodeKind.Service:
-                    DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetServiceHandlerNames(), node, value => node.HandlerName = value);
-                    node.IntervalMilliseconds = EditorGUILayout.IntField("Interval(ms)", node.IntervalMilliseconds);
-                    DrawArguments(node);
-                    break;
-                case BehaviorTreeNodeKind.Wait:
-                    node.WaitMilliseconds = EditorGUILayout.IntField("Wait(ms)", node.WaitMilliseconds);
-                    break;
-                case BehaviorTreeNodeKind.Repeater:
-                    node.MaxLoopCount = EditorGUILayout.IntField("Loop Count", node.MaxLoopCount);
-                    break;
-                case BehaviorTreeNodeKind.BlackboardCondition:
-                    node.BlackboardKey = EditorGUILayout.TextField("Blackboard Key", node.BlackboardKey);
-                    node.CompareOperator = (BehaviorTreeCompareOperator)EditorGUILayout.EnumPopup("Operator", node.CompareOperator);
-                    node.AbortMode = (BehaviorTreeAbortMode)EditorGUILayout.EnumFlagsField("Abort Mode", node.AbortMode);
-                    DrawSerializedValueEditor("Compare Value", node.CompareValue);
-                    break;
-                case BehaviorTreeNodeKind.Parallel:
-                    node.SuccessPolicy = (BehaviorTreeParallelPolicy)EditorGUILayout.EnumPopup("Success Policy", node.SuccessPolicy);
-                    node.FailurePolicy = (BehaviorTreeParallelPolicy)EditorGUILayout.EnumPopup("Failure Policy", node.FailurePolicy);
-                    break;
-                case BehaviorTreeNodeKind.SubTree:
-                    node.SubTreeAsset = (BehaviorTreeAsset)EditorGUILayout.ObjectField("SubTree Asset", node.SubTreeAsset, typeof(BehaviorTreeAsset), false);
-                    node.SyncSubTreeInfo();
-                    EditorGUILayout.LabelField("SubTreeId", node.SubTreeId);
-                    EditorGUILayout.LabelField("SubTreeName", node.SubTreeName);
-                    break;
-            }
-
-            if (EditorGUI.EndChangeCheck())
-            {
-                this.selectedNodeView.RefreshView(this.GetActiveSnapshot()?.NodeStates.TryGetValue(node.NodeId, out BehaviorTreeNodeState state) == true ? state : BehaviorTreeNodeState.Inactive);
-                this.MarkAssetDirty();
-                this.graphView?.RefreshNodeViews();
-            }
-            EditorGUILayout.EndScrollView();
+            string projectRoot = Path.GetDirectoryName(Application.dataPath) ?? string.Empty;
+            string fullPath = Path.GetFullPath(Path.Combine(projectRoot, this.asset.ExportRelativePath));
+            EditorUtility.RevealInFinder(fullPath);
         }
 
         private static void DrawArguments(BehaviorTreeEditorNodeData node)

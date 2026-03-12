@@ -90,6 +90,23 @@ namespace ET
             };
         }
 
+        public static Color GetNodeHeaderColor(BehaviorTreeNodeKind nodeKind, BehaviorTreeNodeState state)
+        {
+            if (state != BehaviorTreeNodeState.Inactive)
+            {
+                return GetNodeColor(state);
+            }
+
+            return nodeKind switch
+            {
+                BehaviorTreeNodeKind.Root => new Color(0.93f, 0.28f, 0.30f),
+                BehaviorTreeNodeKind.Sequence or BehaviorTreeNodeKind.Selector or BehaviorTreeNodeKind.Parallel => new Color(0.92f, 0.67f, 0.16f),
+                BehaviorTreeNodeKind.Inverter or BehaviorTreeNodeKind.Succeeder or BehaviorTreeNodeKind.Failer or BehaviorTreeNodeKind.Repeater or BehaviorTreeNodeKind.BlackboardCondition or BehaviorTreeNodeKind.Service or BehaviorTreeNodeKind.SubTree => new Color(0.23f, 0.56f, 0.95f),
+                BehaviorTreeNodeKind.Action or BehaviorTreeNodeKind.Condition or BehaviorTreeNodeKind.Wait => new Color(0.48f, 0.78f, 0.10f),
+                _ => new Color(0.24f, 0.24f, 0.24f),
+            };
+        }
+
         private static string[] GetHandlerNames<T>() where T : Attribute
         {
             List<string> names = new();

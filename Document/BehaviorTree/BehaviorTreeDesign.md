@@ -2,6 +2,7 @@
 
 ## 目录落点
 
+- 编辑器布局参考 `UnityBehaviourTreeEditor`：`https://github.com/thekiwicoder0/UnityBehaviourTreeEditor`
 - 运行时定义：`Unity/Assets/Scripts/Model/Share/Module/BehaviorTree`
 - 运行时执行：`Unity/Assets/Scripts/Hotfix/Share/Module/BehaviorTree`
 - 编辑器代码：`Unity/Assets/Scripts/Editor/BehaviorTree`
@@ -24,6 +25,7 @@
 - 黑板：支持默认值、运行时读写、键级观察者通知。
 - 子树：编辑器通过 `BehaviorTreeAsset` 关联，导出时递归打包，运行时按 `TreeId/TreeName` 解析。
 - 编辑器：GraphView 画布 + 左侧树/黑板面板 + 右侧节点属性面板。
+- 交互增强：支持 `MiniMap` 开关、顶部 `Assets` 菜单、`Create Node...` 搜索面板创建节点、右键复制/粘贴/重复/删除、批量对齐/分布、自动排版、Blackboard Key 下拉绑定、Blackboard 搜索过滤，以及运行时 Blackboard 值实时查看/编辑。
 - 调试：运行时节点状态同步到 `BehaviorTreeDebugHub`，编辑器按节点颜色显示运行态。
 - 导出：将根树及其引用的所有子树导出为一个 `BehaviorTreePackage` 的 `bytes` 文件。
 

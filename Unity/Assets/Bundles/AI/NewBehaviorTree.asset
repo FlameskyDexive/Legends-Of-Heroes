@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49fe161aa474a6840999206788f922b7, type: 3}
+  m_Name: NewBehaviorTree
+  m_EditorClassIdentifier: Unity.Editor::ET.BehaviorTreeAsset
+  TreeId: ff0e683322414856a7988acf8a68f480
+  TreeName: NewBehaviorTree
+  Description: 
+  ExportRelativePath: Assets/Bundles/AI/Bytes/NewBehaviorTree.bytes
+  BlackboardEntries: []
+  Nodes:
+  - NodeId: e93bc620a9d74075be372bb77a9eb7c4
+    Title: Root
+    NodeKind: 0
+    Position:
+      serializedVersion: 2
+      x: 80
+      y: 80
+      width: 220
+      height: 120
+    ChildIds: []
+    HandlerName: 
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    SubTreeAsset: {fileID: 0}
+  RootNodeId: e93bc620a9d74075be372bb77a9eb7c4
+  ViewPosition: {x: 0, y: 0, z: 0}
+  ViewScale: {x: 1, y: 1, z: 1}

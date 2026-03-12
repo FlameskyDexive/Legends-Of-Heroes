@@ -72,7 +72,7 @@ namespace ET
                     : this.Data.Title;
 
             this.summaryLabel.text = BuildSummary(this.Data);
-            this.titleContainer.style.backgroundColor = BehaviorTreeEditorUtility.GetNodeColor(debugState);
+            this.titleContainer.style.backgroundColor = BehaviorTreeEditorUtility.GetNodeHeaderColor(this.Data.NodeKind, debugState);
             this.RefreshExpandedState();
             this.RefreshPorts();
         }

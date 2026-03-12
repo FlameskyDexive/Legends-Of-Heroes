@@ -40,6 +40,39 @@ namespace ET
             this.SubTreeId = this.SubTreeAsset.TreeId;
             this.SubTreeName = this.SubTreeAsset.TreeName;
         }
+
+        public BehaviorTreeEditorNodeData Clone()
+        {
+            BehaviorTreeEditorNodeData node = new()
+            {
+                NodeId = this.NodeId,
+                Title = this.Title,
+                NodeKind = this.NodeKind,
+                Position = this.Position,
+                HandlerName = this.HandlerName,
+                BlackboardKey = this.BlackboardKey,
+                CompareOperator = this.CompareOperator,
+                CompareValue = this.CompareValue?.Clone() ?? new BehaviorTreeSerializedValue(),
+                AbortMode = this.AbortMode,
+                WaitMilliseconds = this.WaitMilliseconds,
+                IntervalMilliseconds = this.IntervalMilliseconds,
+                MaxLoopCount = this.MaxLoopCount,
+                SuccessPolicy = this.SuccessPolicy,
+                FailurePolicy = this.FailurePolicy,
+                Comment = this.Comment,
+                SubTreeId = this.SubTreeId,
+                SubTreeName = this.SubTreeName,
+                SubTreeAsset = this.SubTreeAsset,
+            };
+
+            node.ChildIds.AddRange(this.ChildIds);
+            foreach (BehaviorTreeArgumentDefinition argument in this.Arguments)
+            {
+                node.Arguments.Add(argument.Clone());
+            }
+
+            return node;
+        }
     }
 
     public sealed class BehaviorTreeAsset : ScriptableObject

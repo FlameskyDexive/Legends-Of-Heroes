@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -9,16 +10,27 @@ namespace ET
 {
     public sealed class BehaviorTreeGraphView : GraphView
     {
+        private sealed class ClipboardSelection
+        {
+            public readonly List<BehaviorTreeEditorNodeData> Nodes = new();
+            public readonly List<(string ParentId, string ChildId)> Connections = new();
+        }
+
+        private static ClipboardSelection clipboard;
         private readonly Dictionary<string, BehaviorTreeNodeView> nodeViews = new();
         private readonly BehaviorTreeEditorWindow window;
+        private readonly BehaviorTreeSearchWindowProvider searchWindowProvider;
         private bool isPopulating;
+        private MiniMap miniMap;
 
         public BehaviorTreeGraphView(BehaviorTreeEditorWindow window)
         {
             this.window = window;
             this.style.flexGrow = 1;
+            this.style.backgroundColor = new Color(0.12f, 0.12f, 0.12f);
 
             GridBackground gridBackground = new();
+            gridBackground.pickingMode = PickingMode.Ignore;
             this.Insert(0, gridBackground);
             gridBackground.StretchToParentSize();
 
@@ -27,7 +39,12 @@ namespace ET
             this.AddManipulator(new SelectionDragger());
             this.AddManipulator(new RectangleSelector());
 
+            this.searchWindowProvider = ScriptableObject.CreateInstance<BehaviorTreeSearchWindowProvider>();
+            this.searchWindowProvider.Initialize(window, this);
+            this.nodeCreationRequest = this.OpenSearchWindow;
+
             this.graphViewChanged += this.OnGraphViewChanged;
+            this.RegisterCallback<KeyDownEvent>(this.OnKeyDownEvent, TrickleDown.TrickleDown);
         }
 
         public BehaviorTreeAsset Asset { get; private set; }
@@ -64,9 +81,11 @@ namespace ET
             this.Asset = asset;
             this.DeleteElements(this.graphElements.ToList());
             this.nodeViews.Clear();
+            this.miniMap = null;
 
             if (asset == null)
             {
+                this.EnsureMiniMap();
                 this.isPopulating = false;
                 return;
             }
@@ -98,6 +117,7 @@ namespace ET
             }
 
             this.UpdateViewTransform(asset.ViewPosition, asset.ViewScale == Vector3.zero ? Vector3.one : asset.ViewScale);
+            this.EnsureMiniMap();
             this.RefreshDebugStates(this.window.GetActiveSnapshot());
             this.isPopulating = false;
         }
@@ -117,6 +137,70 @@ namespace ET
             this.window.SelectNode(this.nodeViews[node.NodeId]);
         }
 
+        public void PasteNodes(Vector2? centerPosition = null)
+        {
+            if (this.Asset == null || clipboard == null || clipboard.Nodes.Count == 0)
+            {
+                return;
+            }
+
+            Undo.RecordObject(this.Asset, "Paste Behavior Tree Nodes");
+
+            Vector2 minPosition = new(float.MaxValue, float.MaxValue);
+            foreach (BehaviorTreeEditorNodeData clipboardNode in clipboard.Nodes)
+            {
+                minPosition.x = Mathf.Min(minPosition.x, clipboardNode.Position.xMin);
+                minPosition.y = Mathf.Min(minPosition.y, clipboardNode.Position.yMin);
+            }
+
+            Vector2 pasteOrigin = centerPosition ?? this.contentViewContainer.WorldToLocal(this.layout.center);
+            Vector2 offset = pasteOrigin - minPosition + new Vector2(40, 40);
+
+            Dictionary<string, BehaviorTreeEditorNodeData> pastedNodes = new();
+            foreach (BehaviorTreeEditorNodeData clipboardNode in clipboard.Nodes)
+            {
+                BehaviorTreeEditorNodeData pastedNode = clipboardNode.Clone();
+                pastedNode.NodeId = Guid.NewGuid().ToString("N");
+                pastedNode.ChildIds.Clear();
+                pastedNode.Position = new Rect(
+                    clipboardNode.Position.x + offset.x,
+                    clipboardNode.Position.y + offset.y,
+                    clipboardNode.Position.width,
+                    clipboardNode.Position.height);
+
+                this.Asset.Nodes.Add(pastedNode);
+                pastedNodes.Add(clipboardNode.NodeId, pastedNode);
+                this.AddNodeView(pastedNode);
+            }
+
+            foreach ((string parentId, string childId) in clipboard.Connections)
+            {
+                if (!pastedNodes.TryGetValue(parentId, out BehaviorTreeEditorNodeData parentNode) || !pastedNodes.TryGetValue(childId, out BehaviorTreeEditorNodeData childNode))
+                {
+                    continue;
+                }
+
+                parentNode.ChildIds.Add(childNode.NodeId);
+            }
+
+            EditorUtility.SetDirty(this.Asset);
+            this.PopulateView(this.Asset);
+
+            this.ClearSelection();
+            foreach (BehaviorTreeEditorNodeData pastedNode in pastedNodes.Values)
+            {
+                if (this.nodeViews.TryGetValue(pastedNode.NodeId, out BehaviorTreeNodeView pastedView))
+                {
+                    this.AddToSelection(pastedView);
+                }
+            }
+
+            if (pastedNodes.Values.FirstOrDefault() is BehaviorTreeEditorNodeData firstPastedNode && this.nodeViews.TryGetValue(firstPastedNode.NodeId, out BehaviorTreeNodeView firstPastedView))
+            {
+                this.window.SelectNode(firstPastedView);
+            }
+        }
+
         public void RefreshNodeViews()
         {
             foreach (BehaviorTreeNodeView nodeView in this.nodeViews.Values)
@@ -125,6 +209,286 @@ namespace ET
             }
 
             this.RefreshDebugStates(this.window.GetActiveSnapshot());
+        }
+
+        public void FrameAllNodes()
+        {
+            this.FrameAll();
+        }
+
+        public void AutoLayoutTree()
+        {
+            if (this.Asset == null)
+            {
+                return;
+            }
+
+            Undo.RecordObject(this.Asset, "Auto Layout Behavior Tree");
+
+            const float horizontalSpacing = 60f;
+            const float verticalSpacing = 150f;
+            const float startX = 120f;
+            const float startY = 100f;
+
+            Dictionary<string, float> subtreeWidths = new();
+            float Measure(string nodeId)
+            {
+                if (string.IsNullOrWhiteSpace(nodeId))
+                {
+                    return 240f;
+                }
+
+                if (subtreeWidths.TryGetValue(nodeId, out float cachedWidth))
+                {
+                    return cachedWidth;
+                }
+
+                BehaviorTreeEditorNodeData node = this.Asset.GetNode(nodeId);
+                if (node == null || node.ChildIds.Count == 0)
+                {
+                    subtreeWidths[nodeId] = 240f;
+                    return 240f;
+                }
+
+                float totalWidth = 0f;
+                for (int index = 0; index < node.ChildIds.Count; ++index)
+                {
+                    totalWidth += Measure(node.ChildIds[index]);
+                    if (index < node.ChildIds.Count - 1)
+                    {
+                        totalWidth += horizontalSpacing;
+                    }
+                }
+
+                totalWidth = Mathf.Max(240f, totalWidth);
+                subtreeWidths[nodeId] = totalWidth;
+                return totalWidth;
+            }
+
+            void Layout(string nodeId, int depth, float left)
+            {
+                BehaviorTreeEditorNodeData node = this.Asset.GetNode(nodeId);
+                if (node == null)
+                {
+                    return;
+                }
+
+                float width = Measure(nodeId);
+                node.Position = new Rect(left + (width - node.Position.width) * 0.5f, startY + depth * verticalSpacing, node.Position.width, node.Position.height);
+
+                float childLeft = left;
+                foreach (string childId in node.ChildIds)
+                {
+                    float childWidth = Measure(childId);
+                    Layout(childId, depth + 1, childLeft);
+                    childLeft += childWidth + horizontalSpacing;
+                }
+            }
+
+            string rootNodeId = this.Asset.RootNodeId;
+            if (!string.IsNullOrWhiteSpace(rootNodeId))
+            {
+                Layout(rootNodeId, 0, startX);
+            }
+
+            HashSet<string> connectedNodeIds = new(this.Asset.Nodes.SelectMany(node => node.ChildIds))
+            {
+                this.Asset.RootNodeId
+            };
+
+            float orphanX = startX;
+            float orphanY = startY + 5 * verticalSpacing;
+            foreach (BehaviorTreeEditorNodeData node in this.Asset.Nodes)
+            {
+                if (connectedNodeIds.Contains(node.NodeId) || node.NodeKind == BehaviorTreeNodeKind.Root)
+                {
+                    continue;
+                }
+
+                node.Position = new Rect(orphanX, orphanY, node.Position.width, node.Position.height);
+                orphanX += node.Position.width + horizontalSpacing;
+            }
+
+            EditorUtility.SetDirty(this.Asset);
+            this.PopulateView(this.Asset);
+            this.FrameAllNodes();
+        }
+
+        public void AlignSelectionLeft()
+        {
+            List<BehaviorTreeNodeView> selectedNodeViews = this.GetSelectedNodeViews();
+            if (selectedNodeViews.Count < 2)
+            {
+                return;
+            }
+
+            float left = selectedNodeViews.Min(view => view.GetPosition().xMin);
+            this.ApplyNodePositions(selectedNodeViews, view =>
+            {
+                Rect position = view.GetPosition();
+                position.x = left;
+                return position;
+            }, "Align Behavior Tree Nodes Left");
+        }
+
+        public void AlignSelectionRight()
+        {
+            List<BehaviorTreeNodeView> selectedNodeViews = this.GetSelectedNodeViews();
+            if (selectedNodeViews.Count < 2)
+            {
+                return;
+            }
+
+            float right = selectedNodeViews.Max(view => view.GetPosition().xMax);
+            this.ApplyNodePositions(selectedNodeViews, view =>
+            {
+                Rect position = view.GetPosition();
+                position.x = right - position.width;
+                return position;
+            }, "Align Behavior Tree Nodes Right");
+        }
+
+        public void AlignSelectionTop()
+        {
+            List<BehaviorTreeNodeView> selectedNodeViews = this.GetSelectedNodeViews();
+            if (selectedNodeViews.Count < 2)
+            {
+                return;
+            }
+
+            float top = selectedNodeViews.Min(view => view.GetPosition().yMin);
+            this.ApplyNodePositions(selectedNodeViews, view =>
+            {
+                Rect position = view.GetPosition();
+                position.y = top;
+                return position;
+            }, "Align Behavior Tree Nodes Top");
+        }
+
+        public void AlignSelectionBottom()
+        {
+            List<BehaviorTreeNodeView> selectedNodeViews = this.GetSelectedNodeViews();
+            if (selectedNodeViews.Count < 2)
+            {
+                return;
+            }
+
+            float bottom = selectedNodeViews.Max(view => view.GetPosition().yMax);
+            this.ApplyNodePositions(selectedNodeViews, view =>
+            {
+                Rect position = view.GetPosition();
+                position.y = bottom - position.height;
+                return position;
+            }, "Align Behavior Tree Nodes Bottom");
+        }
+
+        public void AlignSelectionHorizontalCenter()
+        {
+            List<BehaviorTreeNodeView> selectedNodeViews = this.GetSelectedNodeViews();
+            if (selectedNodeViews.Count < 2)
+            {
+                return;
+            }
+
+            float center = selectedNodeViews.Average(view => view.GetPosition().center.x);
+            this.ApplyNodePositions(selectedNodeViews, view =>
+            {
+                Rect position = view.GetPosition();
+                position.x = center - position.width * 0.5f;
+                return position;
+            }, "Align Behavior Tree Nodes Horizontal Center");
+        }
+
+        public void AlignSelectionVerticalCenter()
+        {
+            List<BehaviorTreeNodeView> selectedNodeViews = this.GetSelectedNodeViews();
+            if (selectedNodeViews.Count < 2)
+            {
+                return;
+            }
+
+            float center = selectedNodeViews.Average(view => view.GetPosition().center.y);
+            this.ApplyNodePositions(selectedNodeViews, view =>
+            {
+                Rect position = view.GetPosition();
+                position.y = center - position.height * 0.5f;
+                return position;
+            }, "Align Behavior Tree Nodes Vertical Center");
+        }
+
+        public void DistributeSelectionHorizontal()
+        {
+            List<BehaviorTreeNodeView> selectedNodeViews = this.GetSelectedNodeViews().OrderBy(view => view.GetPosition().center.x).ToList();
+            if (selectedNodeViews.Count < 3)
+            {
+                return;
+            }
+
+            float left = selectedNodeViews.First().GetPosition().xMin;
+            float right = selectedNodeViews.Last().GetPosition().xMax;
+            float contentWidth = selectedNodeViews.Sum(view => view.GetPosition().width);
+            float spacing = (right - left - contentWidth) / (selectedNodeViews.Count - 1);
+            float currentLeft = left;
+
+            this.ApplyNodePositions(selectedNodeViews, view =>
+            {
+                Rect position = view.GetPosition();
+                position.x = currentLeft;
+                currentLeft += position.width + spacing;
+                return position;
+            }, "Distribute Behavior Tree Nodes Horizontal");
+        }
+
+        public void DistributeSelectionVertical()
+        {
+            List<BehaviorTreeNodeView> selectedNodeViews = this.GetSelectedNodeViews().OrderBy(view => view.GetPosition().center.y).ToList();
+            if (selectedNodeViews.Count < 3)
+            {
+                return;
+            }
+
+            float top = selectedNodeViews.First().GetPosition().yMin;
+            float bottom = selectedNodeViews.Last().GetPosition().yMax;
+            float contentHeight = selectedNodeViews.Sum(view => view.GetPosition().height);
+            float spacing = (bottom - top - contentHeight) / (selectedNodeViews.Count - 1);
+            float currentTop = top;
+
+            this.ApplyNodePositions(selectedNodeViews, view =>
+            {
+                Rect position = view.GetPosition();
+                position.y = currentTop;
+                currentTop += position.height + spacing;
+                return position;
+            }, "Distribute Behavior Tree Nodes Vertical");
+        }
+
+        public void SetMiniMapVisible(bool visible)
+        {
+            this.EnsureMiniMap();
+            if (this.miniMap == null)
+            {
+                return;
+            }
+
+            this.miniMap.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        public void SelectNode(string nodeId)
+        {
+            if (string.IsNullOrWhiteSpace(nodeId))
+            {
+                return;
+            }
+
+            if (!this.nodeViews.TryGetValue(nodeId, out BehaviorTreeNodeView nodeView))
+            {
+                return;
+            }
+
+            this.ClearSelection();
+            this.AddToSelection(nodeView);
+            this.window.SelectNode(nodeView);
+            this.FrameSelection();
         }
 
         public void RefreshDebugStates(BehaviorTreeDebugSnapshot snapshot)
@@ -146,19 +510,23 @@ namespace ET
             base.BuildContextualMenu(evt);
             evt.menu.AppendSeparator();
 
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Sequence);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Selector);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Parallel);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Inverter);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Succeeder);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Failer);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Repeater);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.BlackboardCondition);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Service);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Action);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Condition);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.Wait);
-            this.AppendCreateAction(evt, BehaviorTreeNodeKind.SubTree);
+            evt.menu.AppendAction("Create Node...", _ => this.OpenSearchWindow(evt.localMousePosition));
+            evt.menu.AppendAction("Edit/Copy", _ => this.CopySelection(), _ => this.CanCopySelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Edit/Paste", _ => this.PasteNodes(evt.localMousePosition), _ => clipboard != null && clipboard.Nodes.Count > 0 ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Edit/Duplicate", _ => this.DuplicateSelection(evt.localMousePosition), _ => this.CanCopySelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Edit/Delete", _ => this.DeleteSelectionNodes(), _ => this.CanDeleteSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendSeparator();
+            evt.menu.AppendAction("View/Frame All", _ => this.FrameAllNodes());
+            evt.menu.AppendAction("View/Auto Layout", _ => this.AutoLayoutTree(), _ => this.Asset == null ? DropdownMenuAction.Status.Disabled : DropdownMenuAction.Status.Normal);
+            evt.menu.AppendSeparator();
+            evt.menu.AppendAction("Layout/Align Left", _ => this.AlignSelectionLeft(), _ => this.CanAlignSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Layout/Align Right", _ => this.AlignSelectionRight(), _ => this.CanAlignSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Layout/Align Top", _ => this.AlignSelectionTop(), _ => this.CanAlignSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Layout/Align Bottom", _ => this.AlignSelectionBottom(), _ => this.CanAlignSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Layout/Align Horizontal Center", _ => this.AlignSelectionHorizontalCenter(), _ => this.CanAlignSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Layout/Align Vertical Center", _ => this.AlignSelectionVerticalCenter(), _ => this.CanAlignSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Layout/Distribute Horizontal", _ => this.DistributeSelectionHorizontal(), _ => this.CanDistributeSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Layout/Distribute Vertical", _ => this.DistributeSelectionVertical(), _ => this.CanDistributeSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
         }
 
         private void AddNodeView(BehaviorTreeEditorNodeData node)
@@ -205,9 +573,158 @@ namespace ET
             return graphViewChange;
         }
 
-        private void AppendCreateAction(ContextualMenuPopulateEvent evt, BehaviorTreeNodeKind nodeKind)
+        private void OnKeyDownEvent(KeyDownEvent evt)
         {
-            evt.menu.AppendAction($"Create/{BehaviorTreeEditorUtility.GetDefaultTitle(nodeKind)}", _ => this.CreateNode(nodeKind, evt.localMousePosition));
+            bool isControlPressed = evt.ctrlKey || evt.commandKey;
+            if (isControlPressed && evt.keyCode == KeyCode.C)
+            {
+                this.CopySelection();
+                evt.StopImmediatePropagation();
+                return;
+            }
+
+            if (isControlPressed && evt.keyCode == KeyCode.V)
+            {
+                this.PasteNodes();
+                evt.StopImmediatePropagation();
+                return;
+            }
+
+            if (isControlPressed && evt.keyCode == KeyCode.D)
+            {
+                this.CopySelection();
+                this.PasteNodes();
+                evt.StopImmediatePropagation();
+                return;
+            }
+
+            if (evt.keyCode == KeyCode.Delete || evt.keyCode == KeyCode.Backspace)
+            {
+                this.DeleteSelectionNodes();
+                evt.StopImmediatePropagation();
+            }
+        }
+
+        private void CopySelection()
+        {
+            List<BehaviorTreeNodeView> selectedNodeViews = this.selection.OfType<BehaviorTreeNodeView>().Where(view => BehaviorTreeEditorUtility.CanDelete(view.Data)).ToList();
+            if (selectedNodeViews.Count == 0)
+            {
+                return;
+            }
+
+            clipboard = new ClipboardSelection();
+            HashSet<string> selectedIds = new(selectedNodeViews.Select(view => view.Data.NodeId));
+            foreach (BehaviorTreeNodeView nodeView in selectedNodeViews)
+            {
+                clipboard.Nodes.Add(nodeView.Data.Clone());
+            }
+
+            foreach (BehaviorTreeNodeView nodeView in selectedNodeViews)
+            {
+                foreach (string childId in nodeView.Data.ChildIds)
+                {
+                    if (selectedIds.Contains(childId))
+                    {
+                        clipboard.Connections.Add((nodeView.Data.NodeId, childId));
+                    }
+                }
+            }
+        }
+
+        private void DuplicateSelection(Vector2? centerPosition = null)
+        {
+            if (!this.CanCopySelection())
+            {
+                return;
+            }
+
+            this.CopySelection();
+            this.PasteNodes(centerPosition);
+        }
+
+        private void ApplyNodePositions(List<BehaviorTreeNodeView> nodeViewsToMove, Func<BehaviorTreeNodeView, Rect> positionFactory, string undoName)
+        {
+            if (this.Asset == null || nodeViewsToMove.Count == 0)
+            {
+                return;
+            }
+
+            Undo.RecordObject(this.Asset, undoName);
+            foreach (BehaviorTreeNodeView nodeView in nodeViewsToMove)
+            {
+                nodeView.SetPosition(positionFactory(nodeView));
+            }
+
+            EditorUtility.SetDirty(this.Asset);
+            this.window.MarkAssetDirty();
+        }
+
+        private List<BehaviorTreeNodeView> GetSelectedNodeViews()
+        {
+            return this.selection.OfType<BehaviorTreeNodeView>().ToList();
+        }
+
+        private void DeleteSelectionNodes()
+        {
+            List<GraphElement> elements = this.selection
+                .Where(element => element is BehaviorTreeNodeView nodeView ? BehaviorTreeEditorUtility.CanDelete(nodeView.Data) : element is Edge)
+                .Cast<GraphElement>()
+                .ToList();
+
+            if (elements.Count == 0)
+            {
+                return;
+            }
+
+            this.DeleteElements(elements);
+        }
+
+        private bool CanCopySelection()
+        {
+            return this.selection.OfType<BehaviorTreeNodeView>().Any(view => BehaviorTreeEditorUtility.CanDelete(view.Data));
+        }
+
+        private bool CanAlignSelection()
+        {
+            return this.GetSelectedNodeViews().Count >= 2;
+        }
+
+        private bool CanDistributeSelection()
+        {
+            return this.GetSelectedNodeViews().Count >= 3;
+        }
+
+        private bool CanDeleteSelection()
+        {
+            return this.selection.Any(element => element is Edge || element is BehaviorTreeNodeView nodeView && BehaviorTreeEditorUtility.CanDelete(nodeView.Data));
+        }
+
+        private void OpenSearchWindow(NodeCreationContext context)
+        {
+            SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), this.searchWindowProvider);
+        }
+
+        private void OpenSearchWindow(Vector2 localMousePosition)
+        {
+            Vector2 screenMousePosition = GUIUtility.GUIToScreenPoint(localMousePosition);
+            SearchWindow.Open(new SearchWindowContext(screenMousePosition), this.searchWindowProvider);
+        }
+
+        private void EnsureMiniMap()
+        {
+            if (this.miniMap != null && this.miniMap.parent != null)
+            {
+                return;
+            }
+
+            this.miniMap = new MiniMap
+            {
+                anchored = true,
+            };
+            this.miniMap.SetPosition(new Rect(12, 36, 220, 140));
+            this.Add(this.miniMap);
+            this.miniMap.BringToFront();
         }
 
         private void Connect(Edge edge)
