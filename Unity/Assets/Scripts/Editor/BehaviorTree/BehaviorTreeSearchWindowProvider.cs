@@ -89,9 +89,8 @@ namespace ET
                 return false;
             }
 
-            Vector2 windowMousePosition = context.screenMousePosition - this.window.position.position;
-            Vector2 graphMousePosition = this.graphView.contentViewContainer.WorldToLocal(windowMousePosition);
-            this.graphView.CreateNode(nodeKind, graphMousePosition);
+            Vector2 contentPosition = this.graphView.GetPendingNodeCreationContentPosition();
+            this.graphView.CreateNodeAtContentPosition(nodeKind, contentPosition);
             return true;
         }
 

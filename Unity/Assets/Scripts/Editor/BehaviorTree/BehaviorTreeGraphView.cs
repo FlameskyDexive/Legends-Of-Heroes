@@ -19,9 +19,12 @@ namespace ET
         private static ClipboardSelection clipboard;
         private readonly Dictionary<string, BehaviorTreeNodeView> nodeViews = new();
         private readonly BehaviorTreeEditorWindow window;
+        private readonly BehaviorTreeGridBackground gridBackground;
         private readonly BehaviorTreeSearchWindowProvider searchWindowProvider;
         private bool isPopulating;
         private MiniMap miniMap;
+        private Vector2 pendingNodeCreationContentPosition;
+        private bool hasPendingNodeCreationPosition;
 
         public BehaviorTreeGraphView(BehaviorTreeEditorWindow window)
         {
@@ -29,10 +32,11 @@ namespace ET
             this.style.flexGrow = 1;
             this.style.backgroundColor = new Color(0.12f, 0.12f, 0.12f);
 
-            GridBackground gridBackground = new();
-            gridBackground.pickingMode = PickingMode.Ignore;
-            this.Insert(0, gridBackground);
-            gridBackground.StretchToParentSize();
+            this.gridBackground = new BehaviorTreeGridBackground(this);
+            this.gridBackground.pickingMode = PickingMode.Ignore;
+            this.Insert(0, this.gridBackground);
+            this.gridBackground.StretchToParentSize();
+            this.gridBackground.SendToBack();
 
             this.SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
             this.AddManipulator(new ContentDragger());
@@ -44,7 +48,9 @@ namespace ET
             this.nodeCreationRequest = this.OpenSearchWindow;
 
             this.graphViewChanged += this.OnGraphViewChanged;
+            this.viewTransformChanged += _ => this.gridBackground.MarkDirtyRepaint();
             this.RegisterCallback<KeyDownEvent>(this.OnKeyDownEvent, TrickleDown.TrickleDown);
+            this.RegisterCallback<MouseUpEvent>(this.OnMouseUpEvent, TrickleDown.TrickleDown);
         }
 
         public BehaviorTreeAsset Asset { get; private set; }
@@ -129,12 +135,32 @@ namespace ET
                 return;
             }
 
+            Vector2 contentPosition = this.contentViewContainer.WorldToLocal(this.LocalToWorld(localMousePosition));
+            this.CreateNodeAtContentPosition(nodeKind, contentPosition);
+        }
+
+        public void CreateNodeAtContentPosition(BehaviorTreeNodeKind nodeKind, Vector2 contentPosition)
+        {
+            if (this.Asset == null)
+            {
+                return;
+            }
+
             Undo.RecordObject(this.Asset, "Create Behavior Tree Node");
-            Vector2 graphPosition = this.contentViewContainer.WorldToLocal(this.LocalToWorld(localMousePosition));
-            BehaviorTreeEditorNodeData node = this.Asset.AddNode(nodeKind, graphPosition);
+            BehaviorTreeEditorNodeData node = this.Asset.AddNode(nodeKind, contentPosition);
             this.AddNodeView(node);
             EditorUtility.SetDirty(this.Asset);
             this.window.SelectNode(this.nodeViews[node.NodeId]);
+        }
+
+        public Vector2 GetPendingNodeCreationContentPosition()
+        {
+            if (!this.hasPendingNodeCreationPosition)
+            {
+                return this.contentViewContainer.WorldToLocal(this.layout.center);
+            }
+
+            return this.pendingNodeCreationContentPosition;
         }
 
         public void PasteNodes(Vector2? centerPosition = null)
@@ -473,6 +499,16 @@ namespace ET
             this.miniMap.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
+        public void SetGridVisible(bool visible)
+        {
+            if (this.gridBackground == null)
+            {
+                return;
+            }
+
+            this.gridBackground.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
         public void SelectNode(string nodeId)
         {
             if (string.IsNullOrWhiteSpace(nodeId))
@@ -510,6 +546,7 @@ namespace ET
             base.BuildContextualMenu(evt);
             evt.menu.AppendSeparator();
 
+            this.CachePendingNodeCreationPosition(evt.localMousePosition);
             evt.menu.AppendAction("Create Node...", _ => this.OpenSearchWindow(evt.localMousePosition));
             evt.menu.AppendAction("Edit/Copy", _ => this.CopySelection(), _ => this.CanCopySelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
             evt.menu.AppendAction("Edit/Paste", _ => this.PasteNodes(evt.localMousePosition), _ => clipboard != null && clipboard.Nodes.Count > 0 ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
@@ -702,13 +739,33 @@ namespace ET
 
         private void OpenSearchWindow(NodeCreationContext context)
         {
+            Vector2 windowMousePosition = this.window.rootVisualElement.WorldToLocal(context.screenMousePosition);
+            Vector2 graphLocalPosition = this.window.rootVisualElement.ChangeCoordinatesTo(this, windowMousePosition);
+            this.CachePendingNodeCreationPosition(graphLocalPosition);
             SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), this.searchWindowProvider);
         }
 
         private void OpenSearchWindow(Vector2 localMousePosition)
         {
+            this.CachePendingNodeCreationPosition(localMousePosition);
             Vector2 screenMousePosition = GUIUtility.GUIToScreenPoint(localMousePosition);
             SearchWindow.Open(new SearchWindowContext(screenMousePosition), this.searchWindowProvider);
+        }
+
+        private void OnMouseUpEvent(MouseUpEvent evt)
+        {
+            if (evt.button != 1)
+            {
+                return;
+            }
+
+            this.CachePendingNodeCreationPosition(evt.localMousePosition);
+        }
+
+        private void CachePendingNodeCreationPosition(Vector2 graphLocalPosition)
+        {
+            this.pendingNodeCreationContentPosition = this.contentViewContainer.WorldToLocal(this.LocalToWorld(graphLocalPosition));
+            this.hasPendingNodeCreationPosition = true;
         }
 
         private void EnsureMiniMap()

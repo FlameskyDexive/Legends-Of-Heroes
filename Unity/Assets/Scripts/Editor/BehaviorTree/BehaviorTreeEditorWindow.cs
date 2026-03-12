@@ -13,6 +13,7 @@ namespace ET
     public sealed class BehaviorTreeEditorWindow : EditorWindow
     {
         private const string MiniMapEditorPrefKey = "ET.BehaviorTreeEditor.ShowMiniMap";
+        private const string GridEditorPrefKey = "ET.BehaviorTreeEditor.ShowGrid";
 
         private BehaviorTreeAsset asset;
         private Toolbar toolbar;
@@ -28,6 +29,7 @@ namespace ET
         private long lastSnapshotRuntimeId;
         private long lastSnapshotUpdatedAt;
         private bool showMiniMap = true;
+        private bool showGrid = true;
 
         [MenuItem("ET/AI/BehaviorTreeEditor", false, 1007)]
         public static void ShowWindow()
@@ -131,6 +133,7 @@ namespace ET
         private void OnEnable()
         {
             this.showMiniMap = EditorPrefs.GetBool(MiniMapEditorPrefKey, true);
+            this.showGrid = EditorPrefs.GetBool(GridEditorPrefKey, true);
         }
 
         private void CreateGUI()
@@ -193,6 +196,7 @@ namespace ET
             }
 
             this.graphView.SetMiniMapVisible(this.showMiniMap);
+            this.graphView.SetGridVisible(this.showGrid);
             VisualElement treeViewPanel = this.CreatePanel("Tree View", this.graphView);
             treeViewPanel.style.flexGrow = 1;
 
@@ -288,6 +292,14 @@ namespace ET
             miniMapToggle.RegisterValueChangedCallback(evt => this.SetMiniMapVisible(evt.newValue));
             this.toolbar.Add(miniMapToggle);
 
+            ToolbarToggle gridToggle = new()
+            {
+                text = "Grid",
+                value = this.showGrid,
+            };
+            gridToggle.RegisterValueChangedCallback(evt => this.SetGridVisible(evt.newValue));
+            this.toolbar.Add(gridToggle);
+
             VisualElement spacer = new();
             spacer.style.flexGrow = 1;
             this.toolbar.Add(spacer);
@@ -307,6 +319,13 @@ namespace ET
             this.showMiniMap = visible;
             EditorPrefs.SetBool(MiniMapEditorPrefKey, visible);
             this.graphView?.SetMiniMapVisible(visible);
+        }
+
+        private void SetGridVisible(bool visible)
+        {
+            this.showGrid = visible;
+            EditorPrefs.SetBool(GridEditorPrefKey, visible);
+            this.graphView?.SetGridVisible(visible);
         }
 
         private Button CreateToolbarButton(string text, Action onClick)
