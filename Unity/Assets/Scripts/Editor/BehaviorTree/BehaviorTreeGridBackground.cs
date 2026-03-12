@@ -31,8 +31,7 @@ namespace ET
 
             painter.lineWidth = 1f;
             Vector3 transformPosition = this.graphView?.viewTransform.position ?? Vector3.zero;
-            float zoom = this.graphView?.viewTransform.scale.x ?? 1f;
-            zoom = Mathf.Max(0.05f, zoom);
+            float zoom = Mathf.Max(0.05f, this.graphView?.viewTransform.scale.x ?? 1f);
 
             DrawGrid(painter, rect, MinorSpacing, zoom, transformPosition, MinorLineColor, 6f, 6f);
             DrawGrid(painter, rect, MajorSpacing, zoom, transformPosition, MajorLineColor, 12f, 6f);

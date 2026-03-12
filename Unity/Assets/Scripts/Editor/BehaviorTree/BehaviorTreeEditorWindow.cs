@@ -15,6 +15,7 @@ namespace ET
         private const string MiniMapEditorPrefKey = "ET.BehaviorTreeEditor.ShowMiniMap";
         private const string GridEditorPrefKey = "ET.BehaviorTreeEditor.ShowGrid";
         private const string ConnectionStyleEditorPrefKey = "ET.BehaviorTreeEditor.ConnectionStyle";
+        private const string MiniMapRectEditorPrefKey = "ET.BehaviorTreeEditor.MiniMapRect";
 
         private BehaviorTreeAsset asset;
         private Toolbar toolbar;
@@ -295,6 +296,7 @@ namespace ET
             };
             miniMapToggle.RegisterValueChangedCallback(evt => this.SetMiniMapVisible(evt.newValue));
             this.toolbar.Add(miniMapToggle);
+            this.toolbar.Add(this.CreateToolbarButton("Reset MiniMap", this.ResetMiniMap));
 
             ToolbarToggle gridToggle = new()
             {
@@ -335,6 +337,42 @@ namespace ET
             this.showMiniMap = visible;
             EditorPrefs.SetBool(MiniMapEditorPrefKey, visible);
             this.graphView?.SetMiniMapVisible(visible);
+        }
+
+        private void ResetMiniMap()
+        {
+            Rect rect = new Rect(12, 36, 220, 140);
+            SaveMiniMapRect(rect);
+            this.graphView?.SetMiniMapRect(rect);
+        }
+
+        public Rect LoadMiniMapRect()
+        {
+            string savedValue = EditorPrefs.GetString(MiniMapRectEditorPrefKey, string.Empty);
+            if (string.IsNullOrWhiteSpace(savedValue))
+            {
+                return new Rect(12, 36, 220, 140);
+            }
+
+            string[] values = savedValue.Split('|');
+            if (values.Length != 4)
+            {
+                return new Rect(12, 36, 220, 140);
+            }
+
+            if (!float.TryParse(values[0], out float x) || !float.TryParse(values[1], out float y) ||
+                !float.TryParse(values[2], out float width) || !float.TryParse(values[3], out float height))
+            {
+                return new Rect(12, 36, 220, 140);
+            }
+
+            return new Rect(x, y, width, height);
+        }
+
+        public void SaveMiniMapRect(Rect rect)
+        {
+            string value = $"{rect.x}|{rect.y}|{rect.width}|{rect.height}";
+            EditorPrefs.SetString(MiniMapRectEditorPrefKey, value);
         }
 
         private void SetGridVisible(bool visible)

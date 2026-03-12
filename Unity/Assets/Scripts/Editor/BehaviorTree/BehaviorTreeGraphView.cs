@@ -23,7 +23,7 @@ namespace ET
         private readonly BehaviorTreeGridBackground gridBackground;
         private readonly BehaviorTreeSearchWindowProvider searchWindowProvider;
         private bool isPopulating;
-        private MiniMap miniMap;
+        private BehaviorTreeMiniMap miniMap;
         private Vector2 pendingNodeCreationContentPosition;
         private bool hasPendingNodeCreationPosition;
         private BehaviorTreeConnectionStyle connectionStyle = BehaviorTreeConnectionStyle.Orthogonal;
@@ -42,7 +42,8 @@ namespace ET
 
             this.connectionLayer = new BehaviorTreeConnectionLayer(this);
             this.connectionLayer.StretchToParentSize();
-            this.Insert(1, this.connectionLayer);
+            this.contentViewContainer.Add(this.connectionLayer);
+            this.connectionLayer.SendToBack();
             this.connectionLayer.SetConnectionStyle(this.connectionStyle);
 
             this.SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
@@ -57,11 +58,17 @@ namespace ET
             this.graphViewChanged += this.OnGraphViewChanged;
             this.viewTransformChanged += _ => this.gridBackground.MarkDirtyRepaint();
             this.viewTransformChanged += _ => this.connectionLayer.MarkDirtyRepaint();
+            this.viewTransformChanged += _ => this.miniMap?.MarkDirtyRepaint();
             this.RegisterCallback<KeyDownEvent>(this.OnKeyDownEvent, TrickleDown.TrickleDown);
             this.RegisterCallback<MouseUpEvent>(this.OnMouseUpEvent, TrickleDown.TrickleDown);
         }
 
         public BehaviorTreeAsset Asset { get; private set; }
+
+        public BehaviorTreeEditorWindow GetWindow()
+        {
+            return this.window;
+        }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
@@ -94,9 +101,7 @@ namespace ET
             this.isPopulating = true;
             this.Asset = asset;
             this.DeleteElements(this.graphElements.ToList());
-            this.RemoveMiniMaps();
             this.nodeViews.Clear();
-            this.miniMap = null;
 
             if (asset == null)
             {
@@ -136,6 +141,7 @@ namespace ET
             this.EnsureMiniMap();
             this.RefreshDebugStates(this.window.GetActiveSnapshot());
             this.connectionLayer.MarkDirtyRepaint();
+            this.miniMap?.MarkDirtyRepaint();
             this.isPopulating = false;
         }
 
@@ -510,6 +516,12 @@ namespace ET
             this.miniMap.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
+        public void SetMiniMapRect(Rect rect)
+        {
+            this.EnsureMiniMap();
+            this.miniMap?.SetRect(rect);
+        }
+
         public void SetGridVisible(bool visible)
         {
             if (this.gridBackground == null)
@@ -525,6 +537,12 @@ namespace ET
             this.connectionStyle = style;
             this.connectionLayer?.SetConnectionStyle(style);
             this.connectionLayer?.MarkDirtyRepaint();
+            this.miniMap?.MarkDirtyRepaint();
+        }
+
+        public BehaviorTreeConnectionStyle GetConnectionStyle()
+        {
+            return this.connectionStyle;
         }
 
         public void SelectNode(string nodeId)
@@ -796,42 +814,15 @@ namespace ET
 
         private void EnsureMiniMap()
         {
-            this.RemoveMiniMaps();
-
             if (this.miniMap != null && this.miniMap.parent != null)
             {
                 return;
             }
 
-            this.miniMap = new MiniMap
-            {
-                anchored = false,
-            };
-            this.miniMap.capabilities |= Capabilities.Movable;
-            this.miniMap.capabilities |= Capabilities.Resizable;
-            this.miniMap.style.position = Position.Absolute;
-            this.miniMap.maxWidth = 320f;
-            this.miniMap.maxHeight = 240f;
-            this.miniMap.style.minWidth = 140f;
-            this.miniMap.style.minHeight = 90f;
-            this.miniMap.SetPosition(new Rect(12, 36, 220, 140));
+            this.miniMap = new BehaviorTreeMiniMap(this);
+            this.miniMap.SetRect(this.window.LoadMiniMapRect());
             this.Add(this.miniMap);
             this.miniMap.BringToFront();
-        }
-
-        private void RemoveMiniMaps()
-        {
-            foreach (MiniMap existedMiniMap in this.Children().OfType<MiniMap>().ToList())
-            {
-                existedMiniMap.RemoveFromHierarchy();
-            }
-
-            if (this.miniMap != null && this.miniMap.parent != null)
-            {
-                this.miniMap.RemoveFromHierarchy();
-            }
-
-            this.miniMap = null;
         }
 
         private void Connect(Edge edge)
@@ -849,6 +840,7 @@ namespace ET
 
             this.ConfigureEdgeVisual(edge);
             this.connectionLayer.MarkDirtyRepaint();
+            this.miniMap?.MarkDirtyRepaint();
         }
 
         private void Disconnect(Edge edge)
@@ -861,6 +853,12 @@ namespace ET
             Undo.RecordObject(this.Asset, "Disconnect Behavior Tree Nodes");
             parentView.Data.ChildIds.RemoveAll(nodeId => nodeId == childView.Data.NodeId);
             this.connectionLayer.MarkDirtyRepaint();
+            this.miniMap?.MarkDirtyRepaint();
+        }
+
+        public IEnumerable<BehaviorTreeNodeView> GetNodeViews()
+        {
+            return this.nodeViews.Values;
         }
 
         private void ConfigureEdgeVisual(Edge edge)

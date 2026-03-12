@@ -74,10 +74,27 @@ namespace ET
             return new Vector2(worldRect.center.x, worldRect.yMin);
         }
 
+        public Vector2 GetInputAnchorContentPosition()
+        {
+            Rect rect = this.GetPosition();
+            return new Vector2(rect.center.x, rect.yMin);
+        }
+
         public Vector2 GetOutputAnchorWorldPosition()
         {
             Rect worldRect = this.worldBound;
             return new Vector2(worldRect.center.x, worldRect.yMax);
+        }
+
+        public Vector2 GetOutputAnchorContentPosition()
+        {
+            Rect rect = this.GetPosition();
+            return new Vector2(rect.center.x, rect.yMax);
+        }
+
+        public Rect GetNodeWorldRect()
+        {
+            return this.worldBound;
         }
 
         public override void SetPosition(Rect newPos)

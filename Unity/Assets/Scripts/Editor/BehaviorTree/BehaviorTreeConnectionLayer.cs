@@ -23,6 +23,10 @@ namespace ET
             this.graphView = graphView;
             this.pickingMode = PickingMode.Ignore;
             this.style.position = Position.Absolute;
+            this.style.left = 0;
+            this.style.top = 0;
+            this.style.right = 0;
+            this.style.bottom = 0;
             this.StretchToParentSize();
             this.generateVisualContent += this.OnGenerateVisualContent;
         }
@@ -51,8 +55,8 @@ namespace ET
                     continue;
                 }
 
-                Vector2 from = this.graphView.WorldToLocal(outputNodeView.GetOutputAnchorWorldPosition());
-                Vector2 to = this.graphView.WorldToLocal(inputNodeView.GetInputAnchorWorldPosition());
+                Vector2 from = outputNodeView.GetOutputAnchorContentPosition();
+                Vector2 to = inputNodeView.GetInputAnchorContentPosition();
                 if (this.connectionStyle == BehaviorTreeConnectionStyle.Straight)
                 {
                     DrawStraightLine(painter, from, to);
