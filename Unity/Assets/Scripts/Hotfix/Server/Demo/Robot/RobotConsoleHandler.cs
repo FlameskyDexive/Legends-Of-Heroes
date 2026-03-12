@@ -69,6 +69,30 @@ namespace ET.Server
                     Log.Debug($"behavior tree loaded: {treeName}, package={package.PackageName}, treeCount={package.Trees.Count}, entry={entryTree?.TreeName}, nodeCount={entryTree?.Nodes.Count ?? 0}");
                     break;
                 }
+                case "RunTree":
+                {
+                    string fileName = ss.Length > 1 ? ss[1] : "AITest";
+                    string treeName = ss.Length > 2 ? ss[2] : "AITest";
+                    byte[] bytes = await BehaviorTreeLoader.Instance.LoadBytesAsync(fileName, false);
+                    if (bytes == null || bytes.Length == 0)
+                    {
+                        Log.Debug($"run behavior tree failed, bytes empty: {fileName}");
+                        break;
+                    }
+
+                    BehaviorTreeRunner runner = BehaviorTreeRuntime.Create(fiber.Root, bytes, treeName);
+                    if (runner == null)
+                    {
+                        Log.Debug($"run behavior tree failed: {fileName}/{treeName}");
+                        break;
+                    }
+
+                    runner.Start();
+                    await fiber.Root.GetComponent<TimerComponent>().WaitAsync(2200);
+                    runner.Dispose();
+                    Log.Debug($"behavior tree run finish: {fileName}/{treeName}");
+                    break;
+                }
             }
             await ETTask.CompletedTask;
         }

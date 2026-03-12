@@ -6,7 +6,7 @@
 - 运行时执行：`Unity/Assets/Scripts/Hotfix/Share/Module/BehaviorTree`
 - 编辑器代码：`Unity/Assets/Scripts/Editor/BehaviorTree`
 - 本地编辑资产：建议放 `Unity/Assets/Editor/BehaviorTrees`
-- 导出二进制：默认导出到 `Unity/Assets/Bundles/AI/Bytes/*.bytes`
+- 导出二进制：一份导出到 `Unity/Assets/Bundles/AI/Bytes/*.bytes` 供客户端使用，另一份同步导出到 `Config/AI/*.bytes` 供服务端使用
 
 ## 为什么这样拆
 
@@ -45,6 +45,9 @@
 - 服务端纯逻辑加载：`byte[] bytes = BehaviorTreeLoader.Instance.LoadBytes("AITest")`
 - 服务端直接反序列化：`BehaviorTreePackage package = BehaviorTreeLoader.Instance.LoadPackage("AITest")`
 - Demo 导出菜单：`ET/AI/Export Demo AITest.bytes`
+- `AITest.bytes` 当前只包含一棵共享树：`AITest`
+- 客户端 Demo 与服务端自检都运行同一棵 `AITest`
+- 机器人控制台可执行：`Robot LoadTree AITest` 或 `Robot RunTree AITest`
 
 ## 已知边界
 

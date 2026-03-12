@@ -13,7 +13,7 @@ namespace ET
                 return null;
             }
 
-            string filePath = Path.Combine("..", BehaviorTreeLoader.BehaviorTreeBytesDir, $"{args.TreeName}.bytes");
+            string filePath = Path.Combine("..", BehaviorTreeLoader.ServerBehaviorTreeBytesDir, $"{args.TreeName}.bytes");
             if (!File.Exists(filePath))
             {
                 Log.Error($"behavior tree bytes not found: {filePath}");

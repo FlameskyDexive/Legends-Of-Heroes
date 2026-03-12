@@ -80,7 +80,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.scriptablebuildpipeline": {
-      "version": "2.4.3",
+      "version": "2.6.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {

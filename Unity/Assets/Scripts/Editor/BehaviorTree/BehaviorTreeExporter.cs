@@ -35,19 +35,46 @@ namespace ET
 
         public static string ExportToFile(BehaviorTreeAsset rootAsset)
         {
+            return ExportToFiles(rootAsset).ClientFullPath;
+        }
+
+        public static BehaviorTreeExportResult ExportToFiles(BehaviorTreeAsset rootAsset)
+        {
             BehaviorTreePackage package = BuildPackage(rootAsset);
             byte[] bytes = BehaviorTreeSerializer.Serialize(package);
             string projectRoot = Path.GetDirectoryName(Application.dataPath) ?? string.Empty;
-            string fullPath = Path.GetFullPath(Path.Combine(projectRoot, rootAsset.ExportRelativePath));
-            string directory = Path.GetDirectoryName(fullPath) ?? string.Empty;
-            if (!Directory.Exists(directory))
+            string clientFullPath = Path.GetFullPath(Path.Combine(projectRoot, rootAsset.ExportRelativePath));
+            string clientDirectory = Path.GetDirectoryName(clientFullPath) ?? string.Empty;
+            if (!Directory.Exists(clientDirectory))
             {
-                Directory.CreateDirectory(directory);
+                Directory.CreateDirectory(clientDirectory);
             }
 
-            File.WriteAllBytes(fullPath, bytes);
+            string serverFileName = Path.GetFileName(rootAsset.ExportRelativePath);
+            string serverFullPath = Path.GetFullPath(Path.Combine(projectRoot, "..", BehaviorTreeLoader.ServerBehaviorTreeBytesDir, serverFileName));
+            string serverDirectory = Path.GetDirectoryName(serverFullPath) ?? string.Empty;
+            if (!Directory.Exists(serverDirectory))
+            {
+                Directory.CreateDirectory(serverDirectory);
+            }
+
+            File.WriteAllBytes(clientFullPath, bytes);
+            File.WriteAllBytes(serverFullPath, bytes);
             AssetDatabase.Refresh();
-            return fullPath;
+            return new BehaviorTreeExportResult(clientFullPath, serverFullPath);
+        }
+
+        public readonly struct BehaviorTreeExportResult
+        {
+            public BehaviorTreeExportResult(string clientFullPath, string serverFullPath)
+            {
+                this.ClientFullPath = clientFullPath;
+                this.ServerFullPath = serverFullPath;
+            }
+
+            public string ClientFullPath { get; }
+
+            public string ServerFullPath { get; }
         }
 
         private static void Collect(BehaviorTreeAsset asset, HashSet<BehaviorTreeAsset> visitedAssets, List<BehaviorTreeDefinition> trees, HashSet<string> treeIds, HashSet<string> treeNames)

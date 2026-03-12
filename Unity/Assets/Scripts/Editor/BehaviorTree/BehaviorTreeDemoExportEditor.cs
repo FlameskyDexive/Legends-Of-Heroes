@@ -8,17 +8,25 @@ namespace ET
         [MenuItem("ET/AI/Export Demo AITest.bytes", false, 1008)]
         public static void ExportDemoAITest()
         {
-            byte[] bytes = ET.Client.BehaviorTreeClientDemoFactory.CreateRobotPatrolBytes();
-            string filePath = Path.Combine("Assets/Bundles/AI/Bytes", "AITest.bytes");
-            string directory = Path.GetDirectoryName(filePath);
-            if (!Directory.Exists(directory))
+            byte[] bytes = ET.Client.BehaviorTreeClientDemoFactory.CreateAITestBytes();
+            string clientFilePath = Path.Combine(BehaviorTreeLoader.ClientBehaviorTreeBytesDir, "AITest.bytes");
+            string clientDirectory = Path.GetDirectoryName(clientFilePath);
+            if (!Directory.Exists(clientDirectory))
             {
-                Directory.CreateDirectory(directory);
+                Directory.CreateDirectory(clientDirectory);
             }
 
-            File.WriteAllBytes(filePath, bytes);
+            string serverFilePath = Path.Combine(BehaviorTreeLoader.ServerBehaviorTreeBytesDir, "AITest.bytes");
+            string serverDirectory = Path.GetDirectoryName(serverFilePath);
+            if (!Directory.Exists(serverDirectory))
+            {
+                Directory.CreateDirectory(serverDirectory);
+            }
+
+            File.WriteAllBytes(clientFilePath, bytes);
+            File.WriteAllBytes(serverFilePath, bytes);
             AssetDatabase.Refresh();
-            EditorUtility.DisplayDialog("BehaviorTree", $"Exported demo file:\n{filePath}", "OK");
+            EditorUtility.DisplayDialog("BehaviorTree", $"Exported demo files:\n{clientFilePath}\n{serverFilePath}", "OK");
         }
     }
 }

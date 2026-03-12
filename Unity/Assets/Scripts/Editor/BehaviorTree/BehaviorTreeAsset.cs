@@ -66,7 +66,7 @@ namespace ET
             BehaviorTreeAsset asset = CreateInstance<BehaviorTreeAsset>();
             asset.name = System.IO.Path.GetFileNameWithoutExtension(path);
             asset.TreeName = asset.name;
-            asset.ExportRelativePath = $"Assets/Bundles/AI/Bytes/{asset.name}.bytes";
+            asset.ExportRelativePath = $"{BehaviorTreeLoader.ClientBehaviorTreeBytesDir}/{asset.name}.bytes";
             asset.EnsureInitialized();
             AssetDatabase.CreateAsset(asset, path);
             AssetDatabase.SaveAssets();
@@ -93,7 +93,7 @@ namespace ET
 
             if (string.IsNullOrWhiteSpace(this.ExportRelativePath))
             {
-                this.ExportRelativePath = $"Assets/Bundles/AI/Bytes/{this.TreeName}.bytes";
+                this.ExportRelativePath = $"{BehaviorTreeLoader.ClientBehaviorTreeBytesDir}/{this.TreeName}.bytes";
             }
 
             foreach (BehaviorTreeEditorNodeData node in this.Nodes)

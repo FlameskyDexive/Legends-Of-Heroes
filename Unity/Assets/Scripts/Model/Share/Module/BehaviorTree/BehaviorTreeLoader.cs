@@ -6,7 +6,8 @@ namespace ET
     [Code]
     public class BehaviorTreeLoader : Singleton<BehaviorTreeLoader>, ISingletonAwake
     {
-        public const string BehaviorTreeBytesDir = "Assets/Bundles/AI/Bytes";
+        public const string ClientBehaviorTreeBytesDir = "Assets/Bundles/AI/Bytes";
+        public const string ServerBehaviorTreeBytesDir = "Config/AI";
         public const string BehaviorTreeAssetDir = "Assets/Bundles/AI";
 
         public struct GetOneBehaviorTreeBytes

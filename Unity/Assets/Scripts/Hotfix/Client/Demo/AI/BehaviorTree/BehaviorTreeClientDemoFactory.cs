@@ -2,13 +2,13 @@ namespace ET.Client
 {
     public static class BehaviorTreeClientDemoFactory
     {
-        public static byte[] CreateRobotPatrolBytes()
+        public static byte[] CreateAITestBytes()
         {
             BehaviorTreeDefinition tree = new()
             {
-                TreeId = "demo.client.robot.patrol",
-                TreeName = "RobotPatrol",
-                Description = "Client demo patrol behavior tree for robot scene.",
+                TreeId = "demo.shared.ai_test",
+                TreeName = "AITest",
+                Description = "Shared client/server demo behavior tree.",
                 RootNodeId = "root",
             };
 
@@ -23,7 +23,7 @@ namespace ET.Client
             tree.Nodes.Add(new BehaviorTreeNodeDefinition()
             {
                 NodeId = "repeat",
-                Title = "Repeat Patrol",
+                Title = "Repeat Tick",
                 NodeKind = BehaviorTreeNodeKind.Repeater,
                 ChildIds = { "sequence" },
             });
@@ -31,25 +31,29 @@ namespace ET.Client
             tree.Nodes.Add(new BehaviorTreeNodeDefinition()
             {
                 NodeId = "sequence",
-                Title = "Patrol Sequence",
+                Title = "Tick Sequence",
                 NodeKind = BehaviorTreeNodeKind.Sequence,
-                ChildIds = { "hasPath", "patrol", "wait" },
+                ChildIds = { "log", "wait" },
             });
 
             tree.Nodes.Add(new BehaviorTreeNodeDefinition()
             {
-                NodeId = "hasPath",
-                Title = "Has Patrol Path",
-                NodeKind = BehaviorTreeNodeKind.Condition,
-                HandlerName = "DemoClientHasXunLuoPath",
-            });
-
-            tree.Nodes.Add(new BehaviorTreeNodeDefinition()
-            {
-                NodeId = "patrol",
-                Title = "Patrol One Point",
+                NodeId = "log",
+                Title = "Log Tick",
                 NodeKind = BehaviorTreeNodeKind.Action,
-                HandlerName = "DemoClientPatrol",
+                HandlerName = "Log",
+                Arguments =
+                {
+                    new BehaviorTreeArgumentDefinition()
+                    {
+                        Name = "message",
+                        Value = new BehaviorTreeSerializedValue()
+                        {
+                            ValueType = BehaviorTreeValueType.String,
+                            StringValue = "AITest tick",
+                        },
+                    },
+                },
             });
 
             tree.Nodes.Add(new BehaviorTreeNodeDefinition()
@@ -57,7 +61,7 @@ namespace ET.Client
                 NodeId = "wait",
                 Title = "Wait",
                 NodeKind = BehaviorTreeNodeKind.Wait,
-                WaitMilliseconds = 300,
+                WaitMilliseconds = 1000,
             });
 
             BehaviorTreePackage package = new()

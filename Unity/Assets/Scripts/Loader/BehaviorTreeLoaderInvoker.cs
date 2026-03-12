@@ -39,7 +39,7 @@ namespace ET
 
         private static byte[] TryLoadEditorBytes(string treeName)
         {
-            string bytesFilePath = Path.Combine(BehaviorTreeLoader.BehaviorTreeBytesDir, $"{treeName}.bytes");
+            string bytesFilePath = Path.Combine(BehaviorTreeLoader.ClientBehaviorTreeBytesDir, $"{treeName}.bytes");
             if (File.Exists(bytesFilePath))
             {
                 return File.ReadAllBytes(bytesFilePath);

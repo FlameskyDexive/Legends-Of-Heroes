@@ -19,11 +19,6 @@ namespace ET.Client
                 return;
             }
 
-            if (unit.GetComponent<XunLuoPathComponent>() == null)
-            {
-                unit.AddComponent<XunLuoPathComponent>();
-            }
-
             byte[] behaviorTreeBytes = await BehaviorTreeLoader.Instance.LoadBytesAsync("AITest");
             if (behaviorTreeBytes == null || behaviorTreeBytes.Length == 0)
             {
