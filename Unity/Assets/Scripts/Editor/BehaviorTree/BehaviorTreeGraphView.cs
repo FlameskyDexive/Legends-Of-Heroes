@@ -17,6 +17,7 @@ namespace ET
         }
 
         private static ClipboardSelection clipboard;
+        private readonly BehaviorTreeConnectionLayer connectionLayer;
         private readonly Dictionary<string, BehaviorTreeNodeView> nodeViews = new();
         private readonly BehaviorTreeEditorWindow window;
         private readonly BehaviorTreeGridBackground gridBackground;
@@ -25,6 +26,7 @@ namespace ET
         private MiniMap miniMap;
         private Vector2 pendingNodeCreationContentPosition;
         private bool hasPendingNodeCreationPosition;
+        private BehaviorTreeConnectionStyle connectionStyle = BehaviorTreeConnectionStyle.Orthogonal;
 
         public BehaviorTreeGraphView(BehaviorTreeEditorWindow window)
         {
@@ -38,6 +40,11 @@ namespace ET
             this.gridBackground.StretchToParentSize();
             this.gridBackground.SendToBack();
 
+            this.connectionLayer = new BehaviorTreeConnectionLayer(this);
+            this.connectionLayer.StretchToParentSize();
+            this.Insert(1, this.connectionLayer);
+            this.connectionLayer.SetConnectionStyle(this.connectionStyle);
+
             this.SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
             this.AddManipulator(new ContentDragger());
             this.AddManipulator(new SelectionDragger());
@@ -49,6 +56,7 @@ namespace ET
 
             this.graphViewChanged += this.OnGraphViewChanged;
             this.viewTransformChanged += _ => this.gridBackground.MarkDirtyRepaint();
+            this.viewTransformChanged += _ => this.connectionLayer.MarkDirtyRepaint();
             this.RegisterCallback<KeyDownEvent>(this.OnKeyDownEvent, TrickleDown.TrickleDown);
             this.RegisterCallback<MouseUpEvent>(this.OnMouseUpEvent, TrickleDown.TrickleDown);
         }
@@ -119,12 +127,14 @@ namespace ET
 
                     Edge edge = parentView.OutputPort.ConnectTo(childView.InputPort);
                     this.AddElement(edge);
+                    this.ConfigureEdgeVisual(edge);
                 }
             }
 
             this.UpdateViewTransform(asset.ViewPosition, asset.ViewScale == Vector3.zero ? Vector3.one : asset.ViewScale);
             this.EnsureMiniMap();
             this.RefreshDebugStates(this.window.GetActiveSnapshot());
+            this.connectionLayer.MarkDirtyRepaint();
             this.isPopulating = false;
         }
 
@@ -509,6 +519,13 @@ namespace ET
             this.gridBackground.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
+        public void SetConnectionStyle(BehaviorTreeConnectionStyle style)
+        {
+            this.connectionStyle = style;
+            this.connectionLayer?.SetConnectionStyle(style);
+            this.connectionLayer?.MarkDirtyRepaint();
+        }
+
         public void SelectNode(string nodeId)
         {
             if (string.IsNullOrWhiteSpace(nodeId))
@@ -568,9 +585,15 @@ namespace ET
 
         private void AddNodeView(BehaviorTreeEditorNodeData node)
         {
-            BehaviorTreeNodeView view = new(node, this.window.SelectNode, this.window.MarkAssetDirty);
+            BehaviorTreeNodeView view = new(node, this.window.SelectNode, () =>
+            {
+                this.window.MarkAssetDirty();
+                this.connectionLayer.MarkDirtyRepaint();
+            });
             this.nodeViews.Add(node.NodeId, view);
             this.AddElement(view);
+            view.RegisterCallback<GeometryChangedEvent>(_ => this.connectionLayer.MarkDirtyRepaint());
+            view.RegisterCallback<MouseUpEvent>(_ => this.connectionLayer.MarkDirtyRepaint(), TrickleDown.TrickleDown);
         }
 
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
@@ -607,6 +630,7 @@ namespace ET
             }
 
             this.window.MarkAssetDirty();
+            this.connectionLayer.MarkDirtyRepaint();
             return graphViewChange;
         }
 
@@ -715,6 +739,7 @@ namespace ET
             }
 
             this.DeleteElements(elements);
+            this.connectionLayer.MarkDirtyRepaint();
         }
 
         private bool CanCopySelection()
@@ -777,8 +802,15 @@ namespace ET
 
             this.miniMap = new MiniMap
             {
-                anchored = true,
+                anchored = false,
             };
+            this.miniMap.capabilities |= Capabilities.Movable;
+            this.miniMap.capabilities |= Capabilities.Resizable;
+            this.miniMap.style.position = Position.Absolute;
+            this.miniMap.maxWidth = 320f;
+            this.miniMap.maxHeight = 240f;
+            this.miniMap.style.minWidth = 140f;
+            this.miniMap.style.minHeight = 90f;
             this.miniMap.SetPosition(new Rect(12, 36, 220, 140));
             this.Add(this.miniMap);
             this.miniMap.BringToFront();
@@ -796,6 +828,9 @@ namespace ET
             {
                 parentView.Data.ChildIds.Add(childView.Data.NodeId);
             }
+
+            this.ConfigureEdgeVisual(edge);
+            this.connectionLayer.MarkDirtyRepaint();
         }
 
         private void Disconnect(Edge edge)
@@ -807,6 +842,23 @@ namespace ET
 
             Undo.RecordObject(this.Asset, "Disconnect Behavior Tree Nodes");
             parentView.Data.ChildIds.RemoveAll(nodeId => nodeId == childView.Data.NodeId);
+            this.connectionLayer.MarkDirtyRepaint();
+        }
+
+        private void ConfigureEdgeVisual(Edge edge)
+        {
+            edge.style.display = DisplayStyle.None;
+            edge.style.opacity = 0f;
+            edge.pickingMode = PickingMode.Ignore;
+            if (edge.edgeControl != null)
+            {
+                edge.edgeControl.style.display = DisplayStyle.None;
+                edge.edgeControl.style.opacity = 0f;
+                edge.edgeControl.capRadius = 0f;
+                edge.edgeControl.edgeWidth = 0;
+                edge.edgeControl.drawFromCap = false;
+                edge.edgeControl.drawToCap = false;
+            }
         }
     }
 }

@@ -14,6 +14,7 @@ namespace ET
     {
         private const string MiniMapEditorPrefKey = "ET.BehaviorTreeEditor.ShowMiniMap";
         private const string GridEditorPrefKey = "ET.BehaviorTreeEditor.ShowGrid";
+        private const string ConnectionStyleEditorPrefKey = "ET.BehaviorTreeEditor.ConnectionStyle";
 
         private BehaviorTreeAsset asset;
         private Toolbar toolbar;
@@ -30,6 +31,7 @@ namespace ET
         private long lastSnapshotUpdatedAt;
         private bool showMiniMap = true;
         private bool showGrid = true;
+        private BehaviorTreeConnectionStyle connectionStyle = BehaviorTreeConnectionStyle.Orthogonal;
 
         [MenuItem("ET/AI/BehaviorTreeEditor", false, 1007)]
         public static void ShowWindow()
@@ -134,6 +136,7 @@ namespace ET
         {
             this.showMiniMap = EditorPrefs.GetBool(MiniMapEditorPrefKey, true);
             this.showGrid = EditorPrefs.GetBool(GridEditorPrefKey, true);
+            this.connectionStyle = (BehaviorTreeConnectionStyle)EditorPrefs.GetInt(ConnectionStyleEditorPrefKey, (int)BehaviorTreeConnectionStyle.Orthogonal);
         }
 
         private void CreateGUI()
@@ -197,6 +200,7 @@ namespace ET
 
             this.graphView.SetMiniMapVisible(this.showMiniMap);
             this.graphView.SetGridVisible(this.showGrid);
+            this.graphView.SetConnectionStyle(this.connectionStyle);
             VisualElement treeViewPanel = this.CreatePanel("Tree View", this.graphView);
             treeViewPanel.style.flexGrow = 1;
 
@@ -300,6 +304,18 @@ namespace ET
             gridToggle.RegisterValueChangedCallback(evt => this.SetGridVisible(evt.newValue));
             this.toolbar.Add(gridToggle);
 
+            ToolbarMenu lineMenu = new()
+            {
+                text = this.GetConnectionStyleLabel(),
+            };
+            lineMenu.menu.AppendAction("Straight", _ => this.SetConnectionStyle(BehaviorTreeConnectionStyle.Straight),
+                _ => this.connectionStyle == BehaviorTreeConnectionStyle.Straight ? DropdownMenuAction.Status.Checked : DropdownMenuAction.Status.Normal);
+            lineMenu.menu.AppendAction("Orthogonal", _ => this.SetConnectionStyle(BehaviorTreeConnectionStyle.Orthogonal),
+                _ => this.connectionStyle == BehaviorTreeConnectionStyle.Orthogonal ? DropdownMenuAction.Status.Checked : DropdownMenuAction.Status.Normal);
+            lineMenu.menu.AppendAction("Curve", _ => this.SetConnectionStyle(BehaviorTreeConnectionStyle.Curve),
+                _ => this.connectionStyle == BehaviorTreeConnectionStyle.Curve ? DropdownMenuAction.Status.Checked : DropdownMenuAction.Status.Normal);
+            this.toolbar.Add(lineMenu);
+
             VisualElement spacer = new();
             spacer.style.flexGrow = 1;
             this.toolbar.Add(spacer);
@@ -326,6 +342,29 @@ namespace ET
             this.showGrid = visible;
             EditorPrefs.SetBool(GridEditorPrefKey, visible);
             this.graphView?.SetGridVisible(visible);
+        }
+
+        private void SetConnectionStyle(BehaviorTreeConnectionStyle style)
+        {
+            this.connectionStyle = style;
+            EditorPrefs.SetInt(ConnectionStyleEditorPrefKey, (int)style);
+            this.graphView?.SetConnectionStyle(style);
+
+            ToolbarMenu lineMenu = this.toolbar?.Children().OfType<ToolbarMenu>().FirstOrDefault(menu => menu.text.StartsWith("Line:"));
+            if (lineMenu != null)
+            {
+                lineMenu.text = this.GetConnectionStyleLabel();
+            }
+        }
+
+        private string GetConnectionStyleLabel()
+        {
+            return this.connectionStyle switch
+            {
+                BehaviorTreeConnectionStyle.Straight => "Line: Straight",
+                BehaviorTreeConnectionStyle.Curve => "Line: Curve",
+                _ => "Line: Orthogonal",
+            };
         }
 
         private Button CreateToolbarButton(string text, Action onClick)
