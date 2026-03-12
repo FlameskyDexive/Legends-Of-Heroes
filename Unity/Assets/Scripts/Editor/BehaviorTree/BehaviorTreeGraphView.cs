@@ -94,6 +94,7 @@ namespace ET
             this.isPopulating = true;
             this.Asset = asset;
             this.DeleteElements(this.graphElements.ToList());
+            this.RemoveMiniMaps();
             this.nodeViews.Clear();
             this.miniMap = null;
 
@@ -795,6 +796,8 @@ namespace ET
 
         private void EnsureMiniMap()
         {
+            this.RemoveMiniMaps();
+
             if (this.miniMap != null && this.miniMap.parent != null)
             {
                 return;
@@ -814,6 +817,21 @@ namespace ET
             this.miniMap.SetPosition(new Rect(12, 36, 220, 140));
             this.Add(this.miniMap);
             this.miniMap.BringToFront();
+        }
+
+        private void RemoveMiniMaps()
+        {
+            foreach (MiniMap existedMiniMap in this.Children().OfType<MiniMap>().ToList())
+            {
+                existedMiniMap.RemoveFromHierarchy();
+            }
+
+            if (this.miniMap != null && this.miniMap.parent != null)
+            {
+                this.miniMap.RemoveFromHierarchy();
+            }
+
+            this.miniMap = null;
         }
 
         private void Connect(Edge edge)
