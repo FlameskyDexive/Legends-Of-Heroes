@@ -10,14 +10,17 @@ namespace ET
         private readonly Label summaryLabel;
         private readonly Action onChanged;
         private readonly Action<BehaviorTreeNodeView> onSelected;
+        private readonly Action<BehaviorTreeNodeView> onDoubleClicked;
         private readonly VisualElement topPortContainer;
         private readonly VisualElement bottomPortContainer;
 
-        public BehaviorTreeNodeView(BehaviorTreeEditorNodeData data, Action<BehaviorTreeNodeView> onSelected, Action onChanged)
+        public BehaviorTreeNodeView(BehaviorTreeEditorNodeData data, Action<BehaviorTreeNodeView> onSelected, Action onChanged,
+            Action<BehaviorTreeNodeView> onDoubleClicked = null)
         {
             this.Data = data;
             this.onSelected = onSelected;
             this.onChanged = onChanged;
+            this.onDoubleClicked = onDoubleClicked;
             this.viewDataKey = data.NodeId;
 
             this.style.overflow = Overflow.Visible;
@@ -60,6 +63,7 @@ namespace ET
 
             this.RefreshView(BehaviorTreeNodeState.Inactive);
             this.SetPosition(data.Position);
+            this.RegisterCallback<MouseDownEvent>(this.OnMouseDownEvent, TrickleDown.TrickleDown);
         }
 
         public BehaviorTreeEditorNodeData Data { get; }
@@ -110,32 +114,24 @@ namespace ET
             this.onSelected?.Invoke(this);
         }
 
+        private void OnMouseDownEvent(MouseDownEvent evt)
+        {
+            if (evt.button != 0 || evt.clickCount != 2)
+            {
+                return;
+            }
+
+            this.onDoubleClicked?.Invoke(this);
+            evt.StopPropagation();
+        }
+
         public void RefreshView(BehaviorTreeNodeState debugState)
         {
-            this.title = string.IsNullOrWhiteSpace(this.Data.Title)
-                    ? BehaviorTreeEditorUtility.GetDefaultTitle(this.Data.NodeKind)
-                    : this.Data.Title;
-
-            this.summaryLabel.text = BuildSummary(this.Data);
+            this.title = BehaviorTreeEditorUtility.GetNodeTitle(this.Data);
+            this.summaryLabel.text = BehaviorTreeEditorUtility.GetNodeSummary(this.Data);
             this.titleContainer.style.backgroundColor = BehaviorTreeEditorUtility.GetNodeHeaderColor(this.Data.NodeKind, debugState);
             this.RefreshExpandedState();
             this.RefreshPorts();
-        }
-
-        private static string BuildSummary(BehaviorTreeEditorNodeData node)
-        {
-            return node.NodeKind switch
-            {
-                BehaviorTreeNodeKind.Action => $"Handler: {node.HandlerName}",
-                BehaviorTreeNodeKind.Condition => $"Handler: {node.HandlerName}",
-                BehaviorTreeNodeKind.Service => $"Service: {node.HandlerName}\nInterval: {node.IntervalMilliseconds}ms",
-                BehaviorTreeNodeKind.Wait => $"Delay: {node.WaitMilliseconds}ms",
-                BehaviorTreeNodeKind.Repeater => $"Loop: {(node.MaxLoopCount <= 0 ? "∞" : node.MaxLoopCount.ToString())}",
-                BehaviorTreeNodeKind.BlackboardCondition => $"Key: {node.BlackboardKey}\nOp: {node.CompareOperator}",
-                BehaviorTreeNodeKind.SubTree => $"SubTree: {node.SubTreeName}",
-                BehaviorTreeNodeKind.Parallel => $"Success: {node.SuccessPolicy}\nFailure: {node.FailurePolicy}",
-                _ => node.Comment,
-            };
         }
 
         private static VisualElement CreatePortContainer(bool isTop)

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -10,41 +11,42 @@ namespace ET
     {
         private readonly struct SearchNodeEntry
         {
-            public SearchNodeEntry(BehaviorTreeNodeKind nodeKind, string groupName)
+            public SearchNodeEntry(string menuPath, BehaviorTreeNodeKind nodeKind, string nodeTypeId = "")
             {
+                this.MenuPath = menuPath;
                 this.NodeKind = nodeKind;
-                this.GroupName = groupName;
+                this.NodeTypeId = nodeTypeId;
             }
+
+            public string MenuPath { get; }
 
             public BehaviorTreeNodeKind NodeKind { get; }
 
-            public string GroupName { get; }
+            public string NodeTypeId { get; }
         }
 
-        private static readonly SearchNodeEntry[] SearchEntries =
+        private static readonly SearchNodeEntry[] BuiltinSearchEntries =
         {
-            new(BehaviorTreeNodeKind.Sequence, "Composites"),
-            new(BehaviorTreeNodeKind.Selector, "Composites"),
-            new(BehaviorTreeNodeKind.Parallel, "Composites"),
-            new(BehaviorTreeNodeKind.Inverter, "Decorators"),
-            new(BehaviorTreeNodeKind.Succeeder, "Decorators"),
-            new(BehaviorTreeNodeKind.Failer, "Decorators"),
-            new(BehaviorTreeNodeKind.Repeater, "Decorators"),
-            new(BehaviorTreeNodeKind.BlackboardCondition, "Decorators"),
-            new(BehaviorTreeNodeKind.Service, "Decorators"),
-            new(BehaviorTreeNodeKind.SubTree, "Decorators"),
-            new(BehaviorTreeNodeKind.Action, "Actions"),
-            new(BehaviorTreeNodeKind.Condition, "Actions"),
-            new(BehaviorTreeNodeKind.Wait, "Actions"),
+            new("Composites/Sequence", BehaviorTreeNodeKind.Sequence),
+            new("Composites/Selector", BehaviorTreeNodeKind.Selector),
+            new("Composites/Parallel", BehaviorTreeNodeKind.Parallel),
+            new("Decorators/Inverter", BehaviorTreeNodeKind.Inverter),
+            new("Decorators/Succeeder", BehaviorTreeNodeKind.Succeeder),
+            new("Decorators/Failer", BehaviorTreeNodeKind.Failer),
+            new("Decorators/Repeater", BehaviorTreeNodeKind.Repeater),
+            new("Decorators/Blackboard Condition", BehaviorTreeNodeKind.BlackboardCondition),
+            new("Decorators/SubTree", BehaviorTreeNodeKind.SubTree),
+            new("Behaviors/Common/Wait", BehaviorTreeNodeKind.Wait),
+            new("Behaviors/Legacy/Custom Action", BehaviorTreeNodeKind.Action),
+            new("Conditions/Legacy/Custom Condition", BehaviorTreeNodeKind.Condition),
+            new("Services/Legacy/Custom Service", BehaviorTreeNodeKind.Service),
         };
 
         private Texture2D indentationIcon;
-        private BehaviorTreeEditorWindow window;
         private BehaviorTreeGraphView graphView;
 
         public void Initialize(BehaviorTreeEditorWindow window, BehaviorTreeGraphView graphView)
         {
-            this.window = window;
             this.graphView = graphView;
 
             if (this.indentationIcon == null)
@@ -63,19 +65,25 @@ namespace ET
                 new SearchTreeGroupEntry(new GUIContent("Create Node"), 0),
             };
 
-            string currentGroup = string.Empty;
-            foreach (SearchNodeEntry entry in SearchEntries)
+            HashSet<string> createdGroups = new(StringComparer.OrdinalIgnoreCase);
+            foreach (SearchNodeEntry entry in GetSearchEntries())
             {
-                if (!string.Equals(currentGroup, entry.GroupName, StringComparison.Ordinal))
+                string[] segments = entry.MenuPath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int index = 0; index < segments.Length - 1; ++index)
                 {
-                    currentGroup = entry.GroupName;
-                    entries.Add(new SearchTreeGroupEntry(new GUIContent(currentGroup), 1));
+                    string groupPath = string.Join("/", segments.Take(index + 1));
+                    if (!createdGroups.Add(groupPath))
+                    {
+                        continue;
+                    }
+
+                    entries.Add(new SearchTreeGroupEntry(new GUIContent(segments[index]), index + 1));
                 }
 
-                entries.Add(new SearchTreeEntry(new GUIContent(BehaviorTreeEditorUtility.GetDefaultTitle(entry.NodeKind), this.indentationIcon))
+                entries.Add(new SearchTreeEntry(new GUIContent(segments[^1], this.indentationIcon))
                 {
-                    level = 2,
-                    userData = entry.NodeKind,
+                    level = segments.Length,
+                    userData = entry,
                 });
             }
 
@@ -84,14 +92,32 @@ namespace ET
 
         public bool OnSelectEntry(SearchTreeEntry searchTreeEntry, SearchWindowContext context)
         {
-            if (searchTreeEntry.userData is not BehaviorTreeNodeKind nodeKind)
+            if (searchTreeEntry.userData is not SearchNodeEntry nodeEntry)
             {
                 return false;
             }
 
             Vector2 contentPosition = this.graphView.GetPendingNodeCreationContentPosition();
-            this.graphView.CreateNodeAtContentPosition(nodeKind, contentPosition);
+            this.graphView.CreateNodeAtContentPosition(nodeEntry.NodeKind, contentPosition, nodeEntry.NodeTypeId);
             return true;
+        }
+
+        private static IEnumerable<SearchNodeEntry> GetSearchEntries()
+        {
+            foreach (SearchNodeEntry entry in BuiltinSearchEntries)
+            {
+                yield return entry;
+            }
+
+            foreach (ABehaviorTreeNodeDescriptor descriptor in BehaviorTreeEditorUtility.GetAllNodeDescriptors())
+            {
+                if (descriptor == null || string.IsNullOrWhiteSpace(descriptor.MenuPath))
+                {
+                    continue;
+                }
+
+                yield return new SearchNodeEntry(descriptor.MenuPath, descriptor.NodeKind, descriptor.TypeId);
+            }
         }
 
         private void OnDisable()

@@ -41,6 +41,7 @@ namespace ET.Client
                 NodeId = "log",
                 Title = "Log Tick",
                 NodeKind = BehaviorTreeNodeKind.Action,
+                NodeTypeId = "behavior.log",
                 HandlerName = "Log",
                 Arguments =
                 {

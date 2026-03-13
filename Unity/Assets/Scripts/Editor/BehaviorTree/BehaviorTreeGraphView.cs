@@ -145,7 +145,7 @@ namespace ET
             this.isPopulating = false;
         }
 
-        public void CreateNode(BehaviorTreeNodeKind nodeKind, Vector2 localMousePosition)
+        public void CreateNode(BehaviorTreeNodeKind nodeKind, Vector2 localMousePosition, string nodeTypeId = "")
         {
             if (this.Asset == null)
             {
@@ -153,10 +153,10 @@ namespace ET
             }
 
             Vector2 contentPosition = this.contentViewContainer.WorldToLocal(this.LocalToWorld(localMousePosition));
-            this.CreateNodeAtContentPosition(nodeKind, contentPosition);
+            this.CreateNodeAtContentPosition(nodeKind, contentPosition, nodeTypeId);
         }
 
-        public void CreateNodeAtContentPosition(BehaviorTreeNodeKind nodeKind, Vector2 contentPosition)
+        public void CreateNodeAtContentPosition(BehaviorTreeNodeKind nodeKind, Vector2 contentPosition, string nodeTypeId = "")
         {
             if (this.Asset == null)
             {
@@ -164,7 +164,7 @@ namespace ET
             }
 
             Undo.RecordObject(this.Asset, "Create Behavior Tree Node");
-            BehaviorTreeEditorNodeData node = this.Asset.AddNode(nodeKind, contentPosition);
+            BehaviorTreeEditorNodeData node = this.Asset.AddNode(nodeKind, contentPosition, nodeTypeId);
             this.AddNodeView(node);
             EditorUtility.SetDirty(this.Asset);
             this.window.SelectNode(this.nodeViews[node.NodeId]);
@@ -608,7 +608,7 @@ namespace ET
             {
                 this.window.MarkAssetDirty();
                 this.connectionLayer.MarkDirtyRepaint();
-            });
+            }, this.window.OpenNodeScript);
             this.nodeViews.Add(node.NodeId, view);
             this.AddElement(view);
             view.RegisterCallback<GeometryChangedEvent>(_ => this.connectionLayer.MarkDirtyRepaint());

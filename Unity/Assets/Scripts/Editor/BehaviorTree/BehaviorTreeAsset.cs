@@ -11,6 +11,7 @@ namespace ET
         public string NodeId = Guid.NewGuid().ToString("N");
         public string Title = string.Empty;
         public BehaviorTreeNodeKind NodeKind = BehaviorTreeNodeKind.Action;
+        public string NodeTypeId = string.Empty;
         public Rect Position = new(200, 200, 240, 140);
         public List<string> ChildIds = new();
         public string HandlerName = string.Empty;
@@ -48,6 +49,7 @@ namespace ET
                 NodeId = this.NodeId,
                 Title = this.Title,
                 NodeKind = this.NodeKind,
+                NodeTypeId = this.NodeTypeId,
                 Position = this.Position,
                 HandlerName = this.HandlerName,
                 BlackboardKey = this.BlackboardKey,
@@ -136,9 +138,11 @@ namespace ET
                     node.NodeId = Guid.NewGuid().ToString("N");
                 }
 
+                BehaviorTreeEditorUtility.SyncNodeDescriptor(node);
+
                 if (string.IsNullOrWhiteSpace(node.Title))
                 {
-                    node.Title = BehaviorTreeEditorUtility.GetDefaultTitle(node.NodeKind);
+                    node.Title = BehaviorTreeEditorUtility.GetDefaultTitle(node.NodeKind, node.NodeTypeId);
                 }
 
                 node.SyncSubTreeInfo();
@@ -168,14 +172,17 @@ namespace ET
             return this.GetNode(this.RootNodeId);
         }
 
-        public BehaviorTreeEditorNodeData AddNode(BehaviorTreeNodeKind nodeKind, Vector2 position)
+        public BehaviorTreeEditorNodeData AddNode(BehaviorTreeNodeKind nodeKind, Vector2 position, string nodeTypeId = "")
         {
             BehaviorTreeEditorNodeData node = new()
             {
                 NodeKind = nodeKind,
-                Title = BehaviorTreeEditorUtility.GetDefaultTitle(nodeKind),
+                NodeTypeId = nodeTypeId,
+                Title = BehaviorTreeEditorUtility.GetDefaultTitle(nodeKind, nodeTypeId),
                 Position = new Rect(position.x, position.y, 240, 140),
             };
+
+            BehaviorTreeEditorUtility.SyncNodeDescriptor(node, true);
 
             this.Nodes.Add(node);
             return node;

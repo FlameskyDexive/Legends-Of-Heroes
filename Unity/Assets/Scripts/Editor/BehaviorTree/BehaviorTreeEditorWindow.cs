@@ -133,6 +133,22 @@ namespace ET
             this.inspectorPanel?.MarkDirtyRepaint();
         }
 
+        public void OpenNodeScript(BehaviorTreeNodeView nodeView)
+        {
+            if (nodeView?.Data == null)
+            {
+                return;
+            }
+
+            this.SelectNode(nodeView);
+            if (BehaviorTreeEditorUtility.TryOpenNodeScript(nodeView.Data))
+            {
+                return;
+            }
+
+            this.ShowNotification(new GUIContent($"No handler script found for node: {nodeView.Data.Title}"));
+        }
+
         private void OnEnable()
         {
             this.showMiniMap = EditorPrefs.GetBool(MiniMapEditorPrefKey, true);
@@ -585,9 +601,14 @@ namespace ET
 
         private void DrawNodeInspector(BehaviorTreeEditorNodeData node)
         {
-            EditorGUILayout.LabelField("Script", node.NodeKind.ToString());
+            BehaviorTreeEditorUtility.SyncNodeDescriptor(node);
+            EditorGUILayout.LabelField("Script", BehaviorTreeEditorUtility.GetNodeScriptName(node));
             node.Title = EditorGUILayout.TextField("Title", node.Title);
             EditorGUILayout.LabelField("Node Id", node.NodeId);
+            if (GUILayout.Button("Open Script"))
+            {
+                this.OpenNodeScript(this.selectedNodeView);
+            }
             EditorGUILayout.LabelField("Description");
             node.Comment = EditorGUILayout.TextArea(node.Comment, GUILayout.MinHeight(56));
             EditorGUILayout.Space(6);
@@ -595,17 +616,38 @@ namespace ET
             switch (node.NodeKind)
             {
                 case BehaviorTreeNodeKind.Action:
-                    DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetActionHandlerNames(), node, value => node.HandlerName = value);
-                    DrawArguments(node);
+                    if (BehaviorTreeEditorUtility.TryGetDescriptor(node, out ABehaviorTreeNodeDescriptor actionDescriptor))
+                    {
+                        this.DrawDescriptorNode(node, actionDescriptor);
+                    }
+                    else
+                    {
+                        DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetActionHandlerNames(), node, value => node.HandlerName = value);
+                        DrawArguments(node);
+                    }
                     break;
                 case BehaviorTreeNodeKind.Condition:
-                    DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetConditionHandlerNames(), node, value => node.HandlerName = value);
-                    DrawArguments(node);
+                    if (BehaviorTreeEditorUtility.TryGetDescriptor(node, out ABehaviorTreeNodeDescriptor conditionDescriptor))
+                    {
+                        this.DrawDescriptorNode(node, conditionDescriptor);
+                    }
+                    else
+                    {
+                        DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetConditionHandlerNames(), node, value => node.HandlerName = value);
+                        DrawArguments(node);
+                    }
                     break;
                 case BehaviorTreeNodeKind.Service:
-                    DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetServiceHandlerNames(), node, value => node.HandlerName = value);
-                    node.IntervalMilliseconds = EditorGUILayout.IntField("Interval (ms)", node.IntervalMilliseconds);
-                    DrawArguments(node);
+                    if (BehaviorTreeEditorUtility.TryGetDescriptor(node, out ABehaviorTreeNodeDescriptor serviceDescriptor))
+                    {
+                        this.DrawDescriptorNode(node, serviceDescriptor, true);
+                    }
+                    else
+                    {
+                        DrawHandlerPopup("Handler", BehaviorTreeEditorUtility.GetServiceHandlerNames(), node, value => node.HandlerName = value);
+                        node.IntervalMilliseconds = EditorGUILayout.IntField("Interval (ms)", node.IntervalMilliseconds);
+                        DrawArguments(node);
+                    }
                     break;
                 case BehaviorTreeNodeKind.Wait:
                     node.WaitMilliseconds = EditorGUILayout.IntField("Delay (ms)", node.WaitMilliseconds);
@@ -856,6 +898,104 @@ namespace ET
             string projectRoot = Path.GetDirectoryName(Application.dataPath) ?? string.Empty;
             string fullPath = Path.GetFullPath(Path.Combine(projectRoot, this.asset.ExportRelativePath));
             EditorUtility.RevealInFinder(fullPath);
+        }
+
+        private void DrawDescriptorNode(BehaviorTreeEditorNodeData node, ABehaviorTreeNodeDescriptor descriptor, bool drawInterval = false)
+        {
+            if (descriptor == null)
+            {
+                return;
+            }
+
+            EditorGUILayout.LabelField("Node Type", descriptor.Title);
+            EditorGUILayout.LabelField("Type Id", descriptor.TypeId);
+            if (!string.IsNullOrWhiteSpace(descriptor.HandlerName))
+            {
+                EditorGUILayout.LabelField("Handler", descriptor.HandlerName);
+            }
+
+            if (!string.IsNullOrWhiteSpace(descriptor.Description))
+            {
+                EditorGUILayout.HelpBox(descriptor.Description, MessageType.None);
+            }
+
+            if (drawInterval)
+            {
+                node.IntervalMilliseconds = EditorGUILayout.IntField("Interval (ms)", node.IntervalMilliseconds);
+            }
+
+            this.DrawDescriptorArguments(node, descriptor.Parameters);
+        }
+
+        private void DrawDescriptorArguments(BehaviorTreeEditorNodeData node, IReadOnlyList<BehaviorTreeNodeParameterDefinition> parameters)
+        {
+            if (parameters == null || parameters.Count == 0)
+            {
+                return;
+            }
+
+            EditorGUILayout.Space(6);
+            EditorGUILayout.LabelField("Parameters", EditorStyles.boldLabel);
+            foreach (BehaviorTreeNodeParameterDefinition parameter in parameters)
+            {
+                if (parameter == null || string.IsNullOrWhiteSpace(parameter.Name))
+                {
+                    continue;
+                }
+
+                EditorGUILayout.BeginVertical("box");
+                this.DrawDescriptorArgument(node, parameter);
+                if (!string.IsNullOrWhiteSpace(parameter.Description))
+                {
+                    EditorGUILayout.LabelField(parameter.Description, EditorStyles.wordWrappedMiniLabel);
+                }
+
+                EditorGUILayout.EndVertical();
+            }
+        }
+
+        private void DrawDescriptorArgument(BehaviorTreeEditorNodeData node, BehaviorTreeNodeParameterDefinition parameter)
+        {
+            BehaviorTreeArgumentDefinition argument = BehaviorTreeEditorUtility.GetOrCreateArgument(node, parameter);
+            argument.Value ??= parameter.DefaultValue?.Clone() ?? new BehaviorTreeSerializedValue();
+
+            string label = string.IsNullOrWhiteSpace(parameter.DisplayName) ? parameter.Name : parameter.DisplayName;
+            switch (parameter.EditorHint)
+            {
+                case BehaviorTreeNodeParameterEditorHint.BlackboardKey:
+                    this.DrawBlackboardKeyArgument(label, argument);
+                    break;
+                case BehaviorTreeNodeParameterEditorHint.CompareOperator:
+                    argument.Value.ValueType = BehaviorTreeValueType.Integer;
+                    BehaviorTreeCompareOperator compareOperator = (BehaviorTreeCompareOperator)argument.Value.IntValue;
+                    compareOperator = (BehaviorTreeCompareOperator)EditorGUILayout.EnumPopup(label, compareOperator);
+                    argument.Value.IntValue = (int)compareOperator;
+                    break;
+                case BehaviorTreeNodeParameterEditorHint.MultilineText:
+                    argument.Value.ValueType = BehaviorTreeValueType.String;
+                    EditorGUILayout.LabelField(label);
+                    argument.Value.StringValue = EditorGUILayout.TextArea(argument.Value.StringValue, GUILayout.MinHeight(56));
+                    break;
+                default:
+                    DrawSerializedValueEditor(label, argument.Value, parameter.ValueType);
+                    break;
+            }
+        }
+
+        private void DrawBlackboardKeyArgument(string label, BehaviorTreeArgumentDefinition argument)
+        {
+            argument.Value ??= new BehaviorTreeSerializedValue();
+            argument.Value.ValueType = BehaviorTreeValueType.String;
+            string[] options = this.GetBlackboardKeyOptions();
+            if (options.Length == 0)
+            {
+                argument.Value.StringValue = EditorGUILayout.TextField(label, argument.Value.StringValue);
+                return;
+            }
+
+            int selectedIndex = Array.IndexOf(options, argument.Value.StringValue);
+            int newIndex = EditorGUILayout.Popup(label, Mathf.Max(0, selectedIndex), options);
+            argument.Value.StringValue = options[newIndex];
         }
 
         private static void DrawArguments(BehaviorTreeEditorNodeData node)

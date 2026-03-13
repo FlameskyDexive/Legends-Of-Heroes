@@ -184,12 +184,14 @@ namespace ET
         private static BehaviorTreeNodeDefinition BuildNode(BehaviorTreeEditorNodeData node)
         {
             node.SyncSubTreeInfo();
+            BehaviorTreeEditorUtility.SyncNodeDescriptor(node);
 
             BehaviorTreeNodeDefinition definition = new()
             {
                 NodeId = node.NodeId,
                 Title = node.Title,
                 NodeKind = node.NodeKind,
+                NodeTypeId = node.NodeTypeId,
                 HandlerName = node.HandlerName,
                 BlackboardKey = node.BlackboardKey,
                 CompareOperator = node.CompareOperator,

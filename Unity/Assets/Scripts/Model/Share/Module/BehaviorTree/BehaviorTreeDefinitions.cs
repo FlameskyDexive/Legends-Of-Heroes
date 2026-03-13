@@ -216,6 +216,9 @@ namespace ET
         [MemoryPackOrder(17)]
         public string Comment = string.Empty;
 
+        [MemoryPackOrder(18)]
+        public string NodeTypeId = string.Empty;
+
         public BehaviorTreeNodeDefinition Clone()
         {
             BehaviorTreeNodeDefinition definition = new()
@@ -236,6 +239,7 @@ namespace ET
                 SubTreeId = this.SubTreeId,
                 SubTreeName = this.SubTreeName,
                 Comment = this.Comment,
+                NodeTypeId = this.NodeTypeId,
             };
 
             definition.ChildIds.AddRange(this.ChildIds);
