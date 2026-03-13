@@ -577,7 +577,9 @@ namespace ET
                 BehaviorTreeNodeKind.BlackboardCondition => "Assets/Scripts/Model/Share/Module/BehaviorTree/BehaviorTreeBlackboardConditionNode.cs",
                 BehaviorTreeNodeKind.Wait => "Assets/Scripts/Model/Share/Module/BehaviorTree/BehaviorTreeWaitNode.cs",
                 BehaviorTreeNodeKind.SubTree => "Assets/Scripts/Model/Share/Module/BehaviorTree/BehaviorTreeSubTreeNode.cs",
-                BehaviorTreeNodeKind.Service => "Assets/Scripts/Model/Share/Module/BehaviorTree/BehaviorTreeRuntimeNodes.cs",
+                BehaviorTreeNodeKind.Service => "Assets/Scripts/Model/Share/Module/BehaviorTree/BehaviorTreeServiceNode.cs",
+                BehaviorTreeNodeKind.Action => "Assets/Scripts/Model/Share/Module/BehaviorTree/BehaviorTreeActionNode.cs",
+                BehaviorTreeNodeKind.Condition => "Assets/Scripts/Model/Share/Module/BehaviorTree/BehaviorTreeConditionNode.cs",
                 _ => string.Empty,
             };
 

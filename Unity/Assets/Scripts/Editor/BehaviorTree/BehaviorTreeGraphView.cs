@@ -582,8 +582,11 @@ namespace ET
             base.BuildContextualMenu(evt);
             evt.menu.AppendSeparator();
 
+            BehaviorTreeNodeView contextNodeView = this.GetContextNodeView(evt);
             this.CachePendingNodeCreationPosition(evt.localMousePosition);
             evt.menu.AppendAction("Create Node...", _ => this.OpenSearchWindow(evt.localMousePosition));
+            evt.menu.AppendAction("Open Script", _ => this.OpenNodeScript(contextNodeView),
+                _ => this.CanOpenNodeScript(contextNodeView) ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
             evt.menu.AppendAction("Edit/Copy", _ => this.CopySelection(), _ => this.CanCopySelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
             evt.menu.AppendAction("Edit/Paste", _ => this.PasteNodes(evt.localMousePosition), _ => clipboard != null && clipboard.Nodes.Count > 0 ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
             evt.menu.AppendAction("Edit/Duplicate", _ => this.DuplicateSelection(evt.localMousePosition), _ => this.CanCopySelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
@@ -613,6 +616,41 @@ namespace ET
             this.AddElement(view);
             view.RegisterCallback<GeometryChangedEvent>(_ => this.connectionLayer.MarkDirtyRepaint());
             view.RegisterCallback<MouseUpEvent>(_ => this.connectionLayer.MarkDirtyRepaint(), TrickleDown.TrickleDown);
+        }
+
+        private void OpenNodeScript(BehaviorTreeNodeView nodeView)
+        {
+            if (nodeView == null)
+            {
+                return;
+            }
+
+            this.window.OpenNodeScript(nodeView);
+        }
+
+        private bool CanOpenNodeScript(BehaviorTreeNodeView nodeView)
+        {
+            return nodeView != null && BehaviorTreeEditorUtility.TryGetNodeScriptAsset(nodeView.Data, out _);
+        }
+
+        private BehaviorTreeNodeView GetContextNodeView(ContextualMenuPopulateEvent evt)
+        {
+            if (evt?.target is BehaviorTreeNodeView directNodeView)
+            {
+                return directNodeView;
+            }
+
+            if (evt?.target is VisualElement visualElement)
+            {
+                BehaviorTreeNodeView ancestorNodeView = visualElement.GetFirstAncestorOfType<BehaviorTreeNodeView>();
+                if (ancestorNodeView != null)
+                {
+                    return ancestorNodeView;
+                }
+            }
+
+            List<BehaviorTreeNodeView> selectedNodeViews = this.GetSelectedNodeViews();
+            return selectedNodeViews.Count == 1 ? selectedNodeViews[0] : null;
         }
 
         private GraphViewChange OnGraphViewChanged(GraphViewChange graphViewChange)
