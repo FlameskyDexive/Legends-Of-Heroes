@@ -38,13 +38,13 @@ public partial class UICodeSpawner
         }
         string strDlgName = gameObject.name;
 
-        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIItemBehaviour";
+        string strFilePath = Application.dataPath + "/Scripts/HotfixView/Client/GamePlay/UIItemBehaviour";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath     = Application.dataPath + "/Scripts/HotfixView/Client/Demo/UIItemBehaviour/" + strDlgName + "ViewSystem.cs";
+        strFilePath     = Application.dataPath + "/Scripts/HotfixView/Client/GamePlay/UIItemBehaviour/" + strDlgName + "ViewSystem.cs";
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
         StringBuilder strBuilder = new StringBuilder();
@@ -90,13 +90,13 @@ public partial class UICodeSpawner
         }
         string strDlgName = gameObject.name;
 
-        string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIItemBehaviour";
+        string strFilePath = Application.dataPath + "/Scripts/ModelView/Client/GamePlay/UIItemBehaviour";
 
         if ( !System.IO.Directory.Exists(strFilePath) )
         {
             System.IO.Directory.CreateDirectory(strFilePath);
         }
-        strFilePath     = Application.dataPath + "/Scripts/ModelView/Client/Demo/UIItemBehaviour/" + strDlgName + ".cs";
+        strFilePath     = Application.dataPath + "/Scripts/ModelView/Client/GamePlay/UIItemBehaviour/" + strDlgName + ".cs";
         StreamWriter sw = new StreamWriter(strFilePath, false, Encoding.UTF8);
 
         StringBuilder strBuilder = new StringBuilder();
