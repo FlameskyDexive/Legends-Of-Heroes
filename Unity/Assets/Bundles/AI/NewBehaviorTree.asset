@@ -24,8 +24,8 @@ MonoBehaviour:
     NodeTypeId: 
     Position:
       serializedVersion: 2
-      x: 203.5
-      y: 100
+      x: 189
+      y: 131
       width: 73
       height: 55
     ChildIds:
@@ -58,7 +58,7 @@ MonoBehaviour:
     NodeTypeId: 
     Position:
       serializedVersion: 2
-      x: 86
+      x: 24
       y: 554
       width: 88
       height: 69
@@ -91,8 +91,8 @@ MonoBehaviour:
     NodeTypeId: 
     Position:
       serializedVersion: 2
-      x: 188.5
-      y: 400
+      x: 174
+      y: 396
       width: 103
       height: 55
     ChildIds:
@@ -127,10 +127,10 @@ MonoBehaviour:
     NodeTypeId: 
     Position:
       serializedVersion: 2
-      x: 191
-      y: 250
+      x: 174
+      y: 262
       width: 98
-      height: 69
+      height: 54
     ChildIds:
     - c940d6ca1e304762b1197958d95b2c8f
     HandlerName: 
@@ -161,12 +161,12 @@ MonoBehaviour:
     NodeTypeId: demo.client.condition.has_patrol_path
     Position:
       serializedVersion: 2
-      x: 204
+      x: 153
       y: 554
       width: 148
       height: 69
     ChildIds: []
-    HandlerName: DemoClientHasXunLuoPath
+    HandlerName: BTHasPatrolPath
     Arguments: []
     BlackboardKey: 
     CompareOperator: 0
@@ -194,12 +194,12 @@ MonoBehaviour:
     NodeTypeId: demo.client.behavior.patrol
     Position:
       serializedVersion: 2
-      x: 408
+      x: 352
       y: 554
-      width: 93
-      height: 82
+      width: 80
+      height: 54
     ChildIds: []
-    HandlerName: DemoClientPatrol
+    HandlerName: BTPatrol
     Arguments: []
     BlackboardKey: 
     CompareOperator: 0

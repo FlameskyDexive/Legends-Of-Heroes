@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 1,
+    "Process": 1,
+    "Zone": 1,
+    "SceneType": "BenchmarkServer",
+    "Name": "BenchmarkServer",
+    "Port": 30001
+  },
+  {
+    "Id": 2,
+    "Process": 2,
+    "Zone": 1,
+    "SceneType": "BenchmarkServer",
+    "Name": "BenchmarkServer1",
+    "Port": 30002
+  },
+  {
+    "Id": 3,
+    "Process": 3,
+    "Zone": 1,
+    "SceneType": "BenchmarkServer",
+    "Name": "BenchmarkServer2",
+    "Port": 30003
+  }
+]

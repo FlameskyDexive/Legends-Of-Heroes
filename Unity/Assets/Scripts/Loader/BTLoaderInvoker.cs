@@ -11,9 +11,9 @@ using UnityEditor;
 namespace ET
 {
     [Invoke]
-    public class GetOneBehaviorTreeBytesInvoker : AInvokeHandler<BTLoader.GetOneBehaviorTreeBytes, ETTask<byte[]>>
+    public class GetOneBehaviorTreeBytesInvoker : AInvokeHandler<BTBytesLoader.GetOneBehaviorTreeBytes, ETTask<byte[]>>
     {
-        public override async ETTask<byte[]> Handle(BTLoader.GetOneBehaviorTreeBytes args)
+        public override async ETTask<byte[]> Handle(BTBytesLoader.GetOneBehaviorTreeBytes args)
         {
             if (string.IsNullOrWhiteSpace(args.TreeName))
             {
@@ -39,7 +39,7 @@ namespace ET
 
         private static byte[] TryLoadEditorBytes(string treeName)
         {
-            string bytesFilePath = Path.Combine(BTLoader.ClientBehaviorTreeBytesDir, $"{treeName}.bytes");
+            string bytesFilePath = Path.Combine(BTBytesLoader.ClientBehaviorTreeBytesDir, $"{treeName}.bytes");
             if (File.Exists(bytesFilePath))
             {
                 return File.ReadAllBytes(bytesFilePath);
@@ -55,20 +55,22 @@ namespace ET
 #if UNITY_EDITOR
         private static byte[] TryBuildBytesFromAsset(string treeName)
         {
-            string assetFilePath = Path.Combine(BTLoader.BTAssetDir, $"{treeName}.asset").Replace("\\", "/");
+            string assetFilePath = Path.Combine(BTBytesLoader.BTAssetDir, $"{treeName}.asset").Replace("\\", "/");
 
             Assembly editorAssembly = GetAssembly("Unity.Editor");
-            if (editorAssembly == null)
+            Assembly modelAssembly = GetAssembly("Unity.Model");
+            if (editorAssembly == null || modelAssembly == null)
             {
-                Log.Error("behavior tree editor assembly not found: Unity.Editor");
+                Log.Error("behavior tree required assemblies not found: Unity.Editor or Unity.Model");
                 return null;
             }
 
             Type assetType = editorAssembly.GetType("ET.BTAsset");
             Type exporterType = editorAssembly.GetType("ET.BTExporter");
-            if (assetType == null || exporterType == null)
+            Type serializerType = modelAssembly.GetType("ET.BTSerializer");
+            if (assetType == null || exporterType == null || serializerType == null)
             {
-                Log.Error("behavior tree editor types not found");
+                Log.Error("behavior tree required types not found");
                 return null;
             }
 
@@ -80,20 +82,21 @@ namespace ET
             }
 
             MethodInfo buildPackageMethod = exporterType.GetMethod("BuildPackage", BindingFlags.Public | BindingFlags.Static);
-            if (buildPackageMethod == null)
+            MethodInfo serializeMethod = serializerType.GetMethod("Serialize", BindingFlags.Public | BindingFlags.Static);
+            if (buildPackageMethod == null || serializeMethod == null)
             {
-                Log.Error("behavior tree exporter BuildPackage not found");
+                Log.Error("behavior tree serializer methods not found");
                 return null;
             }
 
             object packageObject = buildPackageMethod.Invoke(null, new object[] { assetObject });
-            if (packageObject is not BTPackage package)
+            if (packageObject == null)
             {
                 Log.Error($"behavior tree asset build package failed: {assetFilePath}");
                 return null;
             }
 
-            return BTSerializer.Serialize(package);
+            return serializeMethod.Invoke(null, new[] { packageObject }) as byte[];
         }
 
         private static Assembly GetAssembly(string assemblyName)

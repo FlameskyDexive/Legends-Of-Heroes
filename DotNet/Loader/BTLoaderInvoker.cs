@@ -3,9 +3,9 @@ using System.IO;
 namespace ET
 {
     [Invoke]
-    public class GetOneBehaviorTreeBytesInvoker : AInvokeHandler<BTLoader.GetOneBehaviorTreeBytes, byte[]>
+    public class GetOneBehaviorTreeBytesInvoker : AInvokeHandler<BTBytesLoader.GetOneBehaviorTreeBytes, byte[]>
     {
-        public override byte[] Handle(BTLoader.GetOneBehaviorTreeBytes args)
+        public override byte[] Handle(BTBytesLoader.GetOneBehaviorTreeBytes args)
         {
             if (string.IsNullOrWhiteSpace(args.TreeName))
             {
@@ -13,7 +13,7 @@ namespace ET
                 return null;
             }
 
-            string filePath = Path.Combine("..", BTLoader.ServerBehaviorTreeBytesDir, $"{args.TreeName}.bytes");
+            string filePath = Path.Combine("..", BTBytesLoader.ServerBehaviorTreeBytesDir, $"{args.TreeName}.bytes");
             if (!File.Exists(filePath))
             {
                 Log.Error($"behavior tree bytes not found: {filePath}");

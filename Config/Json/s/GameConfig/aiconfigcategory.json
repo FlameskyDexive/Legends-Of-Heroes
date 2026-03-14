@@ -11,7 +11,7 @@
     "Id": 102,
     "AIConfigId": 1,
     "Order": 2,
-    "Name": "AI_XunLuo",
+    "Name": "AI_Patrol",
     "Desc": "巡逻",
     "NodeParams": []
   },
@@ -19,7 +19,7 @@
     "Id": 201,
     "AIConfigId": 2,
     "Order": 1,
-    "Name": "AI_XunLuo",
+    "Name": "AI_Patrol",
     "Desc": "巡逻",
     "NodeParams": []
   }

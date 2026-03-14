@@ -1,0 +1,62 @@
+[
+  {
+    "Id": 1,
+    "MachineId": 1,
+    "Port": 20001
+  },
+  {
+    "Id": 2,
+    "MachineId": 1,
+    "Port": 20002
+  },
+  {
+    "Id": 3,
+    "MachineId": 1,
+    "Port": 20003
+  },
+  {
+    "Id": 4,
+    "MachineId": 1,
+    "Port": 20004
+  },
+  {
+    "Id": 5,
+    "MachineId": 1,
+    "Port": 20005
+  },
+  {
+    "Id": 6,
+    "MachineId": 1,
+    "Port": 20006
+  },
+  {
+    "Id": 7,
+    "MachineId": 1,
+    "Port": 20007
+  },
+  {
+    "Id": 8,
+    "MachineId": 1,
+    "Port": 20008
+  },
+  {
+    "Id": 9,
+    "MachineId": 1,
+    "Port": 20009
+  },
+  {
+    "Id": 10,
+    "MachineId": 1,
+    "Port": 20010
+  },
+  {
+    "Id": 11,
+    "MachineId": 1,
+    "Port": 20011
+  },
+  {
+    "Id": 12,
+    "MachineId": 1,
+    "Port": 20012
+  }
+]

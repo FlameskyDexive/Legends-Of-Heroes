@@ -6,16 +6,10 @@ namespace ET
     [Code]
     public class BTLoader : Singleton<BTLoader>, ISingletonAwake
     {
-        public const string ClientBehaviorTreeBytesDir = "Assets/Bundles/AI/Bytes";
-        public const string ServerBehaviorTreeBytesDir = "Config/AI";
-        public const string BTAssetDir = "Assets/Bundles/AI";
+        public const string ClientBehaviorTreeBytesDir = BTBytesLoader.ClientBehaviorTreeBytesDir;
+        public const string ServerBehaviorTreeBytesDir = BTBytesLoader.ServerBehaviorTreeBytesDir;
+        public const string BTAssetDir = BTBytesLoader.BTAssetDir;
 
-        public struct GetOneBehaviorTreeBytes
-        {
-            public string TreeName;
-        }
-
-        private readonly Dictionary<string, byte[]> bytesCache = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, BTPackage> packageCache = new(StringComparer.OrdinalIgnoreCase);
 
         public void Awake()
@@ -24,54 +18,12 @@ namespace ET
 
         public async ETTask<byte[]> LoadBytesAsync(string treeName, bool useCache = true)
         {
-            if (string.IsNullOrWhiteSpace(treeName))
-            {
-                Log.Error("behavior tree name is empty");
-                return null;
-            }
-
-            if (useCache && this.bytesCache.TryGetValue(treeName, out byte[] cacheBytes))
-            {
-                return cacheBytes;
-            }
-
-            byte[] bytes = await EventSystem.Instance.Invoke<GetOneBehaviorTreeBytes, ETTask<byte[]>>(new GetOneBehaviorTreeBytes()
-            {
-                TreeName = treeName,
-            });
-
-            if (bytes != null && bytes.Length > 0 && useCache)
-            {
-                this.bytesCache[treeName] = bytes;
-            }
-
-            return bytes;
+            return await BTBytesLoader.Instance.LoadBytesAsync(treeName, useCache);
         }
 
         public byte[] LoadBytes(string treeName, bool useCache = true)
         {
-            if (string.IsNullOrWhiteSpace(treeName))
-            {
-                Log.Error("behavior tree name is empty");
-                return null;
-            }
-
-            if (useCache && this.bytesCache.TryGetValue(treeName, out byte[] cacheBytes))
-            {
-                return cacheBytes;
-            }
-
-            byte[] bytes = EventSystem.Instance.Invoke<GetOneBehaviorTreeBytes, byte[]>(new GetOneBehaviorTreeBytes()
-            {
-                TreeName = treeName,
-            });
-
-            if (bytes != null && bytes.Length > 0 && useCache)
-            {
-                this.bytesCache[treeName] = bytes;
-            }
-
-            return bytes;
+            return BTBytesLoader.Instance.LoadBytes(treeName, useCache);
         }
 
         public async ETTask<BTPackage> LoadPackageAsync(string treeName, bool useCache = true)
@@ -134,13 +86,13 @@ namespace ET
         {
             if (string.IsNullOrWhiteSpace(treeName))
             {
-                this.bytesCache.Clear();
                 this.packageCache.Clear();
+                BTBytesLoader.Instance?.Clear();
                 return;
             }
 
-            this.bytesCache.Remove(treeName);
             this.packageCache.Remove(treeName);
+            BTBytesLoader.Instance?.Clear(treeName);
         }
     }
 }

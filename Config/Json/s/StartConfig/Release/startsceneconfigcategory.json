@@ -1,0 +1,98 @@
+[
+  {
+    "Id": 1,
+    "Process": 1,
+    "Zone": 1,
+    "SceneType": "Realm",
+    "Name": "Realm",
+    "Port": 30002
+  },
+  {
+    "Id": 2,
+    "Process": 2,
+    "Zone": 1,
+    "SceneType": "Gate",
+    "Name": "Gate1",
+    "Port": 30003
+  },
+  {
+    "Id": 3,
+    "Process": 3,
+    "Zone": 1,
+    "SceneType": "Gate",
+    "Name": "Gate2",
+    "Port": 30004
+  },
+  {
+    "Id": 4,
+    "Process": 4,
+    "Zone": 1,
+    "SceneType": "Location",
+    "Name": "Location",
+    "Port": 0
+  },
+  {
+    "Id": 5,
+    "Process": 5,
+    "Zone": 1,
+    "SceneType": "Match",
+    "Name": "Match",
+    "Port": 0
+  },
+  {
+    "Id": 6,
+    "Process": 6,
+    "Zone": 1,
+    "SceneType": "Map",
+    "Name": "Map1",
+    "Port": 0
+  },
+  {
+    "Id": 7,
+    "Process": 7,
+    "Zone": 1,
+    "SceneType": "Map",
+    "Name": "Map2",
+    "Port": 0
+  },
+  {
+    "Id": 300,
+    "Process": 8,
+    "Zone": 3,
+    "SceneType": "RouterManager",
+    "Name": "RouterManager",
+    "Port": 30300
+  },
+  {
+    "Id": 301,
+    "Process": 9,
+    "Zone": 3,
+    "SceneType": "Router",
+    "Name": "Router01",
+    "Port": 30301
+  },
+  {
+    "Id": 302,
+    "Process": 10,
+    "Zone": 3,
+    "SceneType": "Router",
+    "Name": "Router02",
+    "Port": 30302
+  },
+  {
+    "Id": 303,
+    "Process": 11,
+    "Zone": 3,
+    "SceneType": "Router",
+    "Name": "Router03",
+    "Port": 30303
+  },
+  {
+    "Id": 304,
+    "Process": 12,
+    "Zone": 3,
+    "SceneType": "Router",
+    "Name": "Router04",
+    "Port": 30304
+  }
+]

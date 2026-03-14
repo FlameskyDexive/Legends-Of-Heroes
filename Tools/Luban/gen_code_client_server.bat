@@ -1,5 +1,6 @@
 
 set WORKSPACE=..\..
+set DOTNET_ROLL_FORWARD=Major
 
 set GEN_CLIENT=Luban.ClientServer\Luban.ClientServer.exe
 set CONF_ROOT=%WORKSPACE%\Unity\Assets\Config\Excel
