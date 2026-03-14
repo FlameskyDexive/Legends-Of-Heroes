@@ -4,20 +4,20 @@ namespace ET
     {
         public static void Start(this BTRuntimeNode self)
         {
-            if (self == null || self.Runner.IsDisposed || self.State == BehaviorTreeNodeState.Running)
+            if (self == null || self.Runner.IsDisposed || self.State == BTNodeState.Running)
             {
                 return;
             }
 
             self.CancellationToken = new ETCancellationToken();
-            self.State = BehaviorTreeNodeState.Running;
+            self.State = BTNodeState.Running;
             RecordState(self.Runner, self, self.State);
             self.DispatchOnStart();
         }
 
         public static void Stop(this BTRuntimeNode self)
         {
-            if (self == null || self.State != BehaviorTreeNodeState.Running)
+            if (self == null || self.State != BTNodeState.Running)
             {
                 return;
             }
@@ -26,21 +26,21 @@ namespace ET
             self.CancellationToken = null;
             token?.Cancel();
             self.DispatchOnStop();
-            self.State = BehaviorTreeNodeState.Aborted;
+            self.State = BTNodeState.Aborted;
             RecordState(self.Runner, self, self.State);
         }
 
         public static void Succeed(this BTRuntimeNode self)
         {
-            self.Complete(BehaviorTreeNodeState.Success);
+            self.Complete(BTNodeState.Success);
         }
 
         public static void Fail(this BTRuntimeNode self)
         {
-            self.Complete(BehaviorTreeNodeState.Failure);
+            self.Complete(BTNodeState.Failure);
         }
 
-        public static void HandleChildCompleted(this BTRuntimeNode self, BTRuntimeNode child, BehaviorTreeNodeState state)
+        public static void HandleChildCompleted(this BTRuntimeNode self, BTRuntimeNode child, BTNodeState state)
         {
             switch (self)
             {
@@ -88,9 +88,9 @@ namespace ET
             }
         }
 
-        private static void Complete(this BTRuntimeNode self, BehaviorTreeNodeState state)
+        private static void Complete(this BTRuntimeNode self, BTNodeState state)
         {
-            if (self.State != BehaviorTreeNodeState.Running)
+            if (self.State != BTNodeState.Running)
             {
                 return;
             }

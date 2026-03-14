@@ -12,7 +12,7 @@ namespace ET
 
         public BTRepeaterNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.Repeater;
+            this.NodeKind = BTNodeKind.Repeater;
         }
 
         public override BTNodeData Clone()

@@ -5,7 +5,7 @@ namespace ET
     {
         public long ObserverId;
 
-        public BTBlackboardConditionNode(BehaviorTreeRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
+        public BTBlackboardConditionNode(BTRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
         {
         }
     }

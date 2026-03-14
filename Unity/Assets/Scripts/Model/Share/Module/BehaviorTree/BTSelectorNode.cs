@@ -5,7 +5,7 @@ namespace ET
     {
         public int CurrentIndex;
 
-        public BTSelectorNode(BehaviorTreeRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
+        public BTSelectorNode(BTRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
         {
         }
     }

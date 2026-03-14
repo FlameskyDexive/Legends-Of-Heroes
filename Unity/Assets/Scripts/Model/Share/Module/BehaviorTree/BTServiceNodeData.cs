@@ -15,17 +15,17 @@ namespace ET
 
         public int IntervalMilliseconds = 250;
 
-        public List<BehaviorTreeArgumentDefinition> Arguments = new();
+        public List<BTArgumentData> Arguments = new();
 
         public string NodeTypeId => this.TypeId;
 
         public string HandlerName => this.ServiceHandlerName;
 
-        List<BehaviorTreeArgumentDefinition> IBTArgumentNodeData.Arguments => this.Arguments;
+        List<BTArgumentData> IBTArgumentNodeData.Arguments => this.Arguments;
 
         public BTServiceNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.Service;
+            this.NodeKind = BTNodeKind.Service;
         }
 
         public override BTNodeData Clone()
@@ -37,9 +37,9 @@ namespace ET
                 IntervalMilliseconds = this.IntervalMilliseconds,
             });
 
-            foreach (BehaviorTreeArgumentDefinition argument in this.Arguments)
+            foreach (BTArgumentData argument in this.Arguments)
             {
-                definition.Arguments.Add(argument?.Clone() ?? new BehaviorTreeArgumentDefinition());
+                definition.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
             }
 
             return definition;

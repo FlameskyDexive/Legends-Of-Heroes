@@ -32,9 +32,9 @@ namespace ET
             self.Children[0].Start();
         }
 
-        private static void HandleChildCompleted(BTServiceNode self, BTRuntimeNode child, BehaviorTreeNodeState state)
+        private static void HandleChildCompleted(BTServiceNode self, BTRuntimeNode child, BTNodeState state)
         {
-            if (state == BehaviorTreeNodeState.Success)
+            if (state == BTNodeState.Success)
             {
                 self.Succeed();
                 return;

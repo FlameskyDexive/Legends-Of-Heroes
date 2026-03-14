@@ -10,15 +10,15 @@ namespace ET
     {
         public string BlackboardKey = string.Empty;
 
-        public BehaviorTreeCompareOperator CompareOperator = BehaviorTreeCompareOperator.IsSet;
+        public BTCompareOperator CompareOperator = BTCompareOperator.IsSet;
 
-        public BehaviorTreeSerializedValue CompareValue = new();
+        public BTSerializedValue CompareValue = new();
 
-        public BehaviorTreeAbortMode AbortMode = BehaviorTreeAbortMode.Self;
+        public BTAbortMode AbortMode = BTAbortMode.Self;
 
         public BTBlackboardConditionNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.BlackboardCondition;
+            this.NodeKind = BTNodeKind.BlackboardCondition;
         }
 
         public override BTNodeData Clone()
@@ -27,7 +27,7 @@ namespace ET
             {
                 BlackboardKey = this.BlackboardKey,
                 CompareOperator = this.CompareOperator,
-                CompareValue = this.CompareValue?.Clone() ?? new BehaviorTreeSerializedValue(),
+                CompareValue = this.CompareValue?.Clone() ?? new BTSerializedValue(),
                 AbortMode = this.AbortMode,
             });
         }

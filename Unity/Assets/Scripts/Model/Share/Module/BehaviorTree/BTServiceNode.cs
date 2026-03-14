@@ -5,7 +5,7 @@ namespace ET
     {
         public ABTServiceHandler ServiceHandler;
 
-        public BTServiceNode(BehaviorTreeRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
+        public BTServiceNode(BTRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
         {
         }
     }

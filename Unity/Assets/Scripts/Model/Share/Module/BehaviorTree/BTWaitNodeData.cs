@@ -12,7 +12,7 @@ namespace ET
 
         public BTWaitNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.Wait;
+            this.NodeKind = BTNodeKind.Wait;
         }
 
         public override BTNodeData Clone()

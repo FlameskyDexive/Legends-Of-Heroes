@@ -5,7 +5,7 @@ namespace ET
     {
         public int CurrentIndex;
 
-        public BTSequenceNode(BehaviorTreeRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
+        public BTSequenceNode(BTRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
         {
         }
     }

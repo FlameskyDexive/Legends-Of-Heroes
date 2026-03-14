@@ -11,7 +11,7 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 49fe161aa474a6840999206788f922b7, type: 3}
   m_Name: NewBehaviorTree
-  m_EditorClassIdentifier: Unity.Editor::ET.BehaviorTreeAsset
+  m_EditorClassIdentifier: Unity.Editor::ET.BTAsset
   TreeId: ff0e683322414856a7988acf8a68f480
   TreeName: NewBehaviorTree
   Description: 

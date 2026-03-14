@@ -5,7 +5,7 @@ namespace ET
     {
         public BTRuntimeNode SubTree;
 
-        public BTSubTreeNode(BehaviorTreeRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
+        public BTSubTreeNode(BTRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
         {
         }
     }

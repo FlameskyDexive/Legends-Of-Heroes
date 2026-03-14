@@ -10,7 +10,7 @@ namespace ET
     {
         public BTRootNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.Root;
+            this.NodeKind = BTNodeKind.Root;
         }
 
         public override BTNodeData Clone() => this.CloneBaseTo(new BTRootNodeData());

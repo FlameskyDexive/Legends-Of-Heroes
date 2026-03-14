@@ -23,13 +23,13 @@ namespace ET
             ETCancellationToken token = self.CancellationToken;
             try
             {
-                BehaviorTreeNodeState state = await handler.Execute(self.Runner.Context, self.Definition, token);
+                BTNodeState state = await handler.Execute(self.Runner.Context, self.Definition, token);
                 if (token.IsCancel() || self.Runner.IsDisposed)
                 {
                     return;
                 }
 
-                if (state == BehaviorTreeNodeState.Success)
+                if (state == BTNodeState.Success)
                 {
                     self.Succeed();
                     return;

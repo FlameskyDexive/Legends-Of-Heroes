@@ -5,20 +5,20 @@ namespace ET
 {
     public static class BTHandlersSystem
     {
-        public static bool TryGetOwner<T>(this BehaviorTreeExecutionContext self, out T entity) where T : Entity
+        public static bool TryGetOwner<T>(this BTExecutionContext self, out T entity) where T : Entity
         {
             entity = self.Owner as T;
             return entity != null;
         }
 
-        public static Scene Root(this BehaviorTreeExecutionContext self)
+        public static Scene Root(this BTExecutionContext self)
         {
             Entity owner = self.Owner;
             return owner?.Root();
         }
 
-        public static bool TryGetArgument(this BehaviorTreeExecutionContext self, BTNodeData node, string argumentName,
-            out BehaviorTreeArgumentDefinition argument)
+        public static bool TryGetArgument(this BTExecutionContext self, BTNodeData node, string argumentName,
+            out BTArgumentData argument)
         {
             argument = null;
             if (node is not IBTArgumentNodeData argumentNode || string.IsNullOrWhiteSpace(argumentName))
@@ -26,7 +26,7 @@ namespace ET
                 return false;
             }
 
-            foreach (BehaviorTreeArgumentDefinition nodeArgument in argumentNode.Arguments)
+            foreach (BTArgumentData nodeArgument in argumentNode.Arguments)
             {
                 if (string.Equals(nodeArgument.Name, argumentName, StringComparison.OrdinalIgnoreCase))
                 {
@@ -38,45 +38,45 @@ namespace ET
             return false;
         }
 
-        public static string GetStringArgument(this BehaviorTreeExecutionContext self, BTNodeData node, string argumentName, string defaultValue = "")
+        public static string GetStringArgument(this BTExecutionContext self, BTNodeData node, string argumentName, string defaultValue = "")
         {
-            return self.TryGetArgument(node, argumentName, out BehaviorTreeArgumentDefinition argument)
-                    ? BehaviorTreeValueUtility.GetString(argument.Value, defaultValue)
+            return self.TryGetArgument(node, argumentName, out BTArgumentData argument)
+                    ? BTValueUtility.GetString(argument.Value, defaultValue)
                     : defaultValue;
         }
 
-        public static int GetIntArgument(this BehaviorTreeExecutionContext self, BTNodeData node, string argumentName, int defaultValue = 0)
+        public static int GetIntArgument(this BTExecutionContext self, BTNodeData node, string argumentName, int defaultValue = 0)
         {
-            return self.TryGetArgument(node, argumentName, out BehaviorTreeArgumentDefinition argument)
-                    ? BehaviorTreeValueUtility.GetInt(argument.Value, defaultValue)
+            return self.TryGetArgument(node, argumentName, out BTArgumentData argument)
+                    ? BTValueUtility.GetInt(argument.Value, defaultValue)
                     : defaultValue;
         }
 
-        public static long GetLongArgument(this BehaviorTreeExecutionContext self, BTNodeData node, string argumentName, long defaultValue = 0)
+        public static long GetLongArgument(this BTExecutionContext self, BTNodeData node, string argumentName, long defaultValue = 0)
         {
-            return self.TryGetArgument(node, argumentName, out BehaviorTreeArgumentDefinition argument)
-                    ? BehaviorTreeValueUtility.GetLong(argument.Value, defaultValue)
+            return self.TryGetArgument(node, argumentName, out BTArgumentData argument)
+                    ? BTValueUtility.GetLong(argument.Value, defaultValue)
                     : defaultValue;
         }
 
-        public static float GetFloatArgument(this BehaviorTreeExecutionContext self, BTNodeData node, string argumentName, float defaultValue = 0)
+        public static float GetFloatArgument(this BTExecutionContext self, BTNodeData node, string argumentName, float defaultValue = 0)
         {
-            return self.TryGetArgument(node, argumentName, out BehaviorTreeArgumentDefinition argument)
-                    ? BehaviorTreeValueUtility.GetFloat(argument.Value, defaultValue)
+            return self.TryGetArgument(node, argumentName, out BTArgumentData argument)
+                    ? BTValueUtility.GetFloat(argument.Value, defaultValue)
                     : defaultValue;
         }
 
-        public static bool GetBoolArgument(this BehaviorTreeExecutionContext self, BTNodeData node, string argumentName, bool defaultValue = false)
+        public static bool GetBoolArgument(this BTExecutionContext self, BTNodeData node, string argumentName, bool defaultValue = false)
         {
-            return self.TryGetArgument(node, argumentName, out BehaviorTreeArgumentDefinition argument)
-                    ? BehaviorTreeValueUtility.GetBool(argument.Value, defaultValue)
+            return self.TryGetArgument(node, argumentName, out BTArgumentData argument)
+                    ? BTValueUtility.GetBool(argument.Value, defaultValue)
                     : defaultValue;
         }
 
-        public static object GetArgumentValue(this BehaviorTreeExecutionContext self, BTNodeData node, string argumentName)
+        public static object GetArgumentValue(this BTExecutionContext self, BTNodeData node, string argumentName)
         {
-            return self.TryGetArgument(node, argumentName, out BehaviorTreeArgumentDefinition argument)
-                    ? BehaviorTreeValueUtility.GetValue(argument.Value)
+            return self.TryGetArgument(node, argumentName, out BTArgumentData argument)
+                    ? BTValueUtility.GetValue(argument.Value)
                     : null;
         }
 

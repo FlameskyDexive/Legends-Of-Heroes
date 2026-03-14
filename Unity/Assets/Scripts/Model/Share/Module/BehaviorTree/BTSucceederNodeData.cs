@@ -10,7 +10,7 @@ namespace ET
     {
         public BTSucceederNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.Succeeder;
+            this.NodeKind = BTNodeKind.Succeeder;
         }
 
         public override BTNodeData Clone() => this.CloneBaseTo(new BTSucceederNodeData());

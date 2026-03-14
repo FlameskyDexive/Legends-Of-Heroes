@@ -8,13 +8,13 @@ namespace ET
     [Serializable]
     public sealed partial class BTParallelNodeData : BTNodeData
     {
-        public BehaviorTreeParallelPolicy SuccessPolicy = BehaviorTreeParallelPolicy.RequireAll;
+        public BTParallelPolicy SuccessPolicy = BTParallelPolicy.RequireAll;
 
-        public BehaviorTreeParallelPolicy FailurePolicy = BehaviorTreeParallelPolicy.RequireOne;
+        public BTParallelPolicy FailurePolicy = BTParallelPolicy.RequireOne;
 
         public BTParallelNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.Parallel;
+            this.NodeKind = BTNodeKind.Parallel;
         }
 
         public override BTNodeData Clone()

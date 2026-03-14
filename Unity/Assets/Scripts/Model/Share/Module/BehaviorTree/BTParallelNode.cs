@@ -9,7 +9,7 @@ namespace ET
 
         public int FailureCount;
 
-        public BTParallelNode(BehaviorTreeRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
+        public BTParallelNode(BTRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
         {
         }
     }

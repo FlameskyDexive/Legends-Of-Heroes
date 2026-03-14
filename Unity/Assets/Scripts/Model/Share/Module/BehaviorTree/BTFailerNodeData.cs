@@ -10,7 +10,7 @@ namespace ET
     {
         public BTFailerNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.Failer;
+            this.NodeKind = BTNodeKind.Failer;
         }
 
         public override BTNodeData Clone() => this.CloneBaseTo(new BTFailerNodeData());

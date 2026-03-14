@@ -14,7 +14,7 @@ namespace ET
             self.Children[0].Start();
         }
 
-        private static void HandleChildCompleted(BTRepeaterNode self, BTRuntimeNode child, BehaviorTreeNodeState state)
+        private static void HandleChildCompleted(BTRepeaterNode self, BTRuntimeNode child, BTNodeState state)
         {
             BTRepeaterNodeData definition = self.Definition as BTRepeaterNodeData;
             if (definition == null)
@@ -26,7 +26,7 @@ namespace ET
             ++self.CurrentLoopCount;
             if (definition.MaxLoopCount > 0 && self.CurrentLoopCount >= definition.MaxLoopCount)
             {
-                if (state == BehaviorTreeNodeState.Success)
+                if (state == BTNodeState.Success)
                 {
                     self.Succeed();
                     return;

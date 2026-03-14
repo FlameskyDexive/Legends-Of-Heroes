@@ -3,7 +3,7 @@ namespace ET
     [EnableClass]
     public sealed class BTActionNode : BTRuntimeNode
     {
-        public BTActionNode(BehaviorTreeRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
+        public BTActionNode(BTRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
         {
         }
     }

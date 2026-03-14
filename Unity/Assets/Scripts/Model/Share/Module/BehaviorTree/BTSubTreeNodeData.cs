@@ -14,7 +14,7 @@ namespace ET
 
         public BTSubTreeNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.SubTree;
+            this.NodeKind = BTNodeKind.SubTree;
         }
 
         public override BTNodeData Clone()

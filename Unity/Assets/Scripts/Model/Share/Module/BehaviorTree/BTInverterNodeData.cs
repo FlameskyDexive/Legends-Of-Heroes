@@ -10,7 +10,7 @@ namespace ET
     {
         public BTInverterNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.Inverter;
+            this.NodeKind = BTNodeKind.Inverter;
         }
 
         public override BTNodeData Clone() => this.CloneBaseTo(new BTInverterNodeData());

@@ -33,11 +33,11 @@ namespace ET
             self.Children[0].Start();
         }
 
-        private static void HandleChildCompleted(BTBlackboardConditionNode self, BTRuntimeNode child, BehaviorTreeNodeState state)
+        private static void HandleChildCompleted(BTBlackboardConditionNode self, BTRuntimeNode child, BTNodeState state)
         {
             self.Runner.Blackboard.RemoveObserver(self.ObserverId);
             self.ObserverId = 0;
-            if (state == BehaviorTreeNodeState.Success)
+            if (state == BTNodeState.Success)
             {
                 self.Succeed();
                 return;
@@ -62,17 +62,17 @@ namespace ET
             }
 
             object currentValue = self.Runner.Blackboard.GetBoxed(definition.BlackboardKey);
-            return BehaviorTreeValueUtility.Compare(currentValue, definition.CompareOperator, definition.CompareValue);
+            return BTValueUtility.Compare(currentValue, definition.CompareOperator, definition.CompareValue);
         }
 
-        private static void OnBlackboardChanged(BTBlackboardConditionNode self, BehaviorTreeBlackboardChange change)
+        private static void OnBlackboardChanged(BTBlackboardConditionNode self, BTBlackboardChange change)
         {
-            if (self.State != BehaviorTreeNodeState.Running)
+            if (self.State != BTNodeState.Running)
             {
                 return;
             }
 
-            if (self.Definition is not BTBlackboardConditionNodeData definition || definition.AbortMode == BehaviorTreeAbortMode.None)
+            if (self.Definition is not BTBlackboardConditionNodeData definition || definition.AbortMode == BTAbortMode.None)
             {
                 return;
             }

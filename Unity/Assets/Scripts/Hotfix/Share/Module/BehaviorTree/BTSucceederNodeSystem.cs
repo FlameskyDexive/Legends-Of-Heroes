@@ -13,7 +13,7 @@ namespace ET
             self.Children[0].Start();
         }
 
-        private static void HandleChildCompleted(BTSucceederNode self, BTRuntimeNode child, BehaviorTreeNodeState state)
+        private static void HandleChildCompleted(BTSucceederNode self, BTRuntimeNode child, BTNodeState state)
         {
             self.Succeed();
         }

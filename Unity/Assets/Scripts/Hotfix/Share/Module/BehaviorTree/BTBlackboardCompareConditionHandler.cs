@@ -3,7 +3,7 @@ namespace ET
     [BTConditionHandler("BlackboardCompare")]
     public sealed class BTBlackboardCompareConditionHandler : ABTConditionHandler
     {
-        public override bool Evaluate(BehaviorTreeExecutionContext context, BTNodeData node)
+        public override bool Evaluate(BTExecutionContext context, BTNodeData node)
         {
             string key = context.GetStringArgument(node, "key");
             if (string.IsNullOrWhiteSpace(key))
@@ -11,14 +11,14 @@ namespace ET
                 return false;
             }
 
-            BehaviorTreeCompareOperator compareOperator = (BehaviorTreeCompareOperator)context.GetIntArgument(node, "operator", (int)BehaviorTreeCompareOperator.Equal);
+            BTCompareOperator compareOperator = (BTCompareOperator)context.GetIntArgument(node, "operator", (int)BTCompareOperator.Equal);
             object currentValue = context.Blackboard.GetBoxed(key);
-            if (!context.TryGetArgument(node, "value", out BehaviorTreeArgumentDefinition argument))
+            if (!context.TryGetArgument(node, "value", out BTArgumentData argument))
             {
-                return BehaviorTreeValueUtility.Compare(currentValue, compareOperator, new BehaviorTreeSerializedValue());
+                return BTValueUtility.Compare(currentValue, compareOperator, new BTSerializedValue());
             }
 
-            return BehaviorTreeValueUtility.Compare(currentValue, compareOperator, argument.Value);
+            return BTValueUtility.Compare(currentValue, compareOperator, argument.Value);
         }
     }
 }

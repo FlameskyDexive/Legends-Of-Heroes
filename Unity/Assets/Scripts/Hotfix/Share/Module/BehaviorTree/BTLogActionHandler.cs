@@ -3,12 +3,12 @@ namespace ET
     [BTActionHandler("Log")]
     public sealed class BTLogActionHandler : ABTActionHandler
     {
-        public override ETTask<BehaviorTreeNodeState> Execute(BehaviorTreeExecutionContext context, BTNodeData node, ETCancellationToken cancellationToken)
+        public override ETTask<BTNodeState> Execute(BTExecutionContext context, BTNodeData node, ETCancellationToken cancellationToken)
         {
             string message = context.GetStringArgument(node, "message", node.Title);
             Log.Info($"[BehaviorTree][{context.TreeName}] {message}");
-            ETTask<BehaviorTreeNodeState> task = ETTask<BehaviorTreeNodeState>.Create();
-            task.SetResult(BehaviorTreeNodeState.Success);
+            ETTask<BTNodeState> task = ETTask<BTNodeState>.Create();
+            task.SetResult(BTNodeState.Success);
             return task;
         }
     }

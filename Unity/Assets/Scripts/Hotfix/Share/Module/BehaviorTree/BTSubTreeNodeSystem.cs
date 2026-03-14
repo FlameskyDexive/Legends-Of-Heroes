@@ -22,10 +22,10 @@ namespace ET
             self.SubTree.Start();
         }
 
-        private static void HandleChildCompleted(BTSubTreeNode self, BTRuntimeNode child, BehaviorTreeNodeState state)
+        private static void HandleChildCompleted(BTSubTreeNode self, BTRuntimeNode child, BTNodeState state)
         {
             self.SubTree = null;
-            if (state == BehaviorTreeNodeState.Success)
+            if (state == BTNodeState.Success)
             {
                 self.Succeed();
                 return;

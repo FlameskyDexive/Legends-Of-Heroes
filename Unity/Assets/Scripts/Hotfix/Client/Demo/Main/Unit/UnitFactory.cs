@@ -36,7 +36,7 @@ namespace ET.Client
             if(unit.Type() == EUnitType.Player)
                 unit.AddComponent<SkillComponent, List<int>>(unitInfo.SkillInfo.Keys.ToList());
 
-            // unit.AddComponent<XunLuoPathComponent>();
+            // unit.AddComponent<PatrolComponent>();
 
             EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreate() {Unit = unit});
             if (currentScene.Root().GetComponent<PlayerComponent>().MyId == unit.Id)

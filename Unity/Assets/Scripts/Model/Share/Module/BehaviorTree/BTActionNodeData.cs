@@ -13,17 +13,17 @@ namespace ET
 
         public string ActionHandlerName = string.Empty;
 
-        public List<BehaviorTreeArgumentDefinition> Arguments = new();
+        public List<BTArgumentData> Arguments = new();
 
         public string NodeTypeId => this.TypeId;
 
         public string HandlerName => this.ActionHandlerName;
 
-        List<BehaviorTreeArgumentDefinition> IBTArgumentNodeData.Arguments => this.Arguments;
+        List<BTArgumentData> IBTArgumentNodeData.Arguments => this.Arguments;
 
         public BTActionNodeData()
         {
-            this.NodeKind = BehaviorTreeNodeKind.Action;
+            this.NodeKind = BTNodeKind.Action;
         }
 
         public override BTNodeData Clone()
@@ -34,9 +34,9 @@ namespace ET
                 ActionHandlerName = this.ActionHandlerName,
             });
 
-            foreach (BehaviorTreeArgumentDefinition argument in this.Arguments)
+            foreach (BTArgumentData argument in this.Arguments)
             {
-                definition.Arguments.Add(argument?.Clone() ?? new BehaviorTreeArgumentDefinition());
+                definition.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
             }
 
             return definition;

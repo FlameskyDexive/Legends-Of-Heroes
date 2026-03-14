@@ -58,14 +58,14 @@ namespace ET.Server
                 case "LoadTree":
                 {
                     string treeName = ss.Length > 1 ? ss[1] : "AITest";
-                    BehaviorTreePackage package = BehaviorTreeLoader.Instance.LoadPackage(treeName, false);
+                    BTPackage package = BTLoader.Instance.LoadPackage(treeName, false);
                     if (package == null)
                     {
                         Log.Debug($"load behavior tree failed: {treeName}");
                         break;
                     }
 
-                    BehaviorTreeDefinition entryTree = package.GetEntryTree();
+                    BTDefinition entryTree = package.GetEntryTree();
                     Log.Debug($"behavior tree loaded: {treeName}, package={package.PackageName}, treeCount={package.Trees.Count}, entry={entryTree?.TreeName}, nodeCount={entryTree?.Nodes.Count ?? 0}");
                     break;
                 }
@@ -73,14 +73,14 @@ namespace ET.Server
                 {
                     string fileName = ss.Length > 1 ? ss[1] : "AITest";
                     string treeName = ss.Length > 2 ? ss[2] : "AITest";
-                    byte[] bytes = await BehaviorTreeLoader.Instance.LoadBytesAsync(fileName, false);
+                    byte[] bytes = await BTLoader.Instance.LoadBytesAsync(fileName, false);
                     if (bytes == null || bytes.Length == 0)
                     {
                         Log.Debug($"run behavior tree failed, bytes empty: {fileName}");
                         break;
                     }
 
-                    BehaviorTreeRunner runner = BehaviorTreeRuntime.Create(fiber.Root, bytes, treeName);
+                    BTRunner runner = BTRuntime.Create(fiber.Root, bytes, treeName);
                     if (runner == null)
                     {
                         Log.Debug($"run behavior tree failed: {fileName}/{treeName}");

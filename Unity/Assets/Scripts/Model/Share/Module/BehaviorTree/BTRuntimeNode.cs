@@ -5,7 +5,7 @@ namespace ET
     [EnableClass]
     public abstract class BTRuntimeNode
     {
-        protected BTRuntimeNode(BehaviorTreeRunner runner, BTNodeData definition, BTRuntimeNode parent)
+        protected BTRuntimeNode(BTRunner runner, BTNodeData definition, BTRuntimeNode parent)
         {
             this.Runner = runner;
             this.Definition = definition;
@@ -13,7 +13,7 @@ namespace ET
             this.NodeId = definition?.NodeId ?? string.Empty;
         }
 
-        public BehaviorTreeRunner Runner;
+        public BTRunner Runner;
 
         public BTNodeData Definition;
 
@@ -23,7 +23,7 @@ namespace ET
 
         public string NodeId;
 
-        public BehaviorTreeNodeState State = BehaviorTreeNodeState.Inactive;
+        public BTNodeState State = BTNodeState.Inactive;
 
         public List<BTRuntimeNode> Children = new();
     }

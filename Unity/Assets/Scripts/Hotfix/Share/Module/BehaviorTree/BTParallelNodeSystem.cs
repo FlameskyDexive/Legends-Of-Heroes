@@ -21,7 +21,7 @@ namespace ET
             }
         }
 
-        private static void HandleChildCompleted(BTParallelNode self, BTRuntimeNode child, BehaviorTreeNodeState state)
+        private static void HandleChildCompleted(BTParallelNode self, BTRuntimeNode child, BTNodeState state)
         {
             BTParallelNodeData definition = self.Definition as BTParallelNodeData;
             if (definition == null)
@@ -31,7 +31,7 @@ namespace ET
             }
 
             ++self.CompletedCount;
-            if (state == BehaviorTreeNodeState.Success)
+            if (state == BTNodeState.Success)
             {
                 ++self.SuccessCount;
             }
@@ -40,14 +40,14 @@ namespace ET
                 ++self.FailureCount;
             }
 
-            if (definition.SuccessPolicy == BehaviorTreeParallelPolicy.RequireOne && state == BehaviorTreeNodeState.Success)
+            if (definition.SuccessPolicy == BTParallelPolicy.RequireOne && state == BTNodeState.Success)
             {
                 StopOtherChildren(self, child);
                 self.Succeed();
                 return;
             }
 
-            if (definition.FailurePolicy == BehaviorTreeParallelPolicy.RequireOne && state != BehaviorTreeNodeState.Success)
+            if (definition.FailurePolicy == BTParallelPolicy.RequireOne && state != BTNodeState.Success)
             {
                 StopOtherChildren(self, child);
                 self.Fail();
@@ -59,8 +59,8 @@ namespace ET
                 return;
             }
 
-            bool success = definition.SuccessPolicy == BehaviorTreeParallelPolicy.RequireAll ? self.SuccessCount == self.Children.Count : self.SuccessCount > 0;
-            bool failure = definition.FailurePolicy == BehaviorTreeParallelPolicy.RequireAll ? self.FailureCount == self.Children.Count : self.FailureCount > 0;
+            bool success = definition.SuccessPolicy == BTParallelPolicy.RequireAll ? self.SuccessCount == self.Children.Count : self.SuccessCount > 0;
+            bool failure = definition.FailurePolicy == BTParallelPolicy.RequireAll ? self.FailureCount == self.Children.Count : self.FailureCount > 0;
             if (success && !failure)
             {
                 self.Succeed();

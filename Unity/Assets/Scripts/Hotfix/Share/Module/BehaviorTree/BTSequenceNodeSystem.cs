@@ -8,9 +8,9 @@ namespace ET
             StartNextSequenceChild(self);
         }
 
-        private static void HandleChildCompleted(BTSequenceNode self, BTRuntimeNode child, BehaviorTreeNodeState state)
+        private static void HandleChildCompleted(BTSequenceNode self, BTRuntimeNode child, BTNodeState state)
         {
-            if (state != BehaviorTreeNodeState.Success)
+            if (state != BTNodeState.Success)
             {
                 self.Fail();
                 return;

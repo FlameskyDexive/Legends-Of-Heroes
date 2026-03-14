@@ -5,7 +5,7 @@ namespace ET
     {
         public int CurrentLoopCount;
 
-        public BTRepeaterNode(BehaviorTreeRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
+        public BTRepeaterNode(BTRunner runner, BTNodeData definition, BTRuntimeNode parent) : base(runner, definition, parent)
         {
         }
     }
