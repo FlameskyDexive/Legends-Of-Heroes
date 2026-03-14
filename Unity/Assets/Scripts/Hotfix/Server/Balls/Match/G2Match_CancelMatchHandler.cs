@@ -33,6 +33,7 @@ namespace ET.Server
 
             response.Error = ErrorCode.ERR_Success;
             response.Message = "Cancel match success";
+            await ETTask.CompletedTask;
         }
     }
 }

@@ -2,7 +2,7 @@ using System;
 
 namespace ET
 {
-    public static partial class BehaviorTreeRuntimeNodeSystem
+    public static partial class BTRuntimeNodeSystem
     {
         public static void Start(this BehaviorTreeRunner self)
         {
@@ -52,7 +52,7 @@ namespace ET
             return null;
         }
 
-        public static BehaviorTreeRuntimeNode CreateSubTree(this BehaviorTreeRunner self, string treeId, string treeName, BehaviorTreeRuntimeNode parent)
+        public static BTRuntimeNode CreateSubTree(this BehaviorTreeRunner self, string treeId, string treeName, BTRuntimeNode parent)
         {
             BehaviorTreeDefinition definition = self.ResolveTree(treeId, treeName);
             return definition == null ? null : self.BuildTree(definition, definition.RootNodeId, parent);
@@ -70,13 +70,13 @@ namespace ET
             await timerComponent.WaitAsync(milliseconds, cancellationToken);
         }
 
-        public static void RecordState(this BehaviorTreeRunner self, BehaviorTreeRuntimeNode node, BehaviorTreeNodeState state)
+        public static void RecordState(this BehaviorTreeRunner self, BTRuntimeNode node, BehaviorTreeNodeState state)
         {
             self.NodeStates[node.NodeId] = state;
             PublishDebug(self);
         }
 
-        public static void LogException(this BehaviorTreeRunner self, Exception exception, BehaviorTreeNodeDefinition node)
+        public static void LogException(this BehaviorTreeRunner self, Exception exception, BTNodeData node)
         {
             Log.Error($"behavior tree runtime exception: tree={self.Tree?.TreeName} node={node?.Title} id={node?.NodeId}\n{exception}");
         }
@@ -87,30 +87,30 @@ namespace ET
             BehaviorTreeDebugHub.Instance.Publish(self.RuntimeId, self.Tree.TreeId, self.Tree.TreeName, owner?.InstanceId ?? 0, self.NodeStates);
         }
 
-        public static BehaviorTreeRuntimeNode BuildTree(this BehaviorTreeRunner self, BehaviorTreeDefinition tree, string nodeId, BehaviorTreeRuntimeNode parent)
+        public static BTRuntimeNode BuildTree(this BehaviorTreeRunner self, BehaviorTreeDefinition tree, string nodeId, BTRuntimeNode parent)
         {
-            BehaviorTreeNodeDefinition definition = tree.GetNode(nodeId);
+            BTNodeData definition = tree.GetNode(nodeId);
             if (definition == null)
             {
                 return null;
             }
 
-            BehaviorTreeRuntimeNode runtimeNode = definition.NodeKind switch
+            BTRuntimeNode runtimeNode = definition.NodeKind switch
             {
-                BehaviorTreeNodeKind.Root => new BehaviorTreeRootNode(self, definition, parent),
-                BehaviorTreeNodeKind.Sequence => new BehaviorTreeSequenceNode(self, definition, parent),
-                BehaviorTreeNodeKind.Selector => new BehaviorTreeSelectorNode(self, definition, parent),
-                BehaviorTreeNodeKind.Parallel => new BehaviorTreeParallelNode(self, definition, parent),
-                BehaviorTreeNodeKind.Inverter => new BehaviorTreeInverterNode(self, definition, parent),
-                BehaviorTreeNodeKind.Succeeder => new BehaviorTreeSucceederNode(self, definition, parent),
-                BehaviorTreeNodeKind.Failer => new BehaviorTreeFailerNode(self, definition, parent),
-                BehaviorTreeNodeKind.Repeater => new BehaviorTreeRepeaterNode(self, definition, parent),
-                BehaviorTreeNodeKind.BlackboardCondition => new BehaviorTreeBlackboardConditionNode(self, definition, parent),
-                BehaviorTreeNodeKind.Service => new BehaviorTreeServiceNode(self, definition, parent),
-                BehaviorTreeNodeKind.Action => new BehaviorTreeActionNode(self, definition, parent),
-                BehaviorTreeNodeKind.Condition => new BehaviorTreeConditionNode(self, definition, parent),
-                BehaviorTreeNodeKind.Wait => new BehaviorTreeWaitNode(self, definition, parent),
-                BehaviorTreeNodeKind.SubTree => new BehaviorTreeSubTreeNode(self, definition, parent),
+                BehaviorTreeNodeKind.Root => new BTRootNode(self, definition, parent),
+                BehaviorTreeNodeKind.Sequence => new BTSequenceNode(self, definition, parent),
+                BehaviorTreeNodeKind.Selector => new BTSelectorNode(self, definition, parent),
+                BehaviorTreeNodeKind.Parallel => new BTParallelNode(self, definition, parent),
+                BehaviorTreeNodeKind.Inverter => new BTInverterNode(self, definition, parent),
+                BehaviorTreeNodeKind.Succeeder => new BTSucceederNode(self, definition, parent),
+                BehaviorTreeNodeKind.Failer => new BTFailerNode(self, definition, parent),
+                BehaviorTreeNodeKind.Repeater => new BTRepeaterNode(self, definition, parent),
+                BehaviorTreeNodeKind.BlackboardCondition => new BTBlackboardConditionNode(self, definition, parent),
+                BehaviorTreeNodeKind.Service => new BTServiceNode(self, definition, parent),
+                BehaviorTreeNodeKind.Action => new BTActionNode(self, definition, parent),
+                BehaviorTreeNodeKind.Condition => new BTConditionNode(self, definition, parent),
+                BehaviorTreeNodeKind.Wait => new BTWaitNode(self, definition, parent),
+                BehaviorTreeNodeKind.SubTree => new BTSubTreeNode(self, definition, parent),
                 _ => null,
             };
 
@@ -121,7 +121,7 @@ namespace ET
 
             foreach (string childId in definition.ChildIds)
             {
-                BehaviorTreeRuntimeNode childNode = self.BuildTree(tree, childId, runtimeNode);
+                BTRuntimeNode childNode = self.BuildTree(tree, childId, runtimeNode);
                 if (childNode != null)
                 {
                     runtimeNode.Children.Add(childNode);

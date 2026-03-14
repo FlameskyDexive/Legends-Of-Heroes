@@ -28,6 +28,7 @@ namespace ET
         public string Comment = string.Empty;
         public string SubTreeId = string.Empty;
         public string SubTreeName = string.Empty;
+        public List<ET.Client.BehaviorTreePatrolPointDefinition> PatrolPoints = new();
         public BehaviorTreeAsset SubTreeAsset;
 
         public void SyncSubTreeInfo()
@@ -71,6 +72,11 @@ namespace ET
             foreach (BehaviorTreeArgumentDefinition argument in this.Arguments)
             {
                 node.Arguments.Add(argument.Clone());
+            }
+
+            foreach (ET.Client.BehaviorTreePatrolPointDefinition patrolPoint in this.PatrolPoints)
+            {
+                node.PatrolPoints.Add(patrolPoint?.Clone() ?? new ET.Client.BehaviorTreePatrolPointDefinition());
             }
 
             return node;

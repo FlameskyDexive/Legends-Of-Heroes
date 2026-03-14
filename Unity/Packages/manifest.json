@@ -39,13 +39,15 @@
     "com.unity.modules.vectorgraphics": "1.0.0",
     "com.unity.modules.vehicles": "1.0.0",
     "com.unity.modules.video": "1.0.0",
-    "com.unity.modules.wind": "1.0.0"
+    "com.unity.modules.wind": "1.0.0",
+    "com.jasonxudeveloper.nino": "4.0.0-preview.147"
   },
   "scopedRegistries": [
     {
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
+        "com.jasonxudeveloper.nino",
         "com.tuyoogame.yooasset"
       ]
     }

@@ -1,10 +1,12 @@
+using Nino.Core;
+
 namespace ET
 {
     public static class BehaviorTreeSerializer
     {
         public static byte[] Serialize(BehaviorTreePackage package)
         {
-            return MemoryPackHelper.Serialize(package);
+            return NinoSerializer.Serialize(package);
         }
 
         public static BehaviorTreePackage Deserialize(byte[] bytes)
@@ -14,7 +16,7 @@ namespace ET
                 return null;
             }
 
-            return MemoryPackHelper.Deserialize(typeof(BehaviorTreePackage), bytes, 0, bytes.Length) as BehaviorTreePackage;
+            return NinoDeserializer.Deserialize<BehaviorTreePackage>(bytes);
         }
     }
 }

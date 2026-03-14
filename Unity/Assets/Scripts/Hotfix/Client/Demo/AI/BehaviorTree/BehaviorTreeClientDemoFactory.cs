@@ -12,37 +12,33 @@ namespace ET.Client
                 RootNodeId = "root",
             };
 
-            tree.Nodes.Add(new BehaviorTreeNodeDefinition()
+            tree.Nodes.Add(new BTRootNodeData()
             {
                 NodeId = "root",
                 Title = "Root",
-                NodeKind = BehaviorTreeNodeKind.Root,
                 ChildIds = { "repeat" },
             });
 
-            tree.Nodes.Add(new BehaviorTreeNodeDefinition()
+            tree.Nodes.Add(new BTRepeaterNodeData()
             {
                 NodeId = "repeat",
                 Title = "Repeat Tick",
-                NodeKind = BehaviorTreeNodeKind.Repeater,
                 ChildIds = { "sequence" },
             });
 
-            tree.Nodes.Add(new BehaviorTreeNodeDefinition()
+            tree.Nodes.Add(new BTSequenceNodeData()
             {
                 NodeId = "sequence",
                 Title = "Tick Sequence",
-                NodeKind = BehaviorTreeNodeKind.Sequence,
                 ChildIds = { "log", "wait" },
             });
 
-            tree.Nodes.Add(new BehaviorTreeNodeDefinition()
+            tree.Nodes.Add(new BTActionNodeData()
             {
                 NodeId = "log",
                 Title = "Log Tick",
-                NodeKind = BehaviorTreeNodeKind.Action,
-                NodeTypeId = "behavior.log",
-                HandlerName = "Log",
+                TypeId = BehaviorTreeBuiltinNodeTypes.Log,
+                ActionHandlerName = "Log",
                 Arguments =
                 {
                     new BehaviorTreeArgumentDefinition()
@@ -57,11 +53,10 @@ namespace ET.Client
                 },
             });
 
-            tree.Nodes.Add(new BehaviorTreeNodeDefinition()
+            tree.Nodes.Add(new BTWaitNodeData()
             {
                 NodeId = "wait",
                 Title = "Wait",
-                NodeKind = BehaviorTreeNodeKind.Wait,
                 WaitMilliseconds = 1000,
             });
 

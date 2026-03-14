@@ -73,17 +73,17 @@ namespace ET
 
         public static string[] GetActionHandlerNames()
         {
-            return actionHandlerNames ??= GetHandlerNames<BehaviorTreeActionHandlerAttribute>();
+            return actionHandlerNames ??= GetHandlerNames<BTActionHandlerAttribute>();
         }
 
         public static string[] GetConditionHandlerNames()
         {
-            return conditionHandlerNames ??= GetHandlerNames<BehaviorTreeConditionHandlerAttribute>();
+            return conditionHandlerNames ??= GetHandlerNames<BTConditionHandlerAttribute>();
         }
 
         public static string[] GetServiceHandlerNames()
         {
-            return serviceHandlerNames ??= GetHandlerNames<BehaviorTreeServiceHandlerAttribute>();
+            return serviceHandlerNames ??= GetHandlerNames<BTServiceHandlerAttribute>();
         }
 
         public static IReadOnlyList<ABehaviorTreeNodeDescriptor> GetAllNodeDescriptors()
@@ -161,6 +161,11 @@ namespace ET
                     details.Add($"Interval: {node.IntervalMilliseconds}ms");
                 }
 
+                if (string.Equals(node.NodeTypeId, ET.Client.BehaviorTreeDemoNodeTypes.Patrol, StringComparison.OrdinalIgnoreCase))
+                {
+                    details.Add($"Patrol Points: {node.PatrolPoints.Count}");
+                }
+
                 foreach (BehaviorTreeNodeParameterDefinition parameter in descriptor.Parameters.Take(2))
                 {
                     if (!TryGetArgument(node, parameter.Name, out BehaviorTreeArgumentDefinition argument) || argument.Value == null)
@@ -183,11 +188,12 @@ namespace ET
 
             return node.NodeKind switch
             {
+                BehaviorTreeNodeKind.Action when string.Equals(node.NodeTypeId, ET.Client.BehaviorTreeDemoNodeTypes.Patrol, StringComparison.OrdinalIgnoreCase) => $"Patrol Points: {node.PatrolPoints.Count}",
                 BehaviorTreeNodeKind.Action => $"Handler: {node.HandlerName}",
                 BehaviorTreeNodeKind.Condition => $"Handler: {node.HandlerName}",
                 BehaviorTreeNodeKind.Service => $"Service: {node.HandlerName}\nInterval: {node.IntervalMilliseconds}ms",
                 BehaviorTreeNodeKind.Wait => $"Delay: {node.WaitMilliseconds}ms",
-                BehaviorTreeNodeKind.Repeater => $"Loop: {(node.MaxLoopCount <= 0 ? "∞" : node.MaxLoopCount.ToString())}",
+                BehaviorTreeNodeKind.Repeater => $"Loop: {(node.MaxLoopCount <= 0 ? "Ã¢Ë†Å¾" : node.MaxLoopCount.ToString())}",
                 BehaviorTreeNodeKind.BlackboardCondition => $"Key: {node.BlackboardKey}\nOp: {node.CompareOperator}",
                 BehaviorTreeNodeKind.SubTree => $"SubTree: {node.SubTreeName}",
                 BehaviorTreeNodeKind.Parallel => $"Success: {node.SuccessPolicy}\nFailure: {node.FailurePolicy}",
@@ -339,9 +345,9 @@ namespace ET
 
             return node.NodeKind switch
             {
-                BehaviorTreeNodeKind.Action => TryResolveHandlerType<BehaviorTreeActionHandlerAttribute>(node.HandlerName, out handlerType),
-                BehaviorTreeNodeKind.Condition => TryResolveHandlerType<BehaviorTreeConditionHandlerAttribute>(node.HandlerName, out handlerType),
-                BehaviorTreeNodeKind.Service => TryResolveHandlerType<BehaviorTreeServiceHandlerAttribute>(node.HandlerName, out handlerType),
+                BehaviorTreeNodeKind.Action => TryResolveHandlerType<BTActionHandlerAttribute>(node.HandlerName, out handlerType),
+                BehaviorTreeNodeKind.Condition => TryResolveHandlerType<BTConditionHandlerAttribute>(node.HandlerName, out handlerType),
+                BehaviorTreeNodeKind.Service => TryResolveHandlerType<BTServiceHandlerAttribute>(node.HandlerName, out handlerType),
                 _ => false,
             };
         }
@@ -533,7 +539,7 @@ namespace ET
 
         private static string GetHandlerName(Type type, Type attributeType)
         {
-            if (Attribute.GetCustomAttribute(type, attributeType) is BehaviorTreeHandlerAttribute handlerAttribute && !string.IsNullOrWhiteSpace(handlerAttribute.Name))
+            if (Attribute.GetCustomAttribute(type, attributeType) is BTHandlerAttribute handlerAttribute && !string.IsNullOrWhiteSpace(handlerAttribute.Name))
             {
                 return handlerAttribute.Name;
             }
@@ -566,20 +572,20 @@ namespace ET
 
             string assetPath = node.NodeKind switch
             {
-                BehaviorTreeNodeKind.Root => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeRootNodeSystem.cs",
-                BehaviorTreeNodeKind.Sequence => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeSequenceNodeSystem.cs",
-                BehaviorTreeNodeKind.Selector => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeSelectorNodeSystem.cs",
-                BehaviorTreeNodeKind.Parallel => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeParallelNodeSystem.cs",
-                BehaviorTreeNodeKind.Inverter => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeInverterNodeSystem.cs",
-                BehaviorTreeNodeKind.Succeeder => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeSucceederNodeSystem.cs",
-                BehaviorTreeNodeKind.Failer => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeFailerNodeSystem.cs",
-                BehaviorTreeNodeKind.Repeater => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeRepeaterNodeSystem.cs",
-                BehaviorTreeNodeKind.BlackboardCondition => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeBlackboardConditionNodeSystem.cs",
-                BehaviorTreeNodeKind.Wait => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeWaitNodeSystem.cs",
-                BehaviorTreeNodeKind.SubTree => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeSubTreeNodeSystem.cs",
-                BehaviorTreeNodeKind.Service => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeServiceNodeSystem.cs",
-                BehaviorTreeNodeKind.Action => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeActionNodeSystem.cs",
-                BehaviorTreeNodeKind.Condition => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BehaviorTreeConditionNodeSystem.cs",
+                BehaviorTreeNodeKind.Root => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTRootNodeSystem.cs",
+                BehaviorTreeNodeKind.Sequence => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTSequenceNodeSystem.cs",
+                BehaviorTreeNodeKind.Selector => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTSelectorNodeSystem.cs",
+                BehaviorTreeNodeKind.Parallel => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTParallelNodeSystem.cs",
+                BehaviorTreeNodeKind.Inverter => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTInverterNodeSystem.cs",
+                BehaviorTreeNodeKind.Succeeder => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTSucceederNodeSystem.cs",
+                BehaviorTreeNodeKind.Failer => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTFailerNodeSystem.cs",
+                BehaviorTreeNodeKind.Repeater => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTRepeaterNodeSystem.cs",
+                BehaviorTreeNodeKind.BlackboardCondition => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTBlackboardConditionNodeSystem.cs",
+                BehaviorTreeNodeKind.Wait => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTWaitNodeSystem.cs",
+                BehaviorTreeNodeKind.SubTree => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTSubTreeNodeSystem.cs",
+                BehaviorTreeNodeKind.Service => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTServiceNodeSystem.cs",
+                BehaviorTreeNodeKind.Action => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTActionNodeSystem.cs",
+                BehaviorTreeNodeKind.Condition => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTConditionNodeSystem.cs",
                 _ => string.Empty,
             };
 
@@ -602,7 +608,7 @@ namespace ET
                     continue;
                 }
 
-                if (Attribute.GetCustomAttribute(type, typeof(T)) is BehaviorTreeHandlerAttribute handlerAttribute && !string.IsNullOrWhiteSpace(handlerAttribute.Name))
+                if (Attribute.GetCustomAttribute(type, typeof(T)) is BTHandlerAttribute handlerAttribute && !string.IsNullOrWhiteSpace(handlerAttribute.Name))
                 {
                     names.Add(handlerAttribute.Name);
                 }

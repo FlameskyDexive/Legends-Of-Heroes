@@ -56,6 +56,7 @@ namespace ET.Server
             // response.Error = ErrorCode.ERR_Success;
             // response.Message = "Create room success";
             // response.RoomInfo = roomManagerComponent.GetRoomInfo(room.RoomId);
+            await ETTask.CompletedTask;
         }
     }
 }

@@ -181,37 +181,116 @@ namespace ET
             return definition;
         }
 
-        private static BehaviorTreeNodeDefinition BuildNode(BehaviorTreeEditorNodeData node)
+        private static BTNodeData BuildNode(BehaviorTreeEditorNodeData node)
         {
             node.SyncSubTreeInfo();
             BehaviorTreeEditorUtility.SyncNodeDescriptor(node);
 
-            BehaviorTreeNodeDefinition definition = new()
-            {
-                NodeId = node.NodeId,
-                Title = node.Title,
-                NodeKind = node.NodeKind,
-                NodeTypeId = node.NodeTypeId,
-                HandlerName = node.HandlerName,
-                BlackboardKey = node.BlackboardKey,
-                CompareOperator = node.CompareOperator,
-                CompareValue = node.CompareValue?.Clone() ?? new BehaviorTreeSerializedValue(),
-                AbortMode = node.AbortMode,
-                WaitMilliseconds = node.WaitMilliseconds,
-                IntervalMilliseconds = node.IntervalMilliseconds,
-                MaxLoopCount = node.MaxLoopCount,
-                SuccessPolicy = node.SuccessPolicy,
-                FailurePolicy = node.FailurePolicy,
-                Comment = node.Comment,
-                SubTreeId = node.SubTreeId,
-                SubTreeName = node.SubTreeName,
-            };
-
+            BTNodeData definition = CreateNodeDefinition(node);
+            definition.NodeId = node.NodeId;
+            definition.Title = node.Title;
+            definition.Comment = node.Comment;
             definition.ChildIds.AddRange(node.ChildIds);
+            return definition;
+        }
+
+        private static BTNodeData CreateNodeDefinition(BehaviorTreeEditorNodeData node)
+        {
+            if (string.Equals(node.NodeTypeId, ET.Client.BehaviorTreeDemoNodeTypes.Patrol, StringComparison.OrdinalIgnoreCase))
+            {
+                ET.Client.BTDemoPatrolNodeData patrolNode = new();
+                foreach (ET.Client.BehaviorTreePatrolPointDefinition patrolPoint in node.PatrolPoints)
+                {
+                    patrolNode.PatrolPoints.Add(patrolPoint?.Clone() ?? new ET.Client.BehaviorTreePatrolPointDefinition());
+                }
+
+                return patrolNode;
+            }
+
+            return node.NodeKind switch
+            {
+                BehaviorTreeNodeKind.Root => new BTRootNodeData(),
+                BehaviorTreeNodeKind.Sequence => new BTSequenceNodeData(),
+                BehaviorTreeNodeKind.Selector => new BTSelectorNodeData(),
+                BehaviorTreeNodeKind.Parallel => new BTParallelNodeData
+                {
+                    SuccessPolicy = node.SuccessPolicy,
+                    FailurePolicy = node.FailurePolicy,
+                },
+                BehaviorTreeNodeKind.Inverter => new BTInverterNodeData(),
+                BehaviorTreeNodeKind.Succeeder => new BTSucceederNodeData(),
+                BehaviorTreeNodeKind.Failer => new BTFailerNodeData(),
+                BehaviorTreeNodeKind.Repeater => new BTRepeaterNodeData
+                {
+                    MaxLoopCount = node.MaxLoopCount,
+                },
+                BehaviorTreeNodeKind.BlackboardCondition => new BTBlackboardConditionNodeData
+                {
+                    BlackboardKey = node.BlackboardKey,
+                    CompareOperator = node.CompareOperator,
+                    CompareValue = node.CompareValue?.Clone() ?? new BehaviorTreeSerializedValue(),
+                    AbortMode = node.AbortMode,
+                },
+                BehaviorTreeNodeKind.Service => CreateServiceNodeDefinition(node),
+                BehaviorTreeNodeKind.Action => CreateActionNodeDefinition(node),
+                BehaviorTreeNodeKind.Condition => CreateConditionNodeDefinition(node),
+                BehaviorTreeNodeKind.Wait => new BTWaitNodeData
+                {
+                    WaitMilliseconds = node.WaitMilliseconds,
+                },
+                BehaviorTreeNodeKind.SubTree => new BTSubTreeNodeData
+                {
+                    SubTreeId = node.SubTreeId,
+                    SubTreeName = node.SubTreeName,
+                },
+                _ => throw new InvalidOperationException($"Unsupported behavior tree node kind: {node.NodeKind}"),
+            };
+        }
+
+        private static BTActionNodeData CreateActionNodeDefinition(BehaviorTreeEditorNodeData node)
+        {
+            BTActionNodeData definition = new()
+            {
+                TypeId = node.NodeTypeId,
+                ActionHandlerName = node.HandlerName,
+            };
 
             foreach (BehaviorTreeArgumentDefinition argument in node.Arguments)
             {
-                definition.Arguments.Add(argument.Clone());
+                definition.Arguments.Add(argument?.Clone() ?? new BehaviorTreeArgumentDefinition());
+            }
+
+            return definition;
+        }
+
+        private static BTConditionNodeData CreateConditionNodeDefinition(BehaviorTreeEditorNodeData node)
+        {
+            BTConditionNodeData definition = new()
+            {
+                TypeId = node.NodeTypeId,
+                ConditionHandlerName = node.HandlerName,
+            };
+
+            foreach (BehaviorTreeArgumentDefinition argument in node.Arguments)
+            {
+                definition.Arguments.Add(argument?.Clone() ?? new BehaviorTreeArgumentDefinition());
+            }
+
+            return definition;
+        }
+
+        private static BTServiceNodeData CreateServiceNodeDefinition(BehaviorTreeEditorNodeData node)
+        {
+            BTServiceNodeData definition = new()
+            {
+                TypeId = node.NodeTypeId,
+                ServiceHandlerName = node.HandlerName,
+                IntervalMilliseconds = node.IntervalMilliseconds,
+            };
+
+            foreach (BehaviorTreeArgumentDefinition argument in node.Arguments)
+            {
+                definition.Arguments.Add(argument?.Clone() ?? new BehaviorTreeArgumentDefinition());
             }
 
             return definition;

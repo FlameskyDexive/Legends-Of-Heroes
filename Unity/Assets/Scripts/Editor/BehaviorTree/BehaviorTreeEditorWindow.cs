@@ -619,6 +619,10 @@ namespace ET
                     if (BehaviorTreeEditorUtility.TryGetDescriptor(node, out ABehaviorTreeNodeDescriptor actionDescriptor))
                     {
                         this.DrawDescriptorNode(node, actionDescriptor);
+                        if (string.Equals(node.NodeTypeId, ET.Client.BehaviorTreeDemoNodeTypes.Patrol, StringComparison.OrdinalIgnoreCase))
+                        {
+                            this.DrawPatrolPointsEditor(node);
+                        }
                     }
                     else
                     {
@@ -925,6 +929,37 @@ namespace ET
             }
 
             this.DrawDescriptorArguments(node, descriptor.Parameters);
+        }
+
+        private void DrawPatrolPointsEditor(BehaviorTreeEditorNodeData node)
+        {
+            EditorGUILayout.Space(6);
+            EditorGUILayout.LabelField("Patrol Points", EditorStyles.boldLabel);
+            for (int index = 0; index < node.PatrolPoints.Count; ++index)
+            {
+                ET.Client.BehaviorTreePatrolPointDefinition patrolPoint = node.PatrolPoints[index] ?? new ET.Client.BehaviorTreePatrolPointDefinition();
+                node.PatrolPoints[index] = patrolPoint;
+
+                EditorGUILayout.BeginVertical("box");
+                Vector3 value = new(patrolPoint.X, patrolPoint.Y, patrolPoint.Z);
+                value = EditorGUILayout.Vector3Field($"Point {index + 1}", value);
+                patrolPoint.X = value.x;
+                patrolPoint.Y = value.y;
+                patrolPoint.Z = value.z;
+
+                if (GUILayout.Button("Remove Point"))
+                {
+                    node.PatrolPoints.RemoveAt(index);
+                    --index;
+                }
+
+                EditorGUILayout.EndVertical();
+            }
+
+            if (GUILayout.Button("Add Patrol Point"))
+            {
+                node.PatrolPoints.Add(new ET.Client.BehaviorTreePatrolPointDefinition());
+            }
         }
 
         private void DrawDescriptorArguments(BehaviorTreeEditorNodeData node, IReadOnlyList<BehaviorTreeNodeParameterDefinition> parameters)

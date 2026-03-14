@@ -44,6 +44,7 @@ namespace ET.Server
 
             response.Error = ErrorCode.ERR_Success;
             response.Message = "Leave room success";
+            await ETTask.CompletedTask;
         }
     }
 }

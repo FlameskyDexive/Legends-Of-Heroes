@@ -34,6 +34,7 @@ namespace ET.Server
             response.Error = ErrorCode.ERR_Success;
             response.Message = "Get room list success";
             response.RoomList = roomList;
+            await ETTask.CompletedTask;
         }
     }
 }

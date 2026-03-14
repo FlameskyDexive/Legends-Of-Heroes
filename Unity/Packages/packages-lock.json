@@ -29,6 +29,13 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "com.jasonxudeveloper.nino": {
+      "version": "4.0.0-preview.147",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.tuyoogame.yooasset": {
       "version": "2.1.2",
       "depth": 0,

@@ -65,6 +65,7 @@ namespace ET.Server
             response.Error = ErrorCode.ERR_Success;
             response.Message = "Join room success";
             response.RoomInfo = roomManagerComponent.GetRoomInfo(request.RoomId);
+            await ETTask.CompletedTask;
         }
     }
 }

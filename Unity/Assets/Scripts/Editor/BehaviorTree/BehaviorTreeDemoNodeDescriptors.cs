@@ -1,11 +1,5 @@
 namespace ET.Client
 {
-    public static class BehaviorTreeDemoNodeTypes
-    {
-        public const string Patrol = "demo.client.behavior.patrol";
-        public const string HasPatrolPath = "demo.client.condition.has_patrol_path";
-    }
-
     [BehaviorTreeNodeDescriptor]
     public sealed class DemoClientPatrolNodeDescriptor : ABehaviorTreeNodeDescriptor
     {
@@ -17,7 +11,7 @@ namespace ET.Client
 
         public override string HandlerName => "DemoClientPatrol";
 
-        public override string Description => "客户端巡逻示例节点，驱动单位沿 XunLuoPath 前进。";
+        public override string Description => "客户端巡逻示例节点，按照节点自己的巡逻点配置驱动单位移动。";
     }
 
     [BehaviorTreeNodeDescriptor]

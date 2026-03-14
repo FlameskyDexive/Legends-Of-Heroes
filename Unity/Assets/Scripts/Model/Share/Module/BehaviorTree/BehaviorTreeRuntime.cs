@@ -13,7 +13,7 @@ namespace ET
 
         public Dictionary<string, BehaviorTreeNodeState> NodeStates = new();
 
-        public BehaviorTreeRuntimeNode RootNode;
+        public BTRuntimeNode RootNode;
 
         public bool IsDisposed;
 

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using MemoryPack;
+using Nino.Core;
 
 namespace ET
 {
@@ -71,26 +71,20 @@ namespace ET
     }
 
     [EnableClass]
-    [MemoryPackable]
+    [NinoType]
     [Serializable]
     public partial class BehaviorTreeSerializedValue
     {
-        [MemoryPackOrder(0)]
         public BehaviorTreeValueType ValueType = BehaviorTreeValueType.None;
 
-        [MemoryPackOrder(1)]
         public int IntValue;
 
-        [MemoryPackOrder(2)]
         public long LongValue;
 
-        [MemoryPackOrder(3)]
         public float FloatValue;
 
-        [MemoryPackOrder(4)]
         public bool BoolValue;
 
-        [MemoryPackOrder(5)]
         public string StringValue = string.Empty;
 
         public BehaviorTreeSerializedValue Clone()
@@ -108,14 +102,12 @@ namespace ET
     }
 
     [EnableClass]
-    [MemoryPackable]
+    [NinoType]
     [Serializable]
     public partial class BehaviorTreeArgumentDefinition
     {
-        [MemoryPackOrder(0)]
         public string Name = string.Empty;
 
-        [MemoryPackOrder(1)]
         public BehaviorTreeSerializedValue Value = new();
 
         public BehaviorTreeArgumentDefinition Clone()
@@ -129,20 +121,16 @@ namespace ET
     }
 
     [EnableClass]
-    [MemoryPackable]
+    [NinoType]
     [Serializable]
     public partial class BehaviorTreeBlackboardEntryDefinition
     {
-        [MemoryPackOrder(0)]
         public string Key = string.Empty;
 
-        [MemoryPackOrder(1)]
         public BehaviorTreeValueType ValueType = BehaviorTreeValueType.None;
 
-        [MemoryPackOrder(2)]
         public BehaviorTreeSerializedValue DefaultValue = new();
 
-        [MemoryPackOrder(3)]
         public string Description = string.Empty;
 
         public BehaviorTreeBlackboardEntryDefinition Clone()
@@ -158,127 +146,64 @@ namespace ET
     }
 
     [EnableClass]
-    [MemoryPackable]
+    [NinoType]
     [Serializable]
-    public partial class BehaviorTreeNodeDefinition
+    public abstract partial class BTNodeData
     {
-        [MemoryPackOrder(0)]
         public string NodeId = string.Empty;
 
-        [MemoryPackOrder(1)]
         public string Title = string.Empty;
 
-        [MemoryPackOrder(2)]
         public BehaviorTreeNodeKind NodeKind;
 
-        [MemoryPackOrder(3)]
         public List<string> ChildIds = new();
 
-        [MemoryPackOrder(4)]
-        public string HandlerName = string.Empty;
-
-        [MemoryPackOrder(5)]
-        public List<BehaviorTreeArgumentDefinition> Arguments = new();
-
-        [MemoryPackOrder(6)]
-        public string BlackboardKey = string.Empty;
-
-        [MemoryPackOrder(7)]
-        public BehaviorTreeCompareOperator CompareOperator = BehaviorTreeCompareOperator.IsSet;
-
-        [MemoryPackOrder(8)]
-        public BehaviorTreeSerializedValue CompareValue = new();
-
-        [MemoryPackOrder(9)]
-        public BehaviorTreeAbortMode AbortMode = BehaviorTreeAbortMode.Self;
-
-        [MemoryPackOrder(10)]
-        public int WaitMilliseconds = 1000;
-
-        [MemoryPackOrder(11)]
-        public int IntervalMilliseconds = 250;
-
-        [MemoryPackOrder(12)]
-        public int MaxLoopCount;
-
-        [MemoryPackOrder(13)]
-        public BehaviorTreeParallelPolicy SuccessPolicy = BehaviorTreeParallelPolicy.RequireAll;
-
-        [MemoryPackOrder(14)]
-        public BehaviorTreeParallelPolicy FailurePolicy = BehaviorTreeParallelPolicy.RequireOne;
-
-        [MemoryPackOrder(15)]
-        public string SubTreeId = string.Empty;
-
-        [MemoryPackOrder(16)]
-        public string SubTreeName = string.Empty;
-
-        [MemoryPackOrder(17)]
         public string Comment = string.Empty;
 
-        [MemoryPackOrder(18)]
-        public string NodeTypeId = string.Empty;
-
-        public BehaviorTreeNodeDefinition Clone()
+        protected T CloneBaseTo<T>(T definition) where T : BTNodeData
         {
-            BehaviorTreeNodeDefinition definition = new()
-            {
-                NodeId = this.NodeId,
-                Title = this.Title,
-                NodeKind = this.NodeKind,
-                HandlerName = this.HandlerName,
-                BlackboardKey = this.BlackboardKey,
-                CompareOperator = this.CompareOperator,
-                CompareValue = this.CompareValue?.Clone() ?? new BehaviorTreeSerializedValue(),
-                AbortMode = this.AbortMode,
-                WaitMilliseconds = this.WaitMilliseconds,
-                IntervalMilliseconds = this.IntervalMilliseconds,
-                MaxLoopCount = this.MaxLoopCount,
-                SuccessPolicy = this.SuccessPolicy,
-                FailurePolicy = this.FailurePolicy,
-                SubTreeId = this.SubTreeId,
-                SubTreeName = this.SubTreeName,
-                Comment = this.Comment,
-                NodeTypeId = this.NodeTypeId,
-            };
-
+            definition.NodeId = this.NodeId;
+            definition.Title = this.Title;
+            definition.Comment = this.Comment;
             definition.ChildIds.AddRange(this.ChildIds);
-
-            foreach (BehaviorTreeArgumentDefinition argument in this.Arguments)
-            {
-                definition.Arguments.Add(argument.Clone());
-            }
-
             return definition;
         }
+
+        public abstract BTNodeData Clone();
+    }
+
+    public interface IBTHandlerNodeData
+    {
+        string NodeTypeId { get; }
+
+        string HandlerName { get; }
+    }
+
+    public interface IBTArgumentNodeData
+    {
+        List<BehaviorTreeArgumentDefinition> Arguments { get; }
     }
 
     [EnableClass]
-    [MemoryPackable]
+    [NinoType]
     [Serializable]
     public partial class BehaviorTreeDefinition
     {
-        [MemoryPackOrder(0)]
         public string TreeId = string.Empty;
 
-        [MemoryPackOrder(1)]
         public string TreeName = string.Empty;
 
-        [MemoryPackOrder(2)]
         public string Description = string.Empty;
 
-        [MemoryPackOrder(3)]
         public string RootNodeId = string.Empty;
 
-        [MemoryPackOrder(4)]
         public List<BehaviorTreeBlackboardEntryDefinition> BlackboardEntries = new();
 
-        [MemoryPackOrder(5)]
-        public List<BehaviorTreeNodeDefinition> Nodes = new();
+        public List<BTNodeData> Nodes = new();
 
-        public BehaviorTreeNodeDefinition GetNode(string nodeId)
+        public BTNodeData GetNode(string nodeId)
         {
-            foreach (BehaviorTreeNodeDefinition node in this.Nodes)
+            foreach (BTNodeData node in this.Nodes)
             {
                 if (node.NodeId == nodeId)
                 {
@@ -304,7 +229,7 @@ namespace ET
                 definition.BlackboardEntries.Add(blackboardEntry.Clone());
             }
 
-            foreach (BehaviorTreeNodeDefinition node in this.Nodes)
+            foreach (BTNodeData node in this.Nodes)
             {
                 definition.Nodes.Add(node.Clone());
             }
@@ -314,23 +239,18 @@ namespace ET
     }
 
     [EnableClass]
-    [MemoryPackable]
+    [NinoType]
     [Serializable]
     public partial class BehaviorTreePackage
     {
-        [MemoryPackOrder(0)]
         public string PackageId = string.Empty;
 
-        [MemoryPackOrder(1)]
         public string PackageName = string.Empty;
 
-        [MemoryPackOrder(2)]
         public string EntryTreeId = string.Empty;
 
-        [MemoryPackOrder(3)]
         public string EntryTreeName = string.Empty;
 
-        [MemoryPackOrder(4)]
         public List<BehaviorTreeDefinition> Trees = new();
 
         public BehaviorTreeDefinition GetTree(string treeIdOrName)
