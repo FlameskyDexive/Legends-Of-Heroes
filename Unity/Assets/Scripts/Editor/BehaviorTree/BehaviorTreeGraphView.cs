@@ -583,13 +583,14 @@ namespace ET
             evt.menu.AppendSeparator();
 
             BehaviorTreeNodeView contextNodeView = this.GetContextNodeView(evt);
-            this.CachePendingNodeCreationPosition(evt.localMousePosition);
-            evt.menu.AppendAction("Create Node...", _ => this.OpenSearchWindow(evt.localMousePosition));
+            Vector2 graphLocalMousePosition = evt.localMousePosition;
+            this.CachePendingNodeCreationPosition(graphLocalMousePosition);
+            evt.menu.AppendAction("Create Node...", _ => this.OpenSearchWindow(graphLocalMousePosition));
             evt.menu.AppendAction("Open Script", _ => this.OpenNodeScript(contextNodeView),
                 _ => this.CanOpenNodeScript(contextNodeView) ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
             evt.menu.AppendAction("Edit/Copy", _ => this.CopySelection(), _ => this.CanCopySelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
-            evt.menu.AppendAction("Edit/Paste", _ => this.PasteNodes(evt.localMousePosition), _ => clipboard != null && clipboard.Nodes.Count > 0 ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
-            evt.menu.AppendAction("Edit/Duplicate", _ => this.DuplicateSelection(evt.localMousePosition), _ => this.CanCopySelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Edit/Paste", _ => this.PasteNodes(graphLocalMousePosition), _ => clipboard != null && clipboard.Nodes.Count > 0 ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
+            evt.menu.AppendAction("Edit/Duplicate", _ => this.DuplicateSelection(graphLocalMousePosition), _ => this.CanCopySelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
             evt.menu.AppendAction("Edit/Delete", _ => this.DeleteSelectionNodes(), _ => this.CanDeleteSelection() ? DropdownMenuAction.Status.Normal : DropdownMenuAction.Status.Disabled);
             evt.menu.AppendSeparator();
             evt.menu.AppendAction("View/Frame All", _ => this.FrameAllNodes());
@@ -821,8 +822,7 @@ namespace ET
 
         private void OpenSearchWindow(NodeCreationContext context)
         {
-            Vector2 windowMousePosition = this.window.rootVisualElement.WorldToLocal(context.screenMousePosition);
-            Vector2 graphLocalPosition = this.window.rootVisualElement.ChangeCoordinatesTo(this, windowMousePosition);
+            Vector2 graphLocalPosition = this.ScreenToGraphLocalPosition(context.screenMousePosition);
             this.CachePendingNodeCreationPosition(graphLocalPosition);
             SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), this.searchWindowProvider);
         }
@@ -830,7 +830,7 @@ namespace ET
         private void OpenSearchWindow(Vector2 localMousePosition)
         {
             this.CachePendingNodeCreationPosition(localMousePosition);
-            Vector2 screenMousePosition = GUIUtility.GUIToScreenPoint(localMousePosition);
+            Vector2 screenMousePosition = this.GraphLocalToScreenPosition(localMousePosition);
             SearchWindow.Open(new SearchWindowContext(screenMousePosition), this.searchWindowProvider);
         }
 
@@ -846,8 +846,20 @@ namespace ET
 
         private void CachePendingNodeCreationPosition(Vector2 graphLocalPosition)
         {
-            this.pendingNodeCreationContentPosition = this.contentViewContainer.WorldToLocal(this.LocalToWorld(graphLocalPosition));
+            this.pendingNodeCreationContentPosition = this.ChangeCoordinatesTo(this.contentViewContainer, graphLocalPosition);
             this.hasPendingNodeCreationPosition = true;
+        }
+
+        private Vector2 GraphLocalToScreenPosition(Vector2 graphLocalPosition)
+        {
+            Vector2 windowLocalPosition = this.ChangeCoordinatesTo(this.window.rootVisualElement, graphLocalPosition);
+            return GUIUtility.GUIToScreenPoint(windowLocalPosition);
+        }
+
+        private Vector2 ScreenToGraphLocalPosition(Vector2 screenMousePosition)
+        {
+            Vector2 windowLocalPosition = GUIUtility.ScreenToGUIPoint(screenMousePosition);
+            return this.window.rootVisualElement.ChangeCoordinatesTo(this, windowLocalPosition);
         }
 
         private void EnsureMiniMap()

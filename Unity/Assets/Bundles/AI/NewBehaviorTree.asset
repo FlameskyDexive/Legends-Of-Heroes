@@ -21,12 +21,47 @@ MonoBehaviour:
   - NodeId: e93bc620a9d74075be372bb77a9eb7c4
     Title: Root
     NodeKind: 0
+    NodeTypeId: 
     Position:
       serializedVersion: 2
-      x: 80
-      y: 80
-      width: 220
-      height: 120
+      x: 203.5
+      y: 100
+      width: 73
+      height: 55
+    ChildIds:
+    - 080535af614545edb60201c005a24143
+    HandlerName: 
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    PatrolPoints: []
+    SubTreeAsset: {fileID: 0}
+  - NodeId: bf8654f2c97346769e93422d9edca860
+    Title: Wait
+    NodeKind: 12
+    NodeTypeId: 
+    Position:
+      serializedVersion: 2
+      x: 86
+      y: 554
+      width: 88
+      height: 69
     ChildIds: []
     HandlerName: 
     Arguments: []
@@ -48,6 +83,146 @@ MonoBehaviour:
     Comment: 
     SubTreeId: 
     SubTreeName: 
+    PatrolPoints: []
+    SubTreeAsset: {fileID: 0}
+  - NodeId: c940d6ca1e304762b1197958d95b2c8f
+    Title: Sequence
+    NodeKind: 1
+    NodeTypeId: 
+    Position:
+      serializedVersion: 2
+      x: 188.5
+      y: 400
+      width: 103
+      height: 55
+    ChildIds:
+    - bf8654f2c97346769e93422d9edca860
+    - d1a148ec30e747fc9e68646b93950b61
+    - fca1ca6359bc4846a91fef405eb27b2d
+    HandlerName: 
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    PatrolPoints: []
+    SubTreeAsset: {fileID: 0}
+  - NodeId: 080535af614545edb60201c005a24143
+    Title: Repeater
+    NodeKind: 7
+    NodeTypeId: 
+    Position:
+      serializedVersion: 2
+      x: 191
+      y: 250
+      width: 98
+      height: 69
+    ChildIds:
+    - c940d6ca1e304762b1197958d95b2c8f
+    HandlerName: 
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    PatrolPoints: []
+    SubTreeAsset: {fileID: 0}
+  - NodeId: d1a148ec30e747fc9e68646b93950b61
+    Title: Has Patrol Path
+    NodeKind: 11
+    NodeTypeId: demo.client.condition.has_patrol_path
+    Position:
+      serializedVersion: 2
+      x: 204
+      y: 554
+      width: 148
+      height: 69
+    ChildIds: []
+    HandlerName: DemoClientHasXunLuoPath
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    PatrolPoints: []
+    SubTreeAsset: {fileID: 0}
+  - NodeId: fca1ca6359bc4846a91fef405eb27b2d
+    Title: Patrol
+    NodeKind: 10
+    NodeTypeId: demo.client.behavior.patrol
+    Position:
+      serializedVersion: 2
+      x: 408
+      y: 554
+      width: 93
+      height: 82
+    ChildIds: []
+    HandlerName: DemoClientPatrol
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    PatrolPoints:
+    - X: 1
+      Y: 0
+      Z: 20
     SubTreeAsset: {fileID: 0}
   RootNodeId: e93bc620a9d74075be372bb77a9eb7c4
   ViewPosition: {x: 0, y: 0, z: 0}
