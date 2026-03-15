@@ -19,6 +19,8 @@ English: Please translate it by your browser.
 
 ## Main
 #### 基于C#双端框架[ET框架](https://github.com/egametang/ET)，[ETPlus](https://github.com/FlameskyDexive/ETPlus) ET8.1加强版(EUI+YooAsset+Luban)。 注意：当前Master正在同步ET8.1升级修改（基础热更流程，技能/Buff系统已经迁移完毕，开房间匹配跟ET8.1一样修改ConstValue数量即可，当前房间内已经支持玩家移动同步，尚缺技能、子弹同步）。
+## 行为树编辑器
+![et-bt](./Document/et-bt.png)
 # 觉得项目不错的话麻烦右上角给个star哈.
 # 视频解说，当前暂时只录了一个演示[实操/打包匹配](https://www.bilibili.com/video/BV1sP6fY2EQU/)视频，后续会把每个模块都出对应一个视频来解说下设计思路跟使用方式。
 #### 内置一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前仍在开发中，具体功能模块及进度看下面的Todo即可
@@ -35,7 +37,7 @@ English: Please translate it by your browser.
 
 # TODO && Features
 - [ ] 时间轴技能编辑器配套战斗系统（进行中，预估2025实现）
-- [ ] 行为树编辑器配套战斗系统（进行中，预估2025实现）
+- [x] 行为树编辑器配套战斗系统（进行中，预估2025实现）
 - [x] 接入UnityC#热更新框架[HybridCLR](https://github.com/focus-creative-games/hybridclr)，包含热更新资源检测下载流程。
 - [x] 一键打包（支持HybridCLR模式一键打包，不需要分开处理，当前测过Win/Android），菜单栏：ET/Build/一键打包xxx
 - [x] 接入Unity运行时可视化Log调试组件[Debugger](https://github.com/FlameskyDexive/Debugger)
