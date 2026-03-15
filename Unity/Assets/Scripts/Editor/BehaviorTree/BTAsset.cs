@@ -107,7 +107,7 @@ namespace ET
             BTAsset asset = CreateInstance<BTAsset>();
             asset.name = System.IO.Path.GetFileNameWithoutExtension(path);
             asset.TreeName = asset.name;
-            asset.ExportRelativePath = $"{BTLoader.ClientBehaviorTreeBytesDir}/{asset.name}.bytes";
+            asset.ExportRelativePath = $"{BTBytesLoader.ClientBehaviorTreeBytesDir}/{asset.name}.bytes";
             asset.EnsureInitialized();
             AssetDatabase.CreateAsset(asset, path);
             AssetDatabase.SaveAssets();
@@ -134,7 +134,7 @@ namespace ET
 
             if (string.IsNullOrWhiteSpace(this.ExportRelativePath))
             {
-                this.ExportRelativePath = $"{BTLoader.ClientBehaviorTreeBytesDir}/{this.TreeName}.bytes";
+                this.ExportRelativePath = $"{BTBytesLoader.ClientBehaviorTreeBytesDir}/{this.TreeName}.bytes";
             }
 
             foreach (BTEditorNodeData node in this.Nodes)

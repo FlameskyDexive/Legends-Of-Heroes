@@ -5,7 +5,7 @@ namespace ET
     public static class BTDebugHubSystem
     {
         public static void Publish(this BTDebugHub self, long runtimeId, string treeId, string treeName, long ownerInstanceId,
-            Dictionary<string, BTNodeState> nodeStates)
+            Dictionary<string, BTNodeState> nodeStates, Dictionary<string, string> blackboardValues)
         {
             BTDebugSnapshot snapshot = new()
             {
@@ -15,6 +15,7 @@ namespace ET
                 OwnerInstanceId = ownerInstanceId,
                 UpdatedAt = TimeInfo.Instance.ServerNow(),
                 NodeStates = new Dictionary<string, BTNodeState>(nodeStates),
+                BlackboardValues = new Dictionary<string, string>(blackboardValues),
             };
 
             self.Snapshots[runtimeId] = snapshot;

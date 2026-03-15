@@ -94,161 +94,63 @@ namespace ET
                 Description = "Benchmark blackboard bool value",
             });
 
-            tree.Nodes.Add(new BTRootNodeData
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateRootNode($"root_{index}", "Root", childIds: new[] { $"seq_{index}" }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateSequenceNode($"seq_{index}", "Main Sequence", childIds: new[]
             {
-                NodeId = $"root_{index}",
-                Title = "Root",
-                ChildIds = { $"seq_{index}" },
-            });
-
-            tree.Nodes.Add(new BTSequenceNodeData
+                $"patrol_{index}",
+                $"wait_{index}",
+                $"bb_{index}",
+                $"parallel_{index}",
+                $"repeat_{index}",
+                $"service_{index}",
+                $"condition_{index}",
+                $"subtree_{index}",
+            }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreatePatrolNode($"patrol_{index}", "Patrol", string.Empty, new[]
             {
-                NodeId = $"seq_{index}",
-                Title = "Main Sequence",
-                ChildIds =
-                {
-                    $"patrol_{index}",
-                    $"wait_{index}",
-                    $"bb_{index}",
-                    $"parallel_{index}",
-                    $"repeat_{index}",
-                    $"service_{index}",
-                    $"condition_{index}",
-                    $"subtree_{index}",
-                },
-            });
-
-            tree.Nodes.Add(new BTPatrolNodeData
-            {
-                NodeId = $"patrol_{index}",
-                Title = "Patrol",
-                PatrolPoints =
-                {
-                    new BTPatrolPointData { X = 0 + index, Y = 0, Z = 0 },
-                    new BTPatrolPointData { X = 10 + index, Y = 0, Z = 0 },
-                    new BTPatrolPointData { X = 10 + index, Y = 0, Z = 10 },
-                    new BTPatrolPointData { X = 0 + index, Y = 0, Z = 10 },
-                },
-            });
-
-            tree.Nodes.Add(new BTWaitNodeData
-            {
-                NodeId = $"wait_{index}",
-                Title = "Wait",
-                WaitMilliseconds = 250 + index,
-            });
-
-            tree.Nodes.Add(new BTBlackboardConditionNodeData
-            {
-                NodeId = $"bb_{index}",
-                Title = "Blackboard Condition",
-                BlackboardKey = $"HasTarget_{index}",
-                CompareOperator = BTCompareOperator.IsTrue,
-                CompareValue = new BTSerializedValue
+                new BTPatrolPointData { X = 0 + index, Y = 0, Z = 0 },
+                new BTPatrolPointData { X = 10 + index, Y = 0, Z = 0 },
+                new BTPatrolPointData { X = 10 + index, Y = 0, Z = 10 },
+                new BTPatrolPointData { X = 0 + index, Y = 0, Z = 10 },
+            }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateWaitNode($"wait_{index}", "Wait", string.Empty, 250 + index));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateBlackboardConditionNode($"bb_{index}", "Blackboard Condition", string.Empty,
+                $"HasTarget_{index}",
+                BTCompareOperator.IsTrue,
+                new BTSerializedValue
                 {
                     ValueType = BTValueType.Boolean,
                     BoolValue = true,
                 },
-                AbortMode = BTAbortMode.Both,
-            });
-
-            tree.Nodes.Add(new BTParallelNodeData
-            {
-                NodeId = $"parallel_{index}",
-                Title = "Parallel",
-                SuccessPolicy = BTParallelPolicy.RequireAll,
-                FailurePolicy = BTParallelPolicy.RequireOne,
-                ChildIds = { $"parallel_log_{index}", $"parallel_wait_{index}" },
-            });
-
-            tree.Nodes.Add(new BTActionNodeData
-            {
-                NodeId = $"parallel_log_{index}",
-                Title = "Parallel Log",
-                TypeId = BTBuiltinNodeTypes.Log,
-                ActionHandlerName = "Log",
-                Arguments =
-                {
-                    CreateStringArgument("message", $"parallel log {index}"),
-                },
-            });
-
-            tree.Nodes.Add(new BTWaitNodeData
-            {
-                NodeId = $"parallel_wait_{index}",
-                Title = "Parallel Wait",
-                WaitMilliseconds = 50 + index,
-            });
-
-            tree.Nodes.Add(new BTRepeaterNodeData
-            {
-                NodeId = $"repeat_{index}",
-                Title = "Repeat",
-                MaxLoopCount = 2 + (index % 3),
-                ChildIds = { $"repeat_log_{index}" },
-            });
-
-            tree.Nodes.Add(new BTActionNodeData
-            {
-                NodeId = $"repeat_log_{index}",
-                Title = "Repeat Log",
-                TypeId = BTBuiltinNodeTypes.Log,
-                ActionHandlerName = "Log",
-                Arguments =
-                {
-                    CreateStringArgument("message", $"repeat log {index}"),
-                },
-            });
-
-            tree.Nodes.Add(new BTServiceNodeData
-            {
-                NodeId = $"service_{index}",
-                Title = "Service",
-                TypeId = BTBuiltinNodeTypes.SetBlackboard,
-                ServiceHandlerName = "SetBlackboard",
-                IntervalMilliseconds = 100 + index,
-                Arguments =
+                BTAbortMode.Both));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateParallelNode($"parallel_{index}", "Parallel", string.Empty,
+                BTParallelPolicy.RequireAll, BTParallelPolicy.RequireOne, new[] { $"parallel_log_{index}", $"parallel_wait_{index}" }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateActionNode($"parallel_log_{index}", "Parallel Log", string.Empty,
+                BTBuiltinNodeTypes.Log, "Log", new[] { CreateStringArgument("message", $"parallel log {index}") }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateWaitNode($"parallel_wait_{index}", "Parallel Wait", string.Empty, 50 + index));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateRepeaterNode($"repeat_{index}", "Repeat", string.Empty, 2 + (index % 3), new[] { $"repeat_log_{index}" }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateActionNode($"repeat_log_{index}", "Repeat Log", string.Empty,
+                BTBuiltinNodeTypes.Log, "Log", new[] { CreateStringArgument("message", $"repeat log {index}") }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateServiceNode($"service_{index}", "Service", string.Empty,
+                BTBuiltinNodeTypes.SetBlackboard, "SetBlackboard", 100 + index,
+                new[]
                 {
                     CreateStringArgument("key", $"RuntimeKey_{index}"),
                     CreateBoolArgument("remove", false),
                     CreateStringArgument("value", $"RuntimeValue_{index}"),
                 },
-                ChildIds = { $"service_leaf_{index}" },
-            });
-
-            tree.Nodes.Add(new BTActionNodeData
-            {
-                NodeId = $"service_leaf_{index}",
-                Title = "Service Leaf",
-                TypeId = BTBuiltinNodeTypes.Log,
-                ActionHandlerName = "Log",
-                Arguments =
-                {
-                    CreateStringArgument("message", $"service leaf {index}"),
-                },
-            });
-
-            tree.Nodes.Add(new BTConditionNodeData
-            {
-                NodeId = $"condition_{index}",
-                Title = "Condition",
-                TypeId = BTBuiltinNodeTypes.BlackboardCompare,
-                ConditionHandlerName = "BlackboardCompare",
-                Arguments =
+                new[] { $"service_leaf_{index}" }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateActionNode($"service_leaf_{index}", "Service Leaf", string.Empty,
+                BTBuiltinNodeTypes.Log, "Log", new[] { CreateStringArgument("message", $"service leaf {index}") }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateConditionNode($"condition_{index}", "Condition", string.Empty,
+                BTBuiltinNodeTypes.BlackboardCompare, "BlackboardCompare",
+                new[]
                 {
                     CreateStringArgument("key", $"HasTarget_{index}"),
                     CreateIntArgument("operator", (int)BTCompareOperator.Equal),
                     CreateBoolArgument("value", true),
-                },
-            });
-
-            tree.Nodes.Add(new BTSubTreeNodeData
-            {
-                NodeId = $"subtree_{index}",
-                Title = "SubTree",
-                SubTreeId = subTreeId,
-                SubTreeName = subTreeName,
-            });
+                }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateSubTreeNode($"subtree_{index}", "SubTree", string.Empty, subTreeId, subTreeName));
 
             return tree;
         }
@@ -263,24 +165,9 @@ namespace ET
                 RootNodeId = $"sub_root_{index}",
             };
 
-            tree.Nodes.Add(new BTRootNodeData
-            {
-                NodeId = $"sub_root_{index}",
-                Title = "Sub Root",
-                ChildIds = { $"sub_log_{index}" },
-            });
-
-            tree.Nodes.Add(new BTActionNodeData
-            {
-                NodeId = $"sub_log_{index}",
-                Title = "Sub Log",
-                TypeId = BTBuiltinNodeTypes.Log,
-                ActionHandlerName = "Log",
-                Arguments =
-                {
-                    CreateStringArgument("message", $"sub tree log {index}"),
-                },
-            });
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateRootNode($"sub_root_{index}", "Sub Root", childIds: new[] { $"sub_log_{index}" }));
+            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateActionNode($"sub_log_{index}", "Sub Log", string.Empty,
+                BTBuiltinNodeTypes.Log, "Log", new[] { CreateStringArgument("message", $"sub tree log {index}") }));
 
             return tree;
         }
@@ -333,20 +220,20 @@ namespace ET
             Assert.That(actual.Trees.Count, Is.EqualTo(expected.Trees.Count));
             Assert.That(CountNodes(actual), Is.EqualTo(CountNodes(expected)));
 
-            Assert.That(actual.Trees.SelectMany(tree => tree.Nodes).OfType<BTWaitNodeData>().Count(),
-                Is.EqualTo(expected.Trees.SelectMany(tree => tree.Nodes).OfType<BTWaitNodeData>().Count()));
-            Assert.That(actual.Trees.SelectMany(tree => tree.Nodes).OfType<BTParallelNodeData>().Count(),
-                Is.EqualTo(expected.Trees.SelectMany(tree => tree.Nodes).OfType<BTParallelNodeData>().Count()));
-            Assert.That(actual.Trees.SelectMany(tree => tree.Nodes).OfType<BTPatrolNodeData>().Count(),
-                Is.EqualTo(expected.Trees.SelectMany(tree => tree.Nodes).OfType<BTPatrolNodeData>().Count()));
+            Assert.That(actual.Trees.SelectMany(tree => tree.Nodes).Count(node => BTEditorRuntimeNodeFactory.IsRuntimeNodeType(node, "BTWaitNodeData")),
+                Is.EqualTo(expected.Trees.SelectMany(tree => tree.Nodes).Count(node => BTEditorRuntimeNodeFactory.IsRuntimeNodeType(node, "BTWaitNodeData"))));
+            Assert.That(actual.Trees.SelectMany(tree => tree.Nodes).Count(node => BTEditorRuntimeNodeFactory.IsRuntimeNodeType(node, "BTParallelNodeData")),
+                Is.EqualTo(expected.Trees.SelectMany(tree => tree.Nodes).Count(node => BTEditorRuntimeNodeFactory.IsRuntimeNodeType(node, "BTParallelNodeData"))));
+            Assert.That(actual.Trees.SelectMany(tree => tree.Nodes).Count(node => BTEditorRuntimeNodeFactory.IsRuntimeNodeType(node, "BTPatrolNodeData")),
+                Is.EqualTo(expected.Trees.SelectMany(tree => tree.Nodes).Count(node => BTEditorRuntimeNodeFactory.IsRuntimeNodeType(node, "BTPatrolNodeData"))));
 
-            BTPatrolNodeData patrolNode = actual.Trees
+            BTNodeData patrolNode = actual.Trees
                 .SelectMany(tree => tree.Nodes)
-                .OfType<BTPatrolNodeData>()
-                .FirstOrDefault();
+                .FirstOrDefault(node => BTEditorRuntimeNodeFactory.IsRuntimeNodeType(node, "BTPatrolNodeData"));
             Assert.That(patrolNode, Is.Not.Null);
-            Assert.That(patrolNode.PatrolPoints.Count, Is.EqualTo(4));
-            Assert.That(patrolNode.PatrolPoints[1].X, Is.GreaterThan(patrolNode.PatrolPoints[0].X));
+            List<BTPatrolPointData> patrolPoints = BTEditorRuntimeNodeFactory.GetPatrolPoints(patrolNode);
+            Assert.That(patrolPoints.Count, Is.EqualTo(4));
+            Assert.That(patrolPoints[1].X, Is.GreaterThan(patrolPoints[0].X));
         }
 
         private static int CountNodes(BTPackage package)

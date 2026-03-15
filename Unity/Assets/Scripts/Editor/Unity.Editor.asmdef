@@ -1,27 +1,33 @@
-{
-    "name": "Unity.Editor",
-    "rootNamespace": "",
-    "references": [
-        "Unity.ThirdParty",
-        "Unity.Core",
-        "Unity.Loader",
-        "HybridCLR.Runtime",
-        "HybridCLR.Editor",
-        "Unity.Model",
-        "Unity.Hotfix",
-        "YooAsset",
-        "Unity.Mathematics",
-        "YooAsset.Editor"
-    ],
-    "includePlatforms": [
-        "Editor"
-    ],
-    "excludePlatforms": [],
-    "allowUnsafeCode": true,
-    "overrideReferences": false,
-    "precompiledReferences": [],
-    "autoReferenced": true,
-    "defineConstraints": [],
-    "versionDefines": [],
-    "noEngineReferences": false
+﻿{
+    "name":  "Unity.Editor",
+    "rootNamespace":  "",
+    "references":  [
+                       "Unity.ThirdParty",
+                       "Unity.Core",
+                       "Unity.Loader",
+                       "HybridCLR.Runtime",
+                       "HybridCLR.Editor",
+                       "YooAsset",
+                       "Unity.Mathematics",
+                       "YooAsset.Editor"
+                   ],
+    "includePlatforms":  [
+                             "Editor"
+                         ],
+    "excludePlatforms":  [
+
+                         ],
+    "allowUnsafeCode":  true,
+    "overrideReferences":  false,
+    "precompiledReferences":  [
+
+                              ],
+    "autoReferenced":  true,
+    "defineConstraints":  [
+
+                          ],
+    "versionDefines":  [
+
+                       ],
+    "noEngineReferences":  false
 }

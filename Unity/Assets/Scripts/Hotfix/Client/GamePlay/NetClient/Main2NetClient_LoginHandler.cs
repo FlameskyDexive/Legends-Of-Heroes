@@ -16,7 +16,16 @@ namespace ET.Client
             // 获取路由跟realmDispatcher地址
             RouterAddressComponent routerAddressComponent =
                     root.AddComponent<RouterAddressComponent, string, int>(ConstValue.RouterHttpHost, ConstValue.RouterHttpPort);
-            await routerAddressComponent.Init();
+            try
+            {
+                await routerAddressComponent.Init();
+            }
+            catch (Exception exception)
+            {
+                throw new RpcException(ErrorCode.ERR_LoginError,
+                    $"Login failed because RouterManager is unavailable at http://{ConstValue.RouterHttpHost}:{ConstValue.RouterHttpPort}/get_router . " +
+                    $"For local development, start the Localhost server first. Original error: {exception.Message}");
+            }
             root.AddComponent<NetComponent, AddressFamily, NetworkProtocol>(routerAddressComponent.RouterManagerIPAddress.AddressFamily, NetworkProtocol.UDP);
             root.GetComponent<FiberParentComponent>().ParentFiberId = request.OwnerFiberId;
 

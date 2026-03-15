@@ -11,5 +11,6 @@ namespace ET
         public long OwnerInstanceId;
         public long UpdatedAt;
         public Dictionary<string, BTNodeState> NodeStates = new();
+        public Dictionary<string, string> BlackboardValues = new();
     }
 }

@@ -51,7 +51,7 @@ namespace ET
             }
 
             string serverFileName = Path.GetFileName(rootAsset.ExportRelativePath);
-            string serverFullPath = Path.GetFullPath(Path.Combine(projectRoot, "..", BTLoader.ServerBehaviorTreeBytesDir, serverFileName));
+            string serverFullPath = Path.GetFullPath(Path.Combine(projectRoot, "..", BTBytesLoader.ServerBehaviorTreeBytesDir, serverFileName));
             string serverDirectory = Path.GetDirectoryName(serverFullPath) ?? string.Empty;
             if (!Directory.Exists(serverDirectory))
             {
@@ -185,115 +185,7 @@ namespace ET
         {
             node.SyncSubTreeInfo();
             BTEditorUtility.SyncNodeDescriptor(node);
-
-            BTNodeData definition = CreateNodeDefinition(node);
-            definition.NodeId = node.NodeId;
-            definition.Title = node.Title;
-            definition.Comment = node.Comment;
-            definition.ChildIds.AddRange(node.ChildIds);
-            return definition;
-        }
-
-        private static BTNodeData CreateNodeDefinition(BTEditorNodeData node)
-        {
-            if (string.Equals(node.NodeTypeId, ET.BTPatrolNodeTypes.Patrol, StringComparison.OrdinalIgnoreCase))
-            {
-                ET.BTPatrolNodeData patrolNode = new();
-                foreach (ET.BTPatrolPointData patrolPoint in node.PatrolPoints)
-                {
-                    patrolNode.PatrolPoints.Add(patrolPoint?.Clone() ?? new ET.BTPatrolPointData());
-                }
-
-                return patrolNode;
-            }
-
-            return node.NodeKind switch
-            {
-                BTNodeKind.Root => new BTRootNodeData(),
-                BTNodeKind.Sequence => new BTSequenceNodeData(),
-                BTNodeKind.Selector => new BTSelectorNodeData(),
-                BTNodeKind.Parallel => new BTParallelNodeData
-                {
-                    SuccessPolicy = node.SuccessPolicy,
-                    FailurePolicy = node.FailurePolicy,
-                },
-                BTNodeKind.Inverter => new BTInverterNodeData(),
-                BTNodeKind.Succeeder => new BTSucceederNodeData(),
-                BTNodeKind.Failer => new BTFailerNodeData(),
-                BTNodeKind.Repeater => new BTRepeaterNodeData
-                {
-                    MaxLoopCount = node.MaxLoopCount,
-                },
-                BTNodeKind.BlackboardCondition => new BTBlackboardConditionNodeData
-                {
-                    BlackboardKey = node.BlackboardKey,
-                    CompareOperator = node.CompareOperator,
-                    CompareValue = node.CompareValue?.Clone() ?? new BTSerializedValue(),
-                    AbortMode = node.AbortMode,
-                },
-                BTNodeKind.Service => CreateServiceNodeDefinition(node),
-                BTNodeKind.Action => CreateActionNodeDefinition(node),
-                BTNodeKind.Condition => CreateConditionNodeDefinition(node),
-                BTNodeKind.Wait => new BTWaitNodeData
-                {
-                    WaitMilliseconds = node.WaitMilliseconds,
-                },
-                BTNodeKind.SubTree => new BTSubTreeNodeData
-                {
-                    SubTreeId = node.SubTreeId,
-                    SubTreeName = node.SubTreeName,
-                },
-                _ => throw new InvalidOperationException($"Unsupported behavior tree node kind: {node.NodeKind}"),
-            };
-        }
-
-        private static BTActionNodeData CreateActionNodeDefinition(BTEditorNodeData node)
-        {
-            BTActionNodeData definition = new()
-            {
-                TypeId = node.NodeTypeId,
-                ActionHandlerName = node.HandlerName,
-            };
-
-            foreach (BTArgumentData argument in node.Arguments)
-            {
-                definition.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
-            }
-
-            return definition;
-        }
-
-        private static BTConditionNodeData CreateConditionNodeDefinition(BTEditorNodeData node)
-        {
-            BTConditionNodeData definition = new()
-            {
-                TypeId = node.NodeTypeId,
-                ConditionHandlerName = node.HandlerName,
-            };
-
-            foreach (BTArgumentData argument in node.Arguments)
-            {
-                definition.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
-            }
-
-            return definition;
-        }
-
-        private static BTServiceNodeData CreateServiceNodeDefinition(BTEditorNodeData node)
-        {
-            BTServiceNodeData definition = new()
-            {
-                TypeId = node.NodeTypeId,
-                ServiceHandlerName = node.HandlerName,
-                IntervalMilliseconds = node.IntervalMilliseconds,
-            };
-
-            foreach (BTArgumentData argument in node.Arguments)
-            {
-                definition.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
-            }
-
-            return definition;
+            return BTEditorRuntimeNodeFactory.CreateFromEditorNode(node);
         }
     }
 }

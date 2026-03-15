@@ -84,6 +84,11 @@ namespace ET
 
         public BTDebugSnapshot GetActiveSnapshot()
         {
+            if (!IsRuntimeDebugAvailable())
+            {
+                return null;
+            }
+
             if (this.asset == null)
             {
                 return null;
@@ -97,22 +102,25 @@ namespace ET
 
             if (this.selectedRuntimeId != 0)
             {
-                return debugHub.GetSnapshot(this.selectedRuntimeId);
+                debugHub.Snapshots.TryGetValue(this.selectedRuntimeId, out BTDebugSnapshot selectedSnapshot);
+                return selectedSnapshot;
             }
 
-            return debugHub.GetSnapshots(this.asset.TreeId).FirstOrDefault();
+            return debugHub.Snapshots.Values
+                    .Where(snapshot => snapshot.TreeId == this.asset.TreeId)
+                    .OrderByDescending(snapshot => snapshot.UpdatedAt)
+                    .FirstOrDefault();
         }
 
-        public BTRunner GetActiveRunner()
+        private static bool IsRuntimeDebugAvailable()
         {
-            long runtimeId = this.GetActiveSnapshot()?.RuntimeId ?? 0;
-            if (runtimeId == 0)
+            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig.asset");
+            if (globalConfig == null)
             {
-                return null;
+                return false;
             }
 
-            BTRuntimeManager runtimeManager = BTRuntimeManager.Instance;
-            return runtimeManager?.Get(runtimeId);
+            return !globalConfig.EnableDll && globalConfig.CodeMode == CodeMode.ClientServer;
         }
 
         public void MarkAssetDirty()
@@ -269,7 +277,7 @@ namespace ET
                 this.inspectorPanel?.MarkDirtyRepaint();
             }
 
-            if (this.GetActiveRunner() != null)
+            if (snapshot != null)
             {
                 this.blackboardPanel?.MarkDirtyRepaint();
             }
@@ -727,28 +735,38 @@ namespace ET
 
             EditorGUILayout.Space(8);
             EditorGUILayout.LabelField("Runtime Debug", EditorStyles.boldLabel);
-            BTDebugHub debugHub = BTDebugHub.Instance;
-            List<BTDebugSnapshot> snapshots = debugHub != null
-                    ? debugHub.GetSnapshots(this.asset.TreeId)
-                    : new List<BTDebugSnapshot>();
-            if (snapshots.Count == 0)
+            if (!IsRuntimeDebugAvailable())
             {
-                EditorGUILayout.HelpBox("No running tree instance found for this tree.", MessageType.None);
+                EditorGUILayout.HelpBox("Runtime debug is only available when CodeMode is ClientServer and EnableDll is disabled.", MessageType.None);
             }
             else
             {
-                string[] runtimeOptions = snapshots.Select(snapshot => $"{snapshot.RuntimeId} / Owner:{snapshot.OwnerInstanceId}").ToArray();
-                int currentIndex = Mathf.Max(0, Array.FindIndex(snapshots.ToArray(), snapshot => snapshot.RuntimeId == this.selectedRuntimeId));
-                int selectedIndex = EditorGUILayout.Popup("Runtime", currentIndex, runtimeOptions);
-                this.selectedRuntimeId = snapshots[selectedIndex].RuntimeId;
-            }
+                BTDebugHub debugHub = BTDebugHub.Instance;
+                List<BTDebugSnapshot> snapshots = debugHub != null
+                        ? debugHub.Snapshots.Values
+                                .Where(runtimeSnapshot => runtimeSnapshot.TreeId == this.asset.TreeId)
+                                .OrderByDescending(runtimeSnapshot => runtimeSnapshot.UpdatedAt)
+                                .ToList()
+                        : new List<BTDebugSnapshot>();
+                if (snapshots.Count == 0)
+                {
+                    EditorGUILayout.HelpBox("No running tree instance found for this tree.", MessageType.None);
+                }
+                else
+                {
+                    string[] runtimeOptions = snapshots.Select(snapshot => $"{snapshot.RuntimeId} / Owner:{snapshot.OwnerInstanceId}").ToArray();
+                    int currentIndex = Mathf.Max(0, Array.FindIndex(snapshots.ToArray(), snapshot => snapshot.RuntimeId == this.selectedRuntimeId));
+                    int selectedIndex = EditorGUILayout.Popup("Runtime", currentIndex, runtimeOptions);
+                    this.selectedRuntimeId = snapshots[selectedIndex].RuntimeId;
+                }
 
-            BTRunner runner = this.GetActiveRunner();
-            if (runner != null)
-            {
-                EditorGUILayout.Space(8);
-                EditorGUILayout.LabelField("Runtime Blackboard", EditorStyles.boldLabel);
-                this.DrawRuntimeBlackboard(runner.Blackboard);
+                BTDebugSnapshot snapshot = this.GetActiveSnapshot();
+                if (snapshot != null)
+                {
+                    EditorGUILayout.Space(8);
+                    EditorGUILayout.LabelField("Runtime Blackboard", EditorStyles.boldLabel);
+                    this.DrawRuntimeBlackboard(snapshot);
+                }
             }
 
             if (EditorGUI.EndChangeCheck())
@@ -760,9 +778,9 @@ namespace ET
             EditorGUILayout.EndScrollView();
         }
 
-        private void DrawRuntimeBlackboard(BTBlackboard blackboard)
+        private void DrawRuntimeBlackboard(BTDebugSnapshot snapshot)
         {
-            if (blackboard == null)
+            if (snapshot == null)
             {
                 EditorGUILayout.HelpBox("Runtime blackboard is not available.", MessageType.None);
                 return;
@@ -779,12 +797,10 @@ namespace ET
                 drawnKeys.Add(entry.Key);
                 EditorGUILayout.BeginVertical("box");
                 EditorGUILayout.LabelField(entry.Key, EditorStyles.boldLabel);
-                object currentValue = blackboard.GetBoxed(entry.Key) ?? BTValueUtility.GetValue(entry.DefaultValue);
-                object newValue = DrawRuntimeValueField(entry.ValueType, currentValue);
-                if (!Equals(currentValue, newValue))
-                {
-                    blackboard.SetBoxed(entry.Key, newValue);
-                }
+                string currentValue = snapshot.BlackboardValues.TryGetValue(entry.Key, out string runtimeValue)
+                        ? runtimeValue
+                        : BTValueUtility.ToDisplayString(entry.DefaultValue);
+                EditorGUILayout.LabelField(currentValue);
 
                 if (!string.IsNullOrWhiteSpace(entry.Description))
                 {
@@ -793,12 +809,12 @@ namespace ET
                 EditorGUILayout.EndVertical();
             }
 
-            List<KeyValuePair<string, object>> extraValues = blackboard.Values.Where(valuePair => !drawnKeys.Contains(valuePair.Key)).ToList();
+            List<KeyValuePair<string, string>> extraValues = snapshot.BlackboardValues.Where(valuePair => !drawnKeys.Contains(valuePair.Key)).ToList();
             if (extraValues.Count > 0)
             {
                 EditorGUILayout.Space(4);
                 EditorGUILayout.LabelField("Extra Runtime Keys", EditorStyles.boldLabel);
-                foreach ((string key, object value) in extraValues)
+                foreach ((string key, string value) in extraValues)
                 {
                     if (!this.IsBlackboardEntryVisible(key))
                     {

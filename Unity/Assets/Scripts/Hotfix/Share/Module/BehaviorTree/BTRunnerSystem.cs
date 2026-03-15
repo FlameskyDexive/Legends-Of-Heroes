@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace ET
 {
@@ -84,7 +85,16 @@ namespace ET
         public static void PublishDebug(this BTRunner self)
         {
             Entity owner = self.Owner;
-            BTDebugHub.Instance.Publish(self.RuntimeId, self.Tree.TreeId, self.Tree.TreeName, owner?.InstanceId ?? 0, self.NodeStates);
+            Dictionary<string, string> blackboardValues = new(StringComparer.OrdinalIgnoreCase);
+            if (self.Blackboard != null)
+            {
+                foreach ((string key, object value) in self.Blackboard.Values)
+                {
+                    blackboardValues[key] = value?.ToString() ?? "null";
+                }
+            }
+
+            BTDebugHub.Instance.Publish(self.RuntimeId, self.Tree.TreeId, self.Tree.TreeName, owner?.InstanceId ?? 0, self.NodeStates, blackboardValues);
         }
 
         public static BTRuntimeNode BuildTree(this BTRunner self, BTDefinition tree, string nodeId, BTRuntimeNode parent)
