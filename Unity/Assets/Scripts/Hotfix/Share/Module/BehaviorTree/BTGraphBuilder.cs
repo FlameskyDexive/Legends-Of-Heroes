@@ -99,6 +99,8 @@ namespace ET
                     return new BTLog();
                 case BTSetBlackboardNodeData:
                     return new BTSetBlackboard();
+                case BTSetBlackboardIfMissingData:
+                    return new BTSetBlackboardIfMissing();
                 case BTBlackboardExistsNodeData:
                     return new BTBlackboardExists();
                 case BTBlackboardCompareNodeData:
@@ -152,6 +154,12 @@ namespace ET
                 || string.Equals(definition.ActionHandlerName, "SetBlackboard", StringComparison.OrdinalIgnoreCase))
             {
                 return new BTSetBlackboard();
+            }
+
+            if (string.Equals(definition.TypeId, BTBuiltinNodeTypes.SetBlackboardIfMissing, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(definition.ActionHandlerName, "SetBlackboardIfMissing", StringComparison.OrdinalIgnoreCase))
+            {
+                return new BTSetBlackboardIfMissing();
             }
 
             if (string.Equals(definition.TypeId, BTPatrolNodeTypes.Patrol, StringComparison.OrdinalIgnoreCase)

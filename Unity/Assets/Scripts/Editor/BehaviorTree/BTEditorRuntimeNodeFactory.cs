@@ -8,10 +8,7 @@ namespace ET
 {
     internal static class BTEditorRuntimeNodeFactory
     {
-        private const string ModelAssemblyName = "Unity.Model";
-        private static readonly Dictionary<string, Type> TypeCache = new(StringComparer.Ordinal);
-
-        public static BTNodeData CreateFromEditorNode(BTEditorNodeData node)
+        public static object CreateFromEditorNode(BTEditorNodeData node)
         {
             if (node == null)
             {
@@ -48,62 +45,62 @@ namespace ET
             };
         }
 
-        public static BTNodeData CreateRootNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
+        public static object CreateRootNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
         {
             return CreateSimpleNode("ET.BTRootNodeData", nodeId, title, comment, childIds);
         }
 
-        public static BTNodeData CreateSequenceNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
+        public static object CreateSequenceNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
         {
             return CreateSimpleNode("ET.BTSequenceNodeData", nodeId, title, comment, childIds);
         }
 
-        public static BTNodeData CreateSelectorNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
+        public static object CreateSelectorNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
         {
             return CreateSimpleNode("ET.BTSelectorNodeData", nodeId, title, comment, childIds);
         }
 
-        public static BTNodeData CreateInverterNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
+        public static object CreateInverterNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
         {
             return CreateSimpleNode("ET.BTInverterNodeData", nodeId, title, comment, childIds);
         }
 
-        public static BTNodeData CreateSucceederNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
+        public static object CreateSucceederNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
         {
             return CreateSimpleNode("ET.BTSucceederNodeData", nodeId, title, comment, childIds);
         }
 
-        public static BTNodeData CreateFailerNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
+        public static object CreateFailerNode(string nodeId, string title, string comment = "", IEnumerable<string> childIds = null)
         {
             return CreateSimpleNode("ET.BTFailerNodeData", nodeId, title, comment, childIds);
         }
 
-        public static BTNodeData CreateWaitNode(string nodeId, string title, string comment, int waitMilliseconds, IEnumerable<string> childIds = null)
+        public static object CreateWaitNode(string nodeId, string title, string comment, int waitMilliseconds, IEnumerable<string> childIds = null)
         {
-            BTNodeData node = CreateSimpleNode("ET.BTWaitNodeData", nodeId, title, comment, childIds);
+            object node = CreateSimpleNode("ET.BTWaitNodeData", nodeId, title, comment, childIds);
             SetField(node, "WaitMilliseconds", waitMilliseconds);
             return node;
         }
 
-        public static BTNodeData CreateParallelNode(string nodeId, string title, string comment, BTParallelPolicy successPolicy, BTParallelPolicy failurePolicy, IEnumerable<string> childIds = null)
+        public static object CreateParallelNode(string nodeId, string title, string comment, BTParallelPolicy successPolicy, BTParallelPolicy failurePolicy, IEnumerable<string> childIds = null)
         {
-            BTNodeData node = CreateSimpleNode("ET.BTParallelNodeData", nodeId, title, comment, childIds);
+            object node = CreateSimpleNode("ET.BTParallelNodeData", nodeId, title, comment, childIds);
             SetField(node, "SuccessPolicy", successPolicy);
             SetField(node, "FailurePolicy", failurePolicy);
             return node;
         }
 
-        public static BTNodeData CreateRepeaterNode(string nodeId, string title, string comment, int maxLoopCount, IEnumerable<string> childIds = null)
+        public static object CreateRepeaterNode(string nodeId, string title, string comment, int maxLoopCount, IEnumerable<string> childIds = null)
         {
-            BTNodeData node = CreateSimpleNode("ET.BTRepeaterNodeData", nodeId, title, comment, childIds);
+            object node = CreateSimpleNode("ET.BTRepeaterNodeData", nodeId, title, comment, childIds);
             SetField(node, "MaxLoopCount", maxLoopCount);
             return node;
         }
 
-        public static BTNodeData CreateBlackboardConditionNode(string nodeId, string title, string comment, string blackboardKey,
+        public static object CreateBlackboardConditionNode(string nodeId, string title, string comment, string blackboardKey,
             BTCompareOperator compareOperator, BTSerializedValue compareValue, BTAbortMode abortMode, IEnumerable<string> childIds = null)
         {
-            BTNodeData node = CreateSimpleNode("ET.BTBlackboardConditionNodeData", nodeId, title, comment, childIds);
+            object node = CreateSimpleNode("ET.BTBlackboardConditionNodeData", nodeId, title, comment, childIds);
             SetField(node, "BlackboardKey", blackboardKey ?? string.Empty);
             SetField(node, "CompareOperator", compareOperator);
             SetField(node, "CompareValue", compareValue?.Clone() ?? new BTSerializedValue());
@@ -111,7 +108,7 @@ namespace ET
             return node;
         }
 
-        public static BTNodeData CreateActionNode(string nodeId, string title, string comment, string typeId, string handlerName,
+        public static object CreateActionNode(string nodeId, string title, string comment, string typeId, string handlerName,
             IEnumerable<BTArgumentData> arguments, IEnumerable<string> childIds = null)
         {
             if (string.Equals(typeId, BTBuiltinNodeTypes.Log, StringComparison.OrdinalIgnoreCase))
@@ -124,14 +121,19 @@ namespace ET
                 return CreateTypedArgumentNode("ET.BTSetBlackboardNodeData", nodeId, title, comment, arguments, childIds);
             }
 
-            BTNodeData node = CreateSimpleNode("ET.BTActionNodeData", nodeId, title, comment, childIds);
+            if (string.Equals(typeId, BTBuiltinNodeTypes.SetBlackboardIfMissing, StringComparison.OrdinalIgnoreCase))
+            {
+                return CreateTypedArgumentNode("ET.BTSetBlackboardIfMissingData", nodeId, title, comment, arguments, childIds);
+            }
+
+            object node = CreateSimpleNode("ET.BTActionNodeData", nodeId, title, comment, childIds);
             SetField(node, "TypeId", typeId ?? string.Empty);
             SetField(node, "ActionHandlerName", handlerName ?? string.Empty);
             FillListField(node, "Arguments", arguments?.Select(argument => argument?.Clone() ?? new BTArgumentData()));
             return node;
         }
 
-        public static BTNodeData CreateConditionNode(string nodeId, string title, string comment, string typeId, string handlerName,
+        public static object CreateConditionNode(string nodeId, string title, string comment, string typeId, string handlerName,
             IEnumerable<BTArgumentData> arguments, IEnumerable<string> childIds = null)
         {
             if (string.Equals(typeId, BTBuiltinNodeTypes.BlackboardExists, StringComparison.OrdinalIgnoreCase))
@@ -149,17 +151,17 @@ namespace ET
                 return CreateHasPatrolPathNode(nodeId, title, comment, childIds);
             }
 
-            BTNodeData node = CreateSimpleNode("ET.BTConditionNodeData", nodeId, title, comment, childIds);
+            object node = CreateSimpleNode("ET.BTConditionNodeData", nodeId, title, comment, childIds);
             SetField(node, "TypeId", typeId ?? string.Empty);
             SetField(node, "ConditionHandlerName", handlerName ?? string.Empty);
             FillListField(node, "Arguments", arguments?.Select(argument => argument?.Clone() ?? new BTArgumentData()));
             return node;
         }
 
-        public static BTNodeData CreateServiceNode(string nodeId, string title, string comment, string typeId, string handlerName,
+        public static object CreateServiceNode(string nodeId, string title, string comment, string typeId, string handlerName,
             int intervalMilliseconds, IEnumerable<BTArgumentData> arguments, IEnumerable<string> childIds = null)
         {
-            BTNodeData node = CreateSimpleNode("ET.BTServiceNodeData", nodeId, title, comment, childIds);
+            object node = CreateSimpleNode("ET.BTServiceNodeData", nodeId, title, comment, childIds);
             SetField(node, "TypeId", typeId ?? string.Empty);
             SetField(node, "ServiceHandlerName", handlerName ?? string.Empty);
             SetField(node, "IntervalMilliseconds", intervalMilliseconds);
@@ -167,32 +169,32 @@ namespace ET
             return node;
         }
 
-        public static BTNodeData CreateSubTreeNode(string nodeId, string title, string comment, string subTreeId, string subTreeName, IEnumerable<string> childIds = null)
+        public static object CreateSubTreeNode(string nodeId, string title, string comment, string subTreeId, string subTreeName, IEnumerable<string> childIds = null)
         {
-            BTNodeData node = CreateSimpleNode("ET.BTSubTreeNodeData", nodeId, title, comment, childIds);
+            object node = CreateSimpleNode("ET.BTSubTreeNodeData", nodeId, title, comment, childIds);
             SetField(node, "SubTreeId", subTreeId ?? string.Empty);
             SetField(node, "SubTreeName", subTreeName ?? string.Empty);
             return node;
         }
 
-        public static BTNodeData CreatePatrolNode(string nodeId, string title, string comment, IEnumerable<BTPatrolPointData> patrolPoints, IEnumerable<string> childIds = null)
+        public static object CreatePatrolNode(string nodeId, string title, string comment, IEnumerable<BTPatrolPointData> patrolPoints, IEnumerable<string> childIds = null)
         {
-            BTNodeData node = CreateSimpleNode("ET.BTPatrolNodeData", nodeId, title, comment, childIds);
+            object node = CreateSimpleNode("ET.BTPatrolNodeData", nodeId, title, comment, childIds);
             FillListField(node, "PatrolPoints", patrolPoints?.Select(point => point?.Clone() ?? new BTPatrolPointData()));
             return node;
         }
 
-        public static BTNodeData CreateHasPatrolPathNode(string nodeId, string title, string comment, IEnumerable<string> childIds = null)
+        public static object CreateHasPatrolPathNode(string nodeId, string title, string comment, IEnumerable<string> childIds = null)
         {
             return CreateSimpleNode("ET.BTHasPatrolPathNodeData", nodeId, title, comment, childIds);
         }
 
-        public static bool IsRuntimeNodeType(BTNodeData node, string runtimeTypeName)
+        public static bool IsRuntimeNodeType(object node, string runtimeTypeName)
         {
-            return node != null && string.Equals(node.GetType().Name, runtimeTypeName, StringComparison.Ordinal);
+            return BTEditorRuntimeBridge.IsRuntimeNodeData(node, runtimeTypeName);
         }
 
-        public static List<BTPatrolPointData> GetPatrolPoints(BTNodeData node)
+        public static List<BTPatrolPointData> GetPatrolPoints(object node)
         {
             FieldInfo fieldInfo = node?.GetType().GetField("PatrolPoints", BindingFlags.Instance | BindingFlags.Public);
             if (fieldInfo?.GetValue(node) is not IEnumerable enumerable)
@@ -212,43 +214,47 @@ namespace ET
             return points;
         }
 
-        private static BTNodeData CreateSimpleNode(string fullTypeName, string nodeId, string title, string comment, IEnumerable<string> childIds)
+        private static object CreateSimpleNode(string fullTypeName, string nodeId, string title, string comment, IEnumerable<string> childIds)
         {
-            BTNodeData node = Activator.CreateInstance(ResolveRuntimeType(fullTypeName)) as BTNodeData;
+            object node = BTEditorRuntimeBridge.CreateInstance(fullTypeName);
             if (node == null)
             {
                 throw new InvalidOperationException($"Failed to create runtime node: {fullTypeName}");
             }
 
-            node.NodeId = nodeId ?? string.Empty;
-            node.Title = title ?? string.Empty;
-            node.Comment = comment ?? string.Empty;
-            node.ChildIds.Clear();
+            SetField(node, "NodeId", nodeId ?? string.Empty);
+            SetField(node, "Title", title ?? string.Empty);
+            SetField(node, "Comment", comment ?? string.Empty);
+            IList childIdList = BTEditorRuntimeBridge.GetList(node, "ChildIds");
+            childIdList.Clear();
             if (childIds != null)
             {
-                node.ChildIds.AddRange(childIds);
+                foreach (string childId in childIds)
+                {
+                    childIdList.Add(childId);
+                }
             }
 
             return node;
         }
 
-        private static BTNodeData CreateTypedArgumentNode(string fullTypeName, string nodeId, string title, string comment,
+        private static object CreateTypedArgumentNode(string fullTypeName, string nodeId, string title, string comment,
             IEnumerable<BTArgumentData> arguments, IEnumerable<string> childIds)
         {
-            BTNodeData node = CreateSimpleNode(fullTypeName, nodeId, title, comment, childIds);
+            object node = CreateSimpleNode(fullTypeName, nodeId, title, comment, childIds);
             FillListField(node, "Arguments", arguments?.Select(argument => argument?.Clone() ?? new BTArgumentData()));
             return node;
         }
 
         private static void FillListField(object target, string fieldName, IEnumerable values)
         {
-            FieldInfo fieldInfo = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public);
-            if (fieldInfo?.GetValue(target) is not IList list || values == null)
+            IList list = BTEditorRuntimeBridge.GetList(target, fieldName);
+            list.Clear();
+            if (values == null)
             {
                 return;
             }
 
-            list.Clear();
             foreach (object value in values)
             {
                 list.Add(value);
@@ -257,37 +263,7 @@ namespace ET
 
         private static void SetField(object target, string fieldName, object value)
         {
-            FieldInfo fieldInfo = target.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public);
-            if (fieldInfo == null)
-            {
-                throw new MissingFieldException(target.GetType().FullName, fieldName);
-            }
-
-            fieldInfo.SetValue(target, value);
-        }
-
-        private static Type ResolveRuntimeType(string fullTypeName)
-        {
-            if (TypeCache.TryGetValue(fullTypeName, out Type cachedType))
-            {
-                return cachedType;
-            }
-
-            Assembly modelAssembly = AppDomain.CurrentDomain.GetAssemblies()
-                    .FirstOrDefault(assembly => assembly.GetName().Name == ModelAssemblyName);
-            if (modelAssembly == null)
-            {
-                throw new InvalidOperationException($"Runtime assembly not found: {ModelAssemblyName}");
-            }
-
-            Type runtimeType = modelAssembly.GetType(fullTypeName);
-            if (runtimeType == null)
-            {
-                throw new InvalidOperationException($"Runtime node type not found: {fullTypeName}");
-            }
-
-            TypeCache[fullTypeName] = runtimeType;
-            return runtimeType;
+            BTEditorRuntimeBridge.SetValue(target, fieldName, value);
         }
     }
 }

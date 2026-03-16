@@ -99,6 +99,7 @@ MonoBehaviour:
     - bf8654f2c97346769e93422d9edca860
     - d1a148ec30e747fc9e68646b93950b61
     - fca1ca6359bc4846a91fef405eb27b2d
+    - e793d840d7144396835655381abd8a38
     HandlerName: 
     Arguments: []
     BlackboardKey: 
@@ -194,10 +195,10 @@ MonoBehaviour:
     NodeTypeId: demo.client.behavior.patrol
     Position:
       serializedVersion: 2
-      x: 352
-      y: 554
-      width: 80
-      height: 54
+      x: 342.40002
+      y: 553.6
+      width: 93.60004
+      height: 83.20001
     ChildIds: []
     HandlerName: BTPatrol
     Arguments: []
@@ -223,6 +224,39 @@ MonoBehaviour:
     - X: 1
       Y: 0
       Z: 20
+    SubTreeAsset: {fileID: 0}
+  - NodeId: e793d840d7144396835655381abd8a38
+    Title: Wait
+    NodeKind: 12
+    NodeTypeId: 
+    Position:
+      serializedVersion: 2
+      x: 471.2
+      y: 553.60004
+      width: 88
+      height: 69.60004
+    ChildIds: []
+    HandlerName: 
+    Arguments: []
+    BlackboardKey: 
+    CompareOperator: 0
+    CompareValue:
+      ValueType: 0
+      IntValue: 0
+      LongValue: 0
+      FloatValue: 0
+      BoolValue: 0
+      StringValue: 
+    AbortMode: 1
+    WaitMilliseconds: 1000
+    IntervalMilliseconds: 250
+    MaxLoopCount: 0
+    SuccessPolicy: 1
+    FailurePolicy: 0
+    Comment: 
+    SubTreeId: 
+    SubTreeName: 
+    PatrolPoints: []
     SubTreeAsset: {fileID: 0}
   RootNodeId: e93bc620a9d74075be372bb77a9eb7c4
   ViewPosition: {x: 0, y: 0, z: 0}

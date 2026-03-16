@@ -85,6 +85,47 @@ namespace ET
     }
 
     [BTNodeDescriptor]
+    public sealed class BTSetBlackboardIfMissingNodeDescriptor : ABTNodeDescriptor
+    {
+        public override string TypeId => BTBuiltinNodeTypes.SetBlackboardIfMissing;
+
+        public override BTNodeKind NodeKind => BTNodeKind.Action;
+
+        public override string MenuPath => "Behaviors/Blackboard/Set If Missing";
+
+        public override string HandlerName => "SetBlackboardIfMissing";
+
+        public override string Description => "Writes a value to the blackboard only when the key does not already exist.";
+
+        public override IReadOnlyList<BTNodeParameterDefinition> Parameters => new List<BTNodeParameterDefinition>
+        {
+            new()
+            {
+                Name = "key",
+                DisplayName = "Blackboard Key",
+                ValueType = BTValueType.String,
+                DefaultValue = new BTSerializedValue
+                {
+                    ValueType = BTValueType.String,
+                    StringValue = string.Empty,
+                },
+                EditorHint = BTNodeParameterEditorHint.BlackboardKey,
+            },
+            new()
+            {
+                Name = "value",
+                DisplayName = "Value",
+                ValueType = BTValueType.None,
+                DefaultValue = new BTSerializedValue
+                {
+                    ValueType = BTValueType.String,
+                    StringValue = string.Empty,
+                },
+            },
+        };
+    }
+
+    [BTNodeDescriptor]
     public sealed class BTBlackboardExistsNodeDescriptor : ABTNodeDescriptor
     {
         public override string TypeId => BTBuiltinNodeTypes.BlackboardExists;

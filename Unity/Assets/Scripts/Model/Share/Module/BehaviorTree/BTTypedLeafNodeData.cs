@@ -67,6 +67,36 @@ namespace ET
     [EnableClass]
     [NinoType]
     [Serializable]
+    public sealed partial class BTSetBlackboardIfMissingData : BTNodeData, IBTHandlerNodeData, IBTArgumentNodeData
+    {
+        public List<BTArgumentData> Arguments = new();
+
+        public string NodeTypeId => BTBuiltinNodeTypes.SetBlackboardIfMissing;
+
+        public string HandlerName => "SetBlackboardIfMissing";
+
+        List<BTArgumentData> IBTArgumentNodeData.Arguments => this.Arguments;
+
+        public BTSetBlackboardIfMissingData()
+        {
+            this.NodeKind = BTNodeKind.Action;
+        }
+
+        public override BTNodeData Clone()
+        {
+            BTSetBlackboardIfMissingData definition = this.CloneBaseTo(new BTSetBlackboardIfMissingData());
+            foreach (BTArgumentData argument in this.Arguments)
+            {
+                definition.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
+            }
+
+            return definition;
+        }
+    }
+
+    [EnableClass]
+    [NinoType]
+    [Serializable]
     public sealed partial class BTBlackboardExistsNodeData : BTNodeData, IBTHandlerNodeData, IBTArgumentNodeData
     {
         public List<BTArgumentData> Arguments = new();

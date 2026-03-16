@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -8,7 +9,7 @@ namespace ET
 {
     public static class BTExporter
     {
-        public static BTPackage BuildPackage(BTAsset rootAsset)
+        public static object BuildPackage(BTAsset rootAsset)
         {
             if (rootAsset == null)
             {
@@ -17,20 +18,31 @@ namespace ET
 
             rootAsset.EnsureInitialized();
             HashSet<BTAsset> visitedAssets = new();
-            List<BTDefinition> trees = new();
+            List<object> trees = new();
             HashSet<string> treeIds = new(StringComparer.OrdinalIgnoreCase);
             HashSet<string> treeNames = new(StringComparer.OrdinalIgnoreCase);
 
             Collect(rootAsset, visitedAssets, trees, treeIds, treeNames);
 
-            return new BTPackage()
+            object package = BTEditorRuntimeBridge.CreateInstance("ET.BTPackage");
+            BTEditorRuntimeBridge.SetValue(package, "PackageId", rootAsset.TreeId);
+            BTEditorRuntimeBridge.SetValue(package, "PackageName", rootAsset.TreeName);
+            BTEditorRuntimeBridge.SetValue(package, "EntryTreeId", rootAsset.TreeId);
+            BTEditorRuntimeBridge.SetValue(package, "EntryTreeName", rootAsset.TreeName);
+
+            IList packageTrees = BTEditorRuntimeBridge.GetList(package, "Trees");
+            foreach (object tree in trees)
             {
-                PackageId = rootAsset.TreeId,
-                PackageName = rootAsset.TreeName,
-                EntryTreeId = rootAsset.TreeId,
-                EntryTreeName = rootAsset.TreeName,
-                Trees = trees,
-            };
+                packageTrees.Add(tree);
+            }
+
+            return package;
+        }
+
+        public static byte[] BuildBytes(BTAsset rootAsset)
+        {
+            object package = BuildPackage(rootAsset);
+            return BTEditorRuntimeBridge.SerializePackage(package);
         }
 
         public static string ExportToFile(BTAsset rootAsset)
@@ -40,8 +52,7 @@ namespace ET
 
         public static BTExportResult ExportToFiles(BTAsset rootAsset)
         {
-            BTPackage package = BuildPackage(rootAsset);
-            byte[] bytes = BTSerializer.Serialize(package);
+            byte[] bytes = BuildBytes(rootAsset);
             string projectRoot = Path.GetDirectoryName(Application.dataPath) ?? string.Empty;
             string clientFullPath = Path.GetFullPath(Path.Combine(projectRoot, rootAsset.ExportRelativePath));
             string clientDirectory = Path.GetDirectoryName(clientFullPath) ?? string.Empty;
@@ -77,7 +88,7 @@ namespace ET
             public string ServerFullPath { get; }
         }
 
-        private static void Collect(BTAsset asset, HashSet<BTAsset> visitedAssets, List<BTDefinition> trees, HashSet<string> treeIds, HashSet<string> treeNames)
+        private static void Collect(BTAsset asset, HashSet<BTAsset> visitedAssets, List<object> trees, HashSet<string> treeIds, HashSet<string> treeNames)
         {
             if (!visitedAssets.Add(asset))
             {
@@ -130,6 +141,11 @@ namespace ET
             HashSet<string> nodeIds = new(StringComparer.OrdinalIgnoreCase);
             foreach (BTEditorNodeData node in asset.Nodes)
             {
+                if (node == null)
+                {
+                    continue;
+                }
+
                 if (string.IsNullOrWhiteSpace(node.NodeId))
                 {
                     throw new InvalidOperationException($"BehaviorTree asset '{asset.name}' has node without NodeId.");
@@ -137,53 +153,41 @@ namespace ET
 
                 if (!nodeIds.Add(node.NodeId))
                 {
-                    throw new InvalidOperationException($"BehaviorTree asset '{asset.name}' has duplicated NodeId: {node.NodeId}");
-                }
-            }
-
-            foreach (BTEditorNodeData node in asset.Nodes)
-            {
-                foreach (string childId in node.ChildIds)
-                {
-                    if (!nodeIds.Contains(childId))
-                    {
-                        throw new InvalidOperationException($"BehaviorTree asset '{asset.name}' node '{node.Title}' references missing child '{childId}'.");
-                    }
-                }
-
-                if (node.NodeKind == BTNodeKind.SubTree && node.SubTreeAsset == null && string.IsNullOrWhiteSpace(node.SubTreeId) && string.IsNullOrWhiteSpace(node.SubTreeName))
-                {
-                    throw new InvalidOperationException($"BehaviorTree asset '{asset.name}' subtree node '{node.Title}' missing SubTree reference.");
+                    throw new InvalidOperationException($"BehaviorTree asset '{asset.name}' contains duplicate NodeId: {node.NodeId}");
                 }
             }
         }
 
-        private static BTDefinition BuildDefinition(BTAsset asset)
+        private static object BuildDefinition(BTAsset asset)
         {
-            BTDefinition definition = new()
-            {
-                TreeId = asset.TreeId,
-                TreeName = asset.TreeName,
-                Description = asset.Description,
-                RootNodeId = asset.RootNodeId,
-            };
+            object definition = BTEditorRuntimeBridge.CreateInstance("ET.BTDefinition");
+            BTEditorRuntimeBridge.SetValue(definition, "TreeId", asset.TreeId);
+            BTEditorRuntimeBridge.SetValue(definition, "TreeName", asset.TreeName);
+            BTEditorRuntimeBridge.SetValue(definition, "Description", asset.Description);
+            BTEditorRuntimeBridge.SetValue(definition, "RootNodeId", asset.RootNodeId);
 
+            IList blackboardEntries = BTEditorRuntimeBridge.GetList(definition, "BlackboardEntries");
             foreach (BTBlackboardEntryData entry in asset.BlackboardEntries)
             {
-                definition.BlackboardEntries.Add(entry.Clone());
+                blackboardEntries.Add(entry.Clone());
             }
 
+            IList nodes = BTEditorRuntimeBridge.GetList(definition, "Nodes");
             foreach (BTEditorNodeData node in asset.Nodes)
             {
-                definition.Nodes.Add(BuildNode(node));
+                nodes.Add(BuildNode(node));
             }
 
             return definition;
         }
 
-        private static BTNodeData BuildNode(BTEditorNodeData node)
+        private static object BuildNode(BTEditorNodeData node)
         {
-            node.SyncSubTreeInfo();
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
             BTEditorUtility.SyncNodeDescriptor(node);
             return BTEditorRuntimeNodeFactory.CreateFromEditorNode(node);
         }

@@ -1,5 +1,6 @@
 using System.IO;
 using UnityEditor;
+using UnityEngine;
 
 namespace ET
 {
@@ -31,19 +32,44 @@ namespace ET
 
         private static byte[] CreateAITestBytes()
         {
-            BTDefinition tree = new()
-            {
-                TreeId = "demo.shared.ai_test",
-                TreeName = "AITest",
-                Description = "Shared client/server demo behavior tree.",
-                RootNodeId = "root",
-            };
+            BTAsset asset = ScriptableObject.CreateInstance<BTAsset>();
+            asset.name = "AITest";
+            asset.TreeId = "demo.shared.ai_test";
+            asset.TreeName = "AITest";
+            asset.Description = "Shared client/server demo behavior tree.";
+            asset.EnsureInitialized();
+            asset.Nodes.Clear();
+            asset.BlackboardEntries.Clear();
 
-            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateRootNode("root", "Root", childIds: new[] { "repeat" }));
-            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateRepeaterNode("repeat", "Repeat Tick", string.Empty, 0, new[] { "sequence" }));
-            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateSequenceNode("sequence", "Tick Sequence", childIds: new[] { "log", "wait" }));
-            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateActionNode("log", "Log Tick", string.Empty, BTBuiltinNodeTypes.Log, "Log",
-                new[]
+            BTEditorNodeData root = new()
+            {
+                NodeId = "root",
+                NodeKind = BTNodeKind.Root,
+                Title = "Root",
+                ChildIds = { "repeat" },
+            };
+            BTEditorNodeData repeat = new()
+            {
+                NodeId = "repeat",
+                NodeKind = BTNodeKind.Repeater,
+                Title = "Repeat Tick",
+                ChildIds = { "sequence" },
+            };
+            BTEditorNodeData sequence = new()
+            {
+                NodeId = "sequence",
+                NodeKind = BTNodeKind.Sequence,
+                Title = "Tick Sequence",
+                ChildIds = { "log", "wait" },
+            };
+            BTEditorNodeData log = new()
+            {
+                NodeId = "log",
+                NodeKind = BTNodeKind.Action,
+                NodeTypeId = BTBuiltinNodeTypes.Log,
+                HandlerName = "Log",
+                Title = "Log Tick",
+                Arguments =
                 {
                     new BTArgumentData
                     {
@@ -54,19 +80,26 @@ namespace ET
                             StringValue = "AITest tick",
                         },
                     },
-                }));
-            tree.Nodes.Add(BTEditorRuntimeNodeFactory.CreateWaitNode("wait", "Wait", string.Empty, 1000));
-
-            BTPackage package = new()
+                },
+            };
+            BTEditorNodeData wait = new()
             {
-                PackageId = tree.TreeId,
-                PackageName = tree.TreeName,
-                EntryTreeId = tree.TreeId,
-                EntryTreeName = tree.TreeName,
-                Trees = { tree },
+                NodeId = "wait",
+                NodeKind = BTNodeKind.Wait,
+                Title = "Wait",
+                WaitMilliseconds = 1000,
             };
 
-            return BTSerializer.Serialize(package);
+            asset.Nodes.Add(root);
+            asset.Nodes.Add(repeat);
+            asset.Nodes.Add(sequence);
+            asset.Nodes.Add(log);
+            asset.Nodes.Add(wait);
+            asset.RootNodeId = root.NodeId;
+
+            byte[] bytes = BTExporter.BuildBytes(asset);
+            ScriptableObject.DestroyImmediate(asset);
+            return bytes;
         }
     }
 }

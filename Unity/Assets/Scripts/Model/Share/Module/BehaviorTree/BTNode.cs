@@ -79,6 +79,11 @@ namespace ET
     }
 
     [EnableClass]
+    public sealed class BTSetBlackboardIfMissing : BTAction
+    {
+    }
+
+    [EnableClass]
     public sealed class BTBlackboardExists : BTCondition
     {
     }

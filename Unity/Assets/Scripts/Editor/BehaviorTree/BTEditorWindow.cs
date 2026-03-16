@@ -904,7 +904,13 @@ namespace ET
             }
             catch (Exception exception)
             {
-                EditorUtility.DisplayDialog("BehaviorTree Export Failed", exception.Message, "OK");
+                Exception realException = exception;
+                while (realException.InnerException != null)
+                {
+                    realException = realException.InnerException;
+                }
+
+                EditorUtility.DisplayDialog("BehaviorTree Export Failed", realException.ToString(), "OK");
             }
         }
 

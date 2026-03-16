@@ -655,18 +655,18 @@ namespace ET
             SyncNodeDescriptor(node);
             runtimeNodeType = node.NodeKind switch
             {
-                BTNodeKind.Root => typeof(BTRoot),
-                BTNodeKind.Sequence => typeof(BTSequence),
-                BTNodeKind.Selector => typeof(BTSelector),
-                BTNodeKind.Parallel => typeof(BTParallel),
-                BTNodeKind.Inverter => typeof(BTInverter),
-                BTNodeKind.Succeeder => typeof(BTSucceeder),
-                BTNodeKind.Failer => typeof(BTFailer),
-                BTNodeKind.Repeater => typeof(BTRepeater),
-                BTNodeKind.BlackboardCondition => typeof(BTBlackboardCondition),
-                BTNodeKind.Wait => typeof(BTWait),
-                BTNodeKind.SubTree => typeof(BTSubTreeCall),
-                BTNodeKind.Service => typeof(BTServiceCall),
+                BTNodeKind.Root => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTRoot"),
+                BTNodeKind.Sequence => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTSequence"),
+                BTNodeKind.Selector => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTSelector"),
+                BTNodeKind.Parallel => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTParallel"),
+                BTNodeKind.Inverter => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTInverter"),
+                BTNodeKind.Succeeder => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTSucceeder"),
+                BTNodeKind.Failer => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTFailer"),
+                BTNodeKind.Repeater => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTRepeater"),
+                BTNodeKind.BlackboardCondition => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTBlackboardCondition"),
+                BTNodeKind.Wait => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTWait"),
+                BTNodeKind.SubTree => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTSubTreeCall"),
+                BTNodeKind.Service => BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTServiceCall"),
                 BTNodeKind.Action => GetActionRuntimeNodeType(node.NodeTypeId),
                 BTNodeKind.Condition => GetConditionRuntimeNodeType(node.NodeTypeId),
                 _ => null,
@@ -679,40 +679,45 @@ namespace ET
         {
             if (string.Equals(nodeTypeId, BTBuiltinNodeTypes.Log, StringComparison.OrdinalIgnoreCase))
             {
-                return typeof(BTLog);
+                return BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTLog");
             }
 
             if (string.Equals(nodeTypeId, BTBuiltinNodeTypes.SetBlackboard, StringComparison.OrdinalIgnoreCase))
             {
-                return typeof(BTSetBlackboard);
+                return BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTSetBlackboard");
+            }
+
+            if (string.Equals(nodeTypeId, BTBuiltinNodeTypes.SetBlackboardIfMissing, StringComparison.OrdinalIgnoreCase))
+            {
+                return BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTSetBlackboardIfMissing");
             }
 
             if (string.Equals(nodeTypeId, BTPatrolNodeTypes.Patrol, StringComparison.OrdinalIgnoreCase))
             {
-                return typeof(BTPatrol);
+                return BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTPatrol");
             }
 
-            return typeof(BTActionCall);
+            return BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTActionCall");
         }
 
         private static Type GetConditionRuntimeNodeType(string nodeTypeId)
         {
             if (string.Equals(nodeTypeId, BTBuiltinNodeTypes.BlackboardExists, StringComparison.OrdinalIgnoreCase))
             {
-                return typeof(BTBlackboardExists);
+                return BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTBlackboardExists");
             }
 
             if (string.Equals(nodeTypeId, BTBuiltinNodeTypes.BlackboardCompare, StringComparison.OrdinalIgnoreCase))
             {
-                return typeof(BTBlackboardCompare);
+                return BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTBlackboardCompare");
             }
 
             if (string.Equals(nodeTypeId, BTPatrolNodeTypes.HasPatrolPath, StringComparison.OrdinalIgnoreCase))
             {
-                return typeof(BTHasPatrolPath);
+                return BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTHasPatrolPath");
             }
 
-            return typeof(BTConditionCall);
+            return BTEditorRuntimeBridge.ResolveRuntimeType("ET.BTConditionCall");
         }
 
         private static Type GetNodeHandledType(Type handlerType)
@@ -720,7 +725,7 @@ namespace ET
             Type current = handlerType;
             while (current != null)
             {
-                if (current.IsGenericType && current.GetGenericTypeDefinition() == typeof(ABTNodeHandler<>))
+                if (current.IsGenericType && current.GetGenericTypeDefinition().FullName == "ET.ABTNodeHandler`1")
                 {
                     return current.GetGenericArguments()[0];
                 }

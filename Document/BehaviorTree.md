@@ -123,11 +123,23 @@
 
 - `BTAsset`
 - `BTEditorWindow`
+- `BTEditorRuntimeBridge`
 - `BTGraphView`
 - `BTEditorRuntimeNodeFactory`
 - `BTExporter`
 - `BTNodeDescriptor` 体系
 - `BTEditorUtility`
+
+当前 Editor 侧采用纯反射思路：
+
+- Editor 不再静态引用 `Unity.Model`
+- Editor 通过 `BTEditorRuntimeBridge` 按需反射访问运行时定义与序列化入口
+- 行为树运行时主体仍尽量保留在 `Model / Hotfix`
+
+这使得：
+
+- 打开 `BTAsset` Inspector 与行为树编辑器窗口时，不再因为静态字段/类型直接依赖 `Unity.Model` 而触发 `TypeLoadException`
+- 导出 bytes 时，Editor 仍然可以构造运行时 `BTPackage / BTDefinition / BTNodeData`
 
 ### 3.5 Gameplay 扩展点
 
@@ -427,12 +439,38 @@
 
 - `BTSearchWindowProvider` 提供创建入口
 - `BTNodeDescriptor` 负责节点菜单定义、标题、参数描述
-- `BTEditorRuntimeNodeFactory` 负责把编辑节点转换为 `BTNodeData`
+- `BTEditorRuntimeNodeFactory` 负责把编辑节点转换为运行时 `BTNodeData` 对象
+- 该转换不再通过静态引用 `Unity.Model` 完成，而是通过 `BTEditorRuntimeBridge` 反射创建目标类型
 
 ### 11.3 导出
 
-- `BTExporter` 负责从 `BTAsset` 构建 `BTPackage`
+- `BTExporter` 负责从 `BTAsset` 构建运行时 `BTPackage`
+- `BTExporter` 内部通过 `BTEditorRuntimeBridge` 反射创建：
+  - `BTPackage`
+  - `BTDefinition`
+  - `BTNodeData`
+- `BTEditorRuntimeBridge` 会在序列化前自动执行 Nino 生成注册初始化：
+  - `Unity.Model.NinoGen.NinoBuiltInTypesRegistration.Init()`
+  - `Unity.Model.NinoGen.Serializer.Init()`
+  - `Unity.Model.NinoGen.Deserializer.Init()`
+  - `ET.EntitySerializeRegister.Init()`
 - 根树与所有子树一起打包导出为 bytes
+
+### 11.3.1 纯反射方式解耦 Editor 导出链
+
+当前 Editor 导出链路如下：
+
+1. `BTAsset` / `BTEditorNodeData` 保存 authoring 数据
+2. `BTEditorRuntimeNodeFactory` 将编辑节点转换为运行时 `BTNodeData`
+3. `BTExporter` 反射构建 `BTDefinition / BTPackage`
+4. `BTEditorRuntimeBridge.SerializePackage(...)` 调用运行时 `BTSerializer`
+5. 输出 bytes 到客户端与服务端目标目录
+
+这条链路的关键点是：
+
+- Editor 资产层与运行时层已经解耦
+- Editor 只保留共享基础类型的静态依赖
+- 对 `Unity.Model` 的访问统一收口到 `BTEditorRuntimeBridge`
 
 ### 11.4 双击跳转
 
@@ -442,6 +480,33 @@
 2. 找不到则回退到默认运行时代码文件
 
 当前 handler 文件已经按类型拆分，因此跳转不再落到聚合文件。
+
+### 11.5 Editor 与运行时的依赖边界
+
+当前为了避免 `TypeLoadException`，只将 Editor 资产层必须直接反射使用的基础共享类型放在 `Core`，例如：
+
+- `BTNodeKind`
+- `BTNodeState`
+- `BTCompareOperator`
+- `BTAbortMode`
+- `BTParallelPolicy`
+- `BTValueType`
+- `BTSerializedValue`
+- `BTArgumentData`
+- `BTBlackboardEntryData`
+- `BTDebugHub`
+- `BTDebugSnapshot`
+- `BTPatrolPointData`
+
+而行为树运行时执行主体仍保留在：
+
+- `Model`
+- `Hotfix`
+
+这就是当前纯反射方案落地形式：
+
+- 运行时逻辑尽量不下沉到 `Core`
+- 仅把 Editor 直接依赖且会触发反射加载的共享基础类型放回 `Core`
 
 ## 12. 性能特征
 
@@ -535,3 +600,42 @@
 - 导出结构稳定
 - 运行时分派准确
 - 双击跳转正确
+
+### 16.3 最小完整模板示例
+
+当前项目已提供一个完整的 typed leaf 示例模板：`BTSetBlackboardIfMissing`
+
+推荐把它视为“新增功能节点”的标准模板。
+
+对应文件：
+
+- 数据定义：`Unity/Assets/Scripts/Model/Share/Module/BehaviorTree/BTTypedLeafNodeData.cs`
+- 运行时节点：`Unity/Assets/Scripts/Model/Share/Module/BehaviorTree/BTNode.cs`
+- 运行时建图：`Unity/Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTGraphBuilder.cs`
+- 执行器：`Unity/Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTSetBlackboardIfMissingActionHandler.cs`
+- 编辑器描述：`Unity/Assets/Scripts/Editor/BehaviorTree/BTBuiltinNodeDescriptors.cs`
+- 编辑器导出工厂：`Unity/Assets/Scripts/Editor/BehaviorTree/BTEditorRuntimeNodeFactory.cs`
+- 编辑器脚本跳转映射：`Unity/Assets/Scripts/Editor/BehaviorTree/BTEditorUtility.cs`
+
+这个节点演示了“参数型 Action 节点”的完整接入方式，可作为后续新增功能节点的标准参考。
+
+### 16.4 最小模板节点的创建流程
+
+以 `BTSetBlackboardIfMissing` 为例，新增一个正式功能节点的最小流程如下：
+
+1. 在共享常量里增加 `TypeId`
+2. 在 `Model` 新增 `XxxData : BTNodeData`
+3. 在 `Model` 新增运行时节点 `BTXxx : BTAction/BTCondition/BTService`
+4. 在 `Hotfix` 新增 `BTXxxHandler : ABTNodeHandler<BTXxx>`
+5. 在 `BTGraphBuilder` 中增加 `XxxData -> BTXxx` 映射
+6. 在 `BTNodeDescriptor` 中增加菜单、标题、参数定义
+7. 在 `BTEditorRuntimeNodeFactory` 中增加 `TypeId -> XxxData` 的导出映射
+8. 在 `BTEditorUtility` 中增加 `TypeId -> BTXxx` 的脚本跳转映射
+9. 执行 `dotnet build ET.sln` 并验证编辑器创建、双击跳转、导出 bytes 与运行时分派
+
+如果一个新节点尚处于试验阶段，也可以先走 generic fallback：
+
+- `BTActionNodeData / BTConditionNodeData / BTServiceNodeData`
+- `BTActionCallHandler / BTConditionCallHandler / BTServiceCallHandler`
+
+但正式功能节点仍推荐优先采用 typed leaf。
