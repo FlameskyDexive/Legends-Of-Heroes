@@ -12,9 +12,15 @@ namespace ET
                 return result;
             }
 
+            if (node.Definition is not BTSubTreeNodeData definition)
+            {
+                session.SetState(node, BTNodeState.Failure);
+                return BTExecResult.Failure;
+            }
+
             if (node.SubTreeRoot == null)
             {
-                Log.Error($"behavior tree subtree not found: {node.SubTreeId}/{node.SubTreeName}");
+                Log.Error($"behavior tree subtree not found: {definition.SubTreeId}/{definition.SubTreeName}");
                 session.SetState(node, BTNodeState.Failure);
                 return BTExecResult.Failure;
             }

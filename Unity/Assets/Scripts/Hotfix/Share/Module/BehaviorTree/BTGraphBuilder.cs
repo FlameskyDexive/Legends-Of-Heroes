@@ -55,7 +55,12 @@ namespace ET
 
             if (node is BTSubTreeCall subTreeCall)
             {
-                BTDefinition subTree = session.ResolveTree(subTreeCall.SubTreeId, subTreeCall.SubTreeName);
+                if (subTreeCall.Definition is not BTSubTreeNodeData subTreeNodeData)
+                {
+                    return node;
+                }
+
+                BTDefinition subTree = session.ResolveTree(subTreeNodeData.SubTreeId, subTreeNodeData.SubTreeName);
                 if (subTree == null)
                 {
                     return node;
@@ -108,34 +113,28 @@ namespace ET
                     return new BTSequence();
                 case BTSelectorNodeData:
                     return new BTSelector();
-                case BTParallelNodeData parallelNodeData:
-                    return new BTParallel { SuccessPolicy = parallelNodeData.SuccessPolicy, FailurePolicy = parallelNodeData.FailurePolicy };
+                case BTParallelNodeData:
+                    return new BTParallel();
                 case BTInverterNodeData:
                     return new BTInverter();
                 case BTSucceederNodeData:
                     return new BTSucceeder();
                 case BTFailerNodeData:
                     return new BTFailer();
-                case BTRepeaterNodeData repeaterNodeData:
-                    return new BTRepeater { MaxLoopCount = repeaterNodeData.MaxLoopCount };
+                case BTRepeaterNodeData:
+                    return new BTRepeater();
                 case BTBlackboardConditionNodeData blackboardConditionNodeData:
-                    return new BTBlackboardCondition
-                    {
-                        BlackboardKey = blackboardConditionNodeData.BlackboardKey,
-                        CompareOperator = blackboardConditionNodeData.CompareOperator,
-                        CompareValue = blackboardConditionNodeData.CompareValue?.Clone() ?? new BTSerializedValue(),
-                        AbortMode = blackboardConditionNodeData.AbortMode,
-                    };
+                    return new BTBlackboardCondition();
                 case BTServiceNodeData serviceNodeData:
                     return CreateServiceCall(serviceNodeData);
                 case BTActionNodeData actionNodeData:
                     return CreateActionNode(actionNodeData);
                 case BTConditionNodeData conditionNodeData:
                     return CreateConditionNode(conditionNodeData);
-                case BTWaitNodeData waitNodeData:
-                    return new BTWait { WaitMilliseconds = waitNodeData.WaitMilliseconds };
+                case BTWaitNodeData:
+                    return new BTWait();
                 case BTSubTreeNodeData subTreeNodeData:
-                    return new BTSubTreeCall { SubTreeId = subTreeNodeData.SubTreeId, SubTreeName = subTreeNodeData.SubTreeName };
+                    return new BTSubTreeCall();
                 default:
                     return null;
             }
@@ -161,18 +160,7 @@ namespace ET
                 return new BTPatrol();
             }
 
-            BTActionCall node = new()
-            {
-                NodeTypeId = definition.TypeId,
-                HandlerName = definition.ActionHandlerName,
-            };
-
-            foreach (BTArgumentData argument in definition.Arguments)
-            {
-                node.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
-            }
-
-            return node;
+            return new BTActionCall();
         }
 
         private static BTNode CreateConditionNode(BTConditionNodeData definition)
@@ -195,35 +183,12 @@ namespace ET
                 return new BTHasPatrolPath();
             }
 
-            BTConditionCall node = new()
-            {
-                NodeTypeId = definition.TypeId,
-                HandlerName = definition.ConditionHandlerName,
-            };
-
-            foreach (BTArgumentData argument in definition.Arguments)
-            {
-                node.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
-            }
-
-            return node;
+            return new BTConditionCall();
         }
 
         private static BTServiceCall CreateServiceCall(BTServiceNodeData definition)
         {
-            BTServiceCall node = new()
-            {
-                NodeTypeId = definition.TypeId,
-                HandlerName = definition.ServiceHandlerName,
-                IntervalMilliseconds = definition.IntervalMilliseconds,
-            };
-
-            foreach (BTArgumentData argument in definition.Arguments)
-            {
-                node.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
-            }
-
-            return node;
+            return new BTServiceCall();
         }
     }
 }

@@ -20,10 +20,16 @@ namespace ET
                 return BTExecResult.Running;
             }
 
-            ABTActionHandler handler = BTActionDispatcher.Instance.Get(node.HandlerName);
+            if (node.Definition is not BTActionNodeData definition)
+            {
+                session.SetState(node, BTNodeState.Failure);
+                return BTExecResult.Failure;
+            }
+
+            ABTActionHandler handler = BTActionDispatcher.Instance.Get(definition.ActionHandlerName);
             if (handler == null)
             {
-                Log.Error($"behavior tree action handler not found: {node.HandlerName}");
+                Log.Error($"behavior tree action handler not found: {definition.ActionHandlerName}");
                 session.SetState(node, BTNodeState.Failure);
                 return BTExecResult.Failure;
             }

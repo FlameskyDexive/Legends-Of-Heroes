@@ -12,6 +12,12 @@ namespace ET
                 return result;
             }
 
+            if (node.Definition is not BTRepeaterNodeData definition)
+            {
+                session.SetState(node, BTNodeState.Failure);
+                return BTExecResult.Failure;
+            }
+
             if (node.Children.Count == 0)
             {
                 session.SetState(node, BTNodeState.Success);
@@ -30,14 +36,14 @@ namespace ET
                 }
 
                 ++state.RepeatCounter;
-                if (node.MaxLoopCount > 0 && state.RepeatCounter >= node.MaxLoopCount)
+                if (definition.MaxLoopCount > 0 && state.RepeatCounter >= definition.MaxLoopCount)
                 {
                     session.SetState(node, childResult.ToNodeState());
                     return childResult;
                 }
 
                 BTFlowDriver.ResetSubtree(session, child);
-                if (node.MaxLoopCount <= 0)
+                if (definition.MaxLoopCount <= 0)
                 {
                     session.PendingRun = true;
                     session.SetState(node, BTNodeState.Running);

@@ -14,6 +14,12 @@ namespace ET
                 return result;
             }
 
+            if (node.Definition is not BTParallelNodeData definition)
+            {
+                session.SetState(node, BTNodeState.Failure);
+                return BTExecResult.Failure;
+            }
+
             BTNodeRuntimeState state = env.GetState(node);
             if (node.Children.Count == 0)
             {
@@ -33,7 +39,7 @@ namespace ET
                     case BTExecResult.Success:
                         ++successCount;
                         terminalChild = child;
-                        if (node.SuccessPolicy == BTParallelPolicy.RequireOne)
+                        if (definition.SuccessPolicy == BTParallelPolicy.RequireOne)
                         {
                             AbortOtherChildren(session, node, terminalChild);
                             session.SetState(node, BTNodeState.Success);
@@ -43,7 +49,7 @@ namespace ET
                     case BTExecResult.Failure:
                         ++failureCount;
                         terminalChild = child;
-                        if (node.FailurePolicy == BTParallelPolicy.RequireOne)
+                        if (definition.FailurePolicy == BTParallelPolicy.RequireOne)
                         {
                             AbortOtherChildren(session, node, terminalChild);
                             session.SetState(node, BTNodeState.Failure);
@@ -65,8 +71,8 @@ namespace ET
                 return BTExecResult.Running;
             }
 
-            bool success = node.SuccessPolicy == BTParallelPolicy.RequireAll ? successCount == node.Children.Count : successCount > 0;
-            bool failure = node.FailurePolicy == BTParallelPolicy.RequireAll ? failureCount == node.Children.Count : failureCount > 0;
+            bool success = definition.SuccessPolicy == BTParallelPolicy.RequireAll ? successCount == node.Children.Count : successCount > 0;
+            bool failure = definition.FailurePolicy == BTParallelPolicy.RequireAll ? failureCount == node.Children.Count : failureCount > 0;
             if (success && !failure)
             {
                 session.SetState(node, BTNodeState.Success);

@@ -201,17 +201,45 @@ namespace ET
 
         public List<BTNodeData> Nodes = new();
 
+        private Dictionary<string, BTNodeData> nodeLookup;
+
+        private int nodeLookupCount = -1;
+
         public BTNodeData GetNode(string nodeId)
         {
-            foreach (BTNodeData node in this.Nodes)
+            if (string.IsNullOrWhiteSpace(nodeId))
             {
-                if (node.NodeId == nodeId)
-                {
-                    return node;
-                }
+                return null;
             }
 
-            return null;
+            if (this.nodeLookup == null || this.nodeLookupCount != this.Nodes.Count)
+            {
+                RebuildNodeLookup();
+            }
+
+            if (this.nodeLookup != null && this.nodeLookup.TryGetValue(nodeId, out BTNodeData cachedNode) && cachedNode?.NodeId == nodeId)
+            {
+                return cachedNode;
+            }
+
+            RebuildNodeLookup();
+            return this.nodeLookup != null && this.nodeLookup.TryGetValue(nodeId, out BTNodeData rebuiltNode) ? rebuiltNode : null;
+        }
+
+        private void RebuildNodeLookup()
+        {
+            this.nodeLookup ??= new Dictionary<string, BTNodeData>(StringComparer.OrdinalIgnoreCase);
+            this.nodeLookup.Clear();
+            this.nodeLookupCount = this.Nodes.Count;
+            foreach (BTNodeData node in this.Nodes)
+            {
+                if (node == null || string.IsNullOrWhiteSpace(node.NodeId))
+                {
+                    continue;
+                }
+
+                this.nodeLookup[node.NodeId] = node;
+            }
         }
 
         public BTDefinition Clone()

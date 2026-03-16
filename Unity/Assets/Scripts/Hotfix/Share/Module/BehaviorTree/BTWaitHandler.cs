@@ -14,6 +14,12 @@ namespace ET
                 return result;
             }
 
+            if (node.Definition is not BTWaitNodeData)
+            {
+                session.SetState(node, BTNodeState.Failure);
+                return BTExecResult.Failure;
+            }
+
             BTNodeRuntimeState state = env.GetState(node);
             if (state.State == BTNodeState.Running)
             {
@@ -43,7 +49,13 @@ namespace ET
 
             try
             {
-                await timerComponent.WaitAsync(node.WaitMilliseconds, tokenState.Token);
+                if (node.Definition is not BTWaitNodeData definition)
+                {
+                    BTFlowDriver.Resume(session, node.RuntimeNodeId, BTExecResult.Failure);
+                    return;
+                }
+
+                await timerComponent.WaitAsync(definition.WaitMilliseconds, tokenState.Token);
                 if (!BTFlowDriver.IsTokenValid(session, node, version, out _))
                 {
                     return;

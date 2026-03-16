@@ -220,6 +220,7 @@ namespace ET
             self.Env.CurrentTree = self.ResolveTree(node.TreeId, node.TreeName);
         }
 
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
         public static void PublishDebug(this BTExecutionSession self)
         {
             if (self == null)

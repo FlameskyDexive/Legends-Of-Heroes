@@ -51,43 +51,21 @@ namespace ET
     [EnableClass]
     public abstract class BTHandlerCallNode : BTNode
     {
-        public string NodeTypeId = string.Empty;
-
-        public string HandlerName = string.Empty;
-
-        public List<BTArgumentData> Arguments = new();
     }
 
     [EnableClass]
     public sealed class BTActionCall : BTAction
     {
-        public string NodeTypeId = string.Empty;
-
-        public string HandlerName = string.Empty;
-
-        public List<BTArgumentData> Arguments = new();
     }
 
     [EnableClass]
     public sealed class BTConditionCall : BTCondition
     {
-        public string NodeTypeId = string.Empty;
-
-        public string HandlerName = string.Empty;
-
-        public List<BTArgumentData> Arguments = new();
     }
 
     [EnableClass]
     public sealed class BTServiceCall : BTService
     {
-        public string NodeTypeId = string.Empty;
-
-        public string HandlerName = string.Empty;
-
-        public List<BTArgumentData> Arguments = new();
-
-        public int IntervalMilliseconds = 250;
     }
 
     [EnableClass]
@@ -123,28 +101,16 @@ namespace ET
     [EnableClass]
     public sealed class BTWait : BTNode
     {
-        public int WaitMilliseconds = 1000;
     }
 
     [EnableClass]
     public sealed class BTBlackboardCondition : BTNode
     {
-        public string BlackboardKey = string.Empty;
-
-        public BTCompareOperator CompareOperator = BTCompareOperator.IsSet;
-
-        public BTSerializedValue CompareValue = new();
-
-        public BTAbortMode AbortMode = BTAbortMode.Self;
     }
 
     [EnableClass]
     public sealed class BTSubTreeCall : BTNode
     {
-        public string SubTreeId = string.Empty;
-
-        public string SubTreeName = string.Empty;
-
         public BTNode SubTreeRoot;
     }
 
@@ -161,9 +127,6 @@ namespace ET
     [EnableClass]
     public sealed class BTParallel : BTComposite
     {
-        public BTParallelPolicy SuccessPolicy = BTParallelPolicy.RequireAll;
-
-        public BTParallelPolicy FailurePolicy = BTParallelPolicy.RequireOne;
     }
 
     [EnableClass]
@@ -184,6 +147,5 @@ namespace ET
     [EnableClass]
     public sealed class BTRepeater : BTDecorator
     {
-        public int MaxLoopCount;
     }
 }

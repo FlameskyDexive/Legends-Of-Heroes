@@ -8,6 +8,12 @@ namespace ET
             BTExecutionSession session = env.GetSession();
             session.UpdateTreeContext(node);
 
+            if (node.Definition is not BTBlackboardConditionNodeData definition)
+            {
+                session.SetState(node, BTNodeState.Failure);
+                return BTExecResult.Failure;
+            }
+
             BTNodeRuntimeState state = env.GetState(node);
             if (state.HasForcedResult)
             {
@@ -22,7 +28,7 @@ namespace ET
                 return result;
             }
 
-            if (!Evaluate(node, session.Blackboard))
+            if (!Evaluate(definition, session.Blackboard))
             {
                 CleanupObserver(session, state);
                 session.SetState(node, BTNodeState.Failure);
@@ -35,9 +41,9 @@ namespace ET
                 return BTExecResult.Success;
             }
 
-            if (state.ObserverId == 0 && node.AbortMode != BTAbortMode.None)
+            if (state.ObserverId == 0 && definition.AbortMode != BTAbortMode.None)
             {
-                state.ObserverId = session.Blackboard.Observe(node.BlackboardKey, _ => OnBlackboardChanged(session, node));
+                state.ObserverId = session.Blackboard.Observe(definition.BlackboardKey, _ => OnBlackboardChanged(session, node));
             }
 
             BTExecResult childResult = BTDispatcher.Instance.Handle(node.Children[0], env);
@@ -52,10 +58,10 @@ namespace ET
             return childResult;
         }
 
-        private static bool Evaluate(BTBlackboardCondition node, BTBlackboard blackboard)
+        private static bool Evaluate(BTBlackboardConditionNodeData definition, BTBlackboard blackboard)
         {
-            object currentValue = blackboard.GetBoxed(node.BlackboardKey);
-            return BTValueUtility.Compare(currentValue, node.CompareOperator, node.CompareValue);
+            object currentValue = blackboard.GetBoxed(definition.BlackboardKey);
+            return BTValueUtility.Compare(currentValue, definition.CompareOperator, definition.CompareValue);
         }
 
         private static void OnBlackboardChanged(BTExecutionSession session, BTBlackboardCondition node)
@@ -65,7 +71,12 @@ namespace ET
                 return;
             }
 
-            if (Evaluate(node, session.Blackboard))
+            if (node.Definition is not BTBlackboardConditionNodeData definition)
+            {
+                return;
+            }
+
+            if (Evaluate(definition, session.Blackboard))
             {
                 return;
             }

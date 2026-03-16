@@ -10,6 +10,12 @@ namespace ET
             BTExecutionSession session = env.GetSession();
             session.UpdateTreeContext(node);
 
+            if (node.Definition is not BTServiceNodeData definition)
+            {
+                session.SetState(node, BTNodeState.Failure);
+                return BTExecResult.Failure;
+            }
+
             BTNodeRuntimeState state = env.GetState(node);
             if (state.HasForcedResult)
             {
@@ -30,10 +36,10 @@ namespace ET
                 return BTExecResult.Failure;
             }
 
-            ABTServiceHandler handler = BTServiceDispatcher.Instance.Get(node.HandlerName);
+            ABTServiceHandler handler = BTServiceDispatcher.Instance.Get(definition.ServiceHandlerName);
             if (handler == null)
             {
-                Log.Error($"behavior tree service handler not found: {node.HandlerName}");
+                Log.Error($"behavior tree service handler not found: {definition.ServiceHandlerName}");
                 session.SetState(node, BTNodeState.Failure);
                 return BTExecResult.Failure;
             }
@@ -42,7 +48,7 @@ namespace ET
             {
                 state.ServiceStarted = true;
                 BTCoroutineTokenState tokenState = BTFlowDriver.StartToken(session, node);
-                RunServiceLoop(session, node, handler, tokenState.Version).Coroutine();
+                RunServiceLoop(session, node, definition, handler, tokenState.Version).Coroutine();
             }
 
             BTExecResult childResult = BTDispatcher.Instance.Handle(node.Children[0], env);
@@ -57,7 +63,7 @@ namespace ET
             return childResult;
         }
 
-        private static async ETTask RunServiceLoop(BTExecutionSession session, BTServiceCall node, ABTServiceHandler handler, long version)
+        private static async ETTask RunServiceLoop(BTExecutionSession session, BTServiceCall node, BTServiceNodeData definition, ABTServiceHandler handler, long version)
         {
             try
             {
@@ -76,7 +82,7 @@ namespace ET
                         return;
                     }
 
-                    await timerComponent.WaitAsync(node.IntervalMilliseconds, tokenState.Token);
+                    await timerComponent.WaitAsync(definition.IntervalMilliseconds, tokenState.Token);
                 }
             }
             catch (Exception exception)

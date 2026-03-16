@@ -14,10 +14,16 @@ namespace ET
                 return result;
             }
 
-            ABTConditionHandler handler = BTConditionDispatcher.Instance.Get(node.HandlerName);
+            if (node.Definition is not BTConditionNodeData definition)
+            {
+                session.SetState(node, BTNodeState.Failure);
+                return BTExecResult.Failure;
+            }
+
+            ABTConditionHandler handler = BTConditionDispatcher.Instance.Get(definition.ConditionHandlerName);
             if (handler == null)
             {
-                Log.Error($"behavior tree condition handler not found: {node.HandlerName}");
+                Log.Error($"behavior tree condition handler not found: {definition.ConditionHandlerName}");
                 session.SetState(node, BTNodeState.Failure);
                 return BTExecResult.Failure;
             }
