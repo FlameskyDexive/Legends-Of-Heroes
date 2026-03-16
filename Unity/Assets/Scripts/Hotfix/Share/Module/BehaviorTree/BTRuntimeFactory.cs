@@ -4,13 +4,13 @@ namespace ET
 {
     public static partial class BTRuntime
     {
-        public static BTRunner Create(Entity owner, byte[] bytes, string treeIdOrName = "")
+        public static BTExecutionSession Create(Entity owner, byte[] bytes, string treeIdOrName = "")
         {
             BTPackage package = BTSerializer.Deserialize(bytes);
             return package == null ? null : Create(owner, package, treeIdOrName);
         }
 
-        public static BTRunner Create(Entity owner, BTPackage package, string treeIdOrName = "")
+        public static BTExecutionSession Create(Entity owner, BTPackage package, string treeIdOrName = "")
         {
             if (owner == null)
             {
@@ -22,39 +22,48 @@ namespace ET
                 return null;
             }
 
-            BTRunner runner = new()
+            BTExecutionSession session = new()
             {
                 Owner = owner,
                 Package = package.Clone(),
             };
 
-            foreach (BTDefinition tree in runner.Package.Trees)
+            foreach (BTDefinition tree in session.Package.Trees)
             {
                 if (!string.IsNullOrWhiteSpace(tree.TreeId))
                 {
-                    runner.TreeIdMap[tree.TreeId] = tree;
+                    session.TreeIdMap[tree.TreeId] = tree;
                 }
 
                 if (!string.IsNullOrWhiteSpace(tree.TreeName))
                 {
-                    runner.TreeNameMap[tree.TreeName] = tree;
+                    session.TreeNameMap[tree.TreeName] = tree;
                 }
             }
 
-            runner.Tree = runner.ResolveTree(string.IsNullOrWhiteSpace(treeIdOrName) ? runner.Package.EntryTreeId : treeIdOrName,
-                string.IsNullOrWhiteSpace(treeIdOrName) ? runner.Package.EntryTreeName : treeIdOrName);
-            if (runner.Tree == null)
+            session.EntryDefinition = session.ResolveTree(string.IsNullOrWhiteSpace(treeIdOrName) ? session.Package.EntryTreeId : treeIdOrName,
+                string.IsNullOrWhiteSpace(treeIdOrName) ? session.Package.EntryTreeName : treeIdOrName);
+            if (session.EntryDefinition == null)
             {
                 throw new Exception($"behavior tree entry not found: {treeIdOrName}");
             }
 
-            runner.RuntimeId = IdGenerater.Instance.GenerateInstanceId();
-            runner.Blackboard = new BTBlackboard();
-            runner.Blackboard.ApplyDefaults(runner.Tree.BlackboardEntries);
-            runner.Context = new BTExecutionContext(runner.RuntimeId, runner.Tree.TreeId, runner.Tree.TreeName, owner, runner.Blackboard);
-            runner.RootNode = runner.BuildTree(runner.Tree, runner.Tree.RootNodeId, null);
-            runner.PublishDebug();
-            return runner;
+            session.RuntimeId = IdGenerater.Instance.GenerateInstanceId();
+            session.Blackboard = new BTBlackboard();
+            session.Blackboard.ApplyDefaults(session.EntryDefinition.BlackboardEntries);
+            session.Env = new BTEnv
+            {
+                Owner = owner,
+                RuntimeId = session.RuntimeId,
+                Blackboard = session.Blackboard,
+                Session = session,
+                CurrentTree = session.EntryDefinition,
+                TreeId = session.EntryDefinition.TreeId,
+                TreeName = session.EntryDefinition.TreeName,
+            };
+            session.Root = BTGraphBuilder.Build(session);
+            session.PublishDebug();
+            return session;
         }
     }
 }

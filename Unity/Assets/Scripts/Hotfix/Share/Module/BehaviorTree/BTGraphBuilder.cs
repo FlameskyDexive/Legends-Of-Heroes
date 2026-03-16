@@ -1,0 +1,181 @@
+using System;
+using System.Collections.Generic;
+
+namespace ET
+{
+    public static class BTGraphBuilder
+    {
+        public static BTRoot Build(BTExecutionSession session)
+        {
+            if (session == null || session.EntryDefinition == null)
+            {
+                return null;
+            }
+
+            int nextRuntimeNodeId = 1;
+            HashSet<string> buildStack = new(StringComparer.OrdinalIgnoreCase);
+            BTNode rootNode = BuildNode(session, session.EntryDefinition, session.EntryDefinition.RootNodeId, ref nextRuntimeNodeId, buildStack);
+            return rootNode as BTRoot;
+        }
+
+        private static BTNode BuildNode(BTExecutionSession session, BTDefinition tree, string nodeId, ref int nextRuntimeNodeId, HashSet<string> buildStack)
+        {
+            if (session == null || tree == null || string.IsNullOrWhiteSpace(nodeId))
+            {
+                return null;
+            }
+
+            BTNodeData definition = tree.GetNode(nodeId);
+            if (definition == null)
+            {
+                return null;
+            }
+
+            BTNode node = CreateNode(definition);
+            if (node == null)
+            {
+                return null;
+            }
+
+            node.RuntimeNodeId = nextRuntimeNodeId++;
+            node.SourceNodeId = definition.NodeId ?? string.Empty;
+            node.TreeId = tree.TreeId ?? string.Empty;
+            node.TreeName = tree.TreeName ?? string.Empty;
+            node.Definition = definition;
+            session.Nodes[node.RuntimeNodeId] = node;
+
+            foreach (string childId in definition.ChildIds)
+            {
+                BTNode child = BuildNode(session, tree, childId, ref nextRuntimeNodeId, buildStack);
+                if (child != null)
+                {
+                    node.Children.Add(child);
+                }
+            }
+
+            if (node is BTSubTreeCall subTreeCall)
+            {
+                BTDefinition subTree = session.ResolveTree(subTreeCall.SubTreeId, subTreeCall.SubTreeName);
+                if (subTree == null)
+                {
+                    return node;
+                }
+
+                string guardKey = !string.IsNullOrWhiteSpace(subTree.TreeId) ? subTree.TreeId : subTree.TreeName;
+                if (!string.IsNullOrWhiteSpace(guardKey))
+                {
+                    if (!buildStack.Add(guardKey))
+                    {
+                        throw new Exception($"behavior tree subtree cycle detected: {guardKey}");
+                    }
+                }
+
+                try
+                {
+                    subTreeCall.SubTreeRoot = BuildNode(session, subTree, subTree.RootNodeId, ref nextRuntimeNodeId, buildStack);
+                }
+                finally
+                {
+                    if (!string.IsNullOrWhiteSpace(guardKey))
+                    {
+                        buildStack.Remove(guardKey);
+                    }
+                }
+            }
+
+            return node;
+        }
+
+        private static BTNode CreateNode(BTNodeData definition)
+        {
+            switch (definition)
+            {
+                case BTRootNodeData:
+                    return new BTRoot();
+                case BTSequenceNodeData:
+                    return new BTSequence();
+                case BTSelectorNodeData:
+                    return new BTSelector();
+                case BTParallelNodeData parallelNodeData:
+                    return new BTParallel { SuccessPolicy = parallelNodeData.SuccessPolicy, FailurePolicy = parallelNodeData.FailurePolicy };
+                case BTInverterNodeData:
+                    return new BTInverter();
+                case BTSucceederNodeData:
+                    return new BTSucceeder();
+                case BTFailerNodeData:
+                    return new BTFailer();
+                case BTRepeaterNodeData repeaterNodeData:
+                    return new BTRepeater { MaxLoopCount = repeaterNodeData.MaxLoopCount };
+                case BTBlackboardConditionNodeData blackboardConditionNodeData:
+                    return new BTBlackboardCondition
+                    {
+                        BlackboardKey = blackboardConditionNodeData.BlackboardKey,
+                        CompareOperator = blackboardConditionNodeData.CompareOperator,
+                        CompareValue = blackboardConditionNodeData.CompareValue?.Clone() ?? new BTSerializedValue(),
+                        AbortMode = blackboardConditionNodeData.AbortMode,
+                    };
+                case BTServiceNodeData serviceNodeData:
+                    return CreateServiceCall(serviceNodeData);
+                case BTActionNodeData actionNodeData:
+                    return CreateActionCall(actionNodeData);
+                case BTConditionNodeData conditionNodeData:
+                    return CreateConditionCall(conditionNodeData);
+                case BTWaitNodeData waitNodeData:
+                    return new BTWait { WaitMilliseconds = waitNodeData.WaitMilliseconds };
+                case BTSubTreeNodeData subTreeNodeData:
+                    return new BTSubTreeCall { SubTreeId = subTreeNodeData.SubTreeId, SubTreeName = subTreeNodeData.SubTreeName };
+                default:
+                    return null;
+            }
+        }
+
+        private static BTActionCall CreateActionCall(BTActionNodeData definition)
+        {
+            BTActionCall node = new()
+            {
+                NodeTypeId = definition.TypeId,
+                HandlerName = definition.ActionHandlerName,
+            };
+
+            foreach (BTArgumentData argument in definition.Arguments)
+            {
+                node.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
+            }
+
+            return node;
+        }
+
+        private static BTConditionCall CreateConditionCall(BTConditionNodeData definition)
+        {
+            BTConditionCall node = new()
+            {
+                NodeTypeId = definition.TypeId,
+                HandlerName = definition.ConditionHandlerName,
+            };
+
+            foreach (BTArgumentData argument in definition.Arguments)
+            {
+                node.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
+            }
+
+            return node;
+        }
+
+        private static BTServiceCall CreateServiceCall(BTServiceNodeData definition)
+        {
+            BTServiceCall node = new()
+            {
+                NodeTypeId = definition.TypeId,
+                HandlerName = definition.ServiceHandlerName,
+                IntervalMilliseconds = definition.IntervalMilliseconds,
+            };
+
+            foreach (BTArgumentData argument in definition.Arguments)
+            {
+                node.Arguments.Add(argument?.Clone() ?? new BTArgumentData());
+            }
+
+            return node;
+        }
+    }
+}

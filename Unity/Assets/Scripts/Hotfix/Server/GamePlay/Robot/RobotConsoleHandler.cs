@@ -80,16 +80,16 @@ namespace ET.Server
                         break;
                     }
 
-                    BTRunner runner = BTRuntime.Create(fiber.Root, bytes, treeName);
-                    if (runner == null)
+                    BTExecutionSession session = BTRuntime.Create(fiber.Root, bytes, treeName);
+                    if (session == null)
                     {
                         Log.Debug($"run behavior tree failed: {fileName}/{treeName}");
                         break;
                     }
 
-                    runner.Start();
+                    BTFlowDriver.RunRoot(session);
                     await fiber.Root.GetComponent<TimerComponent>().WaitAsync(2200);
-                    runner.Dispose();
+                    BTFlowDriver.Dispose(session);
                     Log.Debug($"behavior tree run finish: {fileName}/{treeName}");
                     break;
                 }

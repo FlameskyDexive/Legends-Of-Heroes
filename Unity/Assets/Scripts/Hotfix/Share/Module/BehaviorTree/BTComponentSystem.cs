@@ -36,13 +36,13 @@ namespace ET
 
         public static void SetBlackboardValue(this BTComponent self, string key, object value)
         {
-            BTRunner runner = self.GetRunner();
-            runner?.Blackboard.SetBoxed(key, value);
+            BTExecutionSession session = self.GetSession();
+            session?.Blackboard.SetBoxed(key, value);
         }
 
-        public static BTRunner GetRunner(this BTComponent self)
+        public static BTExecutionSession GetSession(this BTComponent self)
         {
-            return BTRuntimeManager.Instance.Get(self.RuntimeId);
+            return BTExecutionSessionManager.Instance.Get(self.RuntimeId);
         }
 
         private static void StartTree(this BTComponent self)
@@ -54,8 +54,8 @@ namespace ET
             }
 
             Unit unit = self.GetParent<Unit>();
-            BTRunner runner = BTRuntime.Create(unit, self.TreeBytes, self.TreeIdOrName);
-            if (runner == null)
+            BTExecutionSession session = BTRuntime.Create(unit, self.TreeBytes, self.TreeIdOrName);
+            if (session == null)
             {
                 Log.Error($"behavior tree create failed: {self.TreeIdOrName}");
                 return;
@@ -63,19 +63,19 @@ namespace ET
 
             foreach ((string key, BTSerializedValue value) in self.BlackboardOverrides)
             {
-                runner.Blackboard.SetBoxed(key, BTValueUtility.GetValue(value));
+                session.Blackboard.SetBoxed(key, BTValueUtility.GetValue(value));
             }
 
-            runner.Start();
-            self.RuntimeId = runner.RuntimeId;
-            BTRuntimeManager.Instance.Add(self.RuntimeId, runner);
+            BTFlowDriver.RunRoot(session);
+            self.RuntimeId = session.RuntimeId;
+            BTExecutionSessionManager.Instance.Add(session);
         }
 
         private static void StopTree(this BTComponent self)
         {
-            BTRunner runner = BTRuntimeManager.Instance.Remove(self.RuntimeId);
+            BTExecutionSession session = BTExecutionSessionManager.Instance.Remove(self.RuntimeId);
             self.RuntimeId = 0;
-            runner?.Dispose();
+            BTFlowDriver.Dispose(session);
         }
     }
 }

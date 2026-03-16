@@ -10,6 +10,7 @@ namespace ET
         public const string ServerBehaviorTreeBytesDir = BTBytesLoader.ServerBehaviorTreeBytesDir;
         public const string BTAssetDir = BTBytesLoader.BTAssetDir;
 
+        private readonly Dictionary<string, byte[]> bytesCache = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, BTPackage> packageCache = new(StringComparer.OrdinalIgnoreCase);
 
         public void Awake()
@@ -18,12 +19,54 @@ namespace ET
 
         public async ETTask<byte[]> LoadBytesAsync(string treeName, bool useCache = true)
         {
-            return await BTBytesLoader.Instance.LoadBytesAsync(treeName, useCache);
+            if (string.IsNullOrWhiteSpace(treeName))
+            {
+                Log.Error("behavior tree name is empty");
+                return null;
+            }
+
+            if (useCache && this.bytesCache.TryGetValue(treeName, out byte[] cacheBytes))
+            {
+                return cacheBytes;
+            }
+
+            byte[] bytes = await EventSystem.Instance.Invoke<BTBytesLoader.GetOneBehaviorTreeBytes, ETTask<byte[]>>(new BTBytesLoader.GetOneBehaviorTreeBytes
+            {
+                TreeName = treeName,
+            });
+
+            if (bytes != null && bytes.Length > 0 && useCache)
+            {
+                this.bytesCache[treeName] = bytes;
+            }
+
+            return bytes;
         }
 
         public byte[] LoadBytes(string treeName, bool useCache = true)
         {
-            return BTBytesLoader.Instance.LoadBytes(treeName, useCache);
+            if (string.IsNullOrWhiteSpace(treeName))
+            {
+                Log.Error("behavior tree name is empty");
+                return null;
+            }
+
+            if (useCache && this.bytesCache.TryGetValue(treeName, out byte[] cacheBytes))
+            {
+                return cacheBytes;
+            }
+
+            byte[] bytes = EventSystem.Instance.Invoke<BTBytesLoader.GetOneBehaviorTreeBytes, byte[]>(new BTBytesLoader.GetOneBehaviorTreeBytes
+            {
+                TreeName = treeName,
+            });
+
+            if (bytes != null && bytes.Length > 0 && useCache)
+            {
+                this.bytesCache[treeName] = bytes;
+            }
+
+            return bytes;
         }
 
         public async ETTask<BTPackage> LoadPackageAsync(string treeName, bool useCache = true)
@@ -86,13 +129,13 @@ namespace ET
         {
             if (string.IsNullOrWhiteSpace(treeName))
             {
+                this.bytesCache.Clear();
                 this.packageCache.Clear();
-                BTBytesLoader.Instance?.Clear();
                 return;
             }
 
+            this.bytesCache.Remove(treeName);
             this.packageCache.Remove(treeName);
-            BTBytesLoader.Instance?.Clear(treeName);
         }
     }
 }

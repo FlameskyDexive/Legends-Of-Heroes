@@ -25,5 +25,15 @@ namespace ET
             this.Owner = owner;
             this.Blackboard = blackboard;
         }
+
+        public BTExecutionContext Configure(long runtimeId, string treeId, string treeName, Entity owner, BTBlackboard blackboard)
+        {
+            this.RuntimeId = runtimeId;
+            this.TreeId = treeId ?? string.Empty;
+            this.TreeName = treeName ?? string.Empty;
+            this.Owner = owner;
+            this.Blackboard = blackboard;
+            return this;
+        }
     }
 }

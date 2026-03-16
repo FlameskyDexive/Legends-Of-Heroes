@@ -4,6 +4,7 @@
     "references":  [
                        "Unity.ThirdParty",
                        "Unity.Core",
+                       "Unity.Model",
                        "Unity.Loader",
                        "HybridCLR.Runtime",
                        "HybridCLR.Editor",
