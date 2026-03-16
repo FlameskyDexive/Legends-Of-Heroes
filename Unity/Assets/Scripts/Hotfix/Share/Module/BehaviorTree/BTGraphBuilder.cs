@@ -90,6 +90,18 @@ namespace ET
         {
             switch (definition)
             {
+                case BTLogNodeData:
+                    return new BTLog();
+                case BTSetBlackboardNodeData:
+                    return new BTSetBlackboard();
+                case BTBlackboardExistsNodeData:
+                    return new BTBlackboardExists();
+                case BTBlackboardCompareNodeData:
+                    return new BTBlackboardCompare();
+                case BTPatrolNodeData:
+                    return new BTPatrol();
+                case BTHasPatrolPathNodeData:
+                    return new BTHasPatrolPath();
                 case BTRootNodeData:
                     return new BTRoot();
                 case BTSequenceNodeData:
@@ -117,9 +129,9 @@ namespace ET
                 case BTServiceNodeData serviceNodeData:
                     return CreateServiceCall(serviceNodeData);
                 case BTActionNodeData actionNodeData:
-                    return CreateActionCall(actionNodeData);
+                    return CreateActionNode(actionNodeData);
                 case BTConditionNodeData conditionNodeData:
-                    return CreateConditionCall(conditionNodeData);
+                    return CreateConditionNode(conditionNodeData);
                 case BTWaitNodeData waitNodeData:
                     return new BTWait { WaitMilliseconds = waitNodeData.WaitMilliseconds };
                 case BTSubTreeNodeData subTreeNodeData:
@@ -129,8 +141,26 @@ namespace ET
             }
         }
 
-        private static BTActionCall CreateActionCall(BTActionNodeData definition)
+        private static BTNode CreateActionNode(BTActionNodeData definition)
         {
+            if (string.Equals(definition.TypeId, BTBuiltinNodeTypes.Log, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(definition.ActionHandlerName, "Log", StringComparison.OrdinalIgnoreCase))
+            {
+                return new BTLog();
+            }
+
+            if (string.Equals(definition.TypeId, BTBuiltinNodeTypes.SetBlackboard, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(definition.ActionHandlerName, "SetBlackboard", StringComparison.OrdinalIgnoreCase))
+            {
+                return new BTSetBlackboard();
+            }
+
+            if (string.Equals(definition.TypeId, BTPatrolNodeTypes.Patrol, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(definition.ActionHandlerName, "BTPatrol", StringComparison.OrdinalIgnoreCase))
+            {
+                return new BTPatrol();
+            }
+
             BTActionCall node = new()
             {
                 NodeTypeId = definition.TypeId,
@@ -145,8 +175,26 @@ namespace ET
             return node;
         }
 
-        private static BTConditionCall CreateConditionCall(BTConditionNodeData definition)
+        private static BTNode CreateConditionNode(BTConditionNodeData definition)
         {
+            if (string.Equals(definition.TypeId, BTBuiltinNodeTypes.BlackboardExists, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(definition.ConditionHandlerName, "BlackboardExists", StringComparison.OrdinalIgnoreCase))
+            {
+                return new BTBlackboardExists();
+            }
+
+            if (string.Equals(definition.TypeId, BTBuiltinNodeTypes.BlackboardCompare, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(definition.ConditionHandlerName, "BlackboardCompare", StringComparison.OrdinalIgnoreCase))
+            {
+                return new BTBlackboardCompare();
+            }
+
+            if (string.Equals(definition.TypeId, BTPatrolNodeTypes.HasPatrolPath, StringComparison.OrdinalIgnoreCase)
+                || string.Equals(definition.ConditionHandlerName, "BTHasPatrolPath", StringComparison.OrdinalIgnoreCase))
+            {
+                return new BTHasPatrolPath();
+            }
+
             BTConditionCall node = new()
             {
                 NodeTypeId = definition.TypeId,

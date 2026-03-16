@@ -33,12 +33,10 @@ namespace ET.Client
                 ChildIds = { "log", "wait" },
             });
 
-            tree.Nodes.Add(new BTActionNodeData()
+            tree.Nodes.Add(new BTLogNodeData()
             {
                 NodeId = "log",
                 Title = "Log Tick",
-                TypeId = BTBuiltinNodeTypes.Log,
-                ActionHandlerName = "Log",
                 Arguments =
                 {
                     new BTArgumentData()

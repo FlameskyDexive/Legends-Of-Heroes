@@ -1,24 +1,25 @@
 namespace ET
 {
-    [BTConditionHandler("BlackboardCompare")]
-    public sealed class BTBlackboardCompareConditionHandler : ABTConditionHandler
+    [BTNodeHandler]
+    public sealed class BTBlackboardCompareConditionHandler : ABTNodeHandler<BTBlackboardCompare>
     {
-        public override bool Evaluate(BTExecutionContext context, BTNodeData node)
+        protected override BTExecResult Run(BTBlackboardCompare node, BTEnv env)
         {
-            string key = context.GetStringArgument(node, "key");
+            BTExecutionContext context = env.BindContext(node);
+            string key = context.GetStringArgument(node.Definition, "key");
             if (string.IsNullOrWhiteSpace(key))
             {
-                return false;
+                return BTExecResult.Failure;
             }
 
-            BTCompareOperator compareOperator = (BTCompareOperator)context.GetIntArgument(node, "operator", (int)BTCompareOperator.Equal);
+            BTCompareOperator compareOperator = (BTCompareOperator)context.GetIntArgument(node.Definition, "operator", (int)BTCompareOperator.Equal);
             object currentValue = context.Blackboard.GetBoxed(key);
-            if (!context.TryGetArgument(node, "value", out BTArgumentData argument))
+            if (!context.TryGetArgument(node.Definition, "value", out BTArgumentData argument))
             {
-                return BTValueUtility.Compare(currentValue, compareOperator, new BTSerializedValue());
+                return BTValueUtility.Compare(currentValue, compareOperator, new BTSerializedValue()) ? BTExecResult.Success : BTExecResult.Failure;
             }
 
-            return BTValueUtility.Compare(currentValue, compareOperator, argument.Value);
+            return BTValueUtility.Compare(currentValue, compareOperator, argument.Value) ? BTExecResult.Success : BTExecResult.Failure;
         }
     }
 }

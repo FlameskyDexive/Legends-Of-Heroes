@@ -34,6 +34,21 @@ namespace ET
     }
 
     [EnableClass]
+    public abstract class BTAction : BTNode
+    {
+    }
+
+    [EnableClass]
+    public abstract class BTCondition : BTNode
+    {
+    }
+
+    [EnableClass]
+    public abstract class BTService : BTNode
+    {
+    }
+
+    [EnableClass]
     public abstract class BTHandlerCallNode : BTNode
     {
         public string NodeTypeId = string.Empty;
@@ -44,19 +59,65 @@ namespace ET
     }
 
     [EnableClass]
-    public sealed class BTActionCall : BTHandlerCallNode
+    public sealed class BTActionCall : BTAction
     {
+        public string NodeTypeId = string.Empty;
+
+        public string HandlerName = string.Empty;
+
+        public List<BTArgumentData> Arguments = new();
     }
 
     [EnableClass]
-    public sealed class BTConditionCall : BTHandlerCallNode
+    public sealed class BTConditionCall : BTCondition
     {
+        public string NodeTypeId = string.Empty;
+
+        public string HandlerName = string.Empty;
+
+        public List<BTArgumentData> Arguments = new();
     }
 
     [EnableClass]
-    public sealed class BTServiceCall : BTHandlerCallNode
+    public sealed class BTServiceCall : BTService
     {
+        public string NodeTypeId = string.Empty;
+
+        public string HandlerName = string.Empty;
+
+        public List<BTArgumentData> Arguments = new();
+
         public int IntervalMilliseconds = 250;
+    }
+
+    [EnableClass]
+    public sealed class BTLog : BTAction
+    {
+    }
+
+    [EnableClass]
+    public sealed class BTSetBlackboard : BTAction
+    {
+    }
+
+    [EnableClass]
+    public sealed class BTBlackboardExists : BTCondition
+    {
+    }
+
+    [EnableClass]
+    public sealed class BTBlackboardCompare : BTCondition
+    {
+    }
+
+    [EnableClass]
+    public sealed class BTPatrol : BTAction
+    {
+    }
+
+    [EnableClass]
+    public sealed class BTHasPatrolPath : BTCondition
+    {
     }
 
     [EnableClass]

@@ -1,11 +1,14 @@
 namespace ET
 {
-    [BTConditionHandler("BTHasPatrolPath")]
-    public sealed class BTHasPatrolPathCondition : ABTConditionHandler
+    [BTNodeHandler]
+    public sealed class BTHasPatrolPathCondition : ABTNodeHandler<BTHasPatrolPath>
     {
-        public override bool Evaluate(BTExecutionContext context, BTNodeData node)
+        protected override BTExecResult Run(BTHasPatrolPath node, BTEnv env)
         {
-            return context.TryGetOwner<Unit>(out Unit unit) && !unit.IsDisposed && unit.GetComponent<PatrolComponent>() != null;
+            BTExecutionContext context = env.BindContext(node);
+            return context.TryGetOwner<Unit>(out Unit unit) && !unit.IsDisposed && unit.GetComponent<PatrolComponent>() != null
+                    ? BTExecResult.Success
+                    : BTExecResult.Failure;
         }
     }
 }

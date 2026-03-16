@@ -1,15 +1,14 @@
 namespace ET
 {
-    [BTActionHandler("Log")]
-    public sealed class BTLogActionHandler : ABTActionHandler
+    [BTNodeHandler]
+    public sealed class BTLogActionHandler : ABTNodeHandler<BTLog>
     {
-        public override ETTask<BTNodeState> Execute(BTExecutionContext context, BTNodeData node, ETCancellationToken cancellationToken)
+        protected override BTExecResult Run(BTLog node, BTEnv env)
         {
-            string message = context.GetStringArgument(node, "message", node.Title);
+            BTExecutionContext context = env.BindContext(node);
+            string message = context.GetStringArgument(node.Definition, "message", node.Definition?.Title);
             Log.Info($"[BehaviorTree][{context.TreeName}] {message}");
-            ETTask<BTNodeState> task = ETTask<BTNodeState>.Create();
-            task.SetResult(BTNodeState.Success);
-            return task;
+            return BTExecResult.Success;
         }
     }
 }

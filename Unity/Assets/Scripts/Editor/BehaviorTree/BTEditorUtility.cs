@@ -308,6 +308,12 @@ namespace ET
         public static bool TryGetNodeScriptAsset(BTEditorNodeData node, out UnityEngine.Object scriptAsset)
         {
             scriptAsset = null;
+            if (TryGetNodeHandlerScript(node, out MonoScript nodeHandlerScript))
+            {
+                scriptAsset = nodeHandlerScript;
+                return true;
+            }
+
             if (TryGetHandlerScript(node, out MonoScript handlerScript))
             {
                 scriptAsset = handlerScript;
@@ -315,6 +321,46 @@ namespace ET
             }
 
             return TryGetRuntimeNodeScript(node, out scriptAsset);
+        }
+
+        public static bool TryGetNodeHandlerScript(BTEditorNodeData node, out MonoScript monoScript)
+        {
+            monoScript = null;
+            if (!TryGetNodeHandlerType(node, out Type handlerType))
+            {
+                return false;
+            }
+
+            monoScript = FindMonoScript(handlerType);
+            return monoScript != null;
+        }
+
+        public static bool TryGetNodeHandlerType(BTEditorNodeData node, out Type handlerType)
+        {
+            handlerType = null;
+            if (!TryGetRuntimeNodeType(node, out Type runtimeNodeType))
+            {
+                return false;
+            }
+
+            foreach (Type type in TypeCache.GetTypesWithAttribute<BTNodeHandlerAttribute>())
+            {
+                if (type.IsAbstract)
+                {
+                    continue;
+                }
+
+                Type currentNodeType = GetNodeHandledType(type);
+                if (currentNodeType == null || currentNodeType != runtimeNodeType)
+                {
+                    continue;
+                }
+
+                handlerType = type;
+                return true;
+            }
+
+            return false;
         }
 
         public static bool TryGetHandlerScript(BTEditorNodeData node, out MonoScript monoScript)
@@ -572,20 +618,20 @@ namespace ET
 
             string assetPath = node.NodeKind switch
             {
-                BTNodeKind.Root => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.Sequence => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.Selector => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.Parallel => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.Inverter => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.Succeeder => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.Failer => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.Repeater => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.BlackboardCondition => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.Wait => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTLeafBridgeHandlers.cs",
-                BTNodeKind.SubTree => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTStructureHandlers.cs",
-                BTNodeKind.Service => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTLeafBridgeHandlers.cs",
-                BTNodeKind.Action => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTLeafBridgeHandlers.cs",
-                BTNodeKind.Condition => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTLeafBridgeHandlers.cs",
+                BTNodeKind.Root => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTRootHandler.cs",
+                BTNodeKind.Sequence => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTSequenceHandler.cs",
+                BTNodeKind.Selector => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTSelectorHandler.cs",
+                BTNodeKind.Parallel => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTParallelHandler.cs",
+                BTNodeKind.Inverter => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTInverterHandler.cs",
+                BTNodeKind.Succeeder => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTSucceederHandler.cs",
+                BTNodeKind.Failer => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTFailerHandler.cs",
+                BTNodeKind.Repeater => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTRepeaterHandler.cs",
+                BTNodeKind.BlackboardCondition => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTBlackboardConditionHandler.cs",
+                BTNodeKind.Wait => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTWaitHandler.cs",
+                BTNodeKind.SubTree => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTSubTreeCallHandler.cs",
+                BTNodeKind.Service => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTServiceCallHandler.cs",
+                BTNodeKind.Action => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTActionCallHandler.cs",
+                BTNodeKind.Condition => "Assets/Scripts/Hotfix/Share/Module/BehaviorTree/BTConditionCallHandler.cs",
                 _ => string.Empty,
             };
 
@@ -596,6 +642,93 @@ namespace ET
 
             scriptAsset = AssetDatabase.LoadAssetAtPath<MonoScript>(assetPath);
             return scriptAsset != null;
+        }
+
+        private static bool TryGetRuntimeNodeType(BTEditorNodeData node, out Type runtimeNodeType)
+        {
+            runtimeNodeType = null;
+            if (node == null)
+            {
+                return false;
+            }
+
+            SyncNodeDescriptor(node);
+            runtimeNodeType = node.NodeKind switch
+            {
+                BTNodeKind.Root => typeof(BTRoot),
+                BTNodeKind.Sequence => typeof(BTSequence),
+                BTNodeKind.Selector => typeof(BTSelector),
+                BTNodeKind.Parallel => typeof(BTParallel),
+                BTNodeKind.Inverter => typeof(BTInverter),
+                BTNodeKind.Succeeder => typeof(BTSucceeder),
+                BTNodeKind.Failer => typeof(BTFailer),
+                BTNodeKind.Repeater => typeof(BTRepeater),
+                BTNodeKind.BlackboardCondition => typeof(BTBlackboardCondition),
+                BTNodeKind.Wait => typeof(BTWait),
+                BTNodeKind.SubTree => typeof(BTSubTreeCall),
+                BTNodeKind.Service => typeof(BTServiceCall),
+                BTNodeKind.Action => GetActionRuntimeNodeType(node.NodeTypeId),
+                BTNodeKind.Condition => GetConditionRuntimeNodeType(node.NodeTypeId),
+                _ => null,
+            };
+
+            return runtimeNodeType != null;
+        }
+
+        private static Type GetActionRuntimeNodeType(string nodeTypeId)
+        {
+            if (string.Equals(nodeTypeId, BTBuiltinNodeTypes.Log, StringComparison.OrdinalIgnoreCase))
+            {
+                return typeof(BTLog);
+            }
+
+            if (string.Equals(nodeTypeId, BTBuiltinNodeTypes.SetBlackboard, StringComparison.OrdinalIgnoreCase))
+            {
+                return typeof(BTSetBlackboard);
+            }
+
+            if (string.Equals(nodeTypeId, BTPatrolNodeTypes.Patrol, StringComparison.OrdinalIgnoreCase))
+            {
+                return typeof(BTPatrol);
+            }
+
+            return typeof(BTActionCall);
+        }
+
+        private static Type GetConditionRuntimeNodeType(string nodeTypeId)
+        {
+            if (string.Equals(nodeTypeId, BTBuiltinNodeTypes.BlackboardExists, StringComparison.OrdinalIgnoreCase))
+            {
+                return typeof(BTBlackboardExists);
+            }
+
+            if (string.Equals(nodeTypeId, BTBuiltinNodeTypes.BlackboardCompare, StringComparison.OrdinalIgnoreCase))
+            {
+                return typeof(BTBlackboardCompare);
+            }
+
+            if (string.Equals(nodeTypeId, BTPatrolNodeTypes.HasPatrolPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return typeof(BTHasPatrolPath);
+            }
+
+            return typeof(BTConditionCall);
+        }
+
+        private static Type GetNodeHandledType(Type handlerType)
+        {
+            Type current = handlerType;
+            while (current != null)
+            {
+                if (current.IsGenericType && current.GetGenericTypeDefinition() == typeof(ABTNodeHandler<>))
+                {
+                    return current.GetGenericArguments()[0];
+                }
+
+                current = current.BaseType;
+            }
+
+            return null;
         }
 
         private static string[] GetHandlerNames<T>() where T : Attribute

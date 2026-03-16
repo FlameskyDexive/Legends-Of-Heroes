@@ -23,6 +23,11 @@ namespace ET
                 return CreatePatrolNode(node.NodeId, node.Title, node.Comment, node.PatrolPoints, node.ChildIds);
             }
 
+            if (string.Equals(node.NodeTypeId, BTPatrolNodeTypes.HasPatrolPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return CreateHasPatrolPathNode(node.NodeId, node.Title, node.Comment, node.ChildIds);
+            }
+
             return node.NodeKind switch
             {
                 BTNodeKind.Root => CreateRootNode(node.NodeId, node.Title, node.Comment, node.ChildIds),
@@ -109,6 +114,16 @@ namespace ET
         public static BTNodeData CreateActionNode(string nodeId, string title, string comment, string typeId, string handlerName,
             IEnumerable<BTArgumentData> arguments, IEnumerable<string> childIds = null)
         {
+            if (string.Equals(typeId, BTBuiltinNodeTypes.Log, StringComparison.OrdinalIgnoreCase))
+            {
+                return CreateTypedArgumentNode("ET.BTLogNodeData", nodeId, title, comment, arguments, childIds);
+            }
+
+            if (string.Equals(typeId, BTBuiltinNodeTypes.SetBlackboard, StringComparison.OrdinalIgnoreCase))
+            {
+                return CreateTypedArgumentNode("ET.BTSetBlackboardNodeData", nodeId, title, comment, arguments, childIds);
+            }
+
             BTNodeData node = CreateSimpleNode("ET.BTActionNodeData", nodeId, title, comment, childIds);
             SetField(node, "TypeId", typeId ?? string.Empty);
             SetField(node, "ActionHandlerName", handlerName ?? string.Empty);
@@ -119,6 +134,21 @@ namespace ET
         public static BTNodeData CreateConditionNode(string nodeId, string title, string comment, string typeId, string handlerName,
             IEnumerable<BTArgumentData> arguments, IEnumerable<string> childIds = null)
         {
+            if (string.Equals(typeId, BTBuiltinNodeTypes.BlackboardExists, StringComparison.OrdinalIgnoreCase))
+            {
+                return CreateTypedArgumentNode("ET.BTBlackboardExistsNodeData", nodeId, title, comment, arguments, childIds);
+            }
+
+            if (string.Equals(typeId, BTBuiltinNodeTypes.BlackboardCompare, StringComparison.OrdinalIgnoreCase))
+            {
+                return CreateTypedArgumentNode("ET.BTBlackboardCompareNodeData", nodeId, title, comment, arguments, childIds);
+            }
+
+            if (string.Equals(typeId, BTPatrolNodeTypes.HasPatrolPath, StringComparison.OrdinalIgnoreCase))
+            {
+                return CreateHasPatrolPathNode(nodeId, title, comment, childIds);
+            }
+
             BTNodeData node = CreateSimpleNode("ET.BTConditionNodeData", nodeId, title, comment, childIds);
             SetField(node, "TypeId", typeId ?? string.Empty);
             SetField(node, "ConditionHandlerName", handlerName ?? string.Empty);
@@ -150,6 +180,11 @@ namespace ET
             BTNodeData node = CreateSimpleNode("ET.BTPatrolNodeData", nodeId, title, comment, childIds);
             FillListField(node, "PatrolPoints", patrolPoints?.Select(point => point?.Clone() ?? new BTPatrolPointData()));
             return node;
+        }
+
+        public static BTNodeData CreateHasPatrolPathNode(string nodeId, string title, string comment, IEnumerable<string> childIds = null)
+        {
+            return CreateSimpleNode("ET.BTHasPatrolPathNodeData", nodeId, title, comment, childIds);
         }
 
         public static bool IsRuntimeNodeType(BTNodeData node, string runtimeTypeName)
@@ -194,6 +229,14 @@ namespace ET
                 node.ChildIds.AddRange(childIds);
             }
 
+            return node;
+        }
+
+        private static BTNodeData CreateTypedArgumentNode(string fullTypeName, string nodeId, string title, string comment,
+            IEnumerable<BTArgumentData> arguments, IEnumerable<string> childIds)
+        {
+            BTNodeData node = CreateSimpleNode(fullTypeName, nodeId, title, comment, childIds);
+            FillListField(node, "Arguments", arguments?.Select(argument => argument?.Clone() ?? new BTArgumentData()));
             return node;
         }
 

@@ -1,12 +1,13 @@
 namespace ET
 {
-    [BTConditionHandler("BlackboardExists")]
-    public sealed class BTBlackboardExistsConditionHandler : ABTConditionHandler
+    [BTNodeHandler]
+    public sealed class BTBlackboardExistsConditionHandler : ABTNodeHandler<BTBlackboardExists>
     {
-        public override bool Evaluate(BTExecutionContext context, BTNodeData node)
+        protected override BTExecResult Run(BTBlackboardExists node, BTEnv env)
         {
-            string key = context.GetStringArgument(node, "key");
-            return !string.IsNullOrWhiteSpace(key) && context.Blackboard.Contains(key);
+            BTExecutionContext context = env.BindContext(node);
+            string key = context.GetStringArgument(node.Definition, "key");
+            return !string.IsNullOrWhiteSpace(key) && context.Blackboard.Contains(key) ? BTExecResult.Success : BTExecResult.Failure;
         }
     }
 }

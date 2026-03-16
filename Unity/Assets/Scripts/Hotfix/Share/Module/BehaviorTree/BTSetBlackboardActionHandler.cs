@@ -1,32 +1,27 @@
 namespace ET
 {
-    [BTActionHandler("SetBlackboard")]
-    public sealed class BTSetBlackboardActionHandler : ABTActionHandler
+    [BTNodeHandler]
+    public sealed class BTSetBlackboardActionHandler : ABTNodeHandler<BTSetBlackboard>
     {
-        public override ETTask<BTNodeState> Execute(BTExecutionContext context, BTNodeData node, ETCancellationToken cancellationToken)
+        protected override BTExecResult Run(BTSetBlackboard node, BTEnv env)
         {
-            string key = context.GetStringArgument(node, "key");
+            BTExecutionContext context = env.BindContext(node);
+            string key = context.GetStringArgument(node.Definition, "key");
             if (string.IsNullOrWhiteSpace(key))
             {
-                ETTask<BTNodeState> failedTask = ETTask<BTNodeState>.Create();
-                failedTask.SetResult(BTNodeState.Failure);
-                return failedTask;
+                return BTExecResult.Failure;
             }
 
-            bool remove = context.GetBoolArgument(node, "remove");
+            bool remove = context.GetBoolArgument(node.Definition, "remove");
             if (remove)
             {
                 context.Blackboard.Remove(key);
-                ETTask<BTNodeState> removedTask = ETTask<BTNodeState>.Create();
-                removedTask.SetResult(BTNodeState.Success);
-                return removedTask;
+                return BTExecResult.Success;
             }
 
-            object value = context.GetArgumentValue(node, "value");
+            object value = context.GetArgumentValue(node.Definition, "value");
             context.Blackboard.SetBoxed(key, value);
-            ETTask<BTNodeState> successTask = ETTask<BTNodeState>.Create();
-            successTask.SetResult(BTNodeState.Success);
-            return successTask;
+            return BTExecResult.Success;
         }
     }
 }
