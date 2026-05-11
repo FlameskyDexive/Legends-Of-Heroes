@@ -11,7 +11,7 @@ namespace ET
         private void Start()
         {
             Application.targetFrameRate = 60;
-            Define.PlayMode = this.PlayMode;
+            Define.PlayMode = this.PlayMode == EPlayMode.None ? EPlayMode.EditorSimulateMode : this.PlayMode;
 			this.StartAsync().Coroutine();
 		}
 

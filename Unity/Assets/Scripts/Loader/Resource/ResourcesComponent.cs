@@ -97,7 +97,7 @@ namespace ET
             {
                 case EPlayMode.EditorSimulateMode:
                     {
-                        var buildResult = EditorSimulateBuildInvoker.Build(packageName, (int)EBundleType.AssetBundle);
+                        var buildResult = EditorSimulateBuildInvoker.Build(packageName, (int)EBundleType.VirtualBundle);
                         EditorSimulateModeOptions createParameters = new();
                         createParameters.EditorFileSystemParameters = FileSystemParameters.CreateDefaultEditorFileSystemParameters(buildResult.PackageRootDirectory);
                         await defaultPackage.InitializePackageAsync(createParameters);
@@ -129,6 +129,7 @@ namespace ET
                     throw new ArgumentOutOfRangeException();
             }
 
+            await this.LoadPackageManifestAsync(packageName);
             await this.LoadGlobalConfigAsync();
 
             return;
@@ -172,6 +173,23 @@ namespace ET
 #endif
             }
 
+        }
+
+        private async ETTask LoadPackageManifestAsync(string packageName)
+        {
+            RequestPackageVersionOperation versionOperation = defaultPackage.RequestPackageVersionAsync();
+            await versionOperation;
+            if (versionOperation.Status != EOperationStatus.Succeeded)
+            {
+                throw new Exception($"Request package version failed: {packageName}, {versionOperation.Error}");
+            }
+
+            LoadPackageManifestOperation manifestOperation = defaultPackage.LoadPackageManifestAsync(new LoadPackageManifestOptions(versionOperation.PackageVersion, 60));
+            await manifestOperation;
+            if (manifestOperation.Status != EOperationStatus.Succeeded)
+            {
+                throw new Exception($"Load package manifest failed: {packageName}, {manifestOperation.Error}");
+            }
         }
 
         public void DestroyPackage(string packageName)
