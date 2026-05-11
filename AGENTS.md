@@ -105,6 +105,7 @@ Legends-Of-Heroes/
 ```
 
 **注意**：涉及Excel配置读写时，优先使用 `ET.ExcelMcp`，中文写入需按 `Agents/skills/et-excel.md` 的 Python -> ET.ExcelMcp 方式避免乱码。
+**源码目录**：`Share/ExcelMcp`，编译输出到根目录 `Bin/ET.ExcelMcp.dll`。
 
 ### et-test-run - 测试执行专家（高频）
 

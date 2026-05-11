@@ -2,6 +2,10 @@
 
 这个 skill 用于在本项目里通过 `ET.ExcelMcp` 安全地读写 Excel 配置表。
 
+工具源码目录：`Share/ExcelMcp`。
+构建输出位置：`Bin/ET.ExcelMcp.dll`。
+完整项目构建仍使用：`dotnet build ET.sln`。
+
 适用场景：
 - 新增/修改配置表数据
 - 修复表格中的中文乱码
