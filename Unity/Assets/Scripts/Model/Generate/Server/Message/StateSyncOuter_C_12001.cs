@@ -256,7 +256,7 @@ namespace ET
     [MemoryPackable]
     [Message(StateSyncOuter.G2Match_CreateRoom)]
     [ResponseType(nameof(Match2G_CreateRoom))]
-    public partial class G2Match_CreateRoom : MessageObject, ILocationRequest
+    public partial class G2Match_CreateRoom : MessageObject, IRequest
     {
         public static G2Match_CreateRoom Create(bool isFromPool = false)
         {
@@ -301,7 +301,7 @@ namespace ET
 
     [MemoryPackable]
     [Message(StateSyncOuter.Match2G_CreateRoom)]
-    public partial class Match2G_CreateRoom : MessageObject, ILocationResponse
+    public partial class Match2G_CreateRoom : MessageObject, IResponse
     {
         public static Match2G_CreateRoom Create(bool isFromPool = false)
         {
@@ -339,7 +339,7 @@ namespace ET
     [MemoryPackable]
     [Message(StateSyncOuter.G2Match_JoinRoom)]
     [ResponseType(nameof(Match2G_JoinRoom))]
-    public partial class G2Match_JoinRoom : MessageObject, ILocationRequest
+    public partial class G2Match_JoinRoom : MessageObject, IRequest
     {
         public static G2Match_JoinRoom Create(bool isFromPool = false)
         {
@@ -376,7 +376,7 @@ namespace ET
 
     [MemoryPackable]
     [Message(StateSyncOuter.Match2G_JoinRoom)]
-    public partial class Match2G_JoinRoom : MessageObject, ILocationResponse
+    public partial class Match2G_JoinRoom : MessageObject, IResponse
     {
         public static Match2G_JoinRoom Create(bool isFromPool = false)
         {
@@ -414,7 +414,7 @@ namespace ET
     [MemoryPackable]
     [Message(StateSyncOuter.G2Match_LeaveRoom)]
     [ResponseType(nameof(Match2G_LeaveRoom))]
-    public partial class G2Match_LeaveRoom : MessageObject, ILocationRequest
+    public partial class G2Match_LeaveRoom : MessageObject, IRequest
     {
         public static G2Match_LeaveRoom Create(bool isFromPool = false)
         {
@@ -443,7 +443,7 @@ namespace ET
 
     [MemoryPackable]
     [Message(StateSyncOuter.Match2G_LeaveRoom)]
-    public partial class Match2G_LeaveRoom : MessageObject, ILocationResponse
+    public partial class Match2G_LeaveRoom : MessageObject, IResponse
     {
         public static Match2G_LeaveRoom Create(bool isFromPool = false)
         {
@@ -477,7 +477,7 @@ namespace ET
     [MemoryPackable]
     [Message(StateSyncOuter.G2Match_CancelMatch)]
     [ResponseType(nameof(Match2G_CancelMatch))]
-    public partial class G2Match_CancelMatch : MessageObject, ILocationRequest
+    public partial class G2Match_CancelMatch : MessageObject, IRequest
     {
         public static G2Match_CancelMatch Create(bool isFromPool = false)
         {
@@ -506,7 +506,7 @@ namespace ET
 
     [MemoryPackable]
     [Message(StateSyncOuter.Match2G_CancelMatch)]
-    public partial class Match2G_CancelMatch : MessageObject, ILocationResponse
+    public partial class Match2G_CancelMatch : MessageObject, IResponse
     {
         public static Match2G_CancelMatch Create(bool isFromPool = false)
         {
@@ -540,7 +540,7 @@ namespace ET
     [MemoryPackable]
     [Message(StateSyncOuter.G2Match_GetRoomList)]
     [ResponseType(nameof(Match2G_GetRoomList))]
-    public partial class G2Match_GetRoomList : MessageObject, ILocationRequest
+    public partial class G2Match_GetRoomList : MessageObject, IRequest
     {
         public static G2Match_GetRoomList Create(bool isFromPool = false)
         {
@@ -569,7 +569,7 @@ namespace ET
 
     [MemoryPackable]
     [Message(StateSyncOuter.Match2G_GetRoomList)]
-    public partial class Match2G_GetRoomList : MessageObject, ILocationResponse
+    public partial class Match2G_GetRoomList : MessageObject, IResponse
     {
         public static Match2G_GetRoomList Create(bool isFromPool = false)
         {

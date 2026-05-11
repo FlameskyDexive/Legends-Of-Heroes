@@ -61,7 +61,7 @@ message G2C_StateSyncReconnect // IMessage
 ///////////////////////////////// Match Start ///////////////////////////////////
 
 // ResponseType Match2G_CreateRoom
-message G2Match_CreateRoom // ILocationRequest
+message G2Match_CreateRoom // IRequest
 {
 	int32 RpcId = 1;
 	int64 PlayerId = 2;
@@ -71,7 +71,7 @@ message G2Match_CreateRoom // ILocationRequest
 	string Password = 6;
 }
 
-message Match2G_CreateRoom // ILocationResponse
+message Match2G_CreateRoom // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -80,7 +80,7 @@ message Match2G_CreateRoom // ILocationResponse
 }
 
 // ResponseType Match2G_JoinRoom
-message G2Match_JoinRoom // ILocationRequest
+message G2Match_JoinRoom // IRequest
 {
 	int32 RpcId = 1;
 	int64 PlayerId = 2;
@@ -88,7 +88,7 @@ message G2Match_JoinRoom // ILocationRequest
 	string Password = 4;
 }
 
-message Match2G_JoinRoom // ILocationResponse
+message Match2G_JoinRoom // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -97,13 +97,13 @@ message Match2G_JoinRoom // ILocationResponse
 }
 
 // ResponseType Match2G_LeaveRoom
-message G2Match_LeaveRoom // ILocationRequest
+message G2Match_LeaveRoom // IRequest
 {
 	int32 RpcId = 1;
 	int64 PlayerId = 2;
 }
 
-message Match2G_LeaveRoom // ILocationResponse
+message Match2G_LeaveRoom // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -111,13 +111,13 @@ message Match2G_LeaveRoom // ILocationResponse
 }
 
 // ResponseType Match2G_CancelMatch
-message G2Match_CancelMatch // ILocationRequest
+message G2Match_CancelMatch // IRequest
 {
 	int32 RpcId = 1;
 	int64 PlayerId = 2;
 }
 
-message Match2G_CancelMatch // ILocationResponse
+message Match2G_CancelMatch // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
@@ -125,13 +125,13 @@ message Match2G_CancelMatch // ILocationResponse
 }
 
 // ResponseType Match2G_GetRoomList
-message G2Match_GetRoomList // ILocationRequest
+message G2Match_GetRoomList // IRequest
 {
 	int32 RpcId = 1;
 	RoomMode Mode = 2;
 }
 
-message Match2G_GetRoomList // ILocationResponse
+message Match2G_GetRoomList // IResponse
 {
 	int32 RpcId = 1;
 	int32 Error = 2;
