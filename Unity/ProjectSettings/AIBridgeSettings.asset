@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1
+MonoBehaviour:
+  m_ObjectHideFlags: 53
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d5e82d04e834c2eb6f7697d1c95d74c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: cn.lys.aibridge.Editor::AIBridge.Editor.AIBridgeProjectSettings
+  dataVersion: 1
+  bridgeEnabled: 1
+  debugLogging: 0
+  scriptDirectory: Assets/AIBridgeScripts
+  gifRecorder:
+    FrameCount: 50
+    Fps: 20
+    Scale: 0.5
+    ColorCount: 128
+    StartDelay: 0.1
+  assistantSelections:
+  - TargetId: claude
+    Selected: 1
+  - TargetId: codex
+    Selected: 1
+  - TargetId: cursor
+    Selected: 0
+  - TargetId: cline
+    Selected: 0
+  legacyGifMigrated: 0
+  legacyScriptDirectoryMigrated: 0
+  autoInstallSkills: 1
