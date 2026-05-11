@@ -10,14 +10,14 @@ namespace ET
     /// <summary>
     /// 资源文件查询服务类
     /// </summary>
-    public class GameQueryServices : IBuildinQueryServices
+    public static class GameQueryServices
     {
         /// <summary>
         /// 查询内置文件的时候，是否比对文件哈希值
         /// </summary>
         public static bool CompareFileCRC = false;
 
-        public bool Query(string packageName, string fileName, string fileCRC)
+        public static bool Query(string packageName, string fileName, string fileCRC)
         {
             // 注意：fileName包含文件格式
             return StreamingAssetsHelper.FileExists(packageName, fileName, fileCRC);
@@ -38,7 +38,7 @@ namespace ET
             {
                 if (GameQueryServices.CompareFileCRC)
                 {
-                    string crc32 = HashUtility.FileCRC32(filePath);
+                    string crc32 = HashUtility.ComputeFileCrc32(filePath);
                     return crc32 == fileCRC;
                 }
 
@@ -158,7 +158,7 @@ namespace ET
                     continue;
                 }
 
-                BuildinFileManifest.Element element = new() { PackageName = fileInfo.Directory.Name, FileCRC32 = HashUtility.FileCRC32(fileInfo.FullName), FileName = fileInfo.Name };
+                BuildinFileManifest.Element element = new() { PackageName = fileInfo.Directory.Name, FileCRC32 = HashUtility.ComputeFileCrc32(fileInfo.FullName), FileName = fileInfo.Name };
                 manifest.BuildinFiles.Add(element);
             }
 

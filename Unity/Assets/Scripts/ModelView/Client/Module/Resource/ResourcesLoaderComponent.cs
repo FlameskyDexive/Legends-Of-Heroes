@@ -44,7 +44,7 @@ namespace ET.Client
         public static void ForceUnloadAllAssets(this ResourcesLoaderComponent self)
         {
             ResourcePackage package = YooAssets.GetPackage("DefaultPackage");
-            package.ForceUnloadAllAssets();
+            package.UnloadAllAssetsAsync();
         }
 
 
@@ -53,11 +53,11 @@ namespace ET.Client
         public static async ETTask<int> UpdateVersionAsync(this ResourcesLoaderComponent self, int timeout = 30)
         {
             var package = YooAssets.GetPackage("DefaultPackage");
-            var operation = package.UpdatePackageVersionAsync();
+            var operation = package.RequestPackageVersionAsync(new RequestPackageVersionOptions(true, timeout));
 
-            await operation.GetAwaiter();
+            await operation;
 
-            if (operation.Status != EOperationStatus.Succeed)
+            if (operation.Status != EOperationStatus.Succeeded)
             {
                 return ErrorCode.ERR_ResourceUpdateVersionError;
             }
@@ -69,11 +69,11 @@ namespace ET.Client
         public static async ETTask<int> UpdateManifestAsync(this ResourcesLoaderComponent self)
         {
             var package = YooAssets.GetPackage("DefaultPackage");
-            var operation = package.UpdatePackageManifestAsync(self.PackageVersion);
+            var operation = package.LoadPackageManifestAsync(new LoadPackageManifestOptions(self.PackageVersion, 60));
 
-            await operation.GetAwaiter();
+            await operation;
 
-            if (operation.Status != EOperationStatus.Succeed)
+            if (operation.Status != EOperationStatus.Succeeded)
             {
                 return ErrorCode.ERR_ResourceUpdateManifestError;
             }
@@ -85,7 +85,7 @@ namespace ET.Client
         {
             int downloadingMaxNum = 10;
             int failedTryAgain = 3;
-            ResourceDownloaderOperation downloader = YooAssets.CreateResourceDownloader(downloadingMaxNum, failedTryAgain);
+            ResourceDownloaderOperation downloader = self.package.CreateResourceDownloader(new ResourceDownloaderOptions(downloadingMaxNum, failedTryAgain));
             if (downloader.TotalDownloadCount == 0)
             {
                 Log.Info("没有发现需要下载的资源");
@@ -100,10 +100,10 @@ namespace ET.Client
         }
 
         public static async ETTask<int> DonwloadWebFilesAsync(this ResourcesLoaderComponent self,
-        DownloaderOperation.OnStartDownloadFile onStartDownloadFileCallback = null,
-        DownloaderOperation.OnDownloadProgress onDownloadProgress = null,
-        DownloaderOperation.OnDownloadError onDownloadError = null,
-        DownloaderOperation.OnDownloadOver onDownloadOver = null)
+        Action<DownloadFileStartedEventArgs> onStartDownloadFileCallback = null,
+        Action<DownloadProgressChangedEventArgs> onDownloadProgress = null,
+        Action<DownloadErrorEventArgs> onDownloadError = null,
+        Action<DownloadCompletedEventArgs> onDownloadOver = null)
         {
             if (self.Downloader == null)
             {
@@ -111,15 +111,27 @@ namespace ET.Client
             }
 
             // 注册下载回调
-            self.Downloader.OnStartDownloadFileCallback = onStartDownloadFileCallback;
-            self.Downloader.OnDownloadProgressCallback = onDownloadProgress;
-            self.Downloader.OnDownloadErrorCallback = onDownloadError;
-            self.Downloader.OnDownloadOverCallback = onDownloadOver;
-            self.Downloader.BeginDownload();
-            await self.Downloader.GetAwaiter();
+            if (onStartDownloadFileCallback != null)
+            {
+                self.Downloader.DownloadFileStarted += onStartDownloadFileCallback;
+            }
+            if (onDownloadProgress != null)
+            {
+                self.Downloader.DownloadProgressChanged += onDownloadProgress;
+            }
+            if (onDownloadError != null)
+            {
+                self.Downloader.DownloadError += onDownloadError;
+            }
+            if (onDownloadOver != null)
+            {
+                self.Downloader.DownloadCompleted += onDownloadOver;
+            }
+            self.Downloader.StartDownload();
+            await self.Downloader;
 
             // 检测下载结果
-            if (self.Downloader.Status != EOperationStatus.Succeed)
+            if (self.Downloader.Status != EOperationStatus.Succeeded)
             {
                 return ErrorCode.ERR_ResourceUpdateDownloadError;
             }
@@ -147,10 +159,7 @@ namespace ET.Client
                     handle.Release();
                     break;
                 case SceneHandle handle:
-                    if (!handle.IsMainScene())
-                    {
-                        handle.UnloadAsync();
-                    }
+                    handle.UnloadSceneAsync();
                     break;
             }
         }
@@ -187,7 +196,7 @@ namespace ET.Client
             {
                 handler = self.package.LoadAssetAsync<T>(location);
 
-                await handler.Task;
+                await handler;
 
                 self.handlers.Add(location, handler);
             }
@@ -203,7 +212,7 @@ namespace ET.Client
             if (!self.handlers.TryGetValue(location, out handler))
             {
                 handler = self.package.LoadAllAssetsAsync<T>(location);
-                await handler.Task;
+                await handler;
                 self.handlers.Add(location, handler);
             }
 
@@ -229,7 +238,7 @@ namespace ET.Client
 
             handler = self.package.LoadSceneAsync(location);
 
-            await handler.Task;
+            await handler;
             self.handlers.Add(location, handler);
         }
     }

@@ -25,7 +25,7 @@ namespace ET
     /// <summary>
     /// 远端资源地址查询服务类
     /// </summary>
-    public class RemoteServices : IRemoteServices
+    public class RemoteServices : IRemoteService
     {
         private readonly string _defaultHostServer;
         private readonly string _fallbackHostServer;
@@ -35,20 +35,19 @@ namespace ET
             _defaultHostServer = defaultHostServer;
             _fallbackHostServer = fallbackHostServer;
         }
-        string IRemoteServices.GetRemoteMainURL(string fileName)
+        public IReadOnlyList<string> GetRemoteUrls(string fileName)
         {
-            return $"{_defaultHostServer}/{fileName}";
-        }
-        string IRemoteServices.GetRemoteFallbackURL(string fileName)
-        {
-            return $"{_fallbackHostServer}/{fileName}";
+            return new[]
+            {
+                $"{_defaultHostServer}/{fileName}",
+                $"{_fallbackHostServer}/{fileName}"
+            };
         }
     }
 
     public class ResourcesComponent : Singleton<ResourcesComponent>, ISingletonAwake
     {
         private ResourcePackage defaultPackage;
-        private EPlayMode playMode;
         public void Awake()
         {
             YooAssets.Initialize();
@@ -63,20 +62,20 @@ namespace ET
         
         private IEnumerator LoadGlobalConfig()
         {
-            AssetHandle handler = YooAssets.LoadAssetAsync<GlobalConfig>("GlobalConfig");
+            AssetHandle handler = defaultPackage.LoadAssetAsync<GlobalConfig>("GlobalConfig");
             yield return handler;
             GlobalConfig.Instance = handler.AssetObject as GlobalConfig;
             handler.Release();
-            defaultPackage.UnloadUnusedAssets();
+            defaultPackage.UnloadUnusedAssetsAsync();
         }
 
         private async ETTask LoadGlobalConfigAsync()
         {
-            AssetHandle handler = YooAssets.LoadAssetAsync<GlobalConfig>("GlobalConfig");
+            AssetHandle handler = defaultPackage.LoadAssetAsync<GlobalConfig>("GlobalConfig");
             await handler;
             GlobalConfig.Instance = handler.AssetObject as GlobalConfig;
             handler.Release();
-            defaultPackage.UnloadUnusedAssets();
+            defaultPackage.UnloadUnusedAssetsAsync();
         }
 
         public async ETTask RestartAsync()
@@ -86,12 +85,9 @@ namespace ET
 
         public async ETTask CreatePackageAsync(string packageName, bool isDefault = false)
         {
-            defaultPackage = YooAssets.TryGetPackage(packageName);
-            if(this.defaultPackage == null)
-                defaultPackage = YooAssets.CreatePackage(packageName);
-            if (isDefault)
+            if (!YooAssets.TryGetPackage(packageName, out defaultPackage))
             {
-                YooAssets.SetDefaultPackage(defaultPackage);
+                defaultPackage = YooAssets.CreatePackage(packageName);
             }
 
             EPlayMode ePlayMode = Define.PlayMode;
@@ -101,27 +97,32 @@ namespace ET
             {
                 case EPlayMode.EditorSimulateMode:
                     {
-                        EditorSimulateModeParameters createParameters = new();
-                        createParameters.SimulateManifestFilePath = EditorSimulateModeHelper.SimulateBuild("ScriptableBuildPipeline", packageName);
-                        await defaultPackage.InitializeAsync(createParameters).Task;
+                        var buildResult = EditorSimulateBuildInvoker.Build(packageName, (int)EBundleType.AssetBundle);
+                        EditorSimulateModeOptions createParameters = new();
+                        createParameters.EditorFileSystemParameters = FileSystemParameters.CreateDefaultEditorFileSystemParameters(buildResult.PackageRootDirectory);
+                        await defaultPackage.InitializePackageAsync(createParameters);
                         break;
                     }
                 case EPlayMode.OfflinePlayMode:
                     {
-                        OfflinePlayModeParameters createParameters = new();
-                        createParameters.DecryptionServices = new FileOffsetDecryption();
-                        await defaultPackage.InitializeAsync(createParameters).Task;
+                        OfflinePlayModeOptions createParameters = new();
+                        createParameters.BuiltinFileSystemParameters = FileSystemParameters.CreateDefaultBuiltinFileSystemParameters();
+                        createParameters.BuiltinFileSystemParameters.AddParameter(EFileSystemParameter.AssetbundleDecryptor, new FileOffsetDecryption());
+                        await defaultPackage.InitializePackageAsync(createParameters);
                         break;
                     }
                 case EPlayMode.HostPlayMode:
                     {
                         string defaultHostServer = GetHostServerURL();
                         string fallbackHostServer = GetHostServerURL();
-                        HostPlayModeParameters createParameters = new();
-                        createParameters.BuildinQueryServices = new GameQueryServices();
-                        createParameters.RemoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
-                        createParameters.DecryptionServices = new FileOffsetDecryption();
-                        await defaultPackage.InitializeAsync(createParameters).Task;
+                        RemoteServices remoteServices = new(defaultHostServer, fallbackHostServer);
+                        HostPlayModeOptions createParameters = new();
+                        createParameters.BuiltinFileSystemParameters = FileSystemParameters.CreateDefaultBuiltinFileSystemParameters();
+                        createParameters.BuiltinFileSystemParameters.AddParameter(EFileSystemParameter.CopyBuiltinPackageManifest, true);
+                        createParameters.BuiltinFileSystemParameters.AddParameter(EFileSystemParameter.AssetbundleDecryptor, new FileOffsetDecryption());
+                        createParameters.CacheFileSystemParameters = FileSystemParameters.CreateDefaultSandboxFileSystemParameters(remoteServices);
+                        createParameters.CacheFileSystemParameters.AddParameter(EFileSystemParameter.AssetbundleDecryptor, new FileOffsetDecryption());
+                        await defaultPackage.InitializePackageAsync(createParameters);
                         break;
                     }
                 default:
@@ -176,7 +177,7 @@ namespace ET
         public void DestroyPackage(string packageName)
         {
             ResourcePackage package = YooAssets.GetPackage(packageName);
-            package.UnloadUnusedAssets();
+            package.UnloadUnusedAssetsAsync();
         }
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace ET
         /// </summary>
         public T LoadAssetSync<T>(string location) where T : UnityEngine.Object
         {
-            AssetHandle handle = YooAssets.LoadAssetSync<T>(location);
+            AssetHandle handle = defaultPackage.LoadAssetSync<T>(location);
             T t = (T)handle.AssetObject;
             handle.Release();
             return t;
@@ -193,8 +194,10 @@ namespace ET
 
         public byte[] LoadRawFile(string location)
         {
-            RawFileHandle handle = YooAssets.LoadRawFileSync(location);
-            return handle.GetRawFileData();
+            RawFileHandle handle = defaultPackage.LoadRawFileSync(location);
+            byte[] bytes = File.ReadAllBytes(handle.GetRawFilePath());
+            handle.Release();
+            return bytes;
         }
 
         public T LoadAsset<T>(string location) where T : UnityEngine.Object
@@ -203,7 +206,7 @@ namespace ET
             AssetHandle handle;
             // if (handle == null)
             {
-                handle = YooAssets.LoadAssetSync<T>(location);
+                handle = defaultPackage.LoadAssetSync<T>(location);
                 // self.AssetsOperationHandles[location] = handle;
             }
 
@@ -212,9 +215,11 @@ namespace ET
 
         public async ETTask<byte[]> LoadRawFileAsync(string location)
         {
-            RawFileHandle handle = YooAssets.LoadRawFileAsync(location);
-            await handle.Task;
-            return handle.GetRawFileData();
+            RawFileHandle handle = defaultPackage.LoadRawFileAsync(location);
+            await handle;
+            byte[] bytes = File.ReadAllBytes(handle.GetRawFilePath());
+            handle.Release();
+            return bytes;
         }
 
         /// <summary>
@@ -223,8 +228,8 @@ namespace ET
         /// </summary>
         public async ETTask<T> LoadAssetAsync<T>(string location) where T : UnityEngine.Object
         {
-            AssetHandle handle = YooAssets.LoadAssetAsync<T>(location);
-            await handle.Task;
+            AssetHandle handle = defaultPackage.LoadAssetAsync<T>(location);
+            await handle;
             T t = (T)handle.AssetObject;
             handle.Release();
             return t;
@@ -236,8 +241,8 @@ namespace ET
         /// </summary>
         public async ETTask<Dictionary<string, T>> LoadAllAssetsAsync<T>(string location) where T : UnityEngine.Object
         {
-            AllAssetsHandle allAssetsOperationHandle = YooAssets.LoadAllAssetsAsync<T>(location);
-            await allAssetsOperationHandle.Task;
+            AllAssetsHandle allAssetsOperationHandle = defaultPackage.LoadAllAssetsAsync<T>(location);
+            await allAssetsOperationHandle;
             Dictionary<string, T> dictionary = new Dictionary<string, T>();
             foreach (UnityEngine.Object assetObj in allAssetsOperationHandle.AllAssetObjects)
             {

@@ -1,0 +1,30 @@
+{
+    "name": "YooAsset",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.tuyoogame.yooasset",
+            "expression": "",
+            "define": "YOO_ASSET_3"
+        },
+        {
+            "name": "com.tuyoogame.yooasset",
+            "expression": "3.0.0-beta",
+            "define": "YOO_ASSET_3_0"
+        },
+        {
+            "name": "com.tuyoogame.yooasset",
+            "expression": "3.0.0-beta",
+            "define": "YOO_ASSET_3_0_OR_NEWER"
+        }
+    ],
+    "noEngineReferences": false
+}

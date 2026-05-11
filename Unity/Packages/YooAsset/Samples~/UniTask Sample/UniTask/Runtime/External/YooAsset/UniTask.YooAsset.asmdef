@@ -1,0 +1,23 @@
+{
+    "name": "UniTask.YooAsset",
+    "rootNamespace": "",
+    "references": [
+        "UniTask",
+        "YooAsset"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.cysharp.unitask",
+            "expression": "",
+            "define": "UNITASK_YOOASSET_SUPPORT"
+        }
+    ],
+    "noEngineReferences": false
+}

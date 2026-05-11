@@ -81,17 +81,17 @@ namespace ET.Client
                 null,
 
                 // 下载进度回调
-                (totalDownloadCount, currentDownloadCount, totalDownloadBytes, currentDownloadBytes) =>
+                args =>
                 {
                     // 更新进度条
-                    EventSystem.Instance.Publish(root, new OnPatchDownloadProgress() { TotalDownloadCount = totalDownloadCount, CurrentDownloadCount = currentDownloadCount, TotalDownloadSizeBytes = totalDownloadBytes, CurrentDownloadSizeBytes = currentDownloadBytes });
+                    EventSystem.Instance.Publish(root, new OnPatchDownloadProgress() { TotalDownloadCount = args.TotalDownloadCount, CurrentDownloadCount = args.CurrentDownloadCount, TotalDownloadSizeBytes = args.TotalDownloadBytes, CurrentDownloadSizeBytes = args.CurrentDownloadBytes });
                 },
 
                 // 下载失败回调
-                (fileName, error) =>
+                args =>
                 {
                     // 下载失败
-                    EventSystem.Instance.Publish(root, new OnPatchDownlodFailed() { FileName = fileName, Error = error });
+                    EventSystem.Instance.Publish(root, new OnPatchDownlodFailed() { FileName = args.FileName, Error = args.ErrorInfo });
                 },
 
                 // 下载完成回调

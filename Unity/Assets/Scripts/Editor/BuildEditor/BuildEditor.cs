@@ -233,20 +233,20 @@ namespace ET
             // 构建参数
             ScriptableBuildParameters buildParameters = new ScriptableBuildParameters();
             // BuiltinBuildParameters buildParameters = new BuiltinBuildParameters();
-            buildParameters.BuildOutputRoot = AssetBundleBuilderHelper.GetDefaultBuildOutputRoot();
-            buildParameters.BuildinFileRoot = AssetBundleBuilderHelper.GetStreamingAssetsRoot();
+            buildParameters.BuildOutputRoot = BundleBuilderHelper.GetDefaultBuildOutputRoot();
+            buildParameters.BundledFileRoot = BundleBuilderHelper.GetStreamingAssetsRoot();
             buildParameters.BuildPipeline = EBuildPipeline.ScriptableBuildPipeline.ToString();
             // buildParameters.BuildPipeline = EBuildPipeline.BuiltinBuildPipeline.ToString();
+            buildParameters.BuildBundleType = (int)EBundleType.AssetBundle;
             buildParameters.BuildTarget = buildTarget;
-            buildParameters.BuildMode = EBuildMode.IncrementalBuild;
             buildParameters.PackageName = packageName;
             buildParameters.PackageVersion = packageVersion;
             buildParameters.EnableSharePackRule = true;
             buildParameters.VerifyBuildingResult = true;
-            buildParameters.FileNameStyle = AssetBundleBuilderSetting.GetPackageFileNameStyle(packageName, EBuildPipeline.ScriptableBuildPipeline);
-            buildParameters.BuildinFileCopyOption = EBuildinFileCopyOption.ClearAndCopyAll;
-            buildParameters.BuildinFileCopyParams = AssetBundleBuilderSetting.GetPackageBuildinFileCopyParams(packageName, EBuildPipeline.ScriptableBuildPipeline);
-            // buildParameters.EncryptionServices = CreateEncryptionInstance();
+            buildParameters.FileNameStyle = BundleBuilderSetting.GetPackageFileNameStyle(packageName, EBuildPipeline.ScriptableBuildPipeline.ToString());
+            buildParameters.BundledCopyOption = EBundledCopyOption.ClearAndCopyAll;
+            buildParameters.BundledCopyParams = BundleBuilderSetting.GetPackageBundledCopyParams(packageName, EBuildPipeline.ScriptableBuildPipeline.ToString());
+            // buildParameters.BundleEncryptor = CreateEncryptionInstance();
             buildParameters.CompressOption = ECompressOption.LZMA;
 
             // 执行构建
