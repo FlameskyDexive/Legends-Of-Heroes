@@ -1,11 +1,4 @@
-﻿using System;
-using UnityEngine;
-using YIUIFramework;
-using System.Collections.Generic;
-
+// YIUI 版 LoginPanelComponent 已不再使用，Login 启动改由 EUI 处理。
 namespace ET.Client
 {
-    public partial class LoginPanelComponent : Entity
-    {
-    }
 }

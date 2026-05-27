@@ -136,6 +136,16 @@
         "cn.etetet.unit": "4.0.0"
       }
     },
+    "cn.etetet.eui": {
+      "version": "file:cn.etetet.eui",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "1.0.0",
+        "cn.etetet.loader": "1.0.0",
+        "cn.etetet.yooassets": "1.0.0"
+      }
+    },
     "cn.etetet.harness": {
       "version": "file:cn.etetet.harness",
       "depth": 0,
@@ -509,7 +519,8 @@
         "cn.etetet.yiuiinvoke": "4.0.0",
         "cn.etetet.db": "4.0.0",
         "cn.etetet.unitybridge": "4.0.0",
-        "cn.etetet.conditionexpr": "4.0.0"
+        "cn.etetet.conditionexpr": "4.0.0",
+        "cn.etetet.eui": "1.0.0"
       }
     },
     "cn.etetet.test": {

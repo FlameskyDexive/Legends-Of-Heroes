@@ -1,12 +1,4 @@
-﻿namespace ET.Client
+// LoadingPanel 进度回调的 YIUI 实现已停用；EUI 版 DlgLoading 就绪后在此重写。
+namespace ET.Client
 {
-    [Event(SceneType.Client)]
-    public class ChangeSceneProgress_ShowProgress : AEvent<Scene, ChangeSceneProgress>
-    {
-        protected override async ETTask Run(Scene scene, ChangeSceneProgress a)
-        {
-            scene.YIUIMgr().GetPanel<LoadingPanelComponent>()?.u_DataProgress.SetValue(a.Progress);
-            await ETTask.CompletedTask;
-        }
-    }
 }

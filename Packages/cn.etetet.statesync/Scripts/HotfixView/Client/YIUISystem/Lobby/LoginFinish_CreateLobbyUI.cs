@@ -1,12 +1,4 @@
-
+// Lobby 启动已脱离 YIUI；待 EUI 版 DlgLobby 上线后在此或 EUI 目录下注册同名 Handler。
 namespace ET.Client
 {
-	[Event(SceneType.Client)]
-	public class LoginFinish_CreateLobbyUI: AEvent<Scene, LoginFinish>
-	{
-		protected override async ETTask Run(Scene scene, LoginFinish args)
-		{
-			await scene.YIUIRoot().OpenPanelAsync<LobbyPanelComponent>();
-		}
-	}
 }

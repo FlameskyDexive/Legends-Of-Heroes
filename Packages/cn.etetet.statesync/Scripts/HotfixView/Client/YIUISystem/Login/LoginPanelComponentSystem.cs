@@ -1,39 +1,7 @@
-using System;
-using UnityEngine;
-using YIUIFramework;
-using System.Collections.Generic;
-
+// YIUI 版 LoginPanelComponentSystem 已移除。Login 启动改由 EUI 处理：
+//   - Scripts/ModelView/Client/EUI/DlgLogin/DlgLogin.cs
+//   - Scripts/HotfixView/Client/EUI/DlgLogin/DlgLoginSystem.cs
+// YIUI 的 LoginPanelComponent 类型/Gen 仍保留，但不会被实例化。
 namespace ET.Client
 {
-    public static partial class LoginPanelComponentSystem
-    {
-        [EntitySystem]
-        private static void YIUIInitialize(this LoginPanelComponent self)
-        {
-        }
-
-        [EntitySystem]
-        private static void Destroy(this LoginPanelComponent self)
-        {
-        }
-
-        [EntitySystem]
-        private static async ETTask<bool> YIUIOpen(this LoginPanelComponent self)
-        {
-            await ETTask.CompletedTask;
-            return true;
-        }
-
-        #region YIUIEvent开始
-
-        [YIUIInvoke(LoginPanelComponent.OnEventLoginInvoke)]
-        private static async ETTask OnEventLoginInvoke(this LoginPanelComponent self)
-        {
-            Log.Info($"登录");
-            GlobalComponent globalComponent = self.Root().GetComponent<GlobalComponent>();
-            await LoginHelper.Login(self.Root(), globalComponent.GlobalConfig.Address, self.u_ComAccount.text, self.u_ComPassword.text);
-        }
-
-        #endregion YIUIEvent结束
-    }
 }

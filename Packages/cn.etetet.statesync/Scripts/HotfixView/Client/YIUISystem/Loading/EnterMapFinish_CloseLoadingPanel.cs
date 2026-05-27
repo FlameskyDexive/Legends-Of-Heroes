@@ -1,14 +1,4 @@
-﻿namespace ET.Client
+// 关闭 LoadingPanel 的 YIUI 实现已停用；EUI 版 DlgLoading 就绪后在此重写。
+namespace ET.Client
 {
-    [Event(SceneType.Client)]
-    public class EnterMapFinish_CloseLoadingPanel : AEvent<Scene, EnterMapFinish>
-    {
-        protected override async ETTask Run(Scene scene, EnterMapFinish a)
-        {
-            EntityRef<Scene> sceneRef = scene;
-            await scene.Root().TimerComponent.WaitAsync(2000);
-            scene = sceneRef;
-            scene.YIUIMgr().ClosePanel<LoadingPanelComponent>();
-        }
-    }
 }

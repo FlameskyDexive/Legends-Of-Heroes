@@ -1,44 +1,5 @@
-﻿using System;
-using UnityEngine;
-using YIUIFramework;
-using System.Collections.Generic;
-
+// YIUI 版 LoginPanelComponentSystem 已不再使用，Login 启动改由 EUI 处理。
+// 该文件原由 YIUI 工具自动生成，现清空以避免对已移除生命周期函数的引用。
 namespace ET.Client
 {
-    /// <summary>
-    /// 由YIUI工具自动创建 请勿修改
-    /// </summary>
-    [EntitySystemOf(typeof(LoginPanelComponent))]
-    public static partial class LoginPanelComponentSystem
-    {
-        [EntitySystem]
-        private static void Awake(this LoginPanelComponent self)
-        {
-        }
-
-        [EntitySystem]
-        private static void YIUIBind(this LoginPanelComponent self)
-        {
-            self.UIBind();
-        }
-
-        private static void UIBind(this LoginPanelComponent self)
-        {
-            self.u_UIBase = self.GetParent<YIUIChild>();
-            self.u_UIWindow = self.UIBase.GetComponent<YIUIWindowComponent>();
-            self.u_UIPanel = self.UIBase.GetComponent<YIUIPanelComponent>();
-            self.UIWindow.WindowOption = EWindowOption.None;
-            self.UIPanel.Layer = EPanelLayer.Panel;
-            self.UIPanel.PanelOption = EPanelOption.TimeCache;
-            self.UIPanel.StackOption = EPanelStackOption.VisibleTween;
-            self.UIPanel.Priority = 0;
-            self.UIPanel.CachePanelTime = 10;
-
-            self.u_ComAccount = self.UIBase.ComponentTable.FindComponent<UnityEngine.UI.InputField>("u_ComAccount");
-            self.u_ComPassword = self.UIBase.ComponentTable.FindComponent<UnityEngine.UI.InputField>("u_ComPassword");
-            self.u_EventLogin = self.UIBase.EventTable.FindEvent<UITaskEventP0>("u_EventLogin");
-            self.u_EventLoginHandle = self.u_EventLogin.Add(self,LoginPanelComponent.OnEventLoginInvoke);
-
-        }
-    }
 }
