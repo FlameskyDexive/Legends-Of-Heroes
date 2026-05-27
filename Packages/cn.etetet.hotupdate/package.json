@@ -1,0 +1,18 @@
+{
+  "name": "cn.etetet.hotupdate",
+  "displayName": "ET.HotUpdate",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "category": "UI/EUI",
+  "description": "HotUpdate（资源热更）EUI 模块。等 YooAssets 补丁事件移植后切换为正式实现。",
+  "author": {
+    "name": "ETETET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.core": "1.0.0",
+    "cn.etetet.loader": "1.0.0",
+    "cn.etetet.yooassets": "1.0.0",
+    "cn.etetet.eui": "1.0.0"
+  }
+}

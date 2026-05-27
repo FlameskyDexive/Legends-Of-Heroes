@@ -1,0 +1,23 @@
+{
+  "name": "cn.etetet.lobby",
+  "displayName": "ET.Lobby",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "category": "UI/EUI",
+  "description": "Lobby/MatchTeam EUI 模块（移植自 Legends-Of-Heroes 状态同步大厅/匹配 UI）。",
+  "author": {
+    "name": "ETETET"
+  },
+  "relatedPackages": {},
+  "dependencies": {
+    "cn.etetet.core": "1.0.0",
+    "cn.etetet.loader": "1.0.0",
+    "cn.etetet.yooassets": "1.0.0",
+    "cn.etetet.eui": "1.0.0",
+    "cn.etetet.login": "2.0.1",
+    "cn.etetet.netinner": "2.0.1",
+    "cn.etetet.servicediscovery": "4.0.0",
+    "cn.etetet.proto": "4.0.0",
+    "cn.etetet.actorlocation": "2.0.1"
+  }
+}

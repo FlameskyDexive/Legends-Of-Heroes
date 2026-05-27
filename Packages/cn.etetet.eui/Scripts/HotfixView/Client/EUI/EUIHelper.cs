@@ -71,6 +71,13 @@ namespace ET.Client
             transform.gameObject.SetActive(isVisible);
         }
 
+        public static void SetVisible(this LoopScrollRect loopScrollRect, bool isVisible, int count = 0)
+        {
+            loopScrollRect.gameObject.SetActive(isVisible);
+            loopScrollRect.totalCount = count;
+            loopScrollRect.RefillCells();
+        }
+
         public static void SetTogglesInteractable(this ToggleGroup toggleGroup, bool isEnable)
         {
             var toggles = toggleGroup.transform.GetComponentsInChildren<Toggle>();

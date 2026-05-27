@@ -40,7 +40,8 @@
     "cn.etetet.test": "4.0.0",
     "cn.etetet.servicediscovery": "4.0.0",
     "cn.etetet.yiuiloopscrollrectasync": "4.0.0",
-    "cn.etetet.yiuireddot": "4.0.0"
+    "cn.etetet.yiuireddot": "4.0.0",
+    "cn.etetet.eui": "1.0.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/@ET-Packages"

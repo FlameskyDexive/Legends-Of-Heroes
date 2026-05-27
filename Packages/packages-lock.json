@@ -152,6 +152,17 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "cn.etetet.hotupdate": {
+      "version": "file:cn.etetet.hotupdate",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "1.0.0",
+        "cn.etetet.loader": "1.0.0",
+        "cn.etetet.yooassets": "1.0.0",
+        "cn.etetet.eui": "1.0.0"
+      }
+    },
     "cn.etetet.http": {
       "version": "file:cn.etetet.http",
       "depth": 0,
@@ -190,6 +201,22 @@
         "cn.etetet.yooassets": "2.3.14"
       }
     },
+    "cn.etetet.lobby": {
+      "version": "file:cn.etetet.lobby",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "1.0.0",
+        "cn.etetet.loader": "1.0.0",
+        "cn.etetet.yooassets": "1.0.0",
+        "cn.etetet.eui": "1.0.0",
+        "cn.etetet.login": "2.0.1",
+        "cn.etetet.netinner": "2.0.1",
+        "cn.etetet.servicediscovery": "4.0.0",
+        "cn.etetet.proto": "4.0.0",
+        "cn.etetet.actorlocation": "2.0.1"
+      }
+    },
     "cn.etetet.lockstep": {
       "version": "file:cn.etetet.lockstep",
       "depth": 0,
@@ -221,7 +248,8 @@
         "cn.etetet.test": "4.0.0",
         "cn.etetet.servicediscovery": "4.0.0",
         "cn.etetet.yiuiloopscrollrectasync": "4.0.0",
-        "cn.etetet.yiuireddot": "4.0.0"
+        "cn.etetet.yiuireddot": "4.0.0",
+        "cn.etetet.eui": "1.0.0"
       }
     },
     "cn.etetet.login": {
@@ -405,6 +433,19 @@
         "cn.etetet.proto": "4.0.0",
         "cn.etetet.router": "2.0.1",
         "cn.etetet.core": "4.0.0"
+      }
+    },
+    "cn.etetet.room": {
+      "version": "file:cn.etetet.room",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "1.0.0",
+        "cn.etetet.loader": "1.0.0",
+        "cn.etetet.yooassets": "1.0.0",
+        "cn.etetet.eui": "1.0.0",
+        "cn.etetet.lobby": "1.0.0",
+        "cn.etetet.login": "2.0.1"
       }
     },
     "cn.etetet.router": {
