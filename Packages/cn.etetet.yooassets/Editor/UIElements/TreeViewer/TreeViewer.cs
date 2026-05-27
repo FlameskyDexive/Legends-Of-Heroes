@@ -1,5 +1,4 @@
-﻿#if UNITY_2019_4_OR_NEWER
-using System;
+﻿using System;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEditor;
@@ -9,9 +8,14 @@ using UnityEngine.UIElements;
 
 namespace YooAsset.Editor
 {
-    public partial class TreeViewer : VisualElement
+    /// <summary>
+    /// 树形列表视图
+    /// </summary>
+    public class TreeViewer : VisualElement
     {
-        public new class UxmlFactory : UxmlFactory<TreeViewer, UxmlTraits> { }
+        public new class UxmlFactory : UxmlFactory<TreeViewer, UxmlTraits>
+        {
+        }
 
         private readonly ListView _listView;
         private readonly List<TreeNode> _flattenList = new List<TreeNode>(1000);
@@ -20,14 +24,17 @@ namespace YooAsset.Editor
         /// <summary>
         /// 制作列表元素
         /// </summary>
-        public Action<VisualElement> makeItem { get; set; }
+        public Action<VisualElement> MakeItem { get; set; }
 
         /// <summary>
         /// 绑定列表数据
         /// </summary>
-        public Action<VisualElement, object> bindItem { get; set; }
+        public Action<VisualElement, object> BindItem { get; set; }
 
 
+        /// <summary>
+        /// 创建树形列表视图实例
+        /// </summary>
         public TreeViewer()
         {
             this.style.flexShrink = 1f;
@@ -44,17 +51,19 @@ namespace YooAsset.Editor
         }
 
         /// <summary>
-        /// 设置根节点数据
+        /// 添加单个根节点
         /// </summary>
-        public void SetRootItem(TreeNode rootNode)
+        /// <param name="rootNode">要添加的根节点</param>
+        public void AddRootItem(TreeNode rootNode)
         {
             _rootList.Add(rootNode);
         }
 
         /// <summary>
-        /// 设置根节点数据
+        /// 批量添加根节点
         /// </summary>
-        public void SetRootItems(List<TreeNode> rootNodes)
+        /// <param name="rootNodes">要添加的根节点集合</param>
+        public void AddRootItems(List<TreeNode> rootNodes)
         {
             _rootList.AddRange(rootNodes);
         }
@@ -116,9 +125,9 @@ namespace YooAsset.Editor
             container.Add(toggle);
 
             // 用户自定义元素
-            if (makeItem != null)
+            if (MakeItem != null)
             {
-                makeItem.Invoke(container);
+                MakeItem.Invoke(container);
             }
 
             return container;
@@ -133,18 +142,17 @@ namespace YooAsset.Editor
             toggle.userData = treeNode;
             toggle.style.marginLeft = treeNode.GetDepth() * 15;
 
-            // 隐藏折叠按钮
+            // 隐藏或显示折叠按钮
             if (treeNode.Children.Count == 0)
-            {
                 toggle.style.visibility = Visibility.Hidden;
-            }
+            else
+                toggle.style.visibility = Visibility.Visible;
 
             // 用户自定义元素
-            if (bindItem != null)
+            if (BindItem != null)
             {
-                bindItem.Invoke(item, treeNode.UserData);
+                BindItem.Invoke(item, treeNode.UserData);
             }
         }
     }
 }
-#endif

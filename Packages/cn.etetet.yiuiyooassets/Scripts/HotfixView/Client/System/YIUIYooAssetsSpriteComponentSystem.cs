@@ -19,11 +19,9 @@ namespace ET.Client
         public static async ETTask LoadAtlasAsync(this YIUIYooAssetsSpriteComponent self)
         {
             EntityRef<YIUIYooAssetsSpriteComponent> selfRef = self;
-            var handle = YooAssets.LoadAssetAsync<YIUIAtlasData>(YIUIConstAsset.AtlasDataName);
 
-            await handle.Task;
-
-            var atlasData = handle.AssetObject as YIUIAtlasData;
+            // YooAsset 3.0 移除了全局 YooAssets.LoadAssetAsync，统一走 ResourcesComponent 的默认包。
+            var atlasData = await ResourcesComponent.Instance.LoadAssetAsync<YIUIAtlasData>(YIUIConstAsset.AtlasDataName);
             if (atlasData == null)
             {
                 return;
@@ -38,8 +36,6 @@ namespace ET.Client
                     self.m_SpritePathMap.Add(spriteName, info.AtlasName);
                 }
             }
-
-            handle.Release();
         }
 
         public static string GetSpriteAtlasPath(this YIUIYooAssetsSpriteComponent self, string spriteName)

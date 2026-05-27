@@ -1,4 +1,3 @@
-﻿#if UNITY_2019_4_OR_NEWER
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -10,12 +9,17 @@ namespace YooAsset.Editor
     /// <summary>
     /// 折叠开关
     /// </summary>
-    public partial class ToggleFoldout : Toggle
+    public class ToggleFoldout : Toggle
     {
-        public new class UxmlFactory : UxmlFactory<ToggleFoldout, UxmlTraits> { }
+        public new class UxmlFactory : UxmlFactory<ToggleFoldout, UxmlTraits>
+        {
+        }
 
         private readonly VisualElement _checkbox;
 
+        /// <summary>
+        /// 创建折叠开关实例
+        /// </summary>
         public ToggleFoldout()
         {
             _checkbox = this.Q<VisualElement>("unity-checkmark");
@@ -35,6 +39,9 @@ namespace YooAsset.Editor
         }
 #endif
 
+        /// <summary>
+        /// 刷新折叠状态对应的图标
+        /// </summary>
         public void RefreshIcon()
         {
             if (this.value)
@@ -50,4 +57,3 @@ namespace YooAsset.Editor
         }
     }
 }
-#endif

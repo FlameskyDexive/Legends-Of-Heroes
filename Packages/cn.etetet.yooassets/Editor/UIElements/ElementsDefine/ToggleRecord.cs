@@ -1,4 +1,3 @@
-﻿#if UNITY_2019_4_OR_NEWER
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -10,12 +9,17 @@ namespace YooAsset.Editor
     /// <summary>
     /// 录制开关
     /// </summary>
-    public partial class ToggleRecord : Toggle
+    public class ToggleRecord : Toggle
     {
-        public new class UxmlFactory : UxmlFactory<ToggleRecord, UxmlTraits> { }
+        public new class UxmlFactory : UxmlFactory<ToggleRecord, UxmlTraits>
+        {
+        }
 
         private readonly VisualElement _checkbox;
 
+        /// <summary>
+        /// 创建录制开关实例
+        /// </summary>
         public ToggleRecord()
         {
             _checkbox = this.Q<VisualElement>("unity-checkmark");
@@ -50,4 +54,3 @@ namespace YooAsset.Editor
         }
     }
 }
-#endif

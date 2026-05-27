@@ -9,9 +9,11 @@ namespace YooAsset.Editor
     /// 没有图集
     /// </summary>
     [DisplayName("YIUI_预制体+所有图片")]
-    public class YIUIFilterRule : IFilterRule
+    public class YIUIFilterRule : IAssetFilterRule
     {
-        public bool IsCollectAsset(FilterRuleData data)
+        public string FindAssetType => EAssetFilterType.All.ToString();
+
+        public bool IsCollectAsset(AssetFilterRuleData data)
         {
             if (Path.GetExtension(data.AssetPath) == ".prefab")
             {
@@ -31,9 +33,11 @@ namespace YooAsset.Editor
     /// 指定文件下的所有资源,不包含子文件夹内的资源
     /// </summary>
     [DisplayName("YIUI_根文件")]
-    public class YIUIFilterRule_Root : IFilterRule
+    public class YIUIFilterRule_Root : IAssetFilterRule
     {
-        public bool IsCollectAsset(FilterRuleData data)
+        public string FindAssetType => EAssetFilterType.All.ToString();
+
+        public bool IsCollectAsset(AssetFilterRuleData data)
         {
             var path = data.AssetPath;
             var collectPath = data.CollectPath;
@@ -53,9 +57,11 @@ namespace YooAsset.Editor
     /// 只收集预制体资源
     /// </summary>
     [DisplayName("YIUI_预制体")]
-    public class YIUIFilterRule_Prefab : IFilterRule
+    public class YIUIFilterRule_Prefab : IAssetFilterRule
     {
-        public bool IsCollectAsset(FilterRuleData data)
+        public string FindAssetType => EAssetFilterType.Prefab.ToString();
+
+        public bool IsCollectAsset(AssetFilterRuleData data)
         {
             if (Path.GetExtension(data.AssetPath) == ".prefab")
             {
@@ -70,9 +76,11 @@ namespace YooAsset.Editor
     /// 只收集图片资源
     /// </summary>
     [DisplayName("YIUI_图片")]
-    public class YIUIFilterRule_Sprite : IFilterRule
+    public class YIUIFilterRule_Sprite : IAssetFilterRule
     {
-        public bool IsCollectAsset(FilterRuleData data)
+        public string FindAssetType => EAssetFilterType.Sprite.ToString();
+
+        public bool IsCollectAsset(AssetFilterRuleData data)
         {
             if (data.AssetPath.IndexOf("/Sprites/", StringComparison.Ordinal) >= 0)
             {
@@ -87,9 +95,11 @@ namespace YooAsset.Editor
     /// 只收集图集资源
     /// </summary>
     [DisplayName("YIUI_图集")]
-    public class YIUIFilterRule_Atlas : IFilterRule
+    public class YIUIFilterRule_Atlas : IAssetFilterRule
     {
-        public bool IsCollectAsset(FilterRuleData data)
+        public string FindAssetType => EAssetFilterType.All.ToString();
+
+        public bool IsCollectAsset(AssetFilterRuleData data)
         {
             if (data.AssetPath.IndexOf("/Atlas/", StringComparison.Ordinal) >= 0)
             {
@@ -104,9 +114,11 @@ namespace YooAsset.Editor
     /// 只收集没有图集的图片
     /// </summary>
     [DisplayName("YIUI_没有图集的图片")]
-    public class YIUIFilterRule_NoAtlas_Sprite : IFilterRule
+    public class YIUIFilterRule_NoAtlas_Sprite : IAssetFilterRule
     {
-        public bool IsCollectAsset(FilterRuleData data)
+        public string FindAssetType => EAssetFilterType.Sprite.ToString();
+
+        public bool IsCollectAsset(AssetFilterRuleData data)
         {
             var path = data.AssetPath;
             var spritesIndex = path.IndexOf("/Sprites/", StringComparison.Ordinal);

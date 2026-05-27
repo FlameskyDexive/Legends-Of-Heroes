@@ -2,8 +2,7 @@
     "name": "ET.YooAssets",
     "rootNamespace": "",
     "references": [
-        "ET.Core",
-        "ET.MemoryPack"
+        "ET.Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -12,6 +11,27 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "cn.etetet.yooassets",
+            "expression": "",
+            "define": "YOO_ASSET_3"
+        },
+        {
+            "name": "cn.etetet.yooassets",
+            "expression": "3.0.0-beta",
+            "define": "YOO_ASSET_3_0"
+        },
+        {
+            "name": "cn.etetet.yooassets",
+            "expression": "3.0.0-beta",
+            "define": "YOO_ASSET_3_0_OR_NEWER"
+        },
+        {
+            "name": "cn.etetet.yooassets",
+            "expression": "",
+            "define": "YOOASSET_LEGACY_API"
+        }
+    ],
     "noEngineReferences": false
 }

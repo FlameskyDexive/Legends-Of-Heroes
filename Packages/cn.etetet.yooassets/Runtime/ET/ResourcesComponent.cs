@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using YooAsset;
@@ -6,9 +6,9 @@ using YooAsset;
 namespace ET
 {
     /// <summary>
-    /// 远端资源地址查询服务类
+    /// 远端资源地址查询服务类（YooAsset 3.0 IRemoteService）
     /// </summary>
-    public class RemoteServices : IRemoteServices
+    public class RemoteServices : IRemoteService
     {
         private readonly string _defaultHostServer;
         private readonly string _fallbackHostServer;
@@ -19,20 +19,23 @@ namespace ET
             _fallbackHostServer = fallbackHostServer;
         }
 
-        string IRemoteServices.GetRemoteMainURL(string fileName)
+        public IReadOnlyList<string> GetRemoteUrls(string fileName)
         {
-            return $"{_defaultHostServer}/{fileName}";
-        }
-
-        string IRemoteServices.GetRemoteFallbackURL(string fileName)
-        {
-            return $"{_fallbackHostServer}/{fileName}";
+            return new[]
+            {
+                $"{_defaultHostServer}/{fileName}",
+                $"{_fallbackHostServer}/{fileName}"
+            };
         }
     }
 
     [AllowInstance]
     public class ResourcesComponent : Singleton<ResourcesComponent>, ISingletonAwake
     {
+        // YooAsset 3.0 移除了 SetDefaultPackage / 全局 YooAssets.LoadAssetAsync。
+        // 通过本字段缓存"默认包"以便 LoadAsset*Async 的便捷入口继续可用。
+        private ResourcePackage defaultPackage;
+
         public void Awake()
         {
             YooAssets.Initialize();
@@ -46,77 +49,82 @@ namespace ET
         public async ETTask CreatePackageAsync(string packageName, bool isDefault = false)
         {
             YooConfig yooConfig = Resources.Load<YooConfig>("YooConfig");
-            ResourcePackage package = YooAssets.CreatePackage(packageName);
-            if (isDefault)
+
+            if (!YooAssets.TryGetPackage(packageName, out ResourcePackage package))
             {
-                YooAssets.SetDefaultPackage(package);
+                package = YooAssets.CreatePackage(packageName);
             }
 
-            // 编辑器下的模拟模式
+            if (isDefault)
+            {
+                this.defaultPackage = package;
+            }
+
             switch (yooConfig.EPlayMode)
             {
                 case EPlayMode.EditorSimulateMode:
                 {
-                    PackageInvokeBuildResult buildResult = EditorSimulateModeHelper.SimulateBuild(packageName);    
-                    string packageRoot = buildResult.PackageRootDirectory;
-                    FileSystemParameters editorFileSystemParams = FileSystemParameters.CreateDefaultEditorFileSystemParameters(packageRoot);
-                    EditorSimulateModeParameters initParameters = new();
-                    initParameters.EditorFileSystemParameters = editorFileSystemParams;
-                    await package.InitializeAsync(initParameters).Task;
+                    var buildResult = EditorSimulateBuildInvoker.Build(packageName, (int)EBundleType.VirtualBundle);
+                    EditorSimulateModeOptions createParameters = new();
+                    createParameters.EditorFileSystemParameters = FileSystemParameters.CreateDefaultEditorFileSystemParameters(buildResult.PackageRootDirectory);
+                    await package.InitializePackageAsync(createParameters);
                     break;
                 }
                 case EPlayMode.OfflinePlayMode:
                 {
-                    FileSystemParameters buildinFileSystemParams = FileSystemParameters.CreateDefaultBuildinFileSystemParameters();
-                    OfflinePlayModeParameters initParameters = new();
-                    initParameters.BuildinFileSystemParameters = buildinFileSystemParams;
-                    await package.InitializeAsync(initParameters).Task;
+                    OfflinePlayModeOptions createParameters = new();
+                    createParameters.BuiltinFileSystemParameters = FileSystemParameters.CreateDefaultBuiltinFileSystemParameters();
+                    await package.InitializePackageAsync(createParameters);
                     break;
                 }
                 case EPlayMode.HostPlayMode:
                 {
                     string defaultHostServer = GetHostServerURL(yooConfig.Url, package.PackageName);
                     string fallbackHostServer = GetHostServerURL(yooConfig.Url, package.PackageName);
-                    IRemoteServices remoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
-                    FileSystemParameters cacheFileSystemParams = FileSystemParameters.CreateDefaultCacheFileSystemParameters(remoteServices);
-                    FileSystemParameters buildinFileSystemParams = FileSystemParameters.CreateDefaultBuildinFileSystemParameters();
-                    HostPlayModeParameters initParameters = new();
-                    initParameters.BuildinFileSystemParameters = buildinFileSystemParams; 
-                    initParameters.CacheFileSystemParameters = cacheFileSystemParams;
-                    await package.InitializeAsync(initParameters).Task;
+                    IRemoteService remoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
+                    HostPlayModeOptions createParameters = new();
+                    createParameters.BuiltinFileSystemParameters = FileSystemParameters.CreateDefaultBuiltinFileSystemParameters();
+                    createParameters.CacheFileSystemParameters = FileSystemParameters.CreateDefaultSandboxFileSystemParameters(remoteServices);
+                    await package.InitializePackageAsync(createParameters);
                     break;
                 }
                 case EPlayMode.WebPlayMode:
                 {
                     string defaultHostServer = GetHostServerURL(yooConfig.Url, package.PackageName);
                     string fallbackHostServer = GetHostServerURL(yooConfig.Url, package.PackageName);
-                    IRemoteServices remoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
-                    FileSystemParameters webServerFileSystemParams = FileSystemParameters.CreateDefaultWebServerFileSystemParameters();
-                    FileSystemParameters webRemoteFileSystemParams = FileSystemParameters.CreateDefaultWebRemoteFileSystemParameters(remoteServices); //支持跨域下载
-    
-                    WebPlayModeParameters initParameters = new();
-                    initParameters.WebServerFileSystemParameters = webServerFileSystemParams;
-                    initParameters.WebRemoteFileSystemParameters = webRemoteFileSystemParams;
-
-                    await package.InitializeAsync(initParameters).Task;
+                    IRemoteService remoteServices = new RemoteServices(defaultHostServer, fallbackHostServer);
+                    WebPlayModeOptions createParameters = new();
+                    createParameters.WebServerFileSystemParameters = FileSystemParameters.CreateDefaultWebServerFileSystemParameters();
+                    createParameters.WebRemoteFileSystemParameters = FileSystemParameters.CreateDefaultWebRemoteFileSystemParameters(remoteServices);
+                    await package.InitializePackageAsync(createParameters);
                     break;
                 }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
-            
-            RequestPackageVersionOperation op = package.RequestPackageVersionAsync();
-            await op.Task;
-            await package.UpdatePackageManifestAsync(op.PackageVersion).Task;
+
+            RequestPackageVersionOperation versionOperation = package.RequestPackageVersionAsync();
+            await versionOperation;
+            if (versionOperation.Status != EOperationStatus.Succeeded)
+            {
+                Log.Error($"YooAsset RequestPackageVersion failed: {packageName} {versionOperation.Error}");
+                return;
+            }
+
+            LoadPackageManifestOperation manifestOperation = package.LoadPackageManifestAsync(
+                new LoadPackageManifestOptions(versionOperation.PackageVersion, 60));
+            await manifestOperation;
+            if (manifestOperation.Status != EOperationStatus.Succeeded)
+            {
+                Log.Error($"YooAsset LoadPackageManifest failed: {packageName} {manifestOperation.Error}");
+            }
         }
 
-        string GetHostServerURL(string url, string pacakgeName)
+        private static string GetHostServerURL(string url, string packageName)
         {
-            //string hostServerIP = "http://10.0.2.2"; //安卓模拟器地址
             string hostServerIP = url;
             string appVersion = "v1.0";
-                
-                
+
 #if UNITY_EDITOR
             switch (UnityEditor.EditorUserBuildSettings.activeBuildTarget)
             {
@@ -125,63 +133,67 @@ namespace ET
                 case UnityEditor.BuildTarget.iOS:
                     return $"{hostServerIP}/CDN/IPhone/{appVersion}";
                 case UnityEditor.BuildTarget.WebGL:
-                {
-                    return $"{hostServerIP}/StreamingAssets/Bundles/{pacakgeName}";
-                }
+                    return $"{hostServerIP}/StreamingAssets/Bundles/{packageName}";
                 default:
                     return $"{hostServerIP}/CDN/PC/{appVersion}";
             }
 #else
-		        switch (Application.platform)
-                {
-                    case RuntimePlatform.Android:
-                        return $"{hostServerIP}/CDN/Android/{appVersion}";
-                    case RuntimePlatform.IPhonePlayer:
-                        return $"{hostServerIP}/CDN/IPhone/{appVersion}";
-                    case RuntimePlatform.WebGLPlayer:
-                    {
-                        return $"{hostServerIP}/StreamingAssets/Bundles/{pacakgeName}";
-                    }
-                    default:
-                        return $"{hostServerIP}/CDN/PC/{appVersion}";
-                }
+            switch (Application.platform)
+            {
+                case RuntimePlatform.Android:
+                    return $"{hostServerIP}/CDN/Android/{appVersion}";
+                case RuntimePlatform.IPhonePlayer:
+                    return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+                case RuntimePlatform.WebGLPlayer:
+                    return $"{hostServerIP}/StreamingAssets/Bundles/{packageName}";
+                default:
+                    return $"{hostServerIP}/CDN/PC/{appVersion}";
+            }
 #endif
         }
 
         public async ETTask DestroyPackage(string packageName)
         {
             ResourcePackage package = YooAssets.GetPackage(packageName);
-            await package.DestroyAsync().Task;
+            await package.DestroyAsync();
         }
 
         /// <summary>
-        /// 主要用来加载dll config aotdll，因为这时候纤程还没创建，无法使用ResourcesLoaderComponent。
-        /// 游戏中的资源应该使用ResourcesLoaderComponent来加载
+        /// 主要用来加载 dll / config / aotdll，这时纤程还没创建，无法使用 ResourcesLoaderComponent。
+        /// 游戏中的资源应该使用 ResourcesLoaderComponent 来加载。
         /// </summary>
         public async ETTask<T> LoadAssetAsync<T>(string location) where T : UnityEngine.Object
         {
-            AssetHandle handle = YooAssets.LoadAssetAsync<T>(location);
-            await handle.Task;
+            if (this.defaultPackage == null)
+            {
+                Log.Error("ResourcesComponent.LoadAssetAsync 调用时默认包未初始化，请先 CreatePackageAsync(name, isDefault: true)。");
+                return null;
+            }
+            AssetHandle handle = this.defaultPackage.LoadAssetAsync<T>(location);
+            await handle;
             T t = (T)handle.AssetObject;
             handle.Release();
             return t;
         }
 
         /// <summary>
-        /// 主要用来加载dll config aotdll，因为这时候纤程还没创建，无法使用ResourcesLoaderComponent。
-        /// 游戏中的资源应该使用ResourcesLoaderComponent来加载
+        /// 主要用来加载 dll / config / aotdll。
         /// </summary>
         public async ETTask<Dictionary<string, T>> LoadAllAssetsAsync<T>(string location) where T : UnityEngine.Object
         {
-            AllAssetsHandle allAssetsOperationHandle = YooAssets.LoadAllAssetsAsync<T>(location);
-            await allAssetsOperationHandle.Task;
-            Dictionary<string, T> dictionary = new Dictionary<string, T>();
+            if (this.defaultPackage == null)
+            {
+                Log.Error("ResourcesComponent.LoadAllAssetsAsync 调用时默认包未初始化，请先 CreatePackageAsync(name, isDefault: true)。");
+                return null;
+            }
+            AllAssetsHandle allAssetsOperationHandle = this.defaultPackage.LoadAllAssetsAsync<T>(location);
+            await allAssetsOperationHandle;
+            Dictionary<string, T> dictionary = new();
             foreach (UnityEngine.Object assetObj in allAssetsOperationHandle.AllAssetObjects)
             {
                 T t = assetObj as T;
                 dictionary.Add(t.name, t);
             }
-
             allAssetsOperationHandle.Release();
             return dictionary;
         }
