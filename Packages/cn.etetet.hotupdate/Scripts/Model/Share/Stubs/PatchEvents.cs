@@ -1,9 +1,8 @@
-namespace ET.Client
+namespace ET
 {
     // 以下事件类为 DlgHotUpdate 移植所需的最小桩，等 cn.etetet.yooassets 补丁事件接入后由桩切换为正式定义。
 
-    [EnableClass]
-    public class OnPatchDownloadProgress
+    public struct OnPatchDownloadProgress
     {
         public int TotalDownloadCount;
         public int CurrentDownloadCount;
@@ -11,8 +10,7 @@ namespace ET.Client
         public long CurrentDownloadSizeBytes;
     }
 
-    [EnableClass]
-    public class OnPatchDownlodFailed
+    public struct OnPatchDownlodFailed
     {
         public string FileName;
         public string Error;

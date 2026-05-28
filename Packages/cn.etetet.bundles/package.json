@@ -1,0 +1,10 @@
+{
+  "name": "cn.etetet.bundles",
+  "displayName": "ET.Bundles",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "dependencies": {
+    "cn.etetet.core": "4.0.0"
+  },
+  "description": "Art / runtime resource bundle package (YooAsset collectable). Mirrors the original project's Assets/Bundles + Assets/Res division: Bundles/{AI,Config,UI,Unit,...} for bundled assets and behavior-tree data, Res/{Audio,Font,UI,...} for raw art."
+}

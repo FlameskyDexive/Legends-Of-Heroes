@@ -2,9 +2,9 @@ namespace ET
 {
     public static class BTreeBytesLoader
     {
-        public const string ClientBehaviorTreeBytesDir = "Assets/Bundles/AI/Bytes";
-        public const string ServerBehaviorTreeBytesDir = "Config/AI";
-        public const string BTreeAssetDir = "Assets/Bundles/AI";
+        public const string ClientBehaviorTreeBytesDir = "Packages/cn.etetet.bundles/Bundles/AI/Bytes";
+        public const string ServerBehaviorTreeBytesDir = "Packages/cn.etetet.bundles/Bundles/AI/Bytes";
+        public const string BTreeAssetDir = "Packages/cn.etetet.bundles/Bundles/AI";
 
         public struct GetOneBehaviorTreeBytes
         {

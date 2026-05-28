@@ -29,6 +29,12 @@ namespace ET.Client
             {
                 root.AddComponent<UIComponent>();
             }
+
+            // 热更检测：进入登录前先跑增量补丁下载（HostPlayMode 才会有补丁；编辑器/离线模式为空操作）
+            EntityRef<Scene> rootRef = root;
+            await HotUpdateHelper.HotUpdateAsync(root);
+            root = rootRef;
+
             await root.GetComponent<UIComponent>().ShowWindowAsync(WindowID.WindowID_Login);
         }
     }

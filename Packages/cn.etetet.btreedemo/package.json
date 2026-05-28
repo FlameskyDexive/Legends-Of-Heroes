@@ -7,6 +7,8 @@
     "cn.etetet.core": "4.0.0",
     "cn.etetet.btree": "1.0.0",
     "cn.etetet.btreenode": "1.0.0",
+    "cn.etetet.bundles": "1.0.0",
+    "cn.etetet.yooassets": "3.0.0",
     "cn.etetet.unit": "2.0.0",
     "cn.etetet.map": "1.0.0"
   },

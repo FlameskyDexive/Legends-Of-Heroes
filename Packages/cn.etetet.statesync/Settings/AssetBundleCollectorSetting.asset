@@ -35,8 +35,34 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
+        AssetTags:
+        UserData:
+    - GroupName: BTreeAI
+      GroupDesc: Behavior tree runtime bytes (cn.etetet.bundles)
+      AssetTags:
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Packages/cn.etetet.bundles/Bundles/AI/Bytes
+        CollectorGUID: bce7d10a55c0e4f4b9a1f2c3d4e5f607
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
+    - GroupName: Audio
+      GroupDesc: Audio clips (cn.etetet.bundles)
+      AssetTags:
+      ActiveRuleName: EnableGroup
+      Collectors:
+      - CollectPath: Packages/cn.etetet.bundles/Res/Audio
+        CollectorGUID: a0d1e2f3c4b5a6978899aabbccddeeff
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackSeparately
+        FilterRuleName: CollectAll
+        AssetTags:
+        UserData:
     - GroupName: Code
       GroupDesc: 
       AssetTags: 

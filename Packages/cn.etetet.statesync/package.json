@@ -59,6 +59,7 @@
     "cn.etetet.db": "4.0.0",
     "cn.etetet.unitybridge": "4.0.0",
     "cn.etetet.conditionexpr": "4.0.0",
-    "cn.etetet.eui": "1.0.0"
+    "cn.etetet.eui": "1.0.0",
+    "cn.etetet.hotupdate": "1.0.0"
   }
 }

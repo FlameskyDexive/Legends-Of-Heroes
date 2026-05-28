@@ -114,7 +114,7 @@ namespace ET
 
         private static bool IsRuntimeDebugAvailable()
         {
-            GlobalConfig globalConfig = AssetDatabase.LoadAssetAtPath<GlobalConfig>("Assets/Bundles/Config/GlobalConfig.asset");
+            GlobalConfig globalConfig = Resources.Load<GlobalConfig>("GlobalConfig");
             if (globalConfig == null)
             {
                 return false;

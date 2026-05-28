@@ -93,6 +93,8 @@
         "cn.etetet.core": "4.0.0",
         "cn.etetet.btree": "1.0.0",
         "cn.etetet.btreenode": "1.0.0",
+        "cn.etetet.bundles": "1.0.0",
+        "cn.etetet.yooassets": "3.0.0",
         "cn.etetet.unit": "2.0.0",
         "cn.etetet.map": "1.0.0"
       }
@@ -107,6 +109,14 @@
         "cn.etetet.unit": "2.0.0",
         "cn.etetet.move": "2.0.0",
         "cn.etetet.numeric": "2.0.0"
+      }
+    },
+    "cn.etetet.bundles": {
+      "version": "file:cn.etetet.bundles",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "4.0.0"
       }
     },
     "cn.etetet.conditionexpr": {
@@ -595,7 +605,8 @@
         "cn.etetet.db": "4.0.0",
         "cn.etetet.unitybridge": "4.0.0",
         "cn.etetet.conditionexpr": "4.0.0",
-        "cn.etetet.eui": "1.0.0"
+        "cn.etetet.eui": "1.0.0",
+        "cn.etetet.hotupdate": "1.0.0"
       }
     },
     "cn.etetet.test": {

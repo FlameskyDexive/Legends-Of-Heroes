@@ -88,7 +88,7 @@ namespace ET
         public string TreeId = Guid.NewGuid().ToString("N");
         public string TreeName = "NewBehaviorTree";
         public string Description = string.Empty;
-        public string ExportRelativePath = "Assets/Bundles/AI/Bytes/NewBehaviorTree.bytes";
+        public string ExportRelativePath = "Packages/cn.etetet.bundles/Bundles/AI/Bytes/NewBehaviorTree.bytes";
         public List<BTreeBlackboardEntryData> BlackboardEntries = new();
         public List<BTreeEditorNodeData> Nodes = new();
         public string RootNodeId = string.Empty;
