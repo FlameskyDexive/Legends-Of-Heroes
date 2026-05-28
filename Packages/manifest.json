@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "cn.lys.aibridge": "https://github.com/liyingsong99/AIBridge.git",
+    "com.coplaydev.unity-mcp": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
     "cn.etetet.mapplay": "file:cn.etetet.mapplay",
     "com.jasonxudeveloper.nino": "4.0.0-preview.147",
     "com.unity.2d.sprite": "1.0.0",

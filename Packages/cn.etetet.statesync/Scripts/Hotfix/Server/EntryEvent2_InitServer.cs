@@ -50,6 +50,8 @@
             if (Options.Instance.Console == 1)
             {
                 root.AddComponent<ConsoleComponent>();
+                // 机器人管理器：供 GM 控制台命令 matchrobot 创建机器人玩家（模拟真实登录+进图当匹配对手）
+                root.AddComponent<RobotManagerComponent>();
             }
         }
     }

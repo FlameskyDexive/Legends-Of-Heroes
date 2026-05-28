@@ -30,3 +30,17 @@ message Robot_LoginResponse // IResponse
 	int32 Error = 2;
 	string Message = 3;
 }
+
+// 客户端匹配超时，请求服务端创建一个机器人玩家当对手（机器人登录后进同一张共享地图）
+// ResponseType G2C_RequestMatchRobot
+message C2G_RequestMatchRobot // ISessionRequest
+{
+	int32 RpcId = 1;
+}
+
+message G2C_RequestMatchRobot // ISessionResponse
+{
+	int32 RpcId = 1;
+	int32 Error = 2;
+	string Message = 3;
+}

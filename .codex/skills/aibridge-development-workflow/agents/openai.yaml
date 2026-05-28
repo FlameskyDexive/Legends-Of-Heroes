@@ -1,0 +1,7 @@
+interface:
+  display_name: "AIBridge Development Workflow"
+  short_description: "可视化Unity开发工作流与最终验收检查规范指南手册"
+  default_prompt: "Use $aibridge-development-workflow to handle a Unity/AIBridge code, asset, or workflow modification task."
+
+policy:
+  allow_implicit_invocation: true

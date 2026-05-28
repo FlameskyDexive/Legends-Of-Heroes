@@ -800,6 +800,25 @@
         "cn.etetet.core": "1.0.0"
       }
     },
+    "cn.lys.aibridge": {
+      "version": "https://github.com/liyingsong99/AIBridge.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "hash": "db0b6544a2f9def32b285c41685b5ca2d35541ea"
+    },
+    "com.coplaydev.unity-mcp": {
+      "version": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.0.2",
+        "com.unity.test-framework": "1.1.31"
+      },
+      "hash": "78ee5418415953b79c358bfe6355fcc3fde7912b"
+    },
     "com.etetet.init": {
       "version": "file:com.etetet.init",
       "depth": 0,
