@@ -119,6 +119,14 @@
         "cn.etetet.core": "4.0.0"
       }
     },
+    "cn.etetet.collision": {
+      "version": "file:cn.etetet.collision",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "4.0.0"
+      }
+    },
     "cn.etetet.conditionexpr": {
       "version": "file:cn.etetet.conditionexpr",
       "depth": 0,

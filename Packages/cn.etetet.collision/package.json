@@ -1,0 +1,10 @@
+{
+  "name": "cn.etetet.collision",
+  "displayName": "ET.Collision",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "dependencies": {
+    "cn.etetet.core": "4.0.0"
+  },
+  "description": "High-performance 3D collision detection: AABB, OBB (oriented box-box and box-sphere), sphere. Allocation-free value-type shapes and a static Collision3DHelper API, plus client-side editor Gizmos visual debugging."
+}
