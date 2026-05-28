@@ -14,7 +14,7 @@ namespace ET.Client
                 return;
             }
 
-            ResourceDownloaderOperation downloader = package.CreateResourceDownloader(10, 3);
+            ResourceDownloaderOperation downloader = package.CreateResourceDownloader(new ResourceDownloaderOptions(10, 3));
             if (downloader == null || downloader.TotalDownloadCount == 0)
             {
                 // 没有需要下载的补丁
@@ -26,7 +26,7 @@ namespace ET.Client
             // 打开热更界面
             await root.GetComponent<UIComponent>().ShowWindowAsync(WindowID.WindowID_HotUpdate);
 
-            downloader.DownloadUpdateCallback = data =>
+            downloader.DownloadProgressChanged += data =>
             {
                 Scene r = rootRef;
                 EventSystem.Instance.Publish(r, new OnPatchDownloadProgress()
@@ -37,13 +37,13 @@ namespace ET.Client
                     CurrentDownloadSizeBytes = data.CurrentDownloadBytes,
                 });
             };
-            downloader.DownloadErrorCallback = data =>
+            downloader.DownloadError += data =>
             {
                 Scene r = rootRef;
                 EventSystem.Instance.Publish(r, new OnPatchDownlodFailed() { FileName = data.FileName, Error = data.ErrorInfo });
             };
 
-            downloader.BeginDownload();
+            downloader.StartDownload();
             await downloader;
 
             root = rootRef;

@@ -8,6 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
+// 本文件是 YooAsset v2.3 -> v3 兼容层，适配器刻意持有已标记 [Obsolete] 的 v2.3 接口，
+// 故在本文件内抑制 CS0618（dotnet 构建会把过时调用当作错误，Unity 仅当作警告）。
+#pragma warning disable CS0618
+
 namespace YooAsset
 {
     #region FileSystemParameters partial
@@ -290,4 +294,5 @@ namespace YooAsset
 
     #endregion
 }
+#pragma warning restore CS0618
 #endif

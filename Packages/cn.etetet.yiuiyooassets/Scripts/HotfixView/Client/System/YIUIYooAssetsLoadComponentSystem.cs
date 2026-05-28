@@ -80,7 +80,7 @@ namespace ET.Client
         {
             EntityRef<YIUIYooAssetsLoadComponent> selfRef = self;
             var handle = self.m_Package.LoadAssetAsync(arg2, arg3);
-            await handle.Task;
+            await handle;
             self = selfRef;
             return self.LoadAssetHandle(handle);
         }
@@ -131,7 +131,7 @@ namespace ET.Client
         //检查合法
         private static bool VerifyAssetValidityFunc(this YIUIYooAssetsLoadComponent self, string arg1, string arg2)
         {
-            return self.m_Package.CheckLocationValid(arg2);
+            return self.m_Package.IsLocationValid(arg2);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace ET.Client
         /// <param name="type">资源类型</param>
         public static AssetInfo GetAssetInfoByGUID(this YIUIYooAssetsLoadComponent self, string assetGUID, Type type = null)
         {
-            return self.m_Package?.GetAssetInfoByGUID(assetGUID, type);
+            return self.m_Package?.GetAssetInfoByGuid(assetGUID, type);
         }
     }
 }

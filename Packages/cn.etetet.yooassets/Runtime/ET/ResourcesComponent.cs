@@ -160,7 +160,7 @@ namespace ET
         public async ETTask DestroyPackage(string packageName)
         {
             ResourcePackage package = YooAssets.GetPackage(packageName);
-            await package.DestroyAsync();
+            await package.DestroyPackageAsync();
         }
 
         /// <summary>

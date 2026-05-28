@@ -4,6 +4,10 @@
 
 using System;
 
+// 本文件是 YooAsset v2.3 -> v3 兼容层，刻意持有/桥接已标记 [Obsolete] 的 v2.3 类型，
+// 故在本文件内抑制 CS0618（dotnet 构建会把过时调用当作错误，Unity 仅当作警告）。
+#pragma warning disable CS0618
+
 namespace YooAsset
 {
     #region v2.3 委托和数据类型
@@ -188,4 +192,5 @@ namespace YooAsset
         public void BeginDownload() => StartDownload();
     }
 }
+#pragma warning restore CS0618
 #endif

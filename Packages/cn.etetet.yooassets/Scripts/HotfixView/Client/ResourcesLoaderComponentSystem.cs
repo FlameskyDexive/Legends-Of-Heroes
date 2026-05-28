@@ -40,7 +40,7 @@ namespace ET.Client
                         handle.Release();
                         break;
                     case SceneHandle handle:
-                        handle.UnloadAsync();
+                        handle.UnloadSceneAsync();
                         break;
                 }
             }
