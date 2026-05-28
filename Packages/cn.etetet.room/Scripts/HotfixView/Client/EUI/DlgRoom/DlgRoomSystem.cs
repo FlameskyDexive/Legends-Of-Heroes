@@ -49,6 +49,7 @@ namespace ET.Client
             }
         }
 
+        [EnableGetComponent(typeof(TimerComponent))]
         public static async ETTask StartCountDown(this DlgRoom self)
         {
             EntityRef<DlgRoom> selfRef = self;

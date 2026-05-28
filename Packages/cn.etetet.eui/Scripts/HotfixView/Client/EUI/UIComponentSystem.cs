@@ -19,6 +19,9 @@ namespace ET.Client
             self.VisibleWindowsDic?.Clear();
             self.StackWindowsQueue?.Clear();
             self.UIBaseWindowlistCached?.Clear();
+
+            // 接好 LoopScrollRect 的 item 取物委托（Loader 程序集无法直接访问 ResourcesLoaderComponent）
+            LoopScrollPoolBridge.Bind(self.Root());
         }
 
         [EntitySystem]

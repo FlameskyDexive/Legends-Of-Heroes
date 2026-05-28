@@ -168,6 +168,38 @@ MonoBehaviour:
         FilterRuleName: CollectPrefab
         AssetTags:
         UserData:
+      - CollectPath: Packages/cn.etetet.lobby/Assets/GameRes/EUI
+        CollectorGUID: 14020001abcd14020001abcd14020001
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectPrefab
+        AssetTags:
+        UserData:
+      - CollectPath: Packages/cn.etetet.room/Assets/GameRes/EUI
+        CollectorGUID: 14030001abcd14030001abcd14030001
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectPrefab
+        AssetTags:
+        UserData:
+      - CollectPath: Packages/cn.etetet.hotupdate/Assets/GameRes/EUI
+        CollectorGUID: 14040001abcd14040001abcd14040001
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectPrefab
+        AssetTags:
+        UserData:
+      - CollectPath: Packages/cn.etetet.lockstep/Assets/GameRes/EUI
+        CollectorGUID: 14050001abcd14050001abcd14050001
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectPrefab
+        AssetTags:
+        UserData:
     - GroupName: Recast
       GroupDesc:
       AssetTags:

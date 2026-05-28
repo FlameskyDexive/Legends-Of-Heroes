@@ -53,6 +53,7 @@ namespace ET.Client
             self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.SetVisible(true, count);
         }
 
+        [EnableGetComponent(typeof(TimerComponent))]
         public static async ETTask StartCountDown(this DlgMatchTeam self)
         {
             EntityRef<DlgMatchTeam> selfRef = self;
