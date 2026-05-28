@@ -49,6 +49,11 @@ namespace ET
         public async ETTask CreatePackageAsync(string packageName, bool isDefault = false)
         {
             YooConfig yooConfig = Resources.Load<YooConfig>("YooConfig");
+            if (yooConfig == null)
+            {
+                Log.Error("Resources.Load<YooConfig>(\"YooConfig\") 返回 null，请确认 cn.etetet.yooassets/Resources/YooConfig.asset 存在且脚本引用未丢失");
+                return;
+            }
 
             if (!YooAssets.TryGetPackage(packageName, out ResourcePackage package))
             {

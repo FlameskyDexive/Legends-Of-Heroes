@@ -14,7 +14,8 @@ namespace YooAsset
         /// <param name="buildBundleType">构建资源包类型</param>
         /// <returns>构建结果</returns>
         /// <remarks>
-        /// 此方法通过反射调用 YooAsset.Editor 程序集中的构建器，存在隐式耦合。
+        /// 此方法通过反射调用 ET.YooAssets.Editor 程序集中的 YooAsset.Editor.BundleSimulateBuilder，存在隐式耦合。
+        /// （C# namespace 仍是 YooAsset.Editor；asmdef 名已重命名为 ET.YooAssets.Editor 以避免与上游冲突。）
         /// </remarks>
         public static PackageBuildResult Build(string packageName, int buildBundleType)
         {
@@ -25,7 +26,7 @@ namespace YooAsset
             var buildParam = new PackageBuildParameters(packageName);
             buildParam.BuildPipelineName = "EditorSimulateBuildPipeline";
             buildParam.BuildBundleType = buildBundleType;
-            buildParam.AssemblyName = "YooAsset.Editor";
+            buildParam.AssemblyName = "ET.YooAssets.Editor";
             buildParam.TypeFullName = "YooAsset.Editor.BundleSimulateBuilder";
             buildParam.MethodName = "SimulateBuild";
             return PackageBuildInvoker.InvokeBuild(buildParam);
