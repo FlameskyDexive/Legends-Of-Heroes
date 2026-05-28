@@ -1,0 +1,12 @@
+{
+  "name": "cn.etetet.btree",
+  "displayName": "ET.BTree",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "dependencies": {
+    "cn.etetet.core": "4.0.0",
+    "cn.etetet.config": "4.0.0",
+    "cn.etetet.proto": "4.0.0"
+  },
+  "description": "ET Framework Behavior Tree (migrated from Legends-Of-Heroes8, named BTree to distinguish from cn.etetet.behaviortree)"
+}

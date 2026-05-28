@@ -75,6 +75,16 @@
         "cn.etetet.core": "4.0.0"
       }
     },
+    "cn.etetet.btree": {
+      "version": "file:cn.etetet.btree",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "4.0.0",
+        "cn.etetet.config": "4.0.0",
+        "cn.etetet.proto": "4.0.0"
+      }
+    },
     "cn.etetet.conditionexpr": {
       "version": "file:cn.etetet.conditionexpr",
       "depth": 0,
@@ -746,6 +756,13 @@
         "com.unity.nuget.newtonsoft-json": "3.0.2",
         "com.unity.sharp-zip-lib": "1.3.4-preview"
       }
+    },
+    "com.jasonxudeveloper.nino": {
+      "version": "4.0.0-preview.147",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
     },
     "com.unity.2d.sprite": {
       "version": "1.0.0",

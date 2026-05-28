@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "cn.etetet.mapplay": "file:cn.etetet.mapplay",
+    "com.jasonxudeveloper.nino": "4.0.0-preview.147",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "1.1.7",
     "com.unity.cinemachine": "2.10.5",
@@ -45,6 +46,13 @@
       "url": "https://npm.pkg.github.com/@ET-Packages",
       "scopes": [
         "cn.etetet"
+      ]
+    },
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.jasonxudeveloper.nino"
       ]
     }
   ]
