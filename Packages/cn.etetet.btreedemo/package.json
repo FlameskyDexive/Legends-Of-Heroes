@@ -1,0 +1,14 @@
+{
+  "name": "cn.etetet.btreedemo",
+  "displayName": "ET.BTreeDemo",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "dependencies": {
+    "cn.etetet.core": "4.0.0",
+    "cn.etetet.btree": "1.0.0",
+    "cn.etetet.btreenode": "1.0.0",
+    "cn.etetet.unit": "2.0.0",
+    "cn.etetet.map": "1.0.0"
+  },
+  "description": "Demo for the new behavior tree: sample bootstrap event + demo tree factory. Depends on cn.etetet.btreenode for the logic nodes."
+}

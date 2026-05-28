@@ -1,0 +1,14 @@
+{
+  "name": "cn.etetet.btreenode",
+  "displayName": "ET.BTreeNode",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "dependencies": {
+    "cn.etetet.core": "4.0.0",
+    "cn.etetet.btree": "1.0.0",
+    "cn.etetet.unit": "2.0.0",
+    "cn.etetet.move": "2.0.0",
+    "cn.etetet.numeric": "2.0.0"
+  },
+  "description": "Upper-layer logic nodes for the new behavior tree (cn.etetet.btree). Node handlers organized by category (ActionNode/ConditionNode), mirroring cn.etetet.btnode."
+}
