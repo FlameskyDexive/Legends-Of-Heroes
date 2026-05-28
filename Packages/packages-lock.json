@@ -519,6 +519,21 @@
         "cn.etetet.db": "4.0.0"
       }
     },
+    "cn.etetet.skill": {
+      "version": "file:cn.etetet.skill",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "4.0.0",
+        "cn.etetet.config": "4.0.0",
+        "cn.etetet.proto": "4.0.0",
+        "cn.etetet.unit": "4.0.0",
+        "cn.etetet.numeric": "4.0.0",
+        "cn.etetet.move": "4.0.0",
+        "cn.etetet.map": "1.0.0",
+        "cn.etetet.spell": "4.0.0"
+      }
+    },
     "cn.etetet.sourcegenerator": {
       "version": "file:cn.etetet.sourcegenerator",
       "depth": 0,

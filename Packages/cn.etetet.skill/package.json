@@ -1,0 +1,17 @@
+{
+  "name": "cn.etetet.skill",
+  "displayName": "ET.Skill",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "dependencies": {
+    "cn.etetet.core": "4.0.0",
+    "cn.etetet.config": "4.0.0",
+    "cn.etetet.proto": "4.0.0",
+    "cn.etetet.unit": "4.0.0",
+    "cn.etetet.numeric": "4.0.0",
+    "cn.etetet.move": "4.0.0",
+    "cn.etetet.map": "1.0.0",
+    "cn.etetet.spell": "4.0.0"
+  },
+  "description": "Battle / skill system (migrated from Legends-Of-HeroesOri): skill, action-event (battle events), bullet, dungeon. Buff calls are bound to the project's own buff system (cn.etetet.spell), the original Buff is NOT migrated."
+}

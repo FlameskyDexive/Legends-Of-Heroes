@@ -1,0 +1,41 @@
+﻿using System.Collections.Generic;
+
+namespace ET
+{
+    [ChildOf(typeof(SkillComponent))]
+    public class Skill:Entity,IAwake<int, int>,IDestroy,ITransfer
+    {
+        public Unit Unit => this.GetParent<SkillComponent>().Unit;
+        public int SkillId;
+        public int SkillLevel;
+        // public int AbstractIndex;
+        public ESkillAbstractType AbstractType => (ESkillAbstractType)this.SkillConfig.AbstractType;
+        
+        public SkillConfig SkillConfig => SkillConfigCategory.Instance.Get(this.SkillId, this.SkillLevel);
+
+        /// <summary>
+        /// 技能释放开始时间戳
+        /// </summary>
+        public long SpellStartTime;
+        /// <summary>
+        /// 技能结束完成释放时间
+        /// </summary>
+        public long SpellEndTime;
+        /// <summary>
+        /// 冷却时间
+        /// </summary>
+        public int CD
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 当前冷却时间
+        /// </summary>
+        public int CurrentCD => (int)(this.SpellStartTime + this.CD - TimeInfo.Instance.ClientNow());
+
+
+
+    }
+}
