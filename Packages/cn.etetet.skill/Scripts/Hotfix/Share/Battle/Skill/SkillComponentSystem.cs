@@ -106,7 +106,7 @@ namespace ET
 
         public static bool IsDead(this SkillComponent self)
         {
-            return self.Unit.GetComponent<NumericComponent>().GetAsInt(NumericType.Hp) <= 0;
+            return self.Unit.NumericComponent.GetAsInt(NumericType.HP) <= 0;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ET
 		
 
 		[EntitySystem]
-		public static void FixedUpdate(this DungeonComponent self)
+		public static void Update(this DungeonComponent self)
 		{
 			self.SyncUnit();
 		}

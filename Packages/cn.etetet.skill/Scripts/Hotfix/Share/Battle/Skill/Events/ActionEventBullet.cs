@@ -5,11 +5,11 @@ namespace ET
 	/// <summary>
 	/// 技能发射子弹
 	/// </summary>
-	[ActionEvent(SceneType.RoomRoot, EActionEventType.Bullet)]
+	[ActionEvent(SceneType.Map, EActionEventType.Bullet)]
 	[FriendOf(typeof(ActionEvent))]
 	public class ActionEventBullet : IActionEvent
 	{
-		public void Run(ActionEvent actionEvent, EventType.ActionEventData args)
+		public void Run(ActionEvent actionEvent, ActionEventData args)
 		{
             Unit owner = args.owner;
             Log.Info($"emit a bullet");

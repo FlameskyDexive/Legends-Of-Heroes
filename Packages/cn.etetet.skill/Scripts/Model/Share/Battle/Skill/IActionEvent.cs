@@ -2,6 +2,6 @@
 {
 	public interface IActionEvent
 	{
-		void Run(ActionEvent actionEvent, EventType.ActionEventData args);
+		void Run(ActionEvent actionEvent, ActionEventData args);
 	}
 }

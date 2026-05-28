@@ -2,7 +2,7 @@
 {
 	
 	[ComponentOf(typeof(Scene))]
-    public class DungeonComponent: Entity, IAwake, IFixedUpdate, IDestroy
+    public class DungeonComponent: Entity, IAwake, IUpdate, IDestroy
 	{
 	}
 }

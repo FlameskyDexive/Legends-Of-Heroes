@@ -9,10 +9,10 @@ namespace ET
 	/// 执行范围伤害技能事件
 	/// </summary>
 	[FriendOf(typeof(ActionEvent))]
-	[ActionEvent(SceneType.RoomRoot, EActionEventType.RangeDamage)]
+	[ActionEvent(SceneType.Map, EActionEventType.RangeDamage)]
 	public class ActionEventRangeDamage : IActionEvent
 	{
-		public void Run(ActionEvent actionEvent, EventType.ActionEventData args)
+		public void Run(ActionEvent actionEvent, ActionEventData args)
 		{
             Unit owner = args.owner;
             Log.Info($"enter range damage");

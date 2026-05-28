@@ -19,7 +19,7 @@ namespace ET
         public static void Awake(this BulletComponent self)
         {
             //测试子弹，生存时间700ms
-            self.EndTime = TimeInfo.Instance.ServerNow() + 1000;
+            self.EndTime = self.GetSingleton<TimeInfo>().ServerNow() + 1000;
 
         }
 
@@ -30,12 +30,13 @@ namespace ET
         }
 
         /// <summary>
-        /// 每帧更新
+        /// 每帧更新（原 IFixedUpdate，本项目用 IUpdate）
         /// </summary>
         /// <param name="self"></param>
-        public static void FixedUpdate(this BulletComponent self)
+        [EntitySystem]
+        public static void Update(this BulletComponent self)
         {
-            if (TimeInfo.Instance.ServerNow() > self.EndTime)
+            if (self.GetSingleton<TimeInfo>().ServerNow() > self.EndTime)
             {
                 self.Root().GetComponent<UnitComponent>()?.Remove(self.GetParent<Unit>().Id);
             }

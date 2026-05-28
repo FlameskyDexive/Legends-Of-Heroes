@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using ET.EventType;
 
 namespace ET
 {
@@ -24,11 +23,11 @@ namespace ET
         /// </summary>
         /// <param name="self"></param>
         [EntitySystem]
-        public static void FixedUpdate(this SkillTimelineComponent self)
+        public static void Update(this SkillTimelineComponent self)
         {
             using (ListComponent<long> list = ListComponent<long>.Create())
             {
-                long timeNow = TimeInfo.Instance.ServerNow();
+                long timeNow = self.GetSingleton<TimeInfo>().ServerNow();
                 foreach ((long key, Entity value) in self.Children)
                 {
                     ActionEvent actionEvent = (ActionEvent)value;
@@ -49,7 +48,7 @@ namespace ET
         
         public static void StartPlay(this SkillTimelineComponent self)
         {
-            self.StartSpellTime = TimeInfo.Instance.ServerNow();
+            self.StartSpellTime = self.GetSingleton<TimeInfo>().ServerNow();
             self.InitEvents();
         }
         

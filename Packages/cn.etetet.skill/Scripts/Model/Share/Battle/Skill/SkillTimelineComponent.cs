@@ -4,7 +4,7 @@ namespace ET
 {
 
     [ComponentOf(typeof (Skill))]
-    public class SkillTimelineComponent: Entity, IAwake<int, int>, ITransfer, IFixedUpdate
+    public class SkillTimelineComponent: Entity, IAwake<int, int>, ITransfer, IUpdate
     {
         public Unit Unit => this.GetParent<Skill>().Unit;
         public SkillConfig Skillconfig;

@@ -33,7 +33,7 @@ namespace ET
         /// <summary>
         /// 当前冷却时间
         /// </summary>
-        public int CurrentCD => (int)(this.SpellStartTime + this.CD - TimeInfo.Instance.ClientNow());
+        public int CurrentCD => (int)(this.SpellStartTime + this.CD - this.GetSingleton<TimeInfo>().ClientNow());
 
 
 

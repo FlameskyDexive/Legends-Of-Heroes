@@ -28,7 +28,7 @@ namespace ET
         
         public static bool IsInCd(this Skill self)
         {
-            if (self.SpellStartTime + self.CD > TimeInfo.Instance.ServerNow())
+            if (self.SpellStartTime + self.CD > self.GetSingleton<TimeInfo>().ServerNow())
                 return true;
             return false;
         }
@@ -39,7 +39,7 @@ namespace ET
         /// <param name="self"></param>
         public static void StartSpell(this Skill self)
         {
-            self.SpellStartTime = TimeInfo.Instance.ServerNow();
+            self.SpellStartTime = self.GetSingleton<TimeInfo>().ServerNow();
             self.GetComponent<SkillTimelineComponent>().StartPlay();
         }
     }

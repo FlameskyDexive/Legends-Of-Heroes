@@ -3,7 +3,7 @@ using System.Collections.Generic;
 namespace ET
 {
     [ComponentOf(typeof(Unit))]
-    public class BulletComponent:Entity,IAwake, IFixedUpdate,IDestroy
+    public class BulletComponent:Entity,IAwake, IUpdate,IDestroy
     {
         public Unit Unit => this.GetParent<Unit>();
 

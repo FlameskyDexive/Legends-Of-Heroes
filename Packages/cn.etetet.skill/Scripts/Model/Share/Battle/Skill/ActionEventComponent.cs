@@ -1,4 +1,3 @@
-﻿using ET.EventType;
 using System;
 using System.Collections.Generic;
 
@@ -6,10 +5,11 @@ namespace ET
 {
     public struct ActionEventInfo
     {
-        public SceneType SceneType { get; }
+        // 本项目 SceneType 为静态类(int 常量),故用 int
+        public int SceneType { get; }
         public IActionEvent IActionEvent { get; }
 
-        public ActionEventInfo(SceneType sceneType, IActionEvent actionEvent)
+        public ActionEventInfo(int sceneType, IActionEvent actionEvent)
         {
             this.SceneType = sceneType;
             this.IActionEvent = actionEvent;
@@ -19,7 +19,8 @@ namespace ET
     /// <summary>
     /// 技能事件组件,分发监听
     /// </summary>
-    [Code]
+    [CodeProcess]
+    [AllowInstance]
     [FriendOf(typeof(ET.ActionEvent))]
     public class ActionEventComponent : Singleton<ActionEventComponent>, ISingletonAwake
     {
@@ -55,10 +56,11 @@ namespace ET
                 return;
             }
 
-            SceneType unitDomainSceneType = actionEvent.IScene.SceneType;
+            int unitDomainSceneType = actionEvent.IScene.SceneType;
             foreach (ActionEventInfo actionEventInfo in list)
             {
-                if (!actionEventInfo.SceneType.HasSameFlag(unitDomainSceneType))
+                // SceneType==0 视为 All 通配;否则需与场景类型一致(本项目场景类型为唯一 int,非位标志)
+                if (actionEventInfo.SceneType != 0 && actionEventInfo.SceneType != unitDomainSceneType)
                 {
                     continue;
                 }
