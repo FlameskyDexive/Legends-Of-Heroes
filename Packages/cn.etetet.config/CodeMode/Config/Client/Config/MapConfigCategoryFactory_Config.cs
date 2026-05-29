@@ -21,7 +21,8 @@ public sealed class MapConfigCategoryFactory_Config : IConfigFactory
             [ 1 ] = new ET.MapConfig(1, @"GateMap", @"GateMap", ET.CopyType.Normal, @""),
             [ 2 ] = new ET.MapConfig(2, @"Map1", @"Map1", ET.CopyType.Normal, @"Map1"),
             [ 3 ] = new ET.MapConfig(3, @"Map2", @"Map2", ET.CopyType.Line, @"Map1"),
-            [ 4 ] = new ET.MapConfig(4, @"Lordaeron", @"Lordaeron", ET.CopyType.Copy, @"Lordaeron")
+            [ 4 ] = new ET.MapConfig(4, @"Lordaeron", @"Lordaeron", ET.CopyType.Copy, @"Lordaeron"),
+            [ 5 ] = new ET.MapConfig(5, @"BallBattle", @"BallBattle", ET.CopyType.Copy, @"Map1")
         });
     }
 }

@@ -72,6 +72,9 @@ namespace ET.Server
             }
 
             unitComponent.Add(unit);
+
+            // 通用扩展点:通知高层玩法包单位已创建(如 cn.etetet.ballbattle 装配球),避免 mapplay 反向依赖高层包
+            EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreateServer { Unit = unit });
             return unit;
         }
 

@@ -24,6 +24,13 @@
   - 注意：改任何含 `async` / `ETTask` 的代码时，叠加此 skill
   - 补读：`skills/et-async/SKILL.md`
 
+### 客户端 UI
+
+- `et-eui`
+  - 场景：新建/改 `DlgXxx` 窗口、`ESXxx` 子 UI、`ItemXxx` 循环项、`AUIEvent` 处理器、`WindowID` 注册、`E*` 控件绑定、ShowWindow/Hide/Close 链路、LoopScrollRect
+  - 注意：本项目 EUI 在 `cn.etetet.eui`，无代码生成菜单，按 5 文件模板手写；编辑器验收走 `et-unitybridge`
+  - 补读：`skills/et-eui/SKILL.md`
+
 ### Unity 编辑器操作
 
 - `et-unitybridge`
@@ -67,6 +74,7 @@
 - 创建新功能或修 Bug：`et-tdd` -> `et-test-write` -> `et-code` -> `et-build` -> `et-test-run`
 - 只做异步链路梳理或 review：`et-async` -> 必要时 `et-code`
 - 架构合规检查：`et-code`
+- 改客户端 UI：`et-eui` -> 涉及异步叠加 `et-async` -> `et-build` 编译 -> `et-unitybridge` 验收
 - 做 Unity 编辑器内操作：`et-unitybridge` -> 确认就绪后执行对应操作
 - 改配置表并导出：`et-excel` -> `et-luban` -> 必要时 `et-build`
 - 只做 Luban 导出：`et-luban`

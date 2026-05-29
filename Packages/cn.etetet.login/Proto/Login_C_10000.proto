@@ -91,6 +91,7 @@ message G2C_Logout // ISessionResponse
 message C2G_EnterMap // ISessionRequest
 {
 	int32 RpcId = 1;
+	string MapName = 2; // 目标地图名(空=默认 Map2);球球大作战传 "BallBattle" 路由到其 Copy
 }
 
 message G2C_EnterMap // ISessionResponse

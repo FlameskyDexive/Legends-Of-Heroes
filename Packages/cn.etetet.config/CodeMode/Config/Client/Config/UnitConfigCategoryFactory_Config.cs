@@ -22,7 +22,9 @@ public sealed class UnitConfigCategoryFactory_Config : IConfigFactory
             [ 1002 ] = new ET.UnitConfig(1002, ET.UnitType.Virtual, @"TrainingDummy", @"UI-ChatIcon-Battlenet", ET.EClassType.DeathKnight),
             [ 1003 ] = new ET.UnitConfig(1003, ET.UnitType.Monster, @"Boar", @"UI-ChatIcon-Battlenet", ET.EClassType.Druid),
             [ 1004 ] = new ET.UnitConfig(1004, ET.UnitType.Monster, @"Bear", @"UI-ChatIcon-Battlenet", ET.EClassType.Priest),
-            [ 1005 ] = new ET.UnitConfig(1005, ET.UnitType.NPC, @"Mage", @"UI-ChatIcon-Battlenet", ET.EClassType.Warrior)
+            [ 1005 ] = new ET.UnitConfig(1005, ET.UnitType.NPC, @"Mage", @"UI-ChatIcon-Battlenet", ET.EClassType.Warrior),
+            [ 1101 ] = new ET.UnitConfig(1101, ET.UnitType.Player, @"BallPlayer", @"Portrait", ET.EClassType.Mage),
+            [ 1102 ] = new ET.UnitConfig(1102, ET.UnitType.Virtual, @"BallFood", @"Portrait", ET.EClassType.Mage)
         });
     }
 }

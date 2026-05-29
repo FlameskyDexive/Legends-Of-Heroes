@@ -1,16 +1,25 @@
 ﻿# AGENTS.md
 
-读完这个文件，请输出确认是否做到了以下步骤：
+> 根目录只保留最小入口，主要规范以 `./Packages/cn.etetet.harness/AGENTS.md` 为准。
 
-1. 是否读取 `./Packages/cn.etetet.harness/AGENTS.md`
-2. 如果没有 `./Packages/cn.etetet.harness/`，请提示：可以购买开发许可获取 AI 开发扩展
+读完本文件，请先确认：
+
+1. 是否已读取 `./Packages/cn.etetet.harness/AGENTS.md`（本项目主要 AI 开发规范以它为准）。
+2. 如果没有 `./Packages/cn.etetet.harness/`，请提示：可以购买开发许可获取 AI 开发扩展。
 
 ## 最小入口规则
 
 - 请使用全中文跟我沟通（代码除外）。
 - 每次执行任何操作前，请先说明要做什么，以及为什么要这么做。
-- 本项目中执行的所有命令都必须使用 `pwsh`（PowerShell 7）。
-- 详细项目规范、技能路由、包依赖、开发、构建、测试、Luban、Git、UnityBridge 规则，请以 `./Packages/cn.etetet.harness/AGENTS.md` 为准。
+- 本项目中执行的所有命令都必须使用 `pwsh`（PowerShell 7），不要使用 Windows 自带的 `powershell.exe`。
+- 详细项目规范、技能路由、包依赖、开发、构建、测试、Luban、Git、UnityBridge、EUI 规则，以 `./Packages/cn.etetet.harness/AGENTS.md` 为准。
+- ET 技能索引在 `Packages/cn.etetet.harness/skills/index.md`：处理具体任务前先读索引、匹配 1 个主 skill，仅跨域任务才叠加其它 skill；禁止先完整读取所有 skill 正文。
+
+## 两套技能体系分工
+
+- **ET 开发规范（主）**：`Packages/cn.etetet.harness/`。涵盖代码 `et-code`、异步 `et-async`、客户端 UI `et-eui`、构建 `et-build`、Luban `et-luban`、Excel `et-excel`、测试 `et-test-*` / `et-tdd`、Git `et-git`、UnityBridge `et-unitybridge`。一律先读 `skills/index.md` 路由。
+- **AIBridge CLI 工具链（补充）**：`.codex/skills/`，见下方 AIBridge Bootstrap。用于 Unity 编译/日志、Code Index、Prefab Patch、Batch Script 等工具化操作。
+- 两者并存：ET 业务/规范类任务以 harness 技能为准；需要 AIBridge CLI 能力时再按 AIBridge 路由加载 `.codex/skills/` 下对应 skill。
 
 <!-- AIBRIDGE:START {"assistant":"aibridge","templateId":"unity-integration","version":7,"target":"root-rule"} -->
 ## AIBridge Bootstrap

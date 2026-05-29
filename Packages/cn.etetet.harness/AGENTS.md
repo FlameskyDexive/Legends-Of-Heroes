@@ -104,6 +104,15 @@ Codex 规范 skill 均采用 `skills/{skill-name}/SKILL.md` 结构，且 `SKILL.
 - 排查 `ET.ExcelExporter` / `LubanGen.ps1` / `luban.conf` 导出失败。
 - 核对导出后的 `CodeMode/Model/**` 与 `CodeMode/Config/**`。
 
+### et-eui - 客户端 EUI 专家
+
+**使用场景**：
+
+- 新建或修改 `DlgXxx` 窗口、`ESXxx` 子 UI、`ItemXxx` 循环项。
+- 编写 `[AUIEvent]` 处理器、注册 `WindowID`、绑定 `E*` 控件、接 ShowWindow / Hide / Close 链路。
+- 排查 UI 打不开、控件 null、`uiTransform is null`、循环列表不刷新。
+- 注意：EUI 框架在 `cn.etetet.eui`，无代码生成菜单，按 5 文件模板手写；编辑器验收走 `et-unitybridge`。
+
 ### et-build - 编译构建专家
 
 **使用场景**：

@@ -21,6 +21,10 @@ namespace ET
     // 球球玩法常量(正式应迁到配置表 BallConfig 供策划调,这里先给可跑的默认值)
     public static class BallDefine
     {
+        // ball-battle 专属地图的 MapConfig 名(需在 Map.xlsx 配一张同名地图;
+        // 进入该地图的单位才会被装配成球,普通 Map 不受影响)
+        public const string BallMapName = "BallBattle";
+
         // Box2D 世界步进的固定时间步(本项目无 IFixedUpdate, 用 IUpdate + 固定 dt 步进)
         public const float FixedDeltaTime = 1f / 20f;
 

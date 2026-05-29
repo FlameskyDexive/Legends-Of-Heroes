@@ -82,12 +82,12 @@ namespace ET.Client
             Scene root = self.Root();
             await EnterMapHelper.RequestMatchRobotAsync(root);
 
-            // 匹配完成自动进入战斗：状态同步进共享地图，与图内对手（真实玩家或机器人）相遇
+            // 匹配完成自动进入战斗：进球球大作战专属地图(BallBattle Copy),与图内对手相遇
             self = selfRef;
             if (self == null) { return; }
             root = self.Root();
             root.GetComponent<UIComponent>().HideWindow(WindowID.WindowID_MatchTeam);
-            await EnterMapHelper.EnterMapAsync(root);
+            await EnterMapHelper.EnterMapAsync(root, "BallBattle");
         }
 
         private static void OnStartMatchClick(EntityRef<DlgMatchTeam> selfRef)

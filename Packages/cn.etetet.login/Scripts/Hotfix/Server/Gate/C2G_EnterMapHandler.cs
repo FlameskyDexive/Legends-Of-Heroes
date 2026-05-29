@@ -15,8 +15,11 @@ namespace ET.Server
 			gateMapComponent = gateMapComponentRef;
 			response.MyId = player.Id;
 
+			// 目标地图:客户端可指定(如球球大作战传 "BallBattle"),空则默认 Map2
+			string mapName = string.IsNullOrEmpty(request.MapName) ? "Map2" : request.MapName;
+
 			// 等到一帧的最后面再进图，先让G2C_EnterMap返回，否则切场景消息可能比G2C_EnterMap还早
-			EnterMapAtFrameFinish(player, gateMapComponent, player.GetComponent<PlayerSessionComponent>().GetActorId(), "Map2", 0, 1001).Coroutine();
+			EnterMapAtFrameFinish(player, gateMapComponent, player.GetComponent<PlayerSessionComponent>().GetActorId(), mapName, 0, 1001).Coroutine();
 		}
 
 		private static async ETTask EnterMapAtFrameFinish(Player player, GateMapComponent gateMapComponent, ActorId gateActorId, string mapName, int mapId, int unitConfigId)

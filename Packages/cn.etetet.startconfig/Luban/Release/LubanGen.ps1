@@ -10,8 +10,8 @@ $GEN_CLIENT = "Packages/cn.etetet.yiuiluban/.Tools/Luban/Luban.dll"
 $CUSTOM = "Packages/cn.etetet.yiuiluban/.ToolsGen/Custom"
 
 # powershell判断是不是Mac平台
-$DotNet = "dotnet.exe"
-if ($null -ne $IsMacOS) {
+$DotNet = "dotnet"
+if ($IsMacOS) {
     $DotNet = "/usr/local/share/dotnet/dotnet"
 }
 

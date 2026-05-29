@@ -15,8 +15,9 @@ $SOURCE_GEN_CLIENT = "Packages/cn.etetet.yiuiluban/DontNet~/luban/src/Luban/bin/
 $CUSTOM = "Packages/cn.etetet.yiuiluban/.ToolsGen/Custom"
 
 # powershell判断是不是Mac平台
-$DotNet = "dotnet.exe"
-if ($null -ne $IsMacOS) {
+# 注意: PowerShell 7 中 $IsMacOS 在所有平台都已定义($true/$false), 不能用 $null -ne 判断(恒为真)
+$DotNet = "dotnet"
+if ($IsMacOS) {
     $DotNet = "/usr/local/share/dotnet/dotnet"
 }
 
