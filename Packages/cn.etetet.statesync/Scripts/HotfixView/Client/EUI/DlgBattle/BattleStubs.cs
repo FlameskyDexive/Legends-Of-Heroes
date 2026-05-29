@@ -35,26 +35,6 @@ namespace ET.Client
         }
     }
 
-    public static class OperaComponentBattleStubs
-    {
-        public static void OnMove(this OperaComponent self, Vector2 v)
-        {
-            // TODO: 接入真实操控逻辑（cn.etetet.mapplay）
-        }
-
-        public static void StopMove(this OperaComponent self)
-        {
-            // TODO: 接入真实操控逻辑
-        }
-
-        public static void OnClickSkill1(this OperaComponent self)
-        {
-            // TODO: 接入真实操控逻辑
-        }
-
-        public static void OnClickSkill2(this OperaComponent self)
-        {
-            // TODO: 接入真实操控逻辑
-        }
-    }
+    // OperaComponent 的摇杆操作(OnMove/StopMove/OnClickSkill1/2)已在 cn.etetet.mapplay
+    // 的 OperaComponentSystem 中实现真实逻辑(上报 C2M_Operation), 此处不再提供空桩。
 }

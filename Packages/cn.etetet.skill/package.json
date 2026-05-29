@@ -11,7 +11,8 @@
     "cn.etetet.numeric": "4.0.0",
     "cn.etetet.move": "4.0.0",
     "cn.etetet.map": "1.0.0",
-    "cn.etetet.spell": "4.0.0"
+    "cn.etetet.spell": "4.0.0",
+    "cn.etetet.mapplay": "1.0.0"
   },
   "description": "Battle / skill system (migrated from Legends-Of-HeroesOri): skill, action-event (battle events), bullet, dungeon. Buff calls are bound to the project's own buff system (cn.etetet.spell), the original Buff is NOT migrated."
 }

@@ -57,3 +57,20 @@ message C2M_PetAttack // ILocationMessage
 	int32 RpcId = 1;
 	int64 UnitId = 2;
 }
+
+// 摇杆/按键操作信息(单条)
+message OperateInfo
+{
+	int32 OperateType = 1; // 操作类型, 对应 EOperateType
+	int32 InputType = 2;   // 输入类型(按下/抬起), 对应 EInputType
+	Unity.Mathematics.float3 Vec3 = 3; // 方向/位置参数(摇杆方向等)
+	int64 Value1 = 4;
+	int64 Value2 = 5;
+}
+
+// 客户端每帧把收集到的操作批量上报服务端(摇杆移动、技能按键等)
+message C2M_Operation // ILocationMessage
+{
+	int32 RpcId = 1;
+	repeated OperateInfo OperateInfos = 2;
+}

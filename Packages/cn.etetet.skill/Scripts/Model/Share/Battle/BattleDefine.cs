@@ -67,32 +67,8 @@
     }
     */
 
-    /// <summary>
-    /// 输入操作类型
-    /// </summary>
-    public enum EInputType : byte
-    {
-        Key,
-        KeyDown,
-        KeyUp,
-    }
-
-    public enum EOperateStatus: byte
-    {
-        Success = 0,
-        Error = 1,
-    }
-    
-    public enum EOperateType : byte
-    {
-        Move = 0,
-        Jump = 1,
-        Attack = 2,//普攻
-        Skill1,
-        Skill2,
-        Skill3,
-        Skill4,
-    }
+    // EInputType / EOperateStatus / EOperateType 已迁移到 cn.etetet.mapplay/Scripts/Model/Share/OperateDefine.cs
+    // (属于操控语义, 由 OperaComponent 使用; 放在 mapplay 以避免高层战斗包被反向依赖)
 
     /*public enum EColliderType: byte
     {

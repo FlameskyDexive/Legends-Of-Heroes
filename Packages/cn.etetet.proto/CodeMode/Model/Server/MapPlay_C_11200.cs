@@ -184,6 +184,51 @@ namespace ET
         }
     }
 
+    [MemoryPackable]
+    [Message(Opcode.OperateInfo)]
+    public partial class OperateInfo : MessageObject
+    {
+        public static OperateInfo Create(bool isFromPool = false)
+        {
+            return ObjectPool.Fetch<OperateInfo>(isFromPool);
+        }
+
+        [MemoryPackOrder(0)]
+        public int OperateType { get; set; }
+        [MemoryPackOrder(1)]
+        public int InputType { get; set; }
+        [MemoryPackOrder(2)]
+        public Unity.Mathematics.float3 Vec3 { get; set; }
+        [MemoryPackOrder(3)]
+        public long Value1 { get; set; }
+        [MemoryPackOrder(4)]
+        public long Value2 { get; set; }
+        public override void Dispose()
+        {
+            ObjectPool.Recycle(this);
+        }
+    }
+
+    [MemoryPackable]
+    [Message(Opcode.C2M_Operation)]
+    public partial class C2M_Operation : MessageObject, ILocationMessage
+    {
+        public static C2M_Operation Create(bool isFromPool = false)
+        {
+            return ObjectPool.Fetch<C2M_Operation>(isFromPool);
+        }
+
+        [MemoryPackOrder(0)]
+        public int RpcId { get; set; }
+        [MemoryPackOrder(1)]
+        public List<OperateInfo> OperateInfos { get; set; } = new();
+
+        public override void Dispose()
+        {
+            ObjectPool.Recycle(this);
+        }
+    }
+
     public static partial class Opcode
     {
         public const ushort PetInfo = 11201;
@@ -195,5 +240,7 @@ namespace ET
         public const ushort M2C_Error = 11207;
         public const ushort M2C_NumericChange = 11208;
         public const ushort C2M_PetAttack = 11209;
+        public const ushort OperateInfo = 11210;
+        public const ushort C2M_Operation = 11211;
     }
 }
