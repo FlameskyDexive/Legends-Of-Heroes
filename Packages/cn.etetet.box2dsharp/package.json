@@ -1,0 +1,10 @@
+{
+  "name": "cn.etetet.box2dsharp",
+  "displayName": "ET.Box2DSharp",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "description": "Box2DSharp 2D physics library (pure C#, System.Numerics). Migrated from Legends-Of-HeroesOri ThirdParty. Used for 2D collision/overlap detection (ball-battle eat & bullet hit). Compiles into ET.Core (client + server).",
+  "dependencies": {
+    "cn.etetet.core": "4.0.0"
+  }
+}

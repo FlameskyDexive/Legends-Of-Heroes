@@ -1,0 +1,16 @@
+{
+    "name": "Ignore.ET.Box2DSharp",
+    "rootNamespace": "",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "IGNORE"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

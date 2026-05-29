@@ -43,6 +43,23 @@
         "cn.etetet.startconfig": "4.0.0"
       }
     },
+    "cn.etetet.ballbattle": {
+      "version": "file:cn.etetet.ballbattle",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "4.0.0",
+        "cn.etetet.box2dsharp": "1.0.0",
+        "cn.etetet.unit": "4.0.0",
+        "cn.etetet.numeric": "4.0.0",
+        "cn.etetet.move": "4.0.0",
+        "cn.etetet.config": "4.0.0",
+        "cn.etetet.proto": "4.0.0",
+        "cn.etetet.map": "1.0.0",
+        "cn.etetet.mapplay": "1.0.0",
+        "cn.etetet.skill": "1.0.0"
+      }
+    },
     "cn.etetet.behaviortree": {
       "version": "file:cn.etetet.behaviortree",
       "depth": 0,
@@ -51,6 +68,14 @@
         "cn.etetet.core": "4.0.0",
         "cn.etetet.config": "4.0.0",
         "cn.etetet.proto": "4.0.0"
+      }
+    },
+    "cn.etetet.box2dsharp": {
+      "version": "file:cn.etetet.box2dsharp",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "cn.etetet.core": "4.0.0"
       }
     },
     "cn.etetet.btnode": {
@@ -539,7 +564,8 @@
         "cn.etetet.numeric": "4.0.0",
         "cn.etetet.move": "4.0.0",
         "cn.etetet.map": "1.0.0",
-        "cn.etetet.spell": "4.0.0"
+        "cn.etetet.spell": "4.0.0",
+        "cn.etetet.mapplay": "1.0.0"
       }
     },
     "cn.etetet.sourcegenerator": {

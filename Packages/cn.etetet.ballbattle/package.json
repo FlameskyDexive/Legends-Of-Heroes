@@ -1,0 +1,19 @@
+{
+  "name": "cn.etetet.ballbattle",
+  "displayName": "ET.BallBattle",
+  "version": "1.0.0",
+  "unity": "2022.3",
+  "description": "球球大作战 PvP 玩法包：2D 吞噬(大球吃小球)、分裂、发射子弹技能、血量驱动体型。基于 statesync/mapplay 状态同步,用 cn.etetet.box2dsharp 做 2D 碰撞。",
+  "dependencies": {
+    "cn.etetet.core": "4.0.0",
+    "cn.etetet.box2dsharp": "1.0.0",
+    "cn.etetet.unit": "4.0.0",
+    "cn.etetet.numeric": "4.0.0",
+    "cn.etetet.move": "4.0.0",
+    "cn.etetet.config": "4.0.0",
+    "cn.etetet.proto": "4.0.0",
+    "cn.etetet.map": "1.0.0",
+    "cn.etetet.mapplay": "1.0.0",
+    "cn.etetet.skill": "1.0.0"
+  }
+}
