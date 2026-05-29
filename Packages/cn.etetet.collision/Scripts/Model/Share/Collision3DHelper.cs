@@ -156,6 +156,29 @@ namespace ET
         }
 
         // ---------------------------------------------------------------------
+        // 包围盒（广相 broad-phase 与快速预筛用）
+        // ---------------------------------------------------------------------
+
+        /// <summary>计算任意碰撞体的世界空间轴对齐包围盒（OBB 取其有向盒在世界各轴上的投影半长）。</summary>
+        public static AABB ComputeAABB(in Collider3D collider)
+        {
+            switch (collider.ShapeType)
+            {
+                case CollisionShapeType.Sphere:
+                    return new AABB(collider.Center, new float3(collider.Radius));
+                case CollisionShapeType.OBB:
+                {
+                    float3x3 r = new float3x3(collider.Rotation);
+                    float3x3 absR = new float3x3(abs(r.c0), abs(r.c1), abs(r.c2));
+                    float3 worldExtent = mul(absR, collider.HalfExtents);
+                    return new AABB(collider.Center, worldExtent);
+                }
+                default:
+                    return new AABB(collider.Center, collider.HalfExtents);
+            }
+        }
+
+        // ---------------------------------------------------------------------
         // 点包含
         // ---------------------------------------------------------------------
 

@@ -17,6 +17,12 @@
   - `AABBSphereIntersect`、`AABBOBBIntersect`：派生组合。
   - `ContainsPoint`：AABB / OBB / Sphere 点包含。
   - `Intersect(in Collider3D, in Collider3D)`：统一多态派发。
+  - `ComputeAABB(in Collider3D)`：任意碰撞体的世界 AABB（广相与快速预筛用）。
+- **批量广相** `CollisionWorld3D`（`Scripts/Model/Share`，`[EnableClass]`，每帧零堆分配）：
+  - 处理数千~上万碰撞体的同帧两两检测。`Clear` → 多次 `Add` → `DetectPairs(List<CollisionPair>)`。
+  - 稠密均匀网格（dense uniform grid）广相：按世界 AABB 中心落单格，只比较 3x3x3 邻域，三轴剪枝，近 O(N)；网格边长自动取最大 AABB 边长并对总格数封顶。
+  - 广相 AABB 重叠用标量 float 比较（避开非 Burst 下 `Unity.Mathematics` 向量开销）；窄相仅对候选对调用 `Collision3DHelper.Intersect`。
+  - `CollisionPair`（只读 struct，A&lt;B）。
 - **可视化调试**（`Scripts/ModelView/Client`，`ET.ModelView`，客户端专属）：
   - `CollisionGizmos`：在 `OnDrawGizmos` 内绘制 AABB/OBB/Sphere 线框。
   - `CollisionDebugComponent`：场景 MonoBehaviour，Inspector 配置多个碰撞体，实时两两检测，相交者高亮。
@@ -40,6 +46,7 @@
 - 测试位于 `Scripts/Hotfix/Test`（`ET.Hotfix`），命名 `Collision_{用例}_Test`，继承 `ATestHandler`。
 - 纯数学验证使用 `SceneType.TestEmpty`；失败用 `Log.Console` 并返回唯一错误码，成功返回 `ErrorCode.ERR_Success`。
 - 覆盖：`Collision_AABB_Test`、`Collision_OBB_Test`、`Collision_Sphere_Test`、`Collision_Unified_Test`。
+- `Collision_Benchmark_Test`：1k/5k/10k/20k 碰撞体批量检测基准；先用暴力 O(N^2) 校验广相结果完全一致，再计时；报告存档到 `./Logs/CollisionBenchmark_<时间戳>.log`。当前实测（dev 服务端 managed 单线程）近 O(N)、约 320~340 colliders/ms（10k detect ≈ 21ms）。
 
 ## 注意
 
