@@ -5,6 +5,19 @@ description: ET Excel MCP workflow for reading, writing, styling, transforming, 
 
 # et-excel - ET Excel 入口
 
+## 强制规则（重要）
+
+- **只要涉及 Excel/xlsx 的任何读写操作，都必须调用 excelmcp（`ET.ExcelMcp`）完成；禁止手写脚本或用其它库/工具直接改 xlsx。**
+- excelmcp 源工程位置：`./Packages/cn.etetet.config/DotNet~/ET.ExcelMcp`。
+- 运行入口（编译产物）：仓库根目录 `./Bin/ET.ExcelMcp.dll`，统一在仓库根用 `dotnet ./Bin/ET.ExcelMcp.dll ...` 调用。
+- **若 `./Bin/ET.ExcelMcp.dll` 不存在（没有可执行文件），先编译工程再操作**：
+
+  ```powershell
+  dotnet build "./Packages/cn.etetet.config/DotNet~/ET.ExcelMcp/ET.ExcelMcp.csproj" -c Debug
+  ```
+
+  产物会输出到 `./Bin/ET.ExcelMcp.dll`（csproj 的 `OutputPath = $(RepoRoot)Bin`，`RepoRoot` 即仓库根）。
+
 ## 何时使用
 
 - 通过 `Bin/ET.ExcelMcp.dll` 读写 Excel

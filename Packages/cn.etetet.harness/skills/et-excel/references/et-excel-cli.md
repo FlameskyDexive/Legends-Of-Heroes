@@ -14,6 +14,16 @@
 - 合并单元格：`excel_merge_cells`。
 - 行列处理：`excel_row_column`。
 
+## 构建 / 找不到 dll
+
+- 涉及 Excel 必须走 excelmcp（`ET.ExcelMcp`），统一在仓库根调用 `dotnet ./Bin/ET.ExcelMcp.dll ...`。
+- 源工程：`./Packages/cn.etetet.config/DotNet~/ET.ExcelMcp`。
+- 若 `./Bin/ET.ExcelMcp.dll` 不存在，先编译再操作（产物落到仓库根 `./Bin`）：
+
+```powershell
+dotnet build "./Packages/cn.etetet.config/DotNet~/ET.ExcelMcp/ET.ExcelMcp.csproj" -c Debug
+```
+
 ## 高频命令
 
 ```powershell
