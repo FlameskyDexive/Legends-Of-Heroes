@@ -73,3 +73,37 @@ English: Please translate it by your browser.
 ## Star History
 
 ![Star History Chart](https://api.star-history.com/svg?repos=FlameskyDexive/Legends-Of-Heroes)
+
+
+## FAQ
+
+### What is Legends-Of-Heroes?
+Legends-Of-Heroes is a front-end and back-end game framework based on ET framework, including basic hot-update workflow and a comprehensive combat system (currently with ECS skill + Buff system, skill editor/behavior tree editor in development). It features state synchronization for multiplayer gameplay.
+
+### Key Features
+| Feature | Description |
+|---------|-------------|
+| ET Framework Base | C# dual-end framework with ET8.1 enhanced version (EUI+YooAsset+Luban) |
+| Combat System | ECS skill + Buff system with skill editor and behavior tree editor |
+| State Sync | All collision detection, skills, AI logic run on server |
+| Demo Project | Ball battle gameplay - eat food/enemies survival mode |
+| Hot Update | Complete hot-update workflow |
+
+### Environment Requirements
+- Unity 6000.0.28f1
+- VS2022 or Rider2023
+- .NET 8 SDK
+
+### How to Run
+1. Install Unity 6000.0.28f1 and VS2022/Rider2023
+2. Install .NET 8 SDK
+3. Clone the project
+4. Follow the detailed setup guide in the documentation
+
+### License
+MIT License
+
+### Help Resources
+- [Video Tutorial (Bilibili)](https://www.bilibili.com/video/BV1sP6fY2EQU/)
+- [Gitee Mirror](https://gitee.com/flamesky/Legends-Of-Heroes)
+- [Issues](https://github.com/FlameskyDexive/Legends-Of-Heroes/issues)
