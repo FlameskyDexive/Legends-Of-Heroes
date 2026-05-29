@@ -9,7 +9,7 @@ namespace ET
     {
         public Unit Unit => this.GetParent<Unit>();
 
-        public CollisionWorldComponent WorldComponent { get; set; }
+        public EntityRef<CollisionWorldComponent> WorldComponent { get; set; }
 
         public Body Body;
     }

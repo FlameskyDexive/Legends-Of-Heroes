@@ -19,7 +19,12 @@ namespace ET
         // 世界坐标按 X/Z 平面映射到 Box2D 的 X/Y。
         public static void AddCollider(this CollisionComponent self, EColliderType colliderType, Vector2 vec2, Vector2 offset, bool isSensor, object userData, float angle = 0)
         {
-            self.Body = self.WorldComponent.CreateDynamicBody();
+            CollisionWorldComponent world = self.WorldComponent;
+            if (world == null)
+            {
+                return;
+            }
+            self.Body = world.CreateDynamicBody();
             switch (colliderType)
             {
                 case EColliderType.Circle:
@@ -73,12 +78,13 @@ namespace ET
         [EntitySystem]
         public static void Destroy(this CollisionComponent self)
         {
-            if (self.Body != null && self.WorldComponent != null)
+            CollisionWorldComponent world = self.WorldComponent;
+            if (self.Body != null && world != null)
             {
-                self.WorldComponent.AddBodyTobeDestroyed(self.Body);
+                world.AddBodyTobeDestroyed(self.Body);
             }
             self.Body = null;
-            self.WorldComponent = null;
+            self.WorldComponent = default;
         }
     }
 }

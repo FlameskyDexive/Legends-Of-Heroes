@@ -1,3 +1,5 @@
+using Unity.Mathematics;
+
 namespace ET
 {
     // 输入/操作枚举。原在 Ori 的 Battle/BattleDefine, 因属于"操控"语义(OperaComponent 使用),
@@ -28,6 +30,15 @@ namespace ET
         Skill2,
         Skill3,
         Skill4,
+    }
+
+    // 操作的普通数据结构(非 MessageObject)。Entity(OperaComponent)禁止持有 MessageObject(ETMO001),
+    // 故每帧操作先暂存为此结构, LateUpdate 时再转成 proto 的 OperateInfo 发送。
+    public struct OperateInfoData
+    {
+        public int OperateType;
+        public int InputType;
+        public float3 Vec3;
     }
 
     // 操作触发技能释放的事件。用于解耦: 操作处理器(mapplay, 低层)发布此事件,

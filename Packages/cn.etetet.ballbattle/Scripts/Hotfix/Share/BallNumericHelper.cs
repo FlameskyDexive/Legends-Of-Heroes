@@ -9,7 +9,7 @@ namespace ET
     {
         public static void RecalcFromHp(this Unit unit)
         {
-            NumericComponent nc = unit.GetComponent<NumericComponent>();
+            NumericComponent nc = unit.NumericComponent;
             if (nc == null)
             {
                 return;
@@ -33,7 +33,7 @@ namespace ET
         // 读当前半径(米)
         public static float GetRadius(this Unit unit)
         {
-            NumericComponent nc = unit.GetComponent<NumericComponent>();
+            NumericComponent nc = unit.NumericComponent;
             return nc == null ? 0f : nc.GetAsFloat(NumericType.Radius);
         }
     }

@@ -24,6 +24,7 @@ namespace ET.Client
         }
 
         // 每帧把当前帧收集的操作批量发送给服务端, 随后清空(摇杆移动/技能按键等)
+        // Entity 里暂存的是普通结构 OperateInfoData, 这里才转成 proto 的 OperateInfo(池化)。
         [EntitySystem]
         private static void LateUpdate(this OperaComponent self)
         {
@@ -32,11 +33,15 @@ namespace ET.Client
                 return;
             }
 
-            self.OperateInfosTemp.Clear();
-            self.OperateInfosTemp.AddRange(self.OperateInfos);
-
             C2M_Operation c2MOperation = C2M_Operation.Create();
-            c2MOperation.OperateInfos = self.OperateInfosTemp;
+            foreach (OperateInfoData data in self.OperateInfos)
+            {
+                OperateInfo operateInfo = OperateInfo.Create();
+                operateInfo.OperateType = data.OperateType;
+                operateInfo.InputType = data.InputType;
+                operateInfo.Vec3 = data.Vec3;
+                c2MOperation.OperateInfos.Add(operateInfo);
+            }
             self.Root().GetComponent<ClientSenderComponent>().Send(c2MOperation);
 
             self.OperateInfos.Clear();
@@ -45,36 +50,40 @@ namespace ET.Client
         // 摇杆推动: 上报移动方向
         public static void OnMove(this OperaComponent self, Vector2 v2)
         {
-            OperateInfo operateInfo = OperateInfo.Create();
-            operateInfo.OperateType = (int)EOperateType.Move;
-            operateInfo.InputType = (int)EInputType.KeyDown;
-            operateInfo.Vec3 = new float3(v2.x, 0, v2.y);
-            self.OperateInfos.Add(operateInfo);
+            self.OperateInfos.Add(new OperateInfoData
+            {
+                OperateType = (int)EOperateType.Move,
+                InputType = (int)EInputType.KeyDown,
+                Vec3 = new float3(v2.x, 0, v2.y),
+            });
         }
 
         // 摇杆松开: 上报停止移动
         public static void StopMove(this OperaComponent self)
         {
-            OperateInfo operateInfo = OperateInfo.Create();
-            operateInfo.OperateType = (int)EOperateType.Move;
-            operateInfo.InputType = (int)EInputType.KeyUp;
-            self.OperateInfos.Add(operateInfo);
+            self.OperateInfos.Add(new OperateInfoData
+            {
+                OperateType = (int)EOperateType.Move,
+                InputType = (int)EInputType.KeyUp,
+            });
         }
 
         public static void OnClickSkill1(this OperaComponent self)
         {
-            OperateInfo operateInfo = OperateInfo.Create();
-            operateInfo.OperateType = (int)EOperateType.Skill1;
-            operateInfo.InputType = (int)EInputType.KeyDown;
-            self.OperateInfos.Add(operateInfo);
+            self.OperateInfos.Add(new OperateInfoData
+            {
+                OperateType = (int)EOperateType.Skill1,
+                InputType = (int)EInputType.KeyDown,
+            });
         }
 
         public static void OnClickSkill2(this OperaComponent self)
         {
-            OperateInfo operateInfo = OperateInfo.Create();
-            operateInfo.OperateType = (int)EOperateType.Skill2;
-            operateInfo.InputType = (int)EInputType.KeyDown;
-            self.OperateInfos.Add(operateInfo);
+            self.OperateInfos.Add(new OperateInfoData
+            {
+                OperateType = (int)EOperateType.Skill2,
+                InputType = (int)EInputType.KeyDown,
+            });
         }
 
         /*

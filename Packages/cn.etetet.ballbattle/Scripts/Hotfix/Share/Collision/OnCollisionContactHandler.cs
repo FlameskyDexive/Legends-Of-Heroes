@@ -47,8 +47,8 @@ namespace ET
         // 大球吞小球:被吃方质量(HP)转给吃方,移除被吃方
         private static void Devour(Unit eater, Unit eaten)
         {
-            NumericComponent eaterNc = eater.GetComponent<NumericComponent>();
-            NumericComponent eatenNc = eaten.GetComponent<NumericComponent>();
+            NumericComponent eaterNc = eater.NumericComponent;
+            NumericComponent eatenNc = eaten.NumericComponent;
             if (eaterNc == null || eatenNc == null)
             {
                 return;
@@ -79,7 +79,7 @@ namespace ET
         // 子弹命中:扣血→变小,死亡则移除;子弹消失
         private static void BulletHit(Unit target, Unit bullet)
         {
-            NumericComponent nc = target.GetComponent<NumericComponent>();
+            NumericComponent nc = target.NumericComponent;
             if (nc != null)
             {
                 int newHp = nc.GetAsInt(NumericType.HP) - BallDefine.BulletDamage;

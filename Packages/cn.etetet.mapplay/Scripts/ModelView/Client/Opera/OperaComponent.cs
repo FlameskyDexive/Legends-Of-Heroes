@@ -11,8 +11,7 @@ namespace ET.Client
 
 	    public int mapMask;
 
-        // 当前帧收集的操作(摇杆移动、技能按键等), LateUpdate 批量上报后清空
-        public List<OperateInfo> OperateInfos = new List<OperateInfo>();
-        public List<OperateInfo> OperateInfosTemp = new List<OperateInfo>();
+        // 当前帧收集的操作(普通结构, 非 MessageObject), LateUpdate 转成 proto 批量上报后清空
+        public List<OperateInfoData> OperateInfos = new List<OperateInfoData>();
     }
 }
