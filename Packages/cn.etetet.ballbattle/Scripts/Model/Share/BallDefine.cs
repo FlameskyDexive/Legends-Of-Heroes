@@ -44,6 +44,10 @@ namespace ET
 
         // —— 子弹 ——
         public const int BulletDamage = 100;     // 子弹命中扣的 HP(正式应从子弹/技能配置读)
+
+        // —— 死亡 / 重生 ——
+        public const int RespawnHp = 1000;       // 复活时的 HP(决定初始体型)
+        public const int RespawnDelayMs = 2000;  // 死亡到复活的延迟(ms)
     }
 
     // 碰撞开始事件(由 CollisionListenerComponent.BeginContact 发布)。
@@ -52,5 +56,14 @@ namespace ET
     {
         public Contact contact;
         public bool isEnd;
+    }
+
+    // 玩家球死亡事件(碰撞裁决在玩家被吞 / HP<=0 时发布)。
+    // 服务端 BallPlayerDie_Respawn 订阅 → 延迟后在随机点以最小体型复活(持续可玩)。
+    // 放在本包(不依赖 spell 的 UnitDie), 仅球球玩法内部使用。
+    public struct BallPlayerDie
+    {
+        public EntityRef<Unit> Dead;   // 死亡的玩家球
+        public EntityRef<Unit> Killer; // 击杀者(可空)
     }
 }

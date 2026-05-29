@@ -21,7 +21,9 @@ namespace ET.Client
             DlgLobby self = selfRef;
             if (self == null) { return; }
             Scene root = self.Root();
+            EntityRef<Scene> rootRef = root;
             await EnterMapHelper.EnterMapAsync(root);
+            root = rootRef;
             root.GetComponent<UIComponent>().CloseWindow(WindowID.WindowID_Lobby);
         }
 

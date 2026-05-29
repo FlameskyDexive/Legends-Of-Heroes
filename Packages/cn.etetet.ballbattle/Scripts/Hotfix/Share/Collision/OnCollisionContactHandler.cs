@@ -58,7 +58,15 @@ namespace ET
             eaterNc.Set(NumericType.HP, eaterNc.GetAsInt(NumericType.HP) + gain);
             eater.RecalcFromHp(); // 变大 + 广播
 
-            eaten.GetParent<UnitComponent>().Remove(eaten.Id); // AOI 自动发 M2C_RemoveUnits
+            if (eaten.GetBallType() == EBallType.Player)
+            {
+                // 玩家被吞: 触发死亡 -> 重生(服务端订阅 BallPlayerDie), 不直接移除(保持连接)
+                EventSystem.Instance.Publish(eaten.Scene(), new BallPlayerDie { Dead = eaten, Killer = eater });
+            }
+            else
+            {
+                eaten.GetParent<UnitComponent>().Remove(eaten.Id); // 食物/子弹: AOI 自动发 M2C_RemoveUnits
+            }
         }
 
         // 玩家间:半径明显更大者吞噬对方,体型相近不处理
@@ -88,8 +96,8 @@ namespace ET
 
                 if (newHp <= 0)
                 {
-                    // TODO: 死亡事件(结算/重生),先直接移除
-                    target.GetParent<UnitComponent>().Remove(target.Id);
+                    // 玩家被子弹击杀: 触发死亡 -> 重生(服务端订阅), 不直接移除
+                    EventSystem.Instance.Publish(target.Scene(), new BallPlayerDie { Dead = target, Killer = bullet });
                 }
             }
 

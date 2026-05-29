@@ -13,7 +13,7 @@ namespace ET.Client
                 // TODO: 接入 EnterMapHelper / 进入战斗流程后启用
             });
             self.View.E_CancelButton.AddListener(self.Root(), () => OnCancelClick(selfRef));
-            self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.AddItemRefreshListener((trans, index) => self.OnScrollItemRefreshHandler(trans, index));
+            self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.AddItemRefreshListener(self.OnScrollItemRefreshHandler);
         }
 
         public static void ShowWindow(this DlgRoom self, Entity contextData = null)

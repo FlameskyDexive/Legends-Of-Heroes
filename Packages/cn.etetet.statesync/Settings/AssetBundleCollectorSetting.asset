@@ -200,6 +200,14 @@ MonoBehaviour:
         FilterRuleName: CollectPrefab
         AssetTags:
         UserData:
+      - CollectPath: Packages/cn.etetet.bundles/Res/UI/LOL/Avatar
+        CollectorGUID: 14060001abcd14060001abcd14060001
+        CollectorType: 0
+        AddressRuleName: AddressByFileName
+        PackRuleName: PackDirectory
+        FilterRuleName: CollectSprite
+        AssetTags:
+        UserData:
     - GroupName: Recast
       GroupDesc:
       AssetTags:
