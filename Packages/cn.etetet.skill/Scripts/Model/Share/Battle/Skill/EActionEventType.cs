@@ -10,6 +10,8 @@ namespace ET
         Stealth = 5,
         Invincible = 6,
         ChangeNumeric = 7,
+        BallSpit = 8,   // 球球大作战:吐球(由 ballbattle 的 ActionEventBallSpit 实现)
+        BallSplit = 9,  // 球球大作战:分裂(由 ballbattle 的 ActionEventBallSplit 实现)
         PlayAnimation = 100,
         ShakeCamera = 101,
         PlayEffect = 102,

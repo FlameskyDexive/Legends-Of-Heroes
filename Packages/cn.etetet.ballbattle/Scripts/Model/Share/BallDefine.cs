@@ -48,6 +48,26 @@ namespace ET
         // —— 死亡 / 重生 ——
         public const int RespawnHp = 1000;       // 复活时的 HP(决定初始体型)
         public const int RespawnDelayMs = 2000;  // 死亡到复活的延迟(ms)
+
+        // —— 技能(吐球/分裂),走 skill 配置表(SkillConfig 1001/1002) ——
+        public const int SpitSkillId = 1001;     // 吐球技能 SkillConfig.Id(ActiveSkill 槽位 0)
+        public const int SplitSkillId = 1002;    // 分裂技能 SkillConfig.Id(ActiveSkill 槽位 1)
+        public const int BulletConfigId = 1102;  // 喷出球的 UnitConfig(复用食物球 Virtual 配置, SetupBall(Bullet) 覆盖其角色)
+        public const int SpitCost = 50;          // 吐球消耗自身 HP
+        public const int SpitBulletHp = 30;      // 吐出子弹的 HP(决定体型/速度)
+        public const float SpitRange = 30f;      // 吐球飞行距离
+        public const int MinSplitHp = 200;       // 低于此 HP 不能分裂
+        public const float SplitRange = 25f;     // 分裂球冲刺距离
+
+        // —— 机器人 AI(服务端竞技场生成,服务端权威驱动) ——
+        public const int RobotCount = 5;          // 场上 AI 机器人数量
+        public const int RobotConfigId = 1102;    // 机器人球 UnitConfig(复用食物球 Virtual 配置 + SetupBall(Player))
+        public const int RobotInitHp = 300;       // 机器人初始 HP
+        public const int RobotThinkMs = 300;      // AI 思考间隔(ms)
+        public const float RobotLookahead = 20f;  // 机器人直线移动前瞻距离
+        public const float RobotFleeRange = 12f;  // 威胁(更大的球)在此距离内则逃跑
+        public const float RobotSpitRange = 10f;  // 猎物在此距离内可能吐球
+        public const float RobotSpitChance = 0.15f; // 每次思考吐球概率
     }
 
     // 碰撞开始事件(由 CollisionListenerComponent.BeginContact 发布)。

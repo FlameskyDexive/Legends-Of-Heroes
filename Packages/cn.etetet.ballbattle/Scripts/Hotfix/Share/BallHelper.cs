@@ -29,6 +29,14 @@ namespace ET
             }
             // 圆形 sensor:只检测重叠,不做物理反弹。userData=unit 供接触时反查实体。
             collision.AddCollider(EColliderType.Circle, new Vector2(radius, 0), Vector2.Zero, true, unit);
+
+            // 玩家球装配技能(吐球/分裂),走 skill 配置表;配置未导出时跳过避免空引用
+            if (ballType == EBallType.Player && SkillConfigCategory.Instance?.Get(BallDefine.SpitSkillId, 1) != null)
+            {
+                SkillComponent skillComponent = unit.GetComponent<SkillComponent>() ?? unit.AddComponent<SkillComponent>();
+                skillComponent.AddSkill(BallDefine.SpitSkillId);
+                skillComponent.AddSkill(BallDefine.SplitSkillId);
+            }
         }
     }
 }
