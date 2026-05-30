@@ -35,6 +35,9 @@ namespace ET.Server
             // 启动食物刷新(每秒补足)
             self.SpawnTimerId = scene.Root().TimerComponent.NewRepeatedTimer(1000, TimerInvokeType.BallFoodSpawn, self);
 
+            // 启动排行榜日志(每 5s 打一次当前 Top5,服务端结算观察用;客户端 UI/广播为后续)
+            self.LeaderboardTimerId = scene.Root().TimerComponent.NewRepeatedTimer(5000, TimerInvokeType.BallLeaderboard, self);
+
             // 生成 AI 机器人对手(服务端权威驱动)
             self.SpawnRobots();
         }
@@ -43,6 +46,7 @@ namespace ET.Server
         public static void Destroy(this BallArenaComponent self)
         {
             self.Root().TimerComponent?.Remove(ref self.SpawnTimerId);
+            self.Root().TimerComponent?.Remove(ref self.LeaderboardTimerId);
         }
 
         // 补足场上食物数量到 MaxFoodCount
@@ -121,6 +125,23 @@ namespace ET.Server
             try
             {
                 self.SpawnFood();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+        }
+    }
+
+    // 排行榜日志定时器(服务端结算)
+    [Invoke(TimerInvokeType.BallLeaderboard)]
+    public class BallLeaderboardTimer : ATimer<BallArenaComponent>
+    {
+        protected override void Run(BallArenaComponent self)
+        {
+            try
+            {
+                BallScoreHelper.LogLeaderboard(self.Scene());
             }
             catch (Exception e)
             {

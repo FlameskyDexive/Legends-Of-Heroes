@@ -60,6 +60,8 @@ namespace ET
 
             if (eaten.GetBallType() == EBallType.Player)
             {
+                // 计分:吞噬方记一次击杀, 被吞方记一次死亡(结算/排行榜)
+                BallScoreHelper.CreditKill(eater, eaten);
                 // 玩家被吞: 触发死亡 -> 重生(服务端订阅 BallPlayerDie), 不直接移除(保持连接)
                 EventSystem.Instance.Publish(eaten.Scene(), new BallPlayerDie { Dead = eaten, Killer = eater });
             }
@@ -96,6 +98,8 @@ namespace ET
 
                 if (newHp <= 0)
                 {
+                    // 计分:经子弹 ShooterId 反查射手记一次击杀, 被击杀方记死亡(在移除子弹前取 ShooterId)
+                    BallScoreHelper.CreditBulletKill(bullet, target);
                     // 玩家被子弹击杀: 触发死亡 -> 重生(服务端订阅), 不直接移除
                     EventSystem.Instance.Publish(target.Scene(), new BallPlayerDie { Dead = target, Killer = bullet });
                 }

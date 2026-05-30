@@ -52,7 +52,8 @@ ball-battle **不新建 SceneType**(mapplay 整套基建 AOI/广播/移动都硬
 - **速度式移动**(Phase E):给 `MoveComponent` 加方向速度模式,改 `mapplay/C2M_OperationHandler` 的 Move 分支为设方向(替代 `FindPathMoveToAsync` 寻路)。
 - **子弹技能**:`skill` 的 ActionEvent 发射子弹(补 `UnitFactory.CreateBullet`,子弹 = `SetupBall(Bullet)` 朝向飞行)。
 - **分裂技能**:`ActionEventSplit`(HP/2 + `UnitFactory.Create` 第二个球冲刺)。
-- **死亡/重生/结算 UI**:`OnCollisionContactHandler` 死亡处已留 TODO,可接 `UnitDie` 事件(quest 已用该事件)。
+- **死亡/重生**:✅ 已实现(`OnCollisionContactHandler` 裁决 → `BallPlayerDie` 事件 → `BallDeathHelper.RespawnBall` 缩小+关碰撞+延迟随机点重生)。
+- **结算/计分**:✅ 服务端已实现——`BallComponent` 加 `Kills/Deaths`(玩家)+ `ShooterId`(子弹归属);`BallScoreHelper.CreditKill/CreditBulletKill` 在吞噬/子弹击杀处记功(子弹经 ShooterId 反查射手);`BallArenaComponent` 每 5s `LogLeaderboard` 打服务端 Top5(HP+击杀)。**待补**:M2C 排行榜广播(需在 ballbattle 加 `Proto/` + 一条 M2C 消息 + opcode + proto 导出)与客户端排行榜/结算 UI(EUI,美术 gating)。
 
 ## 配置(已加,需重新导表)
 - 已在 `cn.etetet.map/Luban/Config/Datas/Unit.xlsx`(UnitProto 表)加两条球的 `UnitConfig`:

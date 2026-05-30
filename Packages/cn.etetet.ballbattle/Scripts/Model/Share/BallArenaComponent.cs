@@ -12,5 +12,6 @@ namespace ET
         public float MapMin = -50f;    // 地图边界(X/Z 平面)(BallConfig.MapMin)
         public float MapMax = 50f;     // (BallConfig.MapMax)
         public long SpawnTimerId;
+        public long LeaderboardTimerId; // 排行榜日志定时器(服务端结算)
     }
 }

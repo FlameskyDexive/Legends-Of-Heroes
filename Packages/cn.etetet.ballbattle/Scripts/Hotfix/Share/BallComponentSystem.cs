@@ -15,5 +15,15 @@ namespace ET
             BallComponent ball = unit.GetComponent<BallComponent>();
             return ball == null ? EBallType.None : ball.BallType;
         }
+
+        // 记录子弹的射手(发射者 UnitId), 用于子弹击杀记功
+        public static void SetShooter(this Unit unit, long shooterId)
+        {
+            BallComponent ball = unit.GetComponent<BallComponent>();
+            if (ball != null)
+            {
+                ball.ShooterId = shooterId;
+            }
+        }
     }
 }

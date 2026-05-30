@@ -6,5 +6,12 @@ namespace ET
     public class BallComponent : Entity, IAwake<EBallType>
     {
         public EBallType BallType;
+
+        // 计分(仅玩家球有意义):累计击杀数 / 死亡数。用于结算/排行榜(服务端权威)。
+        public int Kills;
+        public int Deaths;
+
+        // 子弹球归属:发射该子弹的玩家 UnitId(子弹击杀时反查射手记功;非子弹为 0)。
+        public long ShooterId;
     }
 }

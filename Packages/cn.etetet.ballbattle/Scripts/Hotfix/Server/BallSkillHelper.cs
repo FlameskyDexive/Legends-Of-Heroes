@@ -39,6 +39,7 @@ namespace ET.Server
             bullet.Position = owner.Position + dir * spawnDist;
             bullet.NumericComponent.Set(NumericType.HP, ejectHp);
             bullet.SetupBall(EBallType.Bullet);
+            bullet.SetShooter(owner.Id); // 记录射手, 子弹击杀玩家时给射手记功
 
             float3 target = bullet.Position + dir * range;
             EntityRef<Unit> bulletRef = bullet;
