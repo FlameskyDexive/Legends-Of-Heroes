@@ -11,7 +11,13 @@ namespace ET.Server
             {
                 return;
             }
-            owner.SplitBall();
+            // 多态配置: 分裂参数(分裂下限HP/冲刺距离)从 ActionEventParams_BallSplit 取
+            ActionEventParams_BallSplit p = actionEvent.ActionEventConfig.Params as ActionEventParams_BallSplit;
+            if (p == null)
+            {
+                return;
+            }
+            owner.SplitBall(p.MinHp, p.Range);
         }
     }
 }

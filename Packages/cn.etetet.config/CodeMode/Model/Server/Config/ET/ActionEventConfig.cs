@@ -13,7 +13,7 @@ namespace ET
 {
     public sealed partial class ActionEventConfig : ET.Object
     {
-        public ActionEventConfig(int Id, string Name, string Desc, int ActionEventType, bool IsClientOnly, System.Collections.Generic.List<int> Params) 
+        public ActionEventConfig(int Id, string Name, string Desc, ET.EActionEventType ActionEventType, bool IsClientOnly, ET.ActionEventParams Params) 
         {
             this.Id = Id;
             this.Name = Name;
@@ -37,20 +37,21 @@ namespace ET
         /// </summary>
         public readonly string Desc;
         /// <summary>
-        /// 事件类型(8吐球 9分裂)
+        /// 事件类型
         /// </summary>
-        public readonly int ActionEventType;
+        public readonly ET.EActionEventType ActionEventType;
         /// <summary>
         /// 仅客户端
         /// </summary>
         public readonly bool IsClientOnly;
         /// <summary>
-        /// 参数
+        /// 参数(多态)
         /// </summary>
-        public readonly System.Collections.Generic.List<int> Params;
+        public readonly ET.ActionEventParams Params;
 
         public  void ResolveRef()
         {
+            Params?.ResolveRef();
             EndRef();
         }
 

@@ -18,8 +18,8 @@ public sealed class ActionEventConfigCategoryFactory_Config : IConfigFactory
     {
         return new ActionEventConfigCategory(new System.Collections.Generic.Dictionary<int, ET.ActionEventConfig>()
         {
-            [ 1 ] = new ET.ActionEventConfig(1, @"SpitBall", @"吐球", 8, false, new System.Collections.Generic.List<int> { }),
-            [ 2 ] = new ET.ActionEventConfig(2, @"Split", @"分裂", 9, false, new System.Collections.Generic.List<int> { })
+            [ 1 ] = new ET.ActionEventConfig(1, @"SpitBall", @"吐球", ET.EActionEventType.BallSpit, false, new ET.ActionEventParams_BallSpit(50, 30, 30f)),
+            [ 2 ] = new ET.ActionEventConfig(2, @"Split", @"分裂", ET.EActionEventType.BallSplit, false, new ET.ActionEventParams_BallSplit(200, 25f))
         });
     }
 }

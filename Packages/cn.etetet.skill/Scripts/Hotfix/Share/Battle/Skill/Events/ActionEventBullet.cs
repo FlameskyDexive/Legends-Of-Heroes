@@ -17,7 +17,11 @@ namespace ET
                 return;
 #if DOTNET
 			Scene scene = actionEvent.Scene();
-            Unit bullet = Server.UnitFactory.CreateBullet(scene, IdGenerater.Instance.GenerateId(), actionEvent.OwnerSkill, actionEvent.ActionEventConfig.Params[0], actionEvent.ActionEventConfig.Params);
+            // 多态配置: 子弹参数从 ActionEventParams_Bullet 取(BulletConfigId)
+            ActionEventParams_Bullet bulletParams = actionEvent.ActionEventConfig.Params as ActionEventParams_Bullet;
+            if (bulletParams == null)
+                return;
+            Unit bullet = Server.UnitFactory.CreateBullet(scene, IdGenerater.Instance.GenerateId(), actionEvent.OwnerSkill, bulletParams.BulletConfigId);
 
             // 通知客户端创建子弹Unit
             M2C_CreateUnits m2CCreateUnits = M2C_CreateUnits.Create();

@@ -9,8 +9,8 @@ namespace ET
         {
             self.EventTriggerTime = triggerTime + self.GetSingleton<TimeInfo>().ServerNow();
             self.ConfigId = configId;
-            // 生成的 ActionEventConfig.ActionEventType 为 int(Luban 表按 int 建), 强转回枚举(枚举→枚举亦安全)
-            self.ActionEventType = (EActionEventType)self.ActionEventConfig.ActionEventType;
+            // ActionEventConfig.ActionEventType 现为 Luban 多态表生成的 EActionEventType 枚举, 直接取用做派发 key
+            self.ActionEventType = self.ActionEventConfig.ActionEventType;
             self.SourceType = sourceType;
         }
 

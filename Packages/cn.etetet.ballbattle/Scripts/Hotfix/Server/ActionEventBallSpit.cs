@@ -11,7 +11,13 @@ namespace ET.Server
             {
                 return;
             }
-            owner.SpitBall();
+            // 多态配置: 吐球参数(消耗HP/子弹HP/飞行距离)从 ActionEventParams_BallSpit 取
+            ActionEventParams_BallSpit p = actionEvent.ActionEventConfig.Params as ActionEventParams_BallSpit;
+            if (p == null)
+            {
+                return;
+            }
+            owner.SpitBall(p.CostHp, p.BulletHp, p.Range);
         }
     }
 }

@@ -51,26 +51,26 @@ namespace ET.Server
             }
         }
 
-        // 吐球:喷小子弹
-        public static void SpitBall(this Unit owner)
+        // 吐球:喷小子弹(参数来自 skill 多态配置 ActionEventParams_BallSpit)
+        public static void SpitBall(this Unit owner, int costHp, int bulletHp, float range)
         {
-            owner.EjectBall(BallDefine.SpitBulletHp, BallDefine.SpitCost, BallDefine.SpitRange).Coroutine();
+            owner.EjectBall(bulletHp, costHp, range).Coroutine();
         }
 
-        // 分裂:喷出自身一半 HP 的冲刺球
-        public static void SplitBall(this Unit owner)
+        // 分裂:喷出自身一半 HP 的冲刺球(参数来自 skill 多态配置 ActionEventParams_BallSplit)
+        public static void SplitBall(this Unit owner, int minHp, float range)
         {
             if (owner == null || owner.IsDisposed)
             {
                 return;
             }
             int hp = owner.NumericComponent.GetAsInt(NumericType.HP);
-            if (hp < BallDefine.MinSplitHp)
+            if (hp < minHp)
             {
                 return;
             }
             int half = hp / 2;
-            owner.EjectBall(half, half, BallDefine.SplitRange).Coroutine();
+            owner.EjectBall(half, half, range).Coroutine();
         }
     }
 }
