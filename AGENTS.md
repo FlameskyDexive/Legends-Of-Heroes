@@ -21,6 +21,14 @@
 - **AIBridge CLI 工具链（补充）**：`.codex/skills/`，见下方 AIBridge Bootstrap。用于 Unity 编译/日志、Code Index、Prefab Patch、Batch Script 等工具化操作。
 - 两者并存：ET 业务/规范类任务以 harness 技能为准；需要 AIBridge CLI 能力时再按 AIBridge 路由加载 `.codex/skills/` 下对应 skill。
 
+## Unity 交互入口优先级
+
+涉及 Unity 编辑器交互（编译 Compile、刷新 Refresh、重新生成项目 RegenProject、读日志、PlayMode、Editor/资源/Prefab/场景操作等）一律按下面优先级选择通道，命中可用即用，不可用再降到下一级：
+
+1. **AIBridge（首选）**：`$CLI = ./.aibridge/cli/AIBridgeCLI.exe`，用法见下方 AIBridge Bootstrap。
+2. **UnityMcp（次选，仅当 AIBridge 不可用）**：加载 `unity-mcp-skill`（MCP for Unity）。AIBridge「不可用」判据：`AIBridgeCLI.exe` 不存在，或命令返回连接超时 /「Unity Editor not running or AIBridge not active」/ 状态无法确认。
+3. **UnityBridge（兜底，前两者都不可用时才用）**：走 `et-unitybridge`，详见 `Packages/cn.etetet.unitybridge/AGENTS.md`。
+
 <!-- AIBRIDGE:START {"assistant":"aibridge","templateId":"unity-integration","version":7,"target":"root-rule"} -->
 ## AIBridge Bootstrap
 

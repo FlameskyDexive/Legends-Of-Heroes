@@ -101,6 +101,14 @@
 	</Reference>
 	</ItemGroup>
 
+	<!-- cn.etetet.btree 用 Nino 序列化([NinoType]),补 Nino.Core 引用 + Nino 源生成器分析器(随 com.jasonxudeveloper.nino Unity 包) -->
+	<ItemGroup>
+	<Reference Include="Nino.Core">
+	<HintPath>$(ETRootDir)Library\PackageCache\com.jasonxudeveloper.nino@4.0.0-preview.147\Runtime\Nino.Core.dll</HintPath>
+	</Reference>
+	<Analyzer Include="$(ETRootDir)Library\PackageCache\com.jasonxudeveloper.nino@4.0.0-preview.147\Runtime\Nino.Generator.dll" />
+	</ItemGroup>
+
 	<ItemGroup>
 	  <Folder Include="..\..\..\cn.etetet.transfer\Scripts\Model\Server\">
 	    <Link>Packages\cn.etetet.transfer\Scripts\Model\Server</Link>

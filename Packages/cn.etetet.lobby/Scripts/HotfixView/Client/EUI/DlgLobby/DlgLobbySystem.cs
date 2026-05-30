@@ -30,8 +30,17 @@ namespace ET.Client
         private static void OnMatchClick(EntityRef<DlgLobby> selfRef)
         {
             DlgLobby self = selfRef;
+            Log.Warning($"[匹配诊断] 大厅 OnMatchClick 触发: self={(self != null)}");
             if (self == null) { return; }
-            self.Root().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_MatchTeam);
+            try
+            {
+                self.Root().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_MatchTeam);
+                Log.Warning("[匹配诊断] 大厅 ShowWindow(MatchTeam) 已调用");
+            }
+            catch (System.Exception e)
+            {
+                Log.Error($"[匹配诊断] ShowWindow(MatchTeam) 异常: {e}");
+            }
         }
 
         private static void OnCreateRoomClick(EntityRef<DlgLobby> selfRef)

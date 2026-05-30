@@ -145,6 +145,11 @@ namespace ET.Client
 
         public static void AddListenerAsync(this Button button, Scene rootScene, Func<ETTask> action)
         {
+            if (button == null)
+            {
+                Log.Error("AddListenerAsync: button is null(预制体缺少对应 E* 节点或命名不一致),跳过绑定");
+                return;
+            }
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() => action().Coroutine());
         }
@@ -157,6 +162,11 @@ namespace ET.Client
 
         public static void AddListener(this Button button, Scene rootScene, UnityAction clickEventHandler)
         {
+            if (button == null)
+            {
+                Log.Error("AddListener: button is null(预制体缺少对应 E* 节点或命名不一致),跳过绑定");
+                return;
+            }
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(clickEventHandler);
         }

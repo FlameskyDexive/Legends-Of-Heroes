@@ -8,6 +8,7 @@ namespace ET.Client
         public static void RegisterUIEvent(this DlgMatchTeam self)
         {
             EntityRef<DlgMatchTeam> selfRef = self;
+            Log.Warning($"[匹配诊断] DlgMatchTeam.RegisterUIEvent: E_Confirm={(self.View.E_ConfirmButton != null)} E_Cancel={(self.View.E_CancelButton != null)} Loop={(self.View.ELoopScrollList_RolesLoopHorizontalScrollRect != null)}");
             self.View.E_ConfirmButton.AddListener(self.Root(), () => OnStartMatchClick(selfRef));
             self.View.E_CancelButton.AddListener(self.Root(), () => OnCancelClick(selfRef));
             self.View.ELoopScrollList_RolesLoopHorizontalScrollRect.AddItemRefreshListener(self.OnScrollItemRefreshHandler);
@@ -25,6 +26,11 @@ namespace ET.Client
 
             self.RefreshMembers();
             self.View.ECountDownText.text = string.Empty;
+
+            // 打开匹配窗口即自动开始匹配(无需确认按钮):倒计时(模拟匹配)结束后请求机器人对手并进 BallBattle
+            Log.Warning("[匹配诊断] DlgMatchTeam.ShowWindow -> 自动开始匹配");
+            self.IsMatching = true;
+            self.StartCountDown().Coroutine();
         }
 
         public static void OnScrollItemRefreshHandler(this DlgMatchTeam self, Transform transform, int index)
@@ -60,6 +66,7 @@ namespace ET.Client
         {
             EntityRef<DlgMatchTeam> selfRef = self;
             int total = RandomGenerator.RandomNumber(10, 16); // [10,15] 秒
+            Log.Info($"[匹配诊断] 开始倒计时 {total}s");
             for (int remain = total; remain > 0; remain--)
             {
                 self = selfRef;
@@ -77,22 +84,23 @@ namespace ET.Client
             if (self == null || !self.IsMatching) { return; }
             self.IsMatching = false;
             self.View.ECountDownText.text = "匹配成功!";
+            Log.Info("[匹配诊断] 倒计时结束 -> 隐藏窗口, 进 BallBattle(对手=竞技场 NPC 机器人)");
 
-            // 匹配超时兜底：请求服务端创建一个机器人玩家当对手（机器人会登录并进同一张共享地图）
+            // 匹配完成自动进入战斗：进球球大作战专属地图(BallBattle Copy)。
+            // 对手由服务端 BallArenaComponentSystem.SpawnRobots 在图内生成的 NPC AI 机器人提供。
+            // (原 RequestMatchRobotAsync 已移除:其 proto C2G_RequestMatchRobot opcode=20305 在内网区,
+            //  会被服务端 NetComponentSystem.OnRead 以"client message must in (10000,20000)"拒收而永久挂起;
+            //  且那种机器人是登录进 Map2、不进 BallBattle,对本玩法无用。)
             Scene root = self.Root();
-            await EnterMapHelper.RequestMatchRobotAsync(root);
-
-            // 匹配完成自动进入战斗：进球球大作战专属地图(BallBattle Copy),与图内对手相遇
-            self = selfRef;
-            if (self == null) { return; }
-            root = self.Root();
             root.GetComponent<UIComponent>().HideWindow(WindowID.WindowID_MatchTeam);
             await EnterMapHelper.EnterMapAsync(root, "BallBattle");
+            Log.Info("[匹配诊断] EnterMapAsync(BallBattle) 返回(进图完成或失败)");
         }
 
         private static void OnStartMatchClick(EntityRef<DlgMatchTeam> selfRef)
         {
             DlgMatchTeam self = selfRef;
+            Log.Warning($"[匹配诊断] OnStartMatchClick 触发: self={(self != null)} IsMatching={(self != null && self.IsMatching)}");
             if (self == null || self.IsMatching) { return; }
             self.IsMatching = true;
             self.StartCountDown().Coroutine();
