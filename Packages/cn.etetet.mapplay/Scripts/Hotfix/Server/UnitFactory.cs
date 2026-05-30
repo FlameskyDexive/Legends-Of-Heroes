@@ -21,7 +21,10 @@ namespace ET.Server
 
             if (unit.UnitType != UnitType.Player)
             {
-                MapUnitConfig mapUnitConfig = scene.Fiber().GetSingleton<MapUnitConfigCategory>().Get((int)id);
+                // 用 GetOrDefault(缺 key 返回 null)而非 Get(缺 key 抛 KeyNotFoundException):
+                // 地图预先摆放的单位 id 才是 MapUnitConfig 的 key;运行时动态生成的单位(球球大作战食物/机器人,
+                // 用 IdGenerater 随机 id)不在表里,此处本就该返回 null 跳过(下方有 !=null 判断)。
+                MapUnitConfig mapUnitConfig = scene.Fiber().GetSingleton<MapUnitConfigCategory>().GetOrDefault((int)id);
                 if (mapUnitConfig != null)
                 {
                     foreach ((NumericType k, long v) in mapUnitConfig.KV)

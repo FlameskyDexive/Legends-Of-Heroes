@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-
 namespace ET
 {
 	/// <summary>
-	/// 技能发射子弹
+	/// 技能发射子弹(通用)。
+	/// 注:原实现依赖 Server.UnitFactory.CreateBullet —— 该方法全仓库不存在,且 Share 层禁止依赖 ET.Server(ET0113),
+	/// 故此通用事件未实现。球球大作战的"吐球"子弹走 ballbattle 的 ActionEventBallSpit → BallSkillHelper.EjectBall(服务端),
+	/// 不经此通用事件。此处保留 [ActionEvent] 注册以使 EActionEventType.Bullet 派发不缺项,Run 为安全空桩。
 	/// </summary>
 	[ActionEvent(SceneType.Map, EActionEventType.Bullet)]
 	[FriendOf(typeof(ActionEvent))]
@@ -11,35 +12,12 @@ namespace ET
 	{
 		public void Run(ActionEvent actionEvent, ActionEventData args)
 		{
-            Unit owner = args.owner;
-            Log.Info($"emit a bullet");
-            if (owner == null)
-                return;
-#if DOTNET
-			Scene scene = actionEvent.Scene();
-            // 多态配置: 子弹参数从 ActionEventParams_Bullet 取(BulletConfigId)
-            ActionEventParams_Bullet bulletParams = actionEvent.ActionEventConfig.Params as ActionEventParams_Bullet;
-            if (bulletParams == null)
-                return;
-            Unit bullet = Server.UnitFactory.CreateBullet(scene, IdGenerater.Instance.GenerateId(), actionEvent.OwnerSkill, bulletParams.BulletConfigId);
-
-            // 通知客户端创建子弹Unit
-            M2C_CreateUnits m2CCreateUnits = M2C_CreateUnits.Create();
-            m2CCreateUnits.Units = new List<UnitInfo>();
-            UnitInfo info = Server.UnitHelper.CreateUnitInfo(bullet);
-            m2CCreateUnits.Units.Add(info);
-           Server.MapMessageHelper.SendToClient(owner, m2CCreateUnits);
-            // this.TimeOutDestroyBullet(bullet, scene).Coroutine();
-#endif
-        }
-
-
-		// private async ETTask TimeOutDestroyBullet(Unit unit, Scene scene)
-		// {
-		// 	await TimerComponent.Instance.WaitAsync(1000);
-		// 	scene?.GetComponent<UnitComponent>().Remove(unit.Id);
-		// }
+			Unit owner = args.owner;
+			if (owner == null)
+			{
+				return;
+			}
+			Log.Info("ActionEventBullet: 通用发射子弹事件未实现(球球大作战的吐球用 ActionEventBallSpit)");
+		}
 	}
-	
-	
 }

@@ -31,7 +31,7 @@ namespace ET
             collision.AddCollider(EColliderType.Circle, new Vector2(radius, 0), Vector2.Zero, true, unit);
 
             // 玩家球装配技能(吐球/分裂),走 skill 配置表;配置未导出时跳过避免空引用
-            if (ballType == EBallType.Player && SkillConfigCategory.Instance?.Get(BallDefine.SpitSkillId, 1) != null)
+            if (ballType == EBallType.Player && unit.GetSingleton<SkillConfigCategory>().Get(BallDefine.SpitSkillId, 1) != null)
             {
                 SkillComponent skillComponent = unit.GetComponent<SkillComponent>() ?? unit.AddComponent<SkillComponent>();
                 skillComponent.AddSkill(BallDefine.SpitSkillId);

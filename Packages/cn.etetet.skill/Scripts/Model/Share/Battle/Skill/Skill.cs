@@ -11,7 +11,7 @@ namespace ET
         // public int AbstractIndex;
         public ESkillAbstractType AbstractType => (ESkillAbstractType)this.SkillConfig.AbstractType;
         
-        public SkillConfig SkillConfig => SkillConfigCategory.Instance.Get(this.SkillId, this.SkillLevel);
+        public SkillConfig SkillConfig => this.GetSingleton<SkillConfigCategory>().Get(this.SkillId, this.SkillLevel);
 
         /// <summary>
         /// 技能释放开始时间戳

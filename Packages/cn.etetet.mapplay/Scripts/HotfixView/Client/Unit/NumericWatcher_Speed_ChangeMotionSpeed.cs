@@ -8,7 +8,13 @@
 	{
 		public void Run(Unit unit, NumbericChange args)
 		{
-			unit.GetComponent<AnimatorComponent>().SetFloat(nameof(MotionType.MoveSpeed), args.New / 1000f);
+			// 无动画的单位(如球球大作战的球)没有 AnimatorComponent,或视图(异步加载)还没装配完 → 跳过,避免空引用。
+			AnimatorComponent animatorComponent = unit.GetComponent<AnimatorComponent>();
+			if (animatorComponent == null)
+			{
+				return;
+			}
+			animatorComponent.SetFloat(nameof(MotionType.MoveSpeed), args.New / 1000f);
 		}
 	}
 }

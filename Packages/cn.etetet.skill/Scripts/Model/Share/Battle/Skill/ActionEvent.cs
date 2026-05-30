@@ -48,7 +48,7 @@ namespace ET
         {
             get
             {
-                return ActionEventConfigCategory.Instance.Get(this.ConfigId);
+                return this.GetSingleton<ActionEventConfigCategory>().Get(this.ConfigId);
             }
         }
 

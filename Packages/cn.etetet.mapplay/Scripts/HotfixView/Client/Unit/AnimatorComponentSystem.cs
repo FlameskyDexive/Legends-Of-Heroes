@@ -17,6 +17,14 @@ namespace ET.Client
 		[EntitySystem]
 		private static void Awake(this AnimatorComponent self)
 		{
+			// 实体池复用时字段初始值器(= new())不重跑,而 Destroy 把这两个集合置 null;
+			// 此处确保非空 + 清空,避免无 Animator 的单位(如球球大作战精灵球,Awake 下方提前 return)
+			// 后续被 NumericWatcher_Speed_ChangeMotionSpeed → SetFloat → HasParameter 访问 null 集合空引用。
+			self.animationClips ??= new();
+			self.Parameter ??= new();
+			self.animationClips.Clear();
+			self.Parameter.Clear();
+
 			Animator animator = self.GetParent<Unit>().GetComponent<GameObjectComponent>().GameObject.GetComponent<Animator>();
 
 			if (animator == null)

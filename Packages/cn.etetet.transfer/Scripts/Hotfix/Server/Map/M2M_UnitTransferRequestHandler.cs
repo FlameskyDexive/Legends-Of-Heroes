@@ -53,6 +53,12 @@ namespace ET.Server
             // 加入aoi
             unit.AddComponent<AOIEntity>();
 
+            // 通用扩展点:单位"转移进入本地图"也要通知高层玩法包(与 mapplay UnitFactory.Create 末尾的发布对称)。
+            // 否则经 transfer 进入 Copy/Line 地图的单位(如球球大作战玩家 transfer 进 BallBattle Copy)收不到
+            // AfterUnitCreateServer → ballbattle 的 AfterUnitCreateServer_SetupBall 不触发(玩家无技能/碰撞、竞技场不装配、食物不刷)。
+            // 订阅者自行按地图名守卫(普通地图早退),且 SetupBall 以 BallComponent==null 判空保证幂等。
+            EventSystem.Instance.Publish(unit.Scene(), new AfterUnitCreateServer { Unit = unit });
+
             response.NewActorId = unit.GetActorId();
             await ETTask.CompletedTask;
         }

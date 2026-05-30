@@ -17,8 +17,12 @@ namespace ET.Server
             object message = args.Message;
             Scene root = session.Root();
 
+            // 单客户端每秒消息上限(超过则判定为刷消息,断开)。原值 20 对实时输入(摇杆/技能)太低:
+            // 摇杆每帧上报会瞬间超 20 导致误断(已在客户端 OperaComponent 节流到 ~10/s,这里再留余量),
+            // 实时玩法提到 60/s,既给正常输入足够空间,又能挡真正的刷消息攻击。
+            const int MaxClientMsgPerSecond = 60;
             MessageStatisticsComponent messageStatisticsComponent = session.GetComponent<MessageStatisticsComponent>();
-            if (!messageStatisticsComponent.Check(message.GetType(), 20))
+            if (!messageStatisticsComponent.Check(message.GetType(), MaxClientMsgPerSecond))
             {
                 session.Error = ErrorCode.ERR_MessageCountTooMany;
                 session.Dispose();

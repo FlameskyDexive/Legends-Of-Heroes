@@ -21,6 +21,7 @@ namespace ET.Server
     [FriendOf(typeof(BallArenaComponent))]
     public static class BallDeathHelper
     {
+        [EnableGetComponent(typeof(TimerComponent))]
         public static async ETTask RespawnBall(this Unit unit)
         {
             Scene scene = unit.Scene();

@@ -37,6 +37,10 @@ namespace ET.Client
 
         public static void ShowWindow(this DlgBattle self, Entity contextData = null)
         {
+            // 不在此调 RefreshSkillView:① 球球大作战的 SkillComponent 装在服务端单位上,客户端单位没有,刷不出技能;
+            // ② RefreshSkillView→GetMyUnitFromCurrentScene(self.Scene()) 传的是 root 场景(UI 挂 root),
+            //    而 UnitComponent 在 CurrentScene 上 → 会空引用。技能现由 OnClickSkill 无条件上报、服务端权威释放,不依赖此。
+            // (技能图标/CD 显示属后续:需把玩家技能数据同步到客户端单位再开启。)
         }
 
         public static void RefreshSkillView(this DlgBattle self)
@@ -92,8 +96,10 @@ namespace ET.Client
         {
             DlgBattle self = selfRef;
             if (self == null) { return; }
-            Skill skill = self.Skill1;
-            if (skill == null || skill.IsInCd()) { return; }
+            // 若已同步到技能且在 CD 中则客户端先拦(优化);否则直接上报,由服务端 SpellSkill 权威校验技能存在与 CD。
+            // (球的 SkillComponent 装在服务端单位上,客户端单位常没有 → Skill1 多为 null,此时仍需上报释放。)
+            Skill skill1 = self.Skill1;
+            if (skill1 != null && skill1.IsInCd()) { return; }
             self.Scene().GetComponent<OperaComponent>()?.OnClickSkill1();
         }
 
@@ -101,8 +107,8 @@ namespace ET.Client
         {
             DlgBattle self = selfRef;
             if (self == null) { return; }
-            Skill skill = self.Skill2;
-            if (skill == null || skill.IsInCd()) { return; }
+            Skill skill2 = self.Skill2;
+            if (skill2 != null && skill2.IsInCd()) { return; }
             self.Scene().GetComponent<OperaComponent>()?.OnClickSkill2();
         }
 

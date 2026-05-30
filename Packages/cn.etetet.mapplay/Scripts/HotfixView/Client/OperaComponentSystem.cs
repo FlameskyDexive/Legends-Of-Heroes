@@ -47,9 +47,20 @@ namespace ET.Client
             self.OperateInfos.Clear();
         }
 
-        // 摇杆推动: 上报移动方向
+        // 摇杆移动上报节流间隔(ms):最多 ~10/s,远低于服务端每秒消息上限,避免触发防刷断连。
+        // 服务端 C2M_OperationHandler 已对"同方向不重发路径"做处理,10/s 足够流畅;转向时下一次上报即更新方向。
+        private const long MoveSendIntervalMs = 100;
+
+        // 摇杆推动: 上报移动方向(节流: 摇杆按住时 OnValueChanged 每帧触发,
+        // 若每帧都发会超过网关每秒消息上限被断连,故按 MoveSendIntervalMs 限速,取最新方向)
         public static void OnMove(this OperaComponent self, Vector2 v2)
         {
+            long now = self.GetSingleton<TimeInfo>().ClientNow();
+            if (now - self.LastMoveSendTime < MoveSendIntervalMs)
+            {
+                return; // 距上次上报不足间隔,丢弃本帧(摇杆每帧微动不再刷消息)
+            }
+            self.LastMoveSendTime = now;
             self.OperateInfos.Add(new OperateInfoData
             {
                 OperateType = (int)EOperateType.Move,

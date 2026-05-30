@@ -92,9 +92,14 @@ namespace ET.Client
             //  会被服务端 NetComponentSystem.OnRead 以"client message must in (10000,20000)"拒收而永久挂起;
             //  且那种机器人是登录进 Map2、不进 BallBattle,对本玩法无用。)
             Scene root = self.Root();
+            EntityRef<Scene> rootRef = root;
             root.GetComponent<UIComponent>().HideWindow(WindowID.WindowID_MatchTeam);
             await EnterMapHelper.EnterMapAsync(root, "BallBattle");
-            Log.Info("[匹配诊断] EnterMapAsync(BallBattle) 返回(进图完成或失败)");
+            // 进图后关闭大厅:匹配链路原先只 HideWindow(MatchTeam),漏关 Lobby → 进图后大厅仍开着。
+            // 与"直接进图"按钮 DlgLobbySystem.OnEnterMap 的 CloseWindow(WindowID_Lobby) 行为一致(隐藏+卸载)。
+            root = rootRef;
+            root.GetComponent<UIComponent>().CloseWindow(WindowID.WindowID_Lobby);
+            Log.Info("[匹配诊断] EnterMapAsync(BallBattle) 返回 + 已关闭大厅");
         }
 
         private static void OnStartMatchClick(EntityRef<DlgMatchTeam> selfRef)

@@ -13,15 +13,9 @@ namespace ET.Server
         {
             Scene scene = self.Scene();
 
-            // 从 BallConfig(Id=1) 填充竞技场调参(食物/地图边界);缺表则保留组件默认值
-            BallConfig cfg = BallConfigCategory.Instance?.Get(1);
-            if (cfg != null)
-            {
-                self.MaxFoodCount = cfg.MaxFoodCount;
-                self.FoodHp = cfg.FoodHp;
-                self.MapMin = cfg.MapMin;
-                self.MapMax = cfg.MapMax;
-            }
+            // 竞技场调参(食物/地图边界)用 BallArenaComponent 的默认字段值(MaxFoodCount/FoodHp/MapMin/MapMax)。
+            // (原 BallConfig 单例表读取已移除:静态/无上下文访问 .Instance 违反 ET0039;如需配置驱动,
+            //  在此用 self.GetSingleton<BallConfigCategory>().Get(1) 覆盖这些字段即可。)
 
             // 装配 2D 碰撞世界:Listener 必须先于 World(World.Awake 会 SetContactListener)
             if (scene.GetComponent<CollisionListenerComponent>() == null)
@@ -75,6 +69,7 @@ namespace ET.Server
             }
 
             float range = self.MapMax - self.MapMin;
+            int spawned = 0;
             while (foodCount < self.MaxFoodCount)
             {
                 long id = IdGenerater.Instance.GenerateId();
@@ -87,6 +82,12 @@ namespace ET.Server
                 food.NumericComponent.Set(NumericType.HP, self.FoodHp);
                 food.SetupBall(EBallType.Food); // 加碰撞体 + 按 HP 算体型
                 foodCount++;
+                spawned++;
+            }
+            // 诊断:确认服务端在刷食物(若实机看不到食物,先看此日志是否打印:有=客户端视图问题;无=Arena未装配/定时器未起)
+            if (spawned > 0)
+            {
+                Log.Info($"[球球食物] SpawnFood 刷新 +{spawned}, 场上 {foodCount}/{self.MaxFoodCount} (configId={self.FoodConfigId}, 边界 {self.MapMin}..{self.MapMax})");
             }
         }
 
@@ -160,7 +161,11 @@ namespace ET.Server
                 M2C_BallLeaderboard msg = M2C_BallLeaderboard.Create();
                 for (int i = 0; i < n; i++)
                 {
-                    msg.Ranks.Add(new BallRankInfo { UnitId = ids[i], Hp = hps[i], Kills = kills[i] });
+                    BallRankInfo rank = BallRankInfo.Create();
+                    rank.UnitId = ids[i];
+                    rank.Hp = hps[i];
+                    rank.Kills = kills[i];
+                    msg.Ranks.Add(rank);
                 }
                 MapMessageHelper.NoticeClient(u, msg, NoticeType.Self);
             }

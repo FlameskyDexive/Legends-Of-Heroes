@@ -52,33 +52,35 @@ namespace ET
         public const int MinSplitHp = 200;
         public const float SplitRange = 25f;
 
-        // —— 玩法调参:读 Luban 单例表 BallConfig(Id=1),缺表回退默认值 ——
-        private static BallConfig Cfg => BallConfigCategory.Instance?.Get(1);
+        // —— 玩法调参(常量;值与原 BallConfig 单例表默认完全一致,行为不变) ——
+        // 注:Luban 单例表 BallConfig 的"配置驱动"暂停用——ET 禁止在静态上下文用 BallConfigCategory.Instance(ET0039),
+        // 且静态可变字段需 [StaticField](ET0015)。如需恢复配置驱动,应在有 Entity/Fiber 上下文处用
+        // self.GetSingleton<BallConfigCategory>().Get(1) 读取(参考 BallArenaComponentSystem),而非静态 BallDefine。
 
         // 体型/速度公式(质量=HP 驱动):Radius=RadiusCoef*sqrt(HP);Speed=clamp(BaseSpeed*SpeedCoef/sqrt(HP),MinSpeed,BaseSpeed)
-        public static float RadiusCoef => Cfg?.RadiusCoef ?? 0.05f;
-        public static float BaseSpeed => Cfg?.BaseSpeed ?? 5f;
-        public static float SpeedCoef => Cfg?.SpeedCoef ?? 10f;
-        public static float MinSpeed => Cfg?.MinSpeed ?? 1.5f;
+        public const float RadiusCoef = 0.05f;
+        public const float BaseSpeed = 5f;
+        public const float SpeedCoef = 10f;
+        public const float MinSpeed = 1.5f;
 
         // 吞噬:A 半径 > B 半径 * EatRatio → A 吃 B
-        public static float EatRatio => Cfg?.EatRatio ?? 1.15f;
+        public const float EatRatio = 1.15f;
 
         // 子弹命中扣的 HP
-        public static int BulletDamage => Cfg?.BulletDamage ?? 100;
+        public const int BulletDamage = 100;
 
         // 死亡 / 重生
-        public static int RespawnHp => Cfg?.RespawnHp ?? 1000;
-        public static int RespawnDelayMs => Cfg?.RespawnDelayMs ?? 2000;
+        public const int RespawnHp = 1000;
+        public const int RespawnDelayMs = 2000;
 
         // 机器人 AI(服务端竞技场生成,服务端权威驱动)
-        public static int RobotCount => Cfg?.RobotCount ?? 5;
-        public static int RobotInitHp => Cfg?.RobotInitHp ?? 300;
-        public static int RobotThinkMs => Cfg?.RobotThinkMs ?? 300;
-        public static float RobotLookahead => Cfg?.RobotLookahead ?? 20f;
-        public static float RobotFleeRange => Cfg?.RobotFleeRange ?? 12f;
-        public static float RobotSpitRange => Cfg?.RobotSpitRange ?? 10f;
-        public static float RobotSpitChance => Cfg?.RobotSpitChance ?? 0.15f;
+        public const int RobotCount = 5;
+        public const int RobotInitHp = 300;
+        public const int RobotThinkMs = 300;
+        public const float RobotLookahead = 20f;
+        public const float RobotFleeRange = 12f;
+        public const float RobotSpitRange = 10f;
+        public const float RobotSpitChance = 0.15f;
     }
 
     // 碰撞开始事件(由 CollisionListenerComponent.BeginContact 发布)。

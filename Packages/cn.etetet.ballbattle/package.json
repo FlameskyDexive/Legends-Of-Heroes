@@ -14,6 +14,8 @@
     "cn.etetet.proto": "4.0.0",
     "cn.etetet.map": "1.0.0",
     "cn.etetet.mapplay": "1.0.0",
-    "cn.etetet.skill": "1.0.0"
+    "cn.etetet.skill": "1.0.0",
+    "cn.etetet.login": "2.0.1",
+    "cn.etetet.yooassets": "2.3.14"
   }
 }
