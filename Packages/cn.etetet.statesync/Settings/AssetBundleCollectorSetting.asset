@@ -19,6 +19,7 @@ MonoBehaviour:
   - PackageName: DefaultPackage
     PackageDesc: 
     EnableAddressable: 1
+    SupportExtensionless: 1
     LocationToLower: 0
     IncludeAssetGUID: 0
     AutoCollectShaders: 1
@@ -35,11 +36,11 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
     - GroupName: BTreeAI
       GroupDesc: Behavior tree runtime bytes (cn.etetet.bundles)
-      AssetTags:
+      AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
       - CollectPath: Packages/cn.etetet.bundles/Bundles/AI/Bytes
@@ -48,11 +49,11 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
     - GroupName: Audio
       GroupDesc: Audio clips (cn.etetet.bundles)
-      AssetTags:
+      AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
       - CollectPath: Packages/cn.etetet.bundles/Res/Audio
@@ -61,8 +62,8 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackSeparately
         FilterRuleName: CollectAll
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
     - GroupName: Code
       GroupDesc: 
       AssetTags: 
@@ -102,62 +103,17 @@ MonoBehaviour:
         FilterRuleName: CollectPrefab
         AssetTags: 
         UserData: 
-    - GroupName: YIUI
-      GroupDesc:
-      AssetTags:
-      ActiveRuleName: EnableGroup
-      Collectors:
-      - CollectPath: Packages/cn.etetet.yiuitips/Assets/GameRes/YIUI/Tips
-        CollectorGUID: cb1c91773e8a26749a29d3d8d2283b09
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: YIUIFilterRule
-        AssetTags:
-        UserData:
-      - CollectPath: Packages/cn.etetet.statesync/Assets/GameRes/YIUI
-        CollectorGUID: 38aff9b4b3f3ca0459417ed8f1416685
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: YIUIFilterRule
-        AssetTags:
-        UserData:
-      - CollectPath: Packages/cn.etetet.yiui3ddisplay/Assets/GameRes/YIUI
-        CollectorGUID: fc254c93445b7b044924c9b531f8e1a2
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectPrefab
-        AssetTags:
-        UserData:
-      - CollectPath: Packages/cn.etetet.yiuiframework/Assets/GameRes/YIUI/YIUI
-        CollectorGUID: 390e2414befd53e4e83c786dc51e17eb
+      - CollectPath: Packages/cn.etetet.bundles/Bundles/Unit
+        CollectorGUID: 4b79395cb87828046962b4ac40f46b1f
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectAll
-        AssetTags:
-        UserData:
-      - CollectPath: Assets/GameRes/YIUI/YIUISettings/YIUIConstAsset.txt
-        CollectorGUID: 0e1c18410eb58524b8d983b5f0a0fd5e
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags:
-        UserData:
-      - CollectPath: Assets/GameRes/YIUI/YIUISettings/YIUIAtlasData.asset
-        CollectorGUID: 42863e71f2c2f30478ac9c87ca48bcae
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
     - GroupName: EUI
-      GroupDesc: "EUI 预制体资源"
-      AssetTags:
+      GroupDesc: "EUI \u9884\u5236\u4F53\u8D44\u6E90"
+      AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
       - CollectPath: Packages/cn.etetet.statesync/Assets/GameRes/EUI
@@ -166,51 +122,51 @@ MonoBehaviour:
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectPrefab
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
       - CollectPath: Packages/cn.etetet.lobby/Assets/GameRes/EUI
         CollectorGUID: 14020001abcd14020001abcd14020001
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectPrefab
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
       - CollectPath: Packages/cn.etetet.room/Assets/GameRes/EUI
         CollectorGUID: 14030001abcd14030001abcd14030001
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectPrefab
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
       - CollectPath: Packages/cn.etetet.hotupdate/Assets/GameRes/EUI
         CollectorGUID: 14040001abcd14040001abcd14040001
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectPrefab
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
       - CollectPath: Packages/cn.etetet.lockstep/Assets/GameRes/EUI
         CollectorGUID: 14050001abcd14050001abcd14050001
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectPrefab
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
       - CollectPath: Packages/cn.etetet.bundles/Res/UI/LOL/Avatar
         CollectorGUID: 14060001abcd14060001abcd14060001
         CollectorType: 0
         AddressRuleName: AddressByFileName
         PackRuleName: PackDirectory
         FilterRuleName: CollectSprite
-        AssetTags:
-        UserData:
+        AssetTags: 
+        UserData: 
     - GroupName: Recast
-      GroupDesc:
-      AssetTags:
+      GroupDesc: 
+      AssetTags: 
       ActiveRuleName: EnableGroup
       Collectors:
       - CollectPath: Packages/cn.etetet.map/Bundles/Recast
@@ -225,38 +181,9 @@ MonoBehaviour:
       GroupDesc: "\u56FE\u7247 \u4E00\u628A\u68AD"
       AssetTags: 
       ActiveRuleName: EnableGroup
-      Collectors:
-      - CollectPath: Packages/cn.etetet.statesync/Bundles/Sprites
-        CollectorGUID: 92d7057252281604d98a14361ee45bbd
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
+      Collectors: []
     - GroupName: Effect
       GroupDesc: 
       AssetTags: 
       ActiveRuleName: EnableGroup
-      Collectors:
-      - CollectPath: Packages/cn.etetet.statesync/Bundles/Effect
-        CollectorGUID: 4f353bebf5d24bc47bd006812e0e3870
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackSeparately
-        FilterRuleName: CollectPrefab
-        AssetTags: 
-        UserData: 
-    - GroupName: SpellIndicator
-      GroupDesc: 
-      AssetTags: 
-      ActiveRuleName: EnableGroup
-      Collectors:
-      - CollectPath: Packages/cn.etetet.statesync/Bundles/SpellIndicator
-        CollectorGUID: a49841fa1f1fe6c4da820cd4bd4e1061
-        CollectorType: 0
-        AddressRuleName: AddressByFileName
-        PackRuleName: PackDirectory
-        FilterRuleName: CollectAll
-        AssetTags: 
-        UserData: 
+      Collectors: []
