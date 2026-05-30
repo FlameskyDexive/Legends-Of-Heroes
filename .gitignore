@@ -3,6 +3,9 @@
 .idea/
 _ReSharper.CSharp/
 
+#Claude Code 本地 skill 注册链接（由 Packages/cn.etetet.harness/skills/install-claude-skills.ps1 生成，每台机器本地状态，勿提交）
+.claude/skills/
+
 #svn
 */.svn/
 .svn/

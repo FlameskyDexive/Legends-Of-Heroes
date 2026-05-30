@@ -12,6 +12,16 @@ namespace ET.Server
         {
             Scene scene = self.Scene();
 
+            // 从 BallConfig(Id=1) 填充竞技场调参(食物/地图边界);缺表则保留组件默认值
+            BallConfig cfg = BallConfigCategory.Instance?.Get(1);
+            if (cfg != null)
+            {
+                self.MaxFoodCount = cfg.MaxFoodCount;
+                self.FoodHp = cfg.FoodHp;
+                self.MapMin = cfg.MapMin;
+                self.MapMax = cfg.MapMax;
+            }
+
             // 装配 2D 碰撞世界:Listener 必须先于 World(World.Awake 会 SetContactListener)
             if (scene.GetComponent<CollisionListenerComponent>() == null)
             {

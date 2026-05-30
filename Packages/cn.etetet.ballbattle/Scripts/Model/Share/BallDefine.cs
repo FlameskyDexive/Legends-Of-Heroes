@@ -18,9 +18,12 @@ namespace ET
         Bullet = 3, // 子弹
     }
 
-    // 球球玩法常量(正式应迁到配置表 BallConfig 供策划调,这里先给可跑的默认值)
+    // 球球玩法参数。结构性常量(地图名/Box2D 步进/配置 id/sqrt 下限)为 const;
+    // 玩法调参(体型速度公式/吞噬/复活/食物/机器人)迁到 Luban 单例表 BallConfig(固定 Id=1),
+    // 经下方静态属性读取——配置未加载/缺表时回退默认值,保证早期初始化与缺表都不崩。
     public static class BallDefine
     {
+        // —— 结构性常量(不进配置表) ——
         // ball-battle 专属地图的 MapConfig 名(需在 Map.xlsx 配一张同名地图;
         // 进入该地图的单位才会被装配成球,普通 Map 不受影响)
         public const string BallMapName = "BallBattle";
@@ -32,42 +35,50 @@ namespace ET
         public const int VelocityIteration = 8;
         public const int PositionIteration = 3;
 
-        // —— 体型/速度公式(质量=HP 驱动) ——
-        public const float MinHp = 1f;          // HP 下限,避免 sqrt(0)
-        public const float RadiusCoef = 0.05f;  // Radius = RadiusCoef * sqrt(HP) (面积∝HP)
-        public const float BaseSpeed = 5f;       // 最小球的基础速度
-        public const float SpeedCoef = 10f;      // Speed = clamp(BaseSpeed*SpeedCoef/sqrt(HP), MinSpeed, BaseSpeed)
-        public const float MinSpeed = 1.5f;      // 速度下限(越大越慢但不为 0)
+        // HP 下限,避免 sqrt(0)(体型/速度公式的结构性下限,不进调参表)
+        public const float MinHp = 1f;
 
-        // —— 吞噬 ——
-        public const float EatRatio = 1.15f;     // A 半径 > B 半径 * EatRatio → A 吃 B
-
-        // —— 子弹 ——
-        public const int BulletDamage = 100;     // 子弹命中扣的 HP(正式应从子弹/技能配置读)
-
-        // —— 死亡 / 重生 ——
-        public const int RespawnHp = 1000;       // 复活时的 HP(决定初始体型)
-        public const int RespawnDelayMs = 2000;  // 死亡到复活的延迟(ms)
-
-        // —— 技能(吐球/分裂),走 skill 配置表(SkillConfig 1001/1002) ——
+        // —— 技能 / 单位 配置 id(不进调参表) ——
         public const int SpitSkillId = 1001;     // 吐球技能 SkillConfig.Id(ActiveSkill 槽位 0)
         public const int SplitSkillId = 1002;    // 分裂技能 SkillConfig.Id(ActiveSkill 槽位 1)
         public const int BulletConfigId = 1102;  // 喷出球的 UnitConfig(复用食物球 Virtual 配置, SetupBall(Bullet) 覆盖其角色)
-        public const int SpitCost = 50;          // 吐球消耗自身 HP
-        public const int SpitBulletHp = 30;      // 吐出子弹的 HP(决定体型/速度)
-        public const float SpitRange = 30f;      // 吐球飞行距离
-        public const int MinSplitHp = 200;       // 低于此 HP 不能分裂
-        public const float SplitRange = 25f;     // 分裂球冲刺距离
+        public const int RobotConfigId = 1102;   // 机器人球 UnitConfig(复用食物球 Virtual 配置 + SetupBall(Player))
 
-        // —— 机器人 AI(服务端竞技场生成,服务端权威驱动) ——
-        public const int RobotCount = 5;          // 场上 AI 机器人数量
-        public const int RobotConfigId = 1102;    // 机器人球 UnitConfig(复用食物球 Virtual 配置 + SetupBall(Player))
-        public const int RobotInitHp = 300;       // 机器人初始 HP
-        public const int RobotThinkMs = 300;      // AI 思考间隔(ms)
-        public const float RobotLookahead = 20f;  // 机器人直线移动前瞻距离
-        public const float RobotFleeRange = 12f;  // 威胁(更大的球)在此距离内则逃跑
-        public const float RobotSpitRange = 10f;  // 猎物在此距离内可能吐球
-        public const float RobotSpitChance = 0.15f; // 每次思考吐球概率
+        // 机器人模拟"吐球"时传给 SpitBall 的参数(镜像 skill 配置 1001 → ActionEventParams_BallSpit;仅机器人 AI 用)。
+        // 分裂参数(MinSplitHp/SplitRange)已迁入 skill 配置 ActionEventParams_BallSplit,以下保留兼容(当前无引用)。
+        public const int SpitCost = 50;
+        public const int SpitBulletHp = 30;
+        public const float SpitRange = 30f;
+        public const int MinSplitHp = 200;
+        public const float SplitRange = 25f;
+
+        // —— 玩法调参:读 Luban 单例表 BallConfig(Id=1),缺表回退默认值 ——
+        private static BallConfig Cfg => BallConfigCategory.Instance?.Get(1);
+
+        // 体型/速度公式(质量=HP 驱动):Radius=RadiusCoef*sqrt(HP);Speed=clamp(BaseSpeed*SpeedCoef/sqrt(HP),MinSpeed,BaseSpeed)
+        public static float RadiusCoef => Cfg?.RadiusCoef ?? 0.05f;
+        public static float BaseSpeed => Cfg?.BaseSpeed ?? 5f;
+        public static float SpeedCoef => Cfg?.SpeedCoef ?? 10f;
+        public static float MinSpeed => Cfg?.MinSpeed ?? 1.5f;
+
+        // 吞噬:A 半径 > B 半径 * EatRatio → A 吃 B
+        public static float EatRatio => Cfg?.EatRatio ?? 1.15f;
+
+        // 子弹命中扣的 HP
+        public static int BulletDamage => Cfg?.BulletDamage ?? 100;
+
+        // 死亡 / 重生
+        public static int RespawnHp => Cfg?.RespawnHp ?? 1000;
+        public static int RespawnDelayMs => Cfg?.RespawnDelayMs ?? 2000;
+
+        // 机器人 AI(服务端竞技场生成,服务端权威驱动)
+        public static int RobotCount => Cfg?.RobotCount ?? 5;
+        public static int RobotInitHp => Cfg?.RobotInitHp ?? 300;
+        public static int RobotThinkMs => Cfg?.RobotThinkMs ?? 300;
+        public static float RobotLookahead => Cfg?.RobotLookahead ?? 20f;
+        public static float RobotFleeRange => Cfg?.RobotFleeRange ?? 12f;
+        public static float RobotSpitRange => Cfg?.RobotSpitRange ?? 10f;
+        public static float RobotSpitChance => Cfg?.RobotSpitChance ?? 0.15f;
     }
 
     // 碰撞开始事件(由 CollisionListenerComponent.BeginContact 发布)。

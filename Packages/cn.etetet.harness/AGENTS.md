@@ -56,6 +56,8 @@ WOW/
 具体技能路由先读 `skills/index.md`，禁止先完整读取所有 skill 正文。
 Codex 规范 skill 均采用 `skills/{skill-name}/SKILL.md` 结构，且 `SKILL.md` 只使用 `name`、`description` frontmatter。
 
+> **让这些 skill 被 Claude Code 原生识别（重要）**：Claude Code 只在 `~/.claude/skills/`、`<repo>/.claude/skills/`、插件 `skills/` 中发现 skill。本包的 skill 不在这些位置，默认识别不到（没有 `/et-xxx` 调用，也不会按 description 自动匹配）。需先运行 `pwsh ./Packages/cn.etetet.harness/skills/install-claude-skills.ps1`，它会在 `<repo>/.claude/skills/` 下为每个 skill 建符号链接（已被 `.gitignore` 忽略，属每台机器本地状态）。**换机器 / 重新 clone / 新增 skill 后需重跑；建好后重启 Claude Code 会话才会加载。**
+
 ### et-code - 代码编写入口
 
 **使用场景**：

@@ -62,7 +62,11 @@ ball-battle **不新建 SceneType**(mapplay 整套基建 AOI/广播/移动都硬
   - 注:导出工具是 export-all,会重新生成所有 config 产物(Item/Map/Quest 等的 diff 是聚合刷新,非手改)。
   - 顺手修了 Luban 脚本的跨平台 bug:`LubanGen.ps1` 用 `if ($null -ne $IsMacOS)` 判 Mac(PS7 下恒为真,Windows 误选 mac 的 dotnet 路径),已改为 `if ($IsMacOS)` + 跨平台 `dotnet`(config + 4 个 startconfig 共 5 个脚本)。
 
+## 已实现(配置驱动)
+- **技能(吐球/分裂)= skill 多态配置**:✅ skill 包 `SkillConfig`(扁平,ActionEventIds 列表)+ `ActionEventConfig`(多态:`ActionEventType` 枚举 + `Params` 多态 bean `ActionEventParams_BallSpit{CostHp,BulletHp,Range}`/`_BallSplit{MinHp,Range}`)。ballbattle 的 `ActionEventBallSpit/Split` 从 `actionEvent.ActionEventConfig.Params as 子类` 读 typed 参数 → 有参 `BallSkillHelper.SpitBall/SplitBall`。`EActionEventType` 已改由 Luban `__enums__` 生成。详见 `cn.etetet.skill` 与 [[ballbattle-progress]]。
+- **玩法调参 = `BallConfig` 单例表(Id=1)**:✅ `ballbattle/Luban/Config/{Base/__tables__,Datas/BallConfig}.xlsx`(已加 luban.conf、导出 `BallConfigCategory`)。迁了体型速度公式(RadiusCoef/BaseSpeed/SpeedCoef/MinSpeed)、EatRatio、BulletDamage、复活(RespawnHp/Delay)、食物(MaxFoodCount/FoodHp)、地图边界(MapMin/Max)、机器人(RobotCount/InitHp/ThinkMs/Lookahead/FleeRange/SpitRange/SpitChance)。`BallDefine` 这些字段已 `const→静态属性`读 `BallConfigCategory.Instance?.Get(1)`(缺表回退默认),所有 `BallDefine.Xxx` 调用点不变;`BallArenaComponentSystem.Awake` 从配置填 food/map 字段。结构性常量(BallMapName/Box2D 步进/配置 id/MinHp)仍 `const`。
+- **改 Luban 多态/枚举表要点**:列表头必须**合并单元格**(`*fields` J1:P1、`*items` H1:L1、多态字段表头跨子列宽),否则导出报缺列;新增生成 .cs 需 UnityBridge `Refresh`+`RegenProject` 才进 csproj。详见 `et-luban`/`et-excel` skill。
+
 ## Gating(仍需补)
 - **客户端球预制体**:1101/1102 的 UnitConfig 用 head_icon=Portrait 占位,客户端 `AfterUnitCreate_CreateUnitView` 需要对应可加载的球预制体(球形 + 可被 Radius watcher 缩放)。
-- `skill` 的 `SkillConfig`/`ActionEventConfig` 导表(子弹/分裂技能用),见 `cn.etetet.skill/AGENTS.md`。
-- 调参(EatRatio/RadiusCoef/Speed/BulletDamage/食物数量)正式应迁到配置表 `BallConfig`,当前在 `BallDefine` 给默认值。
+- **实机验证**:技能/调参均编译绿色,待真机跑确认从配置读值生效(数值与原 BallDefine 常量一致,行为应不变)。

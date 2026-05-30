@@ -26,6 +26,8 @@ description: ET Luban export workflow. Use when exporting generated C# config/da
 3. 导出前先区分“改表”和“生成产物”；只改表时先用 `et-excel`。
 4. 导出过程会扫描 `Packages/cn.etetet.*/Luban/*` 并刷新聚合 `luban.conf`。
 5. 导出后检查控制台、生成结果与 diff，区分真实配置变化和自动聚合变化。
+6. 改/建 `__beans__`/`__enums__`/含多态字段的数据表时，"列表"表头（`*fields`/`*items`/多态字段）**必须横向合并单元格**，否则导出报 `缺失 列:'alias'`；详见 references。
+7. 导出若**新增**了生成 `.cs`（新枚举/新 bean 子类），必须先 UnityBridge `Refresh`+`RegenProject` 再编译，否则 `dotnet build` 报 `CS0234`（新文件无 `.meta`、不在显式 `.csproj` 列表）。
 
 ## 优先入口
 
@@ -34,4 +36,4 @@ description: ET Luban export workflow. Use when exporting generated C# config/da
 
 ## 按需补读
 
-- `references/et-luban-export.md`：导出流程、结果落点、常见失败排查
+- `references/et-luban-export.md`：导出流程、结果落点、常见失败排查、**多态 bean/枚举表 authoring（合并单元格）与导出后 Unity 刷新**

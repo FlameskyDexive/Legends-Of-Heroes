@@ -137,3 +137,19 @@ with zipfile.ZipFile(path) as zf:
 - 能批量处理时，不要逐格写入。
 - Windows 路径在 JSON 字符串内反斜杠需要双写。
 - 如果问题其实是导出、编译或运行链路，转 `et-luban` 或 `et-build`。
+
+## Luban `__beans__` / `__enums__` / 多态数据表（合并单元格，重要）
+
+用 `ET.ExcelMcp` 维护 Luban 多态表时，写完数据**必须**用 `excel_merge_cells merge` 合并"列表"表头，否则 Luban 导出报 `bean:'__intern__.__FieldInfo__' 缺失 列:'alias'`（只识别到第一子列）：
+
+- `__beans__` 的 `*fields` 合并 `J1:P1`；`__enums__` 的 `*items` 合并 `H1:L1`；数据表多态字段表头四行各跨“1 类型名列 + N 最宽子类字段列”（如 `G1:J1`～`G4:J4`）。
+- 校对合并用 `excel_merge_cells get_merged`（只读单元格值看不到合并）。
+- 空行 / 留空处用 `excel_data_operations batch_write` 只写非空格（真空，镜像手工表），不要用二维 `excel_range write` 写满空字符串。
+- 读回校验文本用 `ascii()` 避开 cp1252 stdout（看到 `吐球` 即正确中文，看到 `????` 才是写坏）。
+
+```powershell
+dotnet ./Bin/ET.ExcelMcp.dll cli excel_merge_cells '{"operation":"merge","path":"...\\Base\\__beans__.xlsx","sheetIndex":0,"range":"J1:P1"}'
+dotnet ./Bin/ET.ExcelMcp.dll cli excel_merge_cells '{"operation":"get_merged","path":"...","sheetIndex":0}'
+```
+
+完整布局规则、`luban.conf` 条目、导出与导出后 Unity 刷新见 `et-luban` 的 `references/et-luban-export.md`。

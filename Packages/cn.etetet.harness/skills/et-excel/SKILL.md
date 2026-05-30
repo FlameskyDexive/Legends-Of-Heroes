@@ -37,7 +37,8 @@ description: ET Excel MCP workflow for reading, writing, styling, transforming, 
 2. 能批量就批量，优先 `excel_range` / `excel_data_operations`，不要逐格操作。
 3. JSON 参数只传本次调用最小字段集；`pwsh` 中优先外层单引号。
 4. 写操作优先使用绝对路径；覆盖原文件前先确认目标文件。
-5. 改完表如果需要生成配置产物，再叠加 `et-luban`。
+5. 维护 Luban `__beans__`/`__enums__`/多态数据表时：用 `excel_data_operations batch_write` 只写非空格（空行真空）；写完**必须** `excel_merge_cells merge` 合并"列表"表头（`*fields` `J1:P1`、`*items` `H1:L1`、多态字段表头跨子列宽），否则 Luban 导出报缺 `alias` 列；含中文走 `Write→UTF-8 Python→ExcelMcp`，读回校验合并用 `get_merged`、文本用 `ascii()`。完整格式见 `et-luban`。
+6. 改完表如果需要生成配置产物，再叠加 `et-luban`。
 
 ## 优先入口
 
