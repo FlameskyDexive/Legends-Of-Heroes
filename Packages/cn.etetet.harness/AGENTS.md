@@ -113,7 +113,7 @@ Codex 规范 skill 均采用 `skills/{skill-name}/SKILL.md` 结构，且 `SKILL.
 - 新建或修改 `DlgXxx` 窗口、`ESXxx` 子 UI、`ItemXxx` 循环项。
 - 编写 `[AUIEvent]` 处理器、注册 `WindowID`、绑定 `E*` 控件、接 ShowWindow / Hide / Close 链路。
 - 排查 UI 打不开、控件 null、`uiTransform is null`、循环列表不刷新。
-- 注意：EUI 框架在 `cn.etetet.eui`，无代码生成菜单，按 5 文件模板手写；编辑器验收走 `et-unitybridge`。
+- 注意：EUI 框架在 `cn.etetet.eui`，无代码生成菜单，按 5 文件模板手写；编辑器验收走 **AIBridge → UnityMCP（`unity-mcp-skill`），EUI 一律不走 UnityBridge**。
 
 ### et-build - 编译构建专家
 
@@ -149,6 +149,8 @@ Codex 规范 skill 均采用 `skills/{skill-name}/SKILL.md` 结构，且 `SKILL.
 - 详细规则请读取 `Packages/cn.etetet.test/AGENTS.md`。
 
 ### et-unitybridge - UnityBridge 命令调用专家
+
+> Unity 交互通道优先级：AIBridge → UnityMcp（`unity-mcp-skill`）→ UnityBridge；本 skill 是兜底通道，仅在前两者不可用时使用。详见根 `AGENTS.md` 的「Unity 交互入口优先级」。
 
 **使用场景**：
 

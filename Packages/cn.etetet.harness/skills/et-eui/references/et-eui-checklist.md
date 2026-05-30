@@ -36,17 +36,17 @@ pwsh -Command "rg -n 'WindowID_' Packages/cn.etetet.eui/Scripts/ModelView/Client
 ## C. 编译与控制台
 
 - [ ] `dotnet build ET.sln` 通过，无分析器报错（EntityRef/await、Module、命名空间）
-- [ ] 用 `et-unitybridge` 触发 `Refresh`，Unity 导入新文件、生成 `.meta`
+- [ ] 刷新导入新文件、生成 `.meta`：AIBridge `$CLI compile unity`（不可用时 UnityMCP `refresh_unity`）；**不走 UnityBridge**
 - [ ] 控制台无新增 `Error/Exception/NullReferenceException`、无 `uiTransform is null`、无 `uiPath is not Exist`
 
 ---
 
-## D. 运行态冒烟（et-unitybridge）
+## D. 运行态冒烟（UnityMCP；禁用 UnityBridge）
 
-- [ ] `EnterPlay` 成功
+- [ ] `manage_editor(action="play")` 进入 PlayMode 成功
 - [ ] 目标窗口可正常打开/关闭（`ShowWindow<DlgXxx>()`）
-- [ ] `Global/UI` 下存在四层 Root：`NormalRoot` / `PopUpRoot` / `FixedRoot` / `OtherRoot`
-- [ ] `ExitPlay` 后控制台仍无新增 UI 错误
+- [ ] `manage_scene(get_hierarchy, parent="Global/UI")` 下存在四层 Root：`NormalRoot` / `PopUpRoot` / `FixedRoot` / `OtherRoot`
+- [ ] `manage_editor(action="stop")` 后控制台仍无新增 UI 错误
 
 ---
 

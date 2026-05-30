@@ -40,6 +40,13 @@ description: ET Excel MCP workflow for reading, writing, styling, transforming, 
 5. 维护 Luban `__beans__`/`__enums__`/多态数据表时：用 `excel_data_operations batch_write` 只写非空格（空行真空）；写完**必须** `excel_merge_cells merge` 合并"列表"表头（`*fields` `J1:P1`、`*items` `H1:L1`、多态字段表头跨子列宽），否则 Luban 导出报缺 `alias` 列；含中文走 `Write→UTF-8 Python→ExcelMcp`，读回校验合并用 `get_merged`、文本用 `ascii()`。完整格式见 `et-luban`。
 6. 改完表如果需要生成配置产物，再叠加 `et-luban`。
 
+## 配置约定（项目规范）
+
+- **资源类字段只填资源名**：不写完整路径与后缀；表里若出现 `Assets/.../xxx.prefab` 这类完整路径，应收敛为 `xxx`（加载侧按名字 LoadAsset）。
+- **新增配置表必须注册 `__tables__.xlsx`**：补全 `Category / value_type / input / index / group`，否则 Luban 导不到这张表。
+- **改完表必须导出，且优先定向导出**：只导受影响的配置数据/代码（如对应 GameConfig 的 `s` / `c` / `cs`），避免全量导出超时；导出与导出后 Unity 刷新走 `et-luban`。
+- **写中文必须二次验证**：读回或检查 `xlsx` 的 `sharedStrings.xml`，不要只信终端输出（详见 `references/et-excel-cli.md` 的「中文写入防乱码」）。
+
 ## 优先入口
 
 - `dotnet ./Bin/ET.ExcelMcp.dll cli list`

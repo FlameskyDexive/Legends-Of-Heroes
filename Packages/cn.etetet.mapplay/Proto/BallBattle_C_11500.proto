@@ -1,0 +1,16 @@
+syntax = "proto3";
+package ET;
+
+// 排行榜单行(一个玩家球)
+message BallRankInfo
+{
+	int64 UnitId = 1;
+	int32 Hp = 2;     // 当前 HP(体型/质量)
+	int32 Kills = 3;  // 累计击杀
+}
+
+// 服务端→客户端 广播排行榜(Top N, 按 HP 降序)。每隔固定时间由竞技场广播给场景内真人玩家。
+message M2C_BallLeaderboard // ICurrentMessage
+{
+	repeated BallRankInfo Ranks = 1;
+}

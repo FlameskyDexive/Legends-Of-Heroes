@@ -253,6 +253,9 @@ namespace ET
 
         [MemoryPackOrder(0)]
         public int RpcId { get; set; }
+        /// <summary>
+        /// 目标地图名(空=默认 Map2);球球大作战传 "BallBattle" 路由到其 Copy
+        /// </summary>
         [MemoryPackOrder(1)]
         public string MapName { get; set; }
         public override void Dispose()

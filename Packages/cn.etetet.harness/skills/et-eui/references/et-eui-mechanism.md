@@ -265,4 +265,4 @@ namespace ET.Client
 - 架构/包依赖：`et-code`
 - 异步与 `EntityRef`：`et-async`
 - 编译：`et-build`（`dotnet build ET.sln`）
-- 编辑器刷新 / PlayMode / 控制台验收：`et-unitybridge`
+- 编辑器刷新 / PlayMode / 控制台验收：EUI 编辑器自动化通道 **AIBridge → UnityMCP（`unity-mcp-skill`），禁用 UnityBridge**（见 `et-eui-runbook.md`）

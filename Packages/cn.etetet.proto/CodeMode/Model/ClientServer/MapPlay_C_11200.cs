@@ -184,6 +184,7 @@ namespace ET
         }
     }
 
+    // 摇杆/按键操作信息(单条)
     [MemoryPackable]
     [Message(Opcode.OperateInfo)]
     public partial class OperateInfo : MessageObject
@@ -193,10 +194,19 @@ namespace ET
             return ObjectPool.Fetch<OperateInfo>(isFromPool);
         }
 
+        /// <summary>
+        /// 操作类型, 对应 EOperateType
+        /// </summary>
         [MemoryPackOrder(0)]
         public int OperateType { get; set; }
+        /// <summary>
+        /// 输入类型(按下/抬起), 对应 EInputType
+        /// </summary>
         [MemoryPackOrder(1)]
         public int InputType { get; set; }
+        /// <summary>
+        /// 方向/位置参数(摇杆方向等)
+        /// </summary>
         [MemoryPackOrder(2)]
         public Unity.Mathematics.float3 Vec3 { get; set; }
         [MemoryPackOrder(3)]
@@ -209,6 +219,7 @@ namespace ET
         }
     }
 
+    // 客户端每帧把收集到的操作批量上报服务端(摇杆移动、技能按键等)
     [MemoryPackable]
     [Message(Opcode.C2M_Operation)]
     public partial class C2M_Operation : MessageObject, ILocationMessage

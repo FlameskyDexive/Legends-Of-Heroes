@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
 
 namespace ET.Server
@@ -114,6 +115,56 @@ namespace ET.Server
                 robot.AddComponent<RobotBallAIComponent>();
             }
         }
+
+        // 广播 Top5 排行榜给场景内全体真人玩家(机器人 Virtual 无 gate,自动跳过)。
+        public static void BroadcastLeaderboard(this BallArenaComponent self)
+        {
+            Scene scene = self.Scene();
+            List<Unit> top = new List<Unit>();
+            BallScoreHelper.GatherTopPlayers(scene, 5, top);
+            if (top.Count == 0)
+            {
+                return;
+            }
+
+            // 先取出排行数据(避免对每个真人重复查 Unit)
+            int n = top.Count;
+            long[] ids = new long[n];
+            int[] hps = new int[n];
+            int[] kills = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                ids[i] = top[i].Id;
+                hps[i] = top[i].NumericComponent.GetAsInt(NumericType.HP);
+                kills[i] = BallScoreHelper.GetKills(top[i]);
+            }
+            Log.Info($"[球球排行榜] 广播 Top{n}: #1 Unit{ids[0]} HP={hps[0]} 击杀={kills[0]}");
+
+            UnitComponent uc = scene.GetComponent<UnitComponent>();
+            if (uc == null)
+            {
+                return;
+            }
+            foreach (Entity child in uc.Children.Values)
+            {
+                if (!(child is Unit u) || u.IsDisposed)
+                {
+                    continue;
+                }
+                // 仅真人:Player 型 + 有 gate 连接;机器人是 Virtual,且 NoticeClient 内部也会守卫
+                if (!u.UnitType.IsSame(UnitType.Player) || u.GetComponent<UnitGateInfoComponent>() == null)
+                {
+                    continue;
+                }
+
+                M2C_BallLeaderboard msg = M2C_BallLeaderboard.Create();
+                for (int i = 0; i < n; i++)
+                {
+                    msg.Ranks.Add(new BallRankInfo { UnitId = ids[i], Hp = hps[i], Kills = kills[i] });
+                }
+                MapMessageHelper.NoticeClient(u, msg, NoticeType.Self);
+            }
+        }
     }
 
     // 食物刷新定时器
@@ -141,7 +192,7 @@ namespace ET.Server
         {
             try
             {
-                BallScoreHelper.LogLeaderboard(self.Scene());
+                self.BroadcastLeaderboard();
             }
             catch (Exception e)
             {

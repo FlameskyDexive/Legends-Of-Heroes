@@ -9,7 +9,7 @@
 3. 能直接调用现成脚本或 CLI 时，优先现成入口，不重复展开长命令。
 4. 所有命令必须使用 `pwsh`（PowerShell 7），绝对不要使用 Windows 自带的 `powershell.exe`。
 5. 测试相关任务：完整 TDD 用 `et-tdd`，只写测试用 `et-test-write`，只执行或排查测试用 `et-test-run`；命中后读取 `Packages/cn.etetet.test/AGENTS.md`，由 test 包说明继续分流到具体 skill。
-6. 涉及 Unity 编辑器内操作时，优先使用 `et-unitybridge`；命中后读取 `Packages/cn.etetet.unitybridge/AGENTS.md`，由 unitybridge 包说明继续分流到具体 skill；若桥接工具不可用，再回退到项目既有编辑器流程。
+6. 涉及 Unity 编辑器内操作时，通道优先级固定为 **AIBridge（`./.aibridge/cli/AIBridgeCLI.exe`）→ UnityMcp（`unity-mcp-skill`，仅 AIBridge 不可用时）→ UnityBridge（`et-unitybridge`，兜底）**；选到 UnityBridge 时再读取 `Packages/cn.etetet.unitybridge/AGENTS.md` 继续分流。完整判据见根 `AGENTS.md` 的「Unity 交互入口优先级」。
 7. 修改或新增 C# 代码时默认遵守“每个类一个文件”；除天然绑定的极小枚举/结构外，不要把多个类塞进同一 `.cs`。
 
 ## 任务入口
@@ -28,10 +28,12 @@
 
 - `et-eui`
   - 场景：新建/改 `DlgXxx` 窗口、`ESXxx` 子 UI、`ItemXxx` 循环项、`AUIEvent` 处理器、`WindowID` 注册、`E*` 控件绑定、ShowWindow/Hide/Close 链路、LoopScrollRect
-  - 注意：本项目 EUI 在 `cn.etetet.eui`，无代码生成菜单，按 5 文件模板手写；编辑器验收走 `et-unitybridge`
+  - 注意：本项目 EUI 在 `cn.etetet.eui`，无代码生成菜单，按 5 文件模板手写；编辑器验收走 **AIBridge → UnityMCP（`unity-mcp-skill`），EUI 一律不走 UnityBridge**
   - 补读：`skills/et-eui/SKILL.md`
 
 ### Unity 编辑器操作
+
+> 通道优先级：AIBridge → UnityMcp（`unity-mcp-skill`）→ UnityBridge（`et-unitybridge`）。详见规则 6 与根 `AGENTS.md` 的「Unity 交互入口优先级」。下面的 `et-unitybridge` 是兜底通道。
 
 - `et-unitybridge`
   - 场景：查询 Unity 心跳/状态、AI 操作 Unity Editor、资源/场景/对象/Inspector/Prefab/GameView/截图/Editor 测试、触发编译/刷新/重新生成项目/进入退出 PlayMode/热更新 Reload、排查桥接返回
@@ -74,8 +76,8 @@
 - 创建新功能或修 Bug：`et-tdd` -> `et-test-write` -> `et-code` -> `et-build` -> `et-test-run`
 - 只做异步链路梳理或 review：`et-async` -> 必要时 `et-code`
 - 架构合规检查：`et-code`
-- 改客户端 UI：`et-eui` -> 涉及异步叠加 `et-async` -> `et-build` 编译 -> `et-unitybridge` 验收
-- 做 Unity 编辑器内操作：`et-unitybridge` -> 确认就绪后执行对应操作
+- 改客户端 UI：`et-eui` -> 涉及异步叠加 `et-async` -> `et-build` 编译 -> 编辑器验收 AIBridge→UnityMCP（EUI 禁用 UnityBridge）
+- 做 Unity 编辑器内操作：AIBridge 优先 -> 不可用则 `unity-mcp-skill` -> 仍不可用则 `et-unitybridge` -> 确认就绪后执行对应操作
 - 改配置表并导出：`et-excel` -> `et-luban` -> 必要时 `et-build`
 - 只做 Luban 导出：`et-luban`
 - 只做编译 / Proto / 运行 / 发布：`et-build`

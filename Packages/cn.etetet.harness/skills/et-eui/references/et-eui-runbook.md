@@ -2,7 +2,7 @@
 
 改完 EUI 代码或预制体后的“编译 → 刷新 → 运行 → 验收”可重复流程。只讲步骤，原理见 `et-eui-mechanism.md`。
 
-> 本项目编辑器内操作统一走 `et-unitybridge`（不使用 UnityMCP）。具体桥接命令以 `Packages/cn.etetet.unitybridge/skills/et-unitybridge/SKILL.md` 为准，本清单只给顺序与判定。
+> EUI 编辑器自动化**一律不使用 UnityBridge**。通道优先级：**AIBridge（`$CLI = ./.aibridge/cli/AIBridgeCLI.exe`）→ 不可用时降级 UnityMCP（`unity-mcp-skill`，`mcpforunity://`）**。PlayMode、读场景层级等 AIBridge 不提供的能力直接用 UnityMCP。AIBridge「不可用」判据：`AIBridgeCLI.exe` 不存在，或命令返回连接超时 /「Unity Editor not running or AIBridge not active」/ 状态无法确认。本清单只给顺序与判定。
 
 ---
 
@@ -24,16 +24,18 @@ dotnet build ET.sln
 
 ---
 
-## 2. 刷新与生成（et-unitybridge）
+## 2. 刷新与生成（AIBridge 优先 → UnityMCP）
 
-- 用 `et-unitybridge` 触发 `Refresh`（必要时 `RegenProject`），让 Unity 导入新文件、生成 `.meta` 与工程文件。
-- 读取宿主状态确认 Unity 不在编译中、无新增报错。
+- **AIBridge（首选）**：`$CLI compile unity` —— 触发 Unity 刷新 + 重新编译，自动导入新文件、生成 `.meta` 与工程文件。
+- **AIBridge 不可用时降级 UnityMCP**：`refresh_unity(mode="force", compile="request", scope="all", wait_for_ready=true)`。
+- 等 Unity 不在编译中、无新增报错再继续。**不要用 UnityBridge。**
 
 ---
 
-## 3. 控制台验收（et-unitybridge）
+## 3. 控制台验收（AIBridge 优先 → UnityMCP）
 
-- 用 `et-unitybridge` 读取 Unity 控制台。关注关键字：
+- **AIBridge（首选）**：`$CLI get_logs --logType Error`。**不可用时降级 UnityMCP**：`read_console(action="get", count="200", include_stacktrace="true")`。
+- 关注关键字：
   - `Error` / `Exception` / `NullReferenceException`
   - `uiTransform is null`
   - `is not have any windowId` / `uiPath is not Exist`（WindowID 或预制体名不匹配）
@@ -41,13 +43,15 @@ dotnet build ET.sln
 
 ---
 
-## 4. 运行态冒烟（et-unitybridge）
+## 4. 运行态冒烟（UnityMCP；AIBridge 不提供 PlayMode/层级）
 
-1. `EnterPlay` 进入 PlayMode。
-2. 读取控制台，确认无新增异常。
-3. 读取 `Global/UI` 层级，确认存在四个 Root：`NormalRoot`、`PopUpRoot`、`FixedRoot`、`OtherRoot`。
+> 进入退出 PlayMode、读场景层级用 UnityMCP（`unity-mcp-skill`）。**禁用 UnityBridge。**
+
+1. `manage_editor(action="play", wait_for_completion="true")` 进入 PlayMode。
+2. 读控制台确认无新增异常（`read_console(...)`，或 AIBridge `get_logs --logType Error`）。
+3. `manage_scene(action="get_hierarchy", parent="Global/UI", max_depth="2", max_nodes="200")`，确认存在四个 Root：`NormalRoot`、`PopUpRoot`、`FixedRoot`、`OtherRoot`。
 4. 触发目标窗口（或在测试入口调用 `UIComponent.ShowWindow<DlgXxx>()`），确认能正常打开/关闭。
-5. `ExitPlay` 退出 PlayMode，再次读控制台确认无残留报错。
+5. `manage_editor(action="stop", wait_for_completion="true")` 退出 PlayMode，再次读控制台确认无残留报错。
 
 ---
 
@@ -85,10 +89,12 @@ pwsh -Command "rg -n 'WindowID_' Packages/cn.etetet.eui/Scripts/ModelView/Client
 
 ---
 
-## 7. 故障恢复最小操作（et-unitybridge）
+## 7. 故障恢复最小操作
 
-当桥接返回 `session not ready` / `timeout` 或域重载后：
-
-1. 用 `et-unitybridge` 读取宿主状态（`HostState` / `Ping`）确认在线。
-2. 等待编译/域重载完成。
-3. 重新执行第 2~4 步（刷新 → 读控制台 → 冒烟）。
+- **AIBridge 报连接超时 /「Unity Editor not running or AIBridge not active」/ 状态无法确认** → 视为 AIBridge 不可用，降级到 UnityMCP。
+- **UnityMCP 返回 `session not ready` / `timeout` 或域重载后**：
+  1. `read_mcp_resource("mcpforunity://instances")`
+  2. `set_active_instance("Unity@<hash>")`
+  3. `read_mcp_resource("mcpforunity://editor/state")`
+  4. 等编译/域重载完成，重新执行第 2~4 步（刷新 → 读控制台 → 冒烟）。
+- 全程**不要降级到 UnityBridge**。

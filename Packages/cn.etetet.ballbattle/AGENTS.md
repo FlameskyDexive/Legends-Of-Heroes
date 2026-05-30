@@ -53,7 +53,12 @@ ball-battle **不新建 SceneType**(mapplay 整套基建 AOI/广播/移动都硬
 - **子弹技能**:`skill` 的 ActionEvent 发射子弹(补 `UnitFactory.CreateBullet`,子弹 = `SetupBall(Bullet)` 朝向飞行)。
 - **分裂技能**:`ActionEventSplit`(HP/2 + `UnitFactory.Create` 第二个球冲刺)。
 - **死亡/重生**:✅ 已实现(`OnCollisionContactHandler` 裁决 → `BallPlayerDie` 事件 → `BallDeathHelper.RespawnBall` 缩小+关碰撞+延迟随机点重生)。
-- **结算/计分**:✅ 服务端已实现——`BallComponent` 加 `Kills/Deaths`(玩家)+ `ShooterId`(子弹归属);`BallScoreHelper.CreditKill/CreditBulletKill` 在吞噬/子弹击杀处记功(子弹经 ShooterId 反查射手);`BallArenaComponent` 每 5s `LogLeaderboard` 打服务端 Top5(HP+击杀)。**待补**:M2C 排行榜广播(需在 ballbattle 加 `Proto/` + 一条 M2C 消息 + opcode + proto 导出)与客户端排行榜/结算 UI(EUI,美术 gating)。
+- **结算/计分 + 实时排行榜**:✅ 已实现(服务端权威 + 客户端 EUI)。
+  - 计分:`BallComponent` 加 `Kills/Deaths`(玩家)+ `ShooterId`(子弹归属);`BallScoreHelper.CreditKill/CreditBulletKill` 在吞噬/子弹击杀处记功(子弹经 ShooterId 反查射手)。
+  - 广播:`BallArenaComponentSystem.BroadcastLeaderboard` 每 5s(`TimerInvokeType.BallLeaderboard`)取 Top5(`BallScoreHelper.GatherTopPlayers/GetKills`)→ `MapMessageHelper.NoticeClient(unit, M2C_BallLeaderboard, NoticeType.Self)` 逐个发给场景内真人(`UnitType.Player` 且有 `UnitGateInfoComponent`;机器人 Virtual 自动跳过)。
+  - proto:`M2C_BallLeaderboard{repeated BallRankInfo}` + `BallRankInfo{UnitId,Hp,Kills}`(opcode 11502)。**注意 proto 文件放在 `cn.etetet.mapplay/Proto/BallBattle_C_11500.proto`,不放 ballbattle**——ballbattle 依赖 box2dsharp(Unity 原生库,不在 MainPackage.txt/独立 .NET 服务端构建),若把 ballbattle 加进 MainPackage.txt 会让它被拉进 DotNet~ 服务端构建并报 box2dsharp 找不到。proto 生成类是全局的(`cn.etetet.proto`),放哪个主包的 Proto/ 都能用。
+  - 客户端 UI:`cn.etetet.statesync` 的 `DlgBallLeaderboard`(EUI 弹窗,PopUp 层,`WindowID_BallLeaderboard=1002`):标题 + 单个多行内容 Text(Top5) + 关闭按钮;`M2C_BallLeaderboardHandler`([MessageHandler(SceneType.Current)],HotfixView/Client)收到广播自动开窗(`ShowWindow<DlgBallLeaderboard>` if !visible)+ `RefreshRank`。预制体 `Assets/GameRes/EUI/Dlg/DlgBallLeaderboard.prefab`(UnityBridge 拼,字体 MinCartoon.ttf)。
+  - **待验证(美术/PlayMode)**:实机进图看弹窗位置/中文字形/刷新是否正常;yooassets 是否按名收录该预制体。
 
 ## 配置(已加,需重新导表)
 - 已在 `cn.etetet.map/Luban/Config/Datas/Unit.xlsx`(UnitProto 表)加两条球的 `UnitConfig`:

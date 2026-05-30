@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Text;
 
 namespace ET
 {
@@ -53,40 +52,34 @@ namespace ET
             CreditKill(shooter, victim);
         }
 
-        // 服务端排行榜日志:按当前 HP(体型)降序取前 topN 玩家球, 附带其累计击杀数。
-        public static void LogLeaderboard(Scene scene, int topN = 5)
+        // 取场景内玩家球, 按当前 HP(体型)降序填入 result(最多 topN)。供排行榜广播/日志复用。
+        public static void GatherTopPlayers(Scene scene, int topN, List<Unit> result)
         {
+            result.Clear();
             UnitComponent uc = scene?.GetComponent<UnitComponent>();
             if (uc == null)
             {
                 return;
             }
-
-            List<Unit> players = new List<Unit>();
             foreach (Entity child in uc.Children.Values)
             {
                 if (child is Unit u && !u.IsDisposed && u.GetBallType() == EBallType.Player)
                 {
-                    players.Add(u);
+                    result.Add(u);
                 }
             }
-            if (players.Count == 0)
+            result.Sort((a, b) => b.NumericComponent.GetAsInt(NumericType.HP) - a.NumericComponent.GetAsInt(NumericType.HP));
+            if (result.Count > topN)
             {
-                return;
+                result.RemoveRange(topN, result.Count - topN);
             }
+        }
 
-            players.Sort((a, b) => b.NumericComponent.GetAsInt(NumericType.HP) - a.NumericComponent.GetAsInt(NumericType.HP));
-
-            StringBuilder sb = new StringBuilder("[球球排行榜] ");
-            int count = players.Count < topN ? players.Count : topN;
-            for (int i = 0; i < count; i++)
-            {
-                Unit u = players[i];
-                BallComponent bc = u.GetComponent<BallComponent>();
-                int kills = bc != null ? bc.Kills : 0;
-                sb.Append($"#{i + 1} Unit{u.Id} HP={u.NumericComponent.GetAsInt(NumericType.HP)} 击杀={kills}; ");
-            }
-            Log.Info(sb.ToString());
+        // 读一个球的累计击杀(无 BallComponent 返回 0)
+        public static int GetKills(Unit unit)
+        {
+            BallComponent bc = unit?.GetComponent<BallComponent>();
+            return bc != null ? bc.Kills : 0;
         }
     }
 }
