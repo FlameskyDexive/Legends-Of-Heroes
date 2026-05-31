@@ -57,7 +57,9 @@
         "cn.etetet.proto": "4.0.0",
         "cn.etetet.map": "1.0.0",
         "cn.etetet.mapplay": "1.0.0",
-        "cn.etetet.skill": "1.0.0"
+        "cn.etetet.skill": "1.0.0",
+        "cn.etetet.login": "2.0.1",
+        "cn.etetet.yooassets": "2.3.14"
       }
     },
     "cn.etetet.behaviortree": {
@@ -825,15 +827,6 @@
         "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
         "cn.etetet.core": "1.0.0"
       }
-    },
-    "cn.lys.aibridge": {
-      "version": "https://github.com/liyingsong99/AIBridge.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0"
-      },
-      "hash": "db0b6544a2f9def32b285c41685b5ca2d35541ea"
     },
     "com.coplaydev.unity-mcp": {
       "version": "https://github.com/CoplayDev/unity-mcp.git?path=/MCPForUnity#main",
