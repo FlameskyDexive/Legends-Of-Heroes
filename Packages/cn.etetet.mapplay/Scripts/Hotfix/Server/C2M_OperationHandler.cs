@@ -50,6 +50,13 @@ namespace ET.Server
 
                         // 直线移动(玩家球无 PathfindingComponent,不能用 Recast 寻路)
                         float3 target = unit.Position + dir * MoveLookahead;
+                        // 有地图边界组件则 clamp 移动目标到地面范围(角色不能越界);clamp 目标而非位置→客户端插值与服务端一致不分叉。
+                        MapBoundsComponent bounds = unit.Scene().GetComponent<MapBoundsComponent>();
+                        if (bounds != null)
+                        {
+                            target.x = math.clamp(target.x, bounds.Min, bounds.Max);
+                            target.z = math.clamp(target.z, bounds.Min, bounds.Max);
+                        }
                         unit.StraightMoveToAsync(target).Coroutine();
                         break;
                     }

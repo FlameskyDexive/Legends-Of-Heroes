@@ -7,14 +7,13 @@
         protected override async ETTask Run(Scene scene, UnitLeaveSightRange args)
         {
             Unit a = args.A;
-            Unit b = args.B;
-            if (a.UnitType != UnitType.Player)
+            if (a == null || a.UnitType != UnitType.Player)
             {
                 return;
             }
-            
+
             M2C_RemoveUnits removeUnits = M2C_RemoveUnits.Create();
-            removeUnits.Units.Add(b.Id);
+            removeUnits.Units.Add(args.BId);
             MapMessageHelper.NoticeClient(a, removeUnits, NoticeType.Self);
             
             await ETTask.CompletedTask;

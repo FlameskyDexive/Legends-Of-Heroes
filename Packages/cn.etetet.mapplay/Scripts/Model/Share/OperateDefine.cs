@@ -49,4 +49,14 @@ namespace ET
         public EntityRef<Unit> Unit { get; set; }
         public int Index { get; set; }
     }
+
+    // 地图移动边界(X/Z 平面方形,居中)。挂 Scene。某些玩法(如球球大作战)需要把角色移动 clamp 在地面范围内:
+    // 由玩法包在场景上添加并设值(取自该玩法地图地面的实际占地),C2M_OperationHandler 读它 clamp 移动目标;
+    // 没有此组件的地图不做限制(普通 RPG 走 Recast 寻路,本就不会越界)。放 mapplay/Model(通用),不依赖具体玩法包。
+    [ComponentOf(typeof(Scene))]
+    public class MapBoundsComponent : Entity, IAwake
+    {
+        public float Min; // X/Z 下限
+        public float Max; // X/Z 上限
+    }
 }

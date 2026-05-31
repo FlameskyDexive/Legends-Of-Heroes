@@ -94,10 +94,8 @@ namespace ET.Server
             else if (prey != null)
             {
                 dir = prey.Position - myPos; // 追逐猎物
-                if (preyDist < BallDefine.RobotSpitRange && RandomGenerator.RandFloat01() < BallDefine.RobotSpitChance)
-                {
-                    me.SpitBall(BallDefine.SpitCost, BallDefine.SpitBulletHp, BallDefine.SpitRange); // 朝猎物方向偶尔吐球
-                }
+                // 机器人不再自动吐球:吐出的子弹用的是食物预制体(1102),会被误看成"会动的食物"。
+                // 按需求,只有玩家角色用技能才吐食物;机器人只追逐/逃跑/游走 + 吃。
             }
             else
             {
@@ -111,7 +109,15 @@ namespace ET.Server
                 return;
             }
             dir = math.normalize(dir);
-            me.StraightMoveToAsync(myPos + dir * BallDefine.RobotLookahead).Coroutine();
+            float3 moveTarget = myPos + dir * BallDefine.RobotLookahead;
+            // 同玩家:clamp 移动目标到地图边界,机器人不会走出地面。
+            MapBoundsComponent bounds = scene.GetComponent<MapBoundsComponent>();
+            if (bounds != null)
+            {
+                moveTarget.x = math.clamp(moveTarget.x, bounds.Min, bounds.Max);
+                moveTarget.z = math.clamp(moveTarget.z, bounds.Min, bounds.Max);
+            }
+            me.StraightMoveToAsync(moveTarget).Coroutine();
         }
     }
 

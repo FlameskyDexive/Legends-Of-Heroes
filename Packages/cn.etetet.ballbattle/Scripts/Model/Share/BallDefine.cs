@@ -1,5 +1,3 @@
-using Box2DSharp.Dynamics.Contacts;
-
 namespace ET
 {
     // 碰撞器形状类型(原 Ori Battle/BattleDefine 中被注释的 EColliderType,迁移到此)
@@ -42,7 +40,9 @@ namespace ET
         public const int SpitSkillId = 1001;     // 吐球技能 SkillConfig.Id(ActiveSkill 槽位 0)
         public const int SplitSkillId = 1002;    // 分裂技能 SkillConfig.Id(ActiveSkill 槽位 1)
         public const int BulletConfigId = 1102;  // 喷出球的 UnitConfig(复用食物球 Virtual 配置, SetupBall(Bullet) 覆盖其角色)
-        public const int RobotConfigId = 1102;   // 机器人球 UnitConfig(复用食物球 Virtual 配置 + SetupBall(Player))
+        // 机器人球用玩家球配置 1101(BallPlayer):渲染成玩家球(BallPlayer 预制体 + 按 id 头像), 与静止的食物(1102 BallFood)区分开。
+        // (之前复用 1102 → 机器人在客户端看起来和食物一个预制体, 会动的机器人被误认为"会动的食物"。真人玩家本就是 1101, 同款无风险。)
+        public const int RobotConfigId = 1101;
 
         // 机器人模拟"吐球"时传给 SpitBall 的参数(镜像 skill 配置 1001 → ActionEventParams_BallSpit;仅机器人 AI 用)。
         // 分裂参数(MinSplitHp/SplitRange)已迁入 skill 配置 ActionEventParams_BallSplit,以下保留兼容(当前无引用)。
@@ -58,7 +58,9 @@ namespace ET
         // self.GetSingleton<BallConfigCategory>().Get(1) 读取(参考 BallArenaComponentSystem),而非静态 BallDefine。
 
         // 体型/速度公式(质量=HP 驱动):Radius=RadiusCoef*sqrt(HP);Speed=clamp(BaseSpeed*SpeedCoef/sqrt(HP),MinSpeed,BaseSpeed)
-        public const float RadiusCoef = 0.05f;
+        // RadiusCoef 标定:玩家初始 HP=1000 → 半径=0.0114*√1000≈0.36(直径≈0.72);食物 HP=77 → 半径≈0.10(直径≈0.20)。
+        // 碰撞半径(SetupBall 的 GetRadius)与视觉 localScale(NumericWatcher_Radius_ScaleBall)同由 Radius 驱动,故两者一致。
+        public const float RadiusCoef = 0.0114f;
         public const float BaseSpeed = 5f;
         public const float SpeedCoef = 10f;
         public const float MinSpeed = 1.5f;
@@ -83,12 +85,14 @@ namespace ET
         public const float RobotSpitChance = 0.15f;
     }
 
-    // 碰撞开始事件(由 CollisionListenerComponent.BeginContact 发布)。
-    // 原 Ori 在 ET.EventType.OnCollisionContact, 本项目按目录约定(Share→ET)放在 ET。
+    // 碰撞开始事件:由 CollisionListenerComponent.BeginContact **记录**(World.Step 进行中),
+    // 再由 CollisionWorldComponentSystem.Update 在 World.Step **之后**发布并裁决。
+    // 携带单位 id(不携带 Box2D Contact):① Step 后 Contact 可能失效;② 裁决要移除/销毁单位,
+    // 而在 World.Step 中移除单位会破坏 Box2D 接触迭代 + AOI(LeaveSight 对已销毁单位建 EntityRef 崩)。
     public struct OnCollisionContact
     {
-        public Contact contact;
-        public bool isEnd;
+        public long UnitIdA;
+        public long UnitIdB;
     }
 
     // 玩家球死亡事件(碰撞裁决在玩家被吞 / HP<=0 时发布)。

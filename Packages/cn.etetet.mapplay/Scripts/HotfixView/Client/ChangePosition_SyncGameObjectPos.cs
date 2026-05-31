@@ -18,8 +18,9 @@ namespace ET.Client
             Transform transform = gameObjectComponent.Transform;
 
             transform.position = unit.Position;
-            transform.rotation = unit.Rotation;
-            
+            // 朝向:有 RootDir 子节点就只转它(头像等不动)、否则转根。与 ChangeRotation 共用 SyncRotation 保持一致。
+            GameObjectPosHelper.SyncRotation(gameObjectComponent.GameObject, unit.Rotation);
+
             // 贴地
             GameObjectPosHelper.OnTerrain(transform);
 

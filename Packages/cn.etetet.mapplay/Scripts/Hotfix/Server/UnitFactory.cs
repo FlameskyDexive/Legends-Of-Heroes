@@ -4,7 +4,10 @@ namespace ET.Server
 {
     public static partial class UnitFactory
     {
-        public static Unit Create(Scene scene, long id, int configId)
+        // position:可选的初始位置。必须在 AddComponent<AOIEntity> 之前设好——AOIEntity.Awake 会按当前位置把单位注册进 AOI 网格
+        // 并立刻 EnterSight→广播 M2C_CreateUnits(携带当前位置)。若创建后才改 Position(如球球大作战食物原先的写法),
+        // 客户端拿到的是旧位置(配置默认 0,0,0)→ 所有食物挤在原点、且与服务端实际碰撞位置不符导致吃不到。传 position 即可避免。
+        public static Unit Create(Scene scene, long id, int configId, float3? position = null)
         {
             UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
 
@@ -34,7 +37,7 @@ namespace ET.Server
                 }
             }
 
-            unit.Position = new float3(numericComponent.GetAsFloat(NumericType.X), numericComponent.GetAsFloat(NumericType.Y), numericComponent.GetAsFloat(NumericType.Z));
+            unit.Position = position ?? new float3(numericComponent.GetAsFloat(NumericType.X), numericComponent.GetAsFloat(NumericType.Y), numericComponent.GetAsFloat(NumericType.Z));
             unit.Rotation = quaternion.Euler(0, math.radians(numericComponent.Get(NumericType.Yaw)), 0);
 
             unit.AddComponent<MoveComponent>();

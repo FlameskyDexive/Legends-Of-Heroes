@@ -7,8 +7,15 @@ namespace ET
     {
         protected override async ETTask Run(Scene scene, OnCollisionContact args)
         {
-            Unit unitA = args.contact.FixtureA.UserData as Unit;
-            Unit unitB = args.contact.FixtureB.UserData as Unit;
+            // 事件已在 World.Step 之后发(携带单位 id)。按 id 重新取单位:同一帧前一对接触的裁决可能已把某单位吃掉/移除,
+            // 故必须判空/判销毁(不再用 Box2D Contact 的 UserData,那在 Step 后可能失效)。
+            UnitComponent unitComponent = scene.GetComponent<UnitComponent>();
+            if (unitComponent == null)
+            {
+                return;
+            }
+            Unit unitA = unitComponent.Children.TryGetValue(args.UnitIdA, out Entity ea) ? ea as Unit : null;
+            Unit unitB = unitComponent.Children.TryGetValue(args.UnitIdB, out Entity eb) ? eb as Unit : null;
             if (unitA == null || unitB == null || unitA.IsDisposed || unitB.IsDisposed)
             {
                 return;

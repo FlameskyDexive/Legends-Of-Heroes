@@ -35,6 +35,13 @@ namespace ET.Client
             GlobalComponent globalComponent = scene.Root().GetComponent<GlobalComponent>();
             GameObject go = UnityEngine.Object.Instantiate(bundleGameObject, globalComponent.Unit, true);
             unit = unitRef;
+            // 异步加载预制体期间单位可能已被移除/销毁(球球大作战食物加载时被吃掉)→ unit 为 null/已销毁。
+            // 销毁刚实例化的视图并返回,避免 GameObjectEntityRef.Entity = 已销毁单位 / 后续访问 unit.Position 空引用。
+            if (unit == null || unit.IsDisposed)
+            {
+                UnityEngine.Object.Destroy(go);
+                return;
+            }
             go.AddComponent<GameObjectEntityRef>().Entity = unit;
             go.transform.position = unit.Position;
             go.transform.rotation = unit.Rotation;

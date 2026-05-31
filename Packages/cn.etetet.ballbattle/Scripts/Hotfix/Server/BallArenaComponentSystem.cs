@@ -27,6 +27,12 @@ namespace ET.Server
                 scene.AddComponent<CollisionWorldComponent>();
             }
 
+            // 设置地图移动边界(取自竞技场配置,= BallArena 场景地面 Plane 的实际占地 ±50):
+            // C2M_OperationHandler(玩家)与机器人 AI 都读它 clamp 移动目标,角色不会走出地面。
+            MapBoundsComponent bounds = scene.GetComponent<MapBoundsComponent>() ?? scene.AddComponent<MapBoundsComponent>();
+            bounds.Min = self.MapMin;
+            bounds.Max = self.MapMax;
+
             // 启动食物刷新(每秒补足)
             self.SpawnTimerId = scene.Root().TimerComponent.NewRepeatedTimer(1000, TimerInvokeType.BallFoodSpawn, self);
 
@@ -73,14 +79,23 @@ namespace ET.Server
             while (foodCount < self.MaxFoodCount)
             {
                 long id = IdGenerater.Instance.GenerateId();
-                Unit food = UnitFactory.Create(scene, id, self.FoodConfigId);
 
                 float x = RandomGenerator.RandFloat01() * range + self.MapMin;
                 float z = RandomGenerator.RandFloat01() * range + self.MapMin;
-                food.Position = new float3(x, 0, z);
+                // 位置必须在 Create 内加 AOIEntity 前设好(传参),否则广播给客户端的是原点 → 食物全挤原点且吃不到。
+                Unit food = UnitFactory.Create(scene, id, self.FoodConfigId, new float3(x, 0, z));
 
-                food.NumericComponent.Set(NumericType.HP, self.FoodHp);
-                food.SetupBall(EBallType.Food); // 加碰撞体 + 按 HP 算体型
+                // 每个食物随机直径 [FoodMinDiameter, FoodMaxDiameter](默认 0.1~0.3),反算 HP:半径=RadiusCoef*√HP → HP=(半径/RadiusCoef)²。
+                // 视觉(localScale)与碰撞半径同由 Radius 驱动,故大小一致;HP 也是吃这个食物的增量(越大越值)。
+                float diameter = RandomGenerator.RandFloat01() * (self.FoodMaxDiameter - self.FoodMinDiameter) + self.FoodMinDiameter;
+                float foodRadius = diameter * 0.5f;
+                int foodHp = (int)((foodRadius / BallDefine.RadiusCoef) * (foodRadius / BallDefine.RadiusCoef));
+                if (foodHp < 1)
+                {
+                    foodHp = 1;
+                }
+                food.NumericComponent.Set(NumericType.HP, foodHp);
+                food.SetupBall(EBallType.Food); // 加碰撞体 + 按 HP 算体型(静态:食物无移动/无技能,只会被吃)
                 foodCount++;
                 spawned++;
             }
@@ -105,11 +120,11 @@ namespace ET.Server
             for (int i = 0; i < BallDefine.RobotCount; i++)
             {
                 long id = IdGenerater.Instance.GenerateId();
-                Unit robot = UnitFactory.Create(scene, id, BallDefine.RobotConfigId);
 
                 float x = RandomGenerator.RandFloat01() * range + self.MapMin;
                 float z = RandomGenerator.RandFloat01() * range + self.MapMin;
-                robot.Position = new float3(x, 0, z);
+                // 同食物:位置在 Create 内加 AOIEntity 前设好(传参),否则机器人也会广播到原点。
+                Unit robot = UnitFactory.Create(scene, id, BallDefine.RobotConfigId, new float3(x, 0, z));
 
                 robot.NumericComponent.Set(NumericType.HP, BallDefine.RobotInitHp);
                 robot.SetupBall(EBallType.Player); // 当玩家球:吃食物/小球, 也会被吃(被吃后走重生)

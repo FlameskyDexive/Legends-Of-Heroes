@@ -169,7 +169,14 @@ namespace ET.Server
                 leave.BeSeePlayers.Remove(self.Id);
             }
 
-            EventSystem.Instance.Publish(self.Scene(), new UnitLeaveSightRange { A = self.Unit, B = leave.Unit });
+            // 仅当观察者 self 仍有效才发"离开视野"事件(通知其客户端移除 leave)。
+            // self 已销毁(被移除单位作为 self 走 UnSubLeave→LeaveSight 路径)时跳过:无人可通知,
+            // 且 A=self.Unit 会对"已销毁(InstanceId=0)的 self"建 EntityRef<Unit> 而抛 disposed。
+            Unit selfUnit = self.Unit;
+            if (selfUnit != null && !selfUnit.IsDisposed)
+            {
+                EventSystem.Instance.Publish(self.Scene(), new UnitLeaveSightRange { A = selfUnit, BId = leave.Unit.Id });
+            }
         }
 
         /// <summary>

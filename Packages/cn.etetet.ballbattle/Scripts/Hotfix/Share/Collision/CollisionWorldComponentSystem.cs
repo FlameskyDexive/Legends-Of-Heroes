@@ -39,6 +39,19 @@ namespace ET
             }
             self.BodyToDestroy.Clear();
             self.World.Step(BallDefine.FixedDeltaTime, self.VelocityIteration, self.PositionIteration);
+
+            // 🔑 World.Step 之后再裁决碰撞:Step 期间 BeginContact 只记录了接触单位对,这里(Step 外)才发事件做吞噬/移除,
+            // 避免在 Step/AOI 迭代中销毁单位导致 Box2D 迭代错乱 + AOI LeaveSight 对已销毁单位建 EntityRef 崩。
+            Scene scene = self.GetParent<Scene>();
+            CollisionListenerComponent listener = scene.GetComponent<CollisionListenerComponent>();
+            if (listener != null && listener.PendingContacts.Count > 0)
+            {
+                foreach ((long idA, long idB) in listener.PendingContacts)
+                {
+                    EventSystem.Instance.Publish(scene, new OnCollisionContact { UnitIdA = idA, UnitIdB = idB });
+                }
+                listener.PendingContacts.Clear();
+            }
         }
 
         [EntitySystem]

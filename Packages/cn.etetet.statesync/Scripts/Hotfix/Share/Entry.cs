@@ -39,6 +39,14 @@ namespace ET
             logMsg.AddIgnore(typeof(C2G_Ping));
             logMsg.AddIgnore(typeof(G2C_Ping));
             logMsg.AddIgnore(typeof(MessageResponse));
+            // 高频地图消息免逐条打印:编辑器 DEBUG 下 LogMsg 会对每条消息 Debug.Log(ToString=JSON序列化),
+            // 球球大作战(大量单位移动/吃食物数值变化/食物创建移除)时每秒上百条 → Console 打印开销严重拖慢帧率。
+            // 这些消息有专门 Handler,不需要逐条日志;关掉只影响调试打印,不影响逻辑。
+            logMsg.AddIgnore(typeof(M2C_NumericChange));
+            logMsg.AddIgnore(typeof(M2C_CreateUnits));
+            logMsg.AddIgnore(typeof(M2C_RemoveUnits));
+            logMsg.AddIgnore(typeof(M2C_PathfindingResult));
+            logMsg.AddIgnore(typeof(M2C_Stop));
             
             
             // 创建需要reload的code singleton

@@ -20,18 +20,30 @@ namespace ET.Server
                 {
                     continue;
                 }
-                messageSender.Send(u.Unit.GetComponent<UnitGateInfoComponent>().ActorId, message);
+                // 玩家型但无客户端(如球球大作战 AI 机器人 = 玩家球但没有 gate)→ 跳过,避免 UnitGateInfoComponent 为空时空引用
+                UnitGateInfoComponent gateInfo = u.Unit.GetComponent<UnitGateInfoComponent>();
+                if (gateInfo == null)
+                {
+                    continue;
+                }
+                messageSender.Send(gateInfo.ActorId, message);
             }
         }
-        
+
         private static void SendToClient(Unit unit, IMessage message)
         {
             if (!unit.UnitType.IsSame(UnitType.Player))
             {
                 return;
             }
+            // 玩家型但无客户端(AI 机器人)→ 没有 UnitGateInfoComponent, 跳过避免空引用
+            UnitGateInfoComponent gateInfo = unit.GetComponent<UnitGateInfoComponent>();
+            if (gateInfo == null)
+            {
+                return;
+            }
             MessageSender messageSender = unit.Root().GetComponent<MessageSender>();
-            messageSender.Send(unit.GetComponent<UnitGateInfoComponent>().ActorId, message);
+            messageSender.Send(gateInfo.ActorId, message);
         }
         
         public static void NoticeClient(Unit unit, IMessage message, NoticeType noticeType)

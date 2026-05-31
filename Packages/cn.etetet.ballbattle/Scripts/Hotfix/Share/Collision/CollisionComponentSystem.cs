@@ -34,6 +34,11 @@ namespace ET
                     self.Body.CreateBoxFixture(vec2.X, vec2.Y, offset, angle, isSensor, userData ?? self.Unit);
                     break;
             }
+
+            // 🔑 立即把新建 body 同步到单位当前位置:Box2D 新建 body 默认停在原点(0,0),
+            // 若不立刻同步,下一次 World.Step 时该 body 仍在原点 → 与出生点(原点附近)的球重叠 →
+            // 被当作 Player+Food 接触瞬间吞噬(SpawnFood 每秒新建 40 个食物全堆在原点被秒吃,即"刷出来立刻没了")。
+            self.SyncColliderBody();
         }
 
         // 每帧把 Unit 的位置/朝向同步到 Box2D Body(Unit 位置权威, Box2D 仅检测)
