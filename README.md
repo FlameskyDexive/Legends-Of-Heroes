@@ -17,9 +17,9 @@
 
 This project is a front-end and back-end game framework built on the [ET framework](https://github.com/egametang/ET). It ships a basic hot-update pipeline and a relatively complete combat system (an ECS-based skill + Buff system is already in place; the skill editor / behavior-tree editor are still under development). [Legends-Of-Heroes](https://github.com/FlameskyDexive/Legends-Of-Heroes) uses **state synchronization**: all collision detection, skill, and AI logic runs on the server.
 
-<video src="./Document/loh.mp4" controls muted width="100%"></video>
+<a href="./Document/loh.mp4"><img src="./Document/et-bt.png" alt="Legends-Of-Heroes demo video (click to play)" width="100%"></a>
 
-> If the video above does not play inline, you can download [`Document/loh.mp4`](./Document/loh.mp4) from the repository and watch it locally.
+> 📺 **Click the image above to watch the demo video.** The raw MP4 lives at [`Document/loh.mp4`](./Document/loh.mp4) — GitHub renders it as an inline player when you open the file directly.
 
 ---
 
