@@ -17,7 +17,7 @@
 
 此项目为基于 [ET 框架](https://github.com/egametang/ET) 搭建的前后端游戏框架，包含基础热更流程以及较为完善的战斗系统（当前已有 ECS 技能 + Buff 系统；技能编辑器 / 行为树编辑器开发中）。[英雄传说](https://github.com/FlameskyDexive/Legends-Of-Heroes) 采用**状态同步**：所有碰撞检测、技能、AI 等逻辑都放在服务端执行。
 
-<a href="./Document/loh.mp4"><img src="./Document/et-bt.png" alt="Legends-Of-Heroes 演示视频（点击播放）" width="100%"></a>
+<a href="./Document/loh.mp4"><img src="./Document/loh-cover.png" alt="Legends-Of-Heroes 演示视频（点击播放）" width="100%"></a>
 
 > 📺 **点击上方图片观看演示视频。** 原始 MP4 位于 [`Document/loh.mp4`](./Document/loh.mp4)，在 GitHub 直接打开该文件会以网页内嵌播放器呈现。
 
