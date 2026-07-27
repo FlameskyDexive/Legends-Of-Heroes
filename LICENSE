@@ -1,15 +1,21 @@
-ET License
+MIT License
 
-1. 该项目版权属于广州一踢互联网科技有限公司，以下该项目简称ET10
-2. 不允许自行拿着ET10代码修改开源，如果需要增加功能，可以向该项目提交代码。
-3. 任何人或者公司使用该项目中的任何代码开发游戏或者其它商业项目，上线前，都需要向广州一踢互联网科技有限公司获得许可,费用是4999人民币
-4. 注意许可范围仅仅是ET10中自己的非商业化代码跟资源，ET10里面用到了其它商业化插件，比如Odin插件，请自己购买版权。
+Copyright (c) 2024-2026 FlameskyDexive
 
-English:
-1. The copyright of this project belongs to Guangzhou Yiti Internet Technology Co., Ltd. Hereinafter, this project is referred to as ET10.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-2. It is not permitted to modify the ET10 source code and redistribute it as an open-source project. If additional features are needed, contributions may be submitted to the official ET10 project.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-3. Any individual or company using any code from this project to develop games or other commercial products must obtain authorization from Guangzhou Yiti Internet Technology Co., Ltd. before release. price is 4999 yuan
-
-4. Please note that the license scope only covers ET10’s own non-commercial code and resources. ET10 also uses third-party commercial plugins, such as the Odin plugin, for which users must purchase their own licenses.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -4,7 +4,8 @@
   </h2>
   <h2 align="center">
     Legends-Of-Heroes
-  </h2>  
+  </h2>
+  <p><em>A production-ready open-source multiplayer game framework built with ET 8.x, Unity 2022.3, and .NET 10.</em></p>
     <img src="https://img.shields.io/github/stars/FlameskyDexive/Legends-Of-Heroes?style=plastic" alt="">
     <img src="https://img.shields.io/github/forks/FlameskyDexive/Legends-Of-Heroes?color=09F709&label=forks&style=plastic" alt="">
     <img src="https://img.shields.io/github/license/FlameskyDexive/Legends-Of-Heroes?color=22DDB8&label=license&style=plastic" alt="">
@@ -12,63 +13,202 @@
     <img src="https://img.shields.io/github/last-commit/FlameskyDexive/Legends-Of-Heroes?color=%231AE66B&label=last-commit&style=plastic" alt="">
 </div>
 
-English: Please translate it by your browser.
+**English** | [简体中文](./README.zh-CN.md)
 
-此项目为基于ET搭建的一个前后端游戏框架，包含基础热更流程，较为完善的战斗系统（当前已有ECS技能+Buff系统，技能编辑器/行为树编辑器开发中）。[英雄传说](https://github.com/FlameskyDexive/Legends-Of-Heroes)，基于ET，使用状态同步
+This project is a front-end and back-end game framework built on the [ET framework](https://github.com/egametang/ET). It ships a basic hot-update pipeline and a relatively complete combat system (an ECS-based skill + Buff system is already in place; the skill editor / behavior-tree editor are still under development). [Legends-Of-Heroes](https://github.com/FlameskyDexive/Legends-Of-Heroes) uses **state synchronization**: all collision detection, skill, and AI logic runs on the server.
 
-![loh-et10](./Document/loh-et10.mp4)
+<video src="./Document/loh.mp4" controls muted width="100%"></video>
 
-## Main
-#### 基于C#双端框架[ET框架](https://github.com/egametang/ET)，当前版本   为ET10版本，商用请联系ET作者购买授权。
-## 行为树编辑器
+> If the video above does not play inline, you can download [`Document/loh.mp4`](./Document/loh.mp4) from the repository and watch it locally.
+
+---
+
+## 📐 Architecture Diagram
+
+Legends-Of-Heroes is layered as a classic ET-style **ECS + Actor** architecture. The diagram below shows the relationship between the server process, the Unity client, the shared `Model` / `Hotfix` assemblies, and the third-party ecosystem that plugs into them.
+
+```
+                         ┌─────────────────────────────────────────────┐
+                         │                   CLIENT                     │
+                         │            Unity 2022.3.62f3                 │
+                         │  ┌─────────────────────────────────────────┐ │
+                         │  │  UI Layer: EUI (UGUI) / YIUI            │ │
+                         │  │  Joystick · Camera Follow · Debugger    │ │
+                         │  ├─────────────────────────────────────────┤ │
+                         │  │  HybridCLR (hot-update)                 │ │
+                         │  │  YooAsset 3.0 (assets / bundles)        │ │
+                         │  ├─────────────────────────────────────────┤ │
+                         │  │  ModelView  ·  HotfixView  (client ECS) │ │
+                         │  └───────────────────┬─────────────────────┘ │
+                         └──────────────────────┼──────────────────────┘
+                                                │  TCP / KCP / WebSocket
+                                                │  state-sync + position broadcast
+                         ┌──────────────────────┼──────────────────────┐
+                         │                      ▼                       │
+                         │                 SERVER PROCESS                │
+                         │                  .NET 10                      │
+                         │  ┌─────────────────────────────────────────┐ │
+                         │  │  Actor Location · Message Routing        │ │
+                         │  │  (login · lobby · room · map)            │ │
+                         │  ├─────────────────────────────────────────┤ │
+                         │  │  Gameplay ECS                            │ │
+                         │  │  Skill · Buff · Timeline · Collision     │ │
+                         │  │  Behavior Tree · AOI · Move · Lockstep   │ │
+                         │  ├─────────────────────────────────────────┤ │
+                         │  │  Model  ·  Hotfix  (server ECS)          │ │
+                         │  ├─────────────────────────────────────────┤ │
+                         │  │  DB · Redis · Config (Luban)             │ │
+                         │  └─────────────────────────────────────────┘ │
+                         └─────────────────────────────────────────────┘
+                              ▲                                   ▲
+                              │                                   │
+                ┌─────────────┴──────────┐          ┌─────────────┴────────────┐
+                │   SHARED ASSEMBLIES    │          │    TOOLING / AI WORKFLOW │
+                │  cn.etetet.* packages  │          │  AIBridge CLI · UnityMCP │
+                │  (Model / Hotfix)      │          │  AI Agents (pluggable)   │
+                └────────────────────────┘          └──────────────────────────┘
+```
+
+### Layer Overview
+
+| Layer | Responsibility | Key Packages |
+|-------|----------------|--------------|
+| **Server (`.NET 10`)** | Game logic, AI, collision, networking, persistence | `core`, `actorlocation`, `netinner`, `statesync`, `skill`, `spell`, `behaviortree`, `collision`, `aoi`, `db` |
+| **Client (`Unity 2022.3`)** | Rendering, input, UI, local prediction | `eui`, `yiui*`, `hybridclr`, `yooassets`, `move` |
+| **Shared `Model` / `Hotfix`** | ECS components, systems, hot-updatable logic | All `cn.etetet.*` packages |
+| **Tooling** | Build, codegen, AI-assisted development | `harness`, `unitybridge`, AIBridge CLI, UnityMCP |
+
+> The full module list lives under [`Packages/`](./Packages) (70+ `cn.etetet.*` packages). Each package follows ET's `Model` / `ModelView` / `Hotfix` / `HotfixView` assembly split for hot reload.
+
+---
+
+## ✨ Features
+
+### 🌐 Networking
+- **State synchronization** — all authoritative gameplay logic runs server-side; clients render broadcasted state.
+- **Actor model messaging** — `actorlocation` + `netinner` provide location-transparent RPC and message routing across processes.
+- **Multi-protocol transport** — TCP / KCP / WebSocket supported by the ET networking layer.
+- **Reconnect & session** — basic disconnect-reconnect and return-to-login flow.
+- **Distributed ready** — `servicediscovery` + `router` for multi-process topologies (managed via .NET Aspire).
+
+### 🤖 AI Agents
+- Pluggable AI workflow hooks for AI-assisted development (see `Packages/cn.etetet.harness/`).
+- Designed to integrate with external AI agents / MCP-compatible tooling for codegen, debugging, and content authoring.
+
+### 🌳 Behavior Tree
+- In-engine **behavior tree editor** for authoring NPC / enemy AI.
+- Node library exposed via the `btree` / `btnode` / `btreedemo` packages.
+
 ![et-bt](./Document/et-bt.png)
-# 觉得项目不错的话麻烦右上角给个star哈.
-# 视频解说，当前暂时只录了一个演示[实操/打包匹配](https://www.bilibili.com/video/BV1sP6fY2EQU/)视频，后续会把每个模块都出对应一个视频来解说下设计思路跟使用方式。
-#### 内置一个实践项目demo，玩法主要是球球大作战类型的吃食物吃敌人/被敌人吃的生存玩法。此项目采用状态同步，所有碰撞检测、技能、AI等逻辑都放在服务端执行。当前已实现匹配进入竞技场吞噬，具体功能模块及进度看下面的Todo即可
 
-## 国内GitHub访问异常或者速度太慢可以前往Gitee [Legends-Of-Heroes](https://gitee.com/flamesky/Legends-Of-Heroes)拉取项目
+### ⚔️ Skill System
+- ECS-based skill framework supporting **active & passive** abilities.
+- Server-authoritative casting, targeting, and cooldowns.
+- A demo active skill is wired into the Ball Battle demo.
 
-## 环境：
-- 1. 安装Unity2022.3.62f3，安装VS2022/Rider2023，安装[.Net10 SDK](https://dotnet.microsoft.com/zh-cn/download/dotnet/10.0).
-- 
-## 运行步骤：
-- 1. Book目录的运行指南运行即可
+### 💥 Buff System
+- Composable buff/effect pipeline integrated with the skill and timeline systems.
+- Stack rules, duration management, and modifier application all server-side.
 
-# TODO && Features
-- [ ] 时间轴技能编辑器配套战斗系统
-- [x] 行为树编辑器配套战斗系统（已有行为树）
-- [x] 接入UnityC#热更新框架[HybridCLR](https://github.com/focus-creative-games/hybridclr)，包含热更新资源检测下载流程。
-- [x] 一键打包（支持HybridCLR模式一键打包，不需要分开处理，当前测过Win/Android），菜单栏：ET/Build/一键打包xxx
-- [x] 接入Unity运行时可视化Log调试组件[Debugger](https://github.com/FlameskyDexive/Debugger)
-- [x] 接入基于UGUI适配ET的UI框架[EUI](https://github.com/zzjfengqing/ET-EUI)
-- [x] 接入[YooAsset3.0](https://github.com/tuyoogame/YooAsset)资源管理打包热更框架，实现热更下载重载逻辑。
-- [x] 摇杆控制角色移动，相机跟随，通过服务端广播位置同步
-- [x] 实现一个比较基础版本的断线重连，返回登陆等操作。
-- [x] 配置表接入强大的多平台配置方案 [Luban](https://github.com/focus-creative-games/luban)
-- [ ] 房间大厅，匹配房友，每个房间最多20个玩家。
-- [x] 一个Demo关卡流程：有限的2d地图，随机生成食物，吃食物会变大，碰到敌人会产生伤害（大吞小，小死亡）。
-- [x] 基础战斗技能框架设计，主动/被动技能释放(demo已经包含主动技能演示)。
-- [x] Buff系统
-- [x] 时间线技能事件系统
-- [x] 子弹碰撞系统（碰撞检测使用[Box2dSharp](https://github.com/Zonciu/Box2DSharp)）
-- [ ] 额外（有空的话）：2d moba玩法。
+### 📊 Luban
+- Configuration powered by [Luban](https://github.com/focus-creative-games/luban) — multi-platform, type-safe, code-generated configs.
+- Workflow integrated into the `harness` build pipeline (`et-luban` / `et-excel`).
 
-	              
-## 特别鸣谢
+### 📦 YooAsset
+- Asset bundling, loading, and hot-update via [YooAsset 3.0](https://github.com/tuyoogame/YooAsset).
+- Combined with HybridCLR for full code + asset hot-update.
 
-感谢JetBrains公司提供的使用许可证！
+### 🔌 UnityMCP
+- MCP-compatible bridge for editor automation (compile, refresh, log retrieval, prefab/scene ops).
+- See [`AGENTS.md`](./AGENTS.md) for the AIBridge / UnityMCP / UnityBridge channel priority.
+
+### 🎮 More
+- **HybridCLR** — C# hot-update with check & download flow.
+- **Box2DSharp** — 2D physics / bullet collision.
+- **EUI / YIUI** — UGUI frameworks adapted for ET.
+- **AOI** — interest management for large worlds.
+- **Lockstep / TrueSync** — deterministic sync primitives.
+- **One-click build** — menu `ET/Build/...`, tested on Win/Android.
+
+---
+
+## 🗺️ Roadmap
+
+| Status | Item |
+|:------:|------|
+| 🚧 | **Timeline skill editor** integrated with the combat system |
+| ✅ | Behavior tree editor + combat (behavior tree shipped) |
+| 🚧 | **Game lobby & matchmaking** — up to 20 players per room |
+| ✅ | Skill framework (active/passive) + Buff system |
+| ✅ | Timeline skill event system |
+| ✅ | Bullet collision system (Box2DSharp) |
+| ✅ | HybridCLR + YooAsset hot-update pipeline |
+| ✅ | One-click build (Win/Android) |
+| 🚧 | **2D MOBA mode** (stretch goal) |
+| 🔜 | More per-module video walkthroughs |
+
+Legend: ✅ shipped · 🚧 in progress / planned · 🔜 future
+
+---
+
+## 📋 Requirements
+
+- **Unity**: 2022.3.62f3
+- **IDE**: Visual Studio 2022 or Rider 2023
+- **.NET SDK**: 10.0
+- **OS**: Windows (primary); some tooling may not run on macOS/Linux.
+
+## 🚀 Quick Start
+
+1. **Clone**
+   ```bash
+   git clone https://github.com/FlameskyDexive/Legends-Of-Heroes.git
+   cd Legends-Of-Heroes
+   ```
+2. **Open** the project in Unity 2022.3.62f3 and let it import.
+3. **Follow** the run guide under the [`Book/`](./Book) directory (`1.1Running Guide.md`).
+
+> GitHub slow or blocked in your region? Mirror available on Gitee: [Legends-Of-Heroes](https://gitee.com/flamesky/Legends-Of-Heroes).
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome — bug reports, feature ideas, docs, and PRs are all appreciated. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) before opening a pull request.
+
+Quick links: [open issues](https://github.com/FlameskyDexive/Legends-Of-Heroes/issues) · [CONTRIBUTING.md](./CONTRIBUTING.md) · [Code of Conduct](./CONTRIBUTING.md#code-of-conduct)
+
+If you find the project useful, a ⭐ in the top-right corner goes a long way!
+
+---
+
+## 📺 Video Walkthrough
+
+A single demo video has been recorded so far — [Hands-on / Build & Matchmaking](https://www.bilibili.com/video/BV1sP6fY2EQU/). More videos covering the design rationale and usage of each module will follow.
+
+---
+
+## 🙏 Special Thanks
+
+Thanks to JetBrains for providing licenses!
 
 <p><a href="https://www.jetbrains.com/?from=Legends-Of-Heroes">
-<img src="https://user-images.githubusercontent.com/8274346/223466125-611c027a-61f3-4ea0-a96d-4052283da746.png" alt="JetBrains的Logo" width="20%" height="20%"></a></p>
+<img src="https://user-images.githubusercontent.com/8274346/223466125-611c027a-61f3-4ea0-a96d-4052283da746.png" alt="JetBrains Logo" width="20%" height="20%"></a></p>
 
-## 友情链接/鸣谢
-### [Fantasy](https://github.com/qq362946/Fantasy) Fantasy是基于.NET的高性能网络开发框架，支持主流协议，前后端分离
-### [UniJoystick](https://github.com/Bian-Sh/UniJoystick) 一个基于UGUI通用摇杆组件
-### [X-ET7](https://github.com/IcePower/X-ET7) ET7的一个分支，集成FGUI+YooAsset+Luban 
-### [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET) 烟雨的开源moba案例，基于ET5.X魔改
-### [XAsset](https://github.com/xasset/xasset) 一个很高效易用强大的资源管理系统（打包/加载/热更）
-### [ETPro](https://github.com/526077247/ETPro) ET加强版，基于ET6.0，自带技能系统、UI框架、镜像版无缝大世界。
+## 🔗 Friends & Credits
+### [Fantasy](https://github.com/qq362946/Fantasy) — A high-performance .NET networking framework supporting mainstream protocols, with separated front-end and back-end.
+### [UniJoystick](https://github.com/Bian-Sh/UniJoystick) — A universal UGUI-based joystick component.
+### [X-ET7](https://github.com/IcePower/X-ET7) — A fork of ET7 integrating FGUI + YooAsset + Luban.
+### [NKGMobaBasedOnET](https://github.com/wqaetly/NKGMobaBasedOnET) — Yanyu's open-source MOBA case, heavily modified from ET5.X.
+### [XAsset](https://github.com/xasset/xasset) — A highly efficient, easy-to-use, and powerful asset management system (build / load / hot-update).
+### [ETPro](https://github.com/526077247/ETPro) — An enhanced ET based on ET6.0, shipping its own skill system, UI framework, and seamless large-world mirroring.
 
-## Star History
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+## ⭐ Star History
 
 ![Star History Chart](https://api.star-history.com/svg?repos=FlameskyDexive/Legends-Of-Heroes)
