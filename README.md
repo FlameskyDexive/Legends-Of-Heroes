@@ -211,4 +211,4 @@ This project is licensed under the [MIT License](./LICENSE).
 
 ## ⭐ Star History
 
-![Star History Chart](https://api.star-history.com/svg?repos=FlameskyDexive/Legends-Of-Heroes)
+![Star History Chart](https://star-history.dera.page/svg?repos=FlameskyDexive/Legends-Of-Heroes)
