@@ -211,4 +211,4 @@ Legends-Of-Heroes 采用经典的 ET 风格 **ECS + Actor** 分层架构。下�
 
 ## ⭐ Star History
 
-![Star History Chart](https://api.star-history.com/svg?repos=FlameskyDexive/Legends-Of-Heroes)
+![Star History Chart](https://star-history.dera.page/svg?repos=FlameskyDexive/Legends-Of-Heroes)
