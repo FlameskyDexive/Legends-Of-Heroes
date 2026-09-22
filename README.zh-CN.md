@@ -168,7 +168,7 @@ Legends-Of-Heroes 采用经典的 ET 风格 **ECS + Actor** 分层架构。下�
 2. **打开** Unity 2022.3.62f3 并让其导入项目。
 3. **参照** [`Book/`](./Book) 目录下的运行指南（`1.1运行指南.md`）运行。
 
-> 国内 GitHub 访问异常或速度太慢？可前往 Gitee 镜像拉取：[Legends-Of-Heroes](https://gitee.com/flamesky/Legends-Of-Heroes)。
+> 国内 GitHub 访问异常或速度太慢？可前往 AtomGit 镜像拉取：[Legends-Of-Heroes](https://atomgit.com/FlameskyDexive/Legends-Of-Heroes)。
 
 ---
 

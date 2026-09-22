@@ -168,7 +168,7 @@ Legend: ✅ shipped · 🚧 in progress / planned · 🔜 future
 2. **Open** the project in Unity 2022.3.62f3 and let it import.
 3. **Follow** the run guide under the [`Book/`](./Book) directory (`1.1Running Guide.md`).
 
-> GitHub slow or blocked in your region? Mirror available on Gitee: [Legends-Of-Heroes](https://gitee.com/flamesky/Legends-Of-Heroes).
+> GitHub slow or blocked in your region? Mirror available on AtomGit: [Legends-Of-Heroes](https://atomgit.com/FlameskyDexive/Legends-Of-Heroes).
 
 ---
 
